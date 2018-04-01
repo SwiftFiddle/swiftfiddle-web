@@ -58,6 +58,7 @@ Sandbox.prototype.execute = function(success) {
   const intid = setInterval(function() {
     counter = counter + 1;
     const work_dir = path.join(sandbox.root_dir, sandbox.temp_dir)
+    const version = fs.readFileSync(path.join(work_dir, 'version'), 'utf8');
     fs.readFile(path.join(work_dir, 'completed'), 'utf8', function(error, data) {
       if (error && counter < sandbox.timeout) {
         return;
@@ -66,14 +67,14 @@ Sandbox.prototype.execute = function(success) {
           if (!errorlog) {
             errorlog = ""
           }
-          success(data, errorlog);
+          success(data, errorlog, version);
         });
       } else {
         fs.readFile(path.join(work_dir, 'errors'), 'utf8', function(error, errorlog) {
           if (!errorlog) {
             errorlog = ""
           }
-          success(data, errorlog)
+          success(data, errorlog, version)
         });
       }
       execSync('rm', ['-rf', sandbox.temp_dir]);

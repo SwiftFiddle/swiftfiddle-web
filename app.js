@@ -41,8 +41,8 @@ app.post('/run', function(req, res) {
   const timeout = req.body.timeout || 60;
 
   const sandbox = new Sandbox(root_dir, temp_dir, filename, toolchain_version, command, options, code, timeout);
-  sandbox.run(function(data, error) {
-    res.send({ output: data, errors: error })
+  sandbox.run(function(data, error, version) {
+    res.send({ output: data, errors: error, version: version })
   });
 });
 
