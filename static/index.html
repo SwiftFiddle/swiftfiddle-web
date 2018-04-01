@@ -1,0 +1,217 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+    <link rel="apple-touch-icon" sizes="57x57" href="images/apple-icon-57x57.png">
+    <link rel="apple-touch-icon" sizes="60x60" href="images/apple-icon-60x60.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="images/apple-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="images/apple-icon-76x76.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="images/apple-icon-114x114.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="images/apple-icon-120x120.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="images/apple-icon-144x144.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="images/apple-icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="images/apple-icon-180x180.png">
+    <link rel="icon" type="image/png" sizes="192x192"  href="images/android-icon-192x192.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="images/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="96x96" href="images/favicon-96x96.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="images/favicon-16x16.png">
+    <meta name="msapplication-TileColor" content="#ffffff">
+    <meta name="msapplication-TileImage" content="images/ms-icon-144x144.png">
+    <meta name="theme-color" content="#ffffff">
+
+    <style type="text/css">
+      .ace_editor {
+        height: 480px;
+        padding: 0;
+        margin: 0;
+      }
+      .no-gutters {
+        margin-right: 0;
+        margin-left: 0;
+
+        > .col,
+        > [class*="col-"] {
+          padding-right: 0;
+          padding-left: 0;
+        }
+      }
+      /* Sticky footer styles */
+      html {
+        position: relative;
+        min-height: 100%;
+      }
+      body {
+        margin-bottom: 60px; /* Margin bottom by footer height */
+      }
+      .footer {
+        position: absolute;
+        bottom: 0;
+        width: 100%;
+        height: 60px; /* Set the fixed height of the footer here */
+        line-height: 60px; /* Vertically center the text there */
+        background-color: #F7F7F7;
+      }
+    </style>
+    <script src="https://use.fontawesome.com/ab7ee5aca9.js"></script>
+
+    <title>Swift Playground</title>
+  </head>
+  <body style="background-color: #F7F7F7; color: #333333;">
+    <div class="container" style="margin-top: 30px;">
+      <div class="row">
+        <div class="col" style="margin-bottom: 15px;">
+          <h4>Swift Playground</h4>
+          <p><a href="https://github.com/kishikawakatsumi/swift-playground">github.com/kishikawakatsumi/swift-playground</a></p>
+        </div>
+      </div>
+    </div>
+    <div class="container-fluid" style="padding-right: 0; padding-left: 0; padding-bottom: 15px;">
+      <div class="row no-gutters">
+        <div class="col-md-6">
+          <pre id="editor">import Foundation
+
+func greet(person: String) -> String {
+    let greeting = "Hello, " + person + "!"
+    return greeting
+}
+
+print(greet(person: "Anna"))
+// Prints "Hello, Anna!"
+print(greet(person: "Brian"))
+// Prints "Hello, Brian!"
+</pre>
+        </div>
+        <div class="col-md-6">
+          <pre id="results-editor"></pre>
+        </div>
+      </div>
+    </div>
+    <div class="container">
+      <div class="row">
+        <div class="col-md-3 mx-auto" style="margin-top: 15px; margin-bottom: 30px;">
+          <button id="run-button" type="button" class="btn btn-primary btn-block btn-lg">Run&nbsp;&nbsp;<i class="fa fa-play" aria-hidden="true"></i></button>
+        </div>
+      </div>
+    </div>
+    <footer class="footer">
+      <div class="container">
+        <div class="row">
+          <div class="mx-auto">
+            <a href="https://github.com/kishikawakatsumi/swift-power-assert-playground" style="color: #999999;"><i class="fa fa-github fa-2x"></i></a>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+    <script src="ace/ace.js"></script>
+    <script src="ace/ext-language_tools.js"></script>
+    <script type="text/javascript">
+      ace.require("ace/ext/language_tools");
+      const editor = ace.edit("editor");
+      editor.setTheme("ace/theme/xcode");
+      editor.session.setMode("ace/mode/swift");
+      editor.$blockScrolling = Infinity
+      editor.setOptions({
+        useSoftTabs: true,
+        autoScrollEditorIntoView: true,
+        fontFamily: "menlo",
+        fontSize: "11pt",
+        showInvisibles: false,
+        enableBasicAutocompletion: true,
+        enableSnippets: true,
+        enableLiveAutocompletion: true,
+      });
+      editor.renderer.setOptions({
+        showFoldWidgets: false,
+        showPrintMargin: false,
+      });
+      const row = editor.session.getLength() - 1
+      const column = editor.session.getLine(row).length
+      editor.gotoLine(row + 1, column)
+
+      const resultsEditor = ace.edit("results-editor");
+      resultsEditor.setTheme("ace/theme/terminal");
+      resultsEditor.session.setMode("ace/mode/text");
+      resultsEditor.$blockScrolling = Infinity
+      resultsEditor.setOptions({
+        readOnly: true,
+        highlightActiveLine: false,
+        highlightSelectedWord: false,
+        autoScrollEditorIntoView: true,
+      });
+      resultsEditor.renderer.setOptions({
+        showGutter: false,
+        showPrintMargin: false,
+        showInvisibles: false,
+        fontFamily: "menlo",
+        fontSize: "11pt",
+      });
+      resultsEditor.renderer.hideCursor();
+
+      $("#run-button").click(function (e) {
+        console.log("run")
+        e.preventDefault();
+        run($(this), editor);
+      });
+      $("#clear-button").click(function (e) {
+        e.preventDefault();
+        clear($(this));
+      });
+
+      function run(sender, editor) {
+        const buttonTitle = deactivate(sender);
+        const intid = showProgress(resultsEditor);
+        const code = editor.getSession().getValue();
+        const json = {
+          code: code
+        };
+        $.post('/run', json, function(data, error, xhr) {
+          resultsEditor.setValue(data.errors + data.output);
+          resultsEditor.clearSelection();
+          clearInterval(intid);
+          editor.focus();
+          activate(sender, buttonTitle);
+        });
+      }
+
+      function activate(button, buttonTitle) {
+        button.prop("disabled", false);
+        button.html(buttonTitle);
+      }
+
+      function deactivate(button) {
+        button.prop("disabled", true);
+        var buttonTitle = button.html();
+        button.html('<i class="fa fa-circle-o-notch fa-spin" aria-hidden="true"></i> Processing...');
+        resultsEditor.setValue("");
+        return buttonTitle
+      }
+
+      function showProgress(editor) {
+        let counter = 0
+        return setInterval(function() {
+          if (counter == 0) {
+            resultsEditor.setValue('Creating a sandbox...');
+            counter += 1;
+          } else if (counter == 1) {
+            resultsEditor.setValue(resultsEditor.getSession().getValue() + '\nSpinning up a container...');
+            counter += 1;
+          } else if (counter == 2) {
+            resultsEditor.setValue(resultsEditor.getSession().getValue() + '\nBuilding.');
+            counter += 1;
+          } else {
+            resultsEditor.setValue(resultsEditor.getSession().getValue() + '.');
+          }
+          resultsEditor.clearSelection();
+        }, 1500);
+      }
+    </script>
+  </body>
+</html>
