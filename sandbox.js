@@ -72,7 +72,7 @@ Sandbox.prototype.execute = function(success) {
       } else {
         fs.readFile(path.join(work_dir, 'errors'), 'utf8', function(error, errorlog) {
           if (!errorlog) {
-            errorlog = ""
+            errorlog = 'Timed out.'
           }
           success(data, errorlog, version)
         });
