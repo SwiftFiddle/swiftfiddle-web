@@ -156,13 +156,8 @@ print(greet(person: "Brian"))
       resultsEditor.renderer.hideCursor();
 
       $("#run-button").click(function (e) {
-        console.log("run")
         e.preventDefault();
         run($(this), editor);
-      });
-      $("#clear-button").click(function (e) {
-        e.preventDefault();
-        clear($(this));
       });
 
       function run(sender, editor) {

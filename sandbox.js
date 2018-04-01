@@ -35,7 +35,7 @@ Sandbox.prototype.prepare = function(success) {
   exec('cp', [path.join(this.root_dir, "script.sh"), work_dir])
   exec('chmod', ['777', work_dir])
 
-  fs.writeFile(path.join(sandbox.root_dir, sandbox.temp_dir, sandbox.filename), sandbox.code, function(error) {
+  fs.writeFile(path.join(work_dir, sandbox.filename), sandbox.code, function(error) {
     if (error) {
       console.log(error);
     } else {
