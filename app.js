@@ -38,7 +38,31 @@ app.post('/run', function(req, res) {
   const command = req.body.command || 'swift';
   const options = req.body.options || '';
   const code = req.body.code;
-  const timeout = req.body.timeout || 60;
+  let timeout = req.body.timeout || 30;
+  
+  const availableVersions = ['2018-03-31-a', '4.1', '4.0.3', '3.1.1', '3.0.2']
+  if (!availableVersions.includes(toolchain_version.toString())) {
+    const error = `Swift '${toolchain_version}' toolchain is not supported.`
+    res.send({ output: '', errors: error, version: '' })
+    return
+  }
+  if (!['swift', 'swiftc'].includes(command)) {
+    const error = `Command '${command}' is not supported.`
+    res.send({ output: '', errors: error, version: '' })
+    return
+  }
+  if (!code) {
+    const error = `No code to run.`
+    res.send({ output: '', errors: error, version: '' })
+    return
+  }
+  timeout = parseInt(timeout);
+  const maxTimeout = 600;
+  if (isNaN(timeout)) {
+    timeout = defaultTimeout;
+  } else if (timeout > maxTimeout) {
+    timeout = maxTimeout;
+  }
 
   const sandbox = new Sandbox(root_dir, temp_dir, filename, toolchain_version, command, options, code, timeout);
   sandbox.run(function(data, error, version) {
