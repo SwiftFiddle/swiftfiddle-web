@@ -6,6 +6,7 @@
   "scripts": {
     "start": "node app.js"
   },
+  "repository": "github:kishikawakatumi/swift-playground",
   "author": "Katsumi Kishikawa",
   "license": "MIT",
   "dependencies": {
