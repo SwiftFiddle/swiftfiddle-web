@@ -39,8 +39,16 @@ app.post('/run', function(req, res) {
   const options = req.body.options || '';
   const code = req.body.code;
   let timeout = req.body.timeout || 30;
-  
-  const availableVersions = ['2018-03-31-a', '4.1', '4.0.3', '3.1.1', '3.0.2']
+
+  const availableVersions = ['2018-04-04-a',
+                             '2018-04-03-a',
+                             '2018-04-02-a',
+                             '2018-04-01-a',
+                             '2018-03-31-a',
+                             '4.1',
+                             '4.0.3',
+                             '3.1.1',
+                             '3.0.2'];
   if (!availableVersions.includes(toolchain_version.toString())) {
     const error = `Swift '${toolchain_version}' toolchain is not supported.`
     res.send({ output: '', errors: error, version: '' })
