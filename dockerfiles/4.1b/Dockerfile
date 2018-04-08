@@ -41,5 +41,5 @@ RUN SWIFT_URL=https://swift.org/builds/$SWIFT_BRANCH/$(echo "$SWIFT_PLATFORM" | 
 # Print Installed Swift Version
 RUN swift --version
 
-RUN mkdir vendor && libraries
+RUN mkdir vendor && mkdir libraries
 RUN (cd vendor && git clone https://github.com/kishikawakatsumi/SwiftyMath.git && cd SwiftyMath && swift build -c release && find .build/release/ -maxdepth 1 -type f | xargs -I {} cp {} ../libraries)
