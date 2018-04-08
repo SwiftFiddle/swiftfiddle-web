@@ -44,4 +44,4 @@ RUN swift --version
 
 RUN mkdir vendor && cd vendor
 RUN git clone https://github.com/kishikawakatsumi/swift-package-libbsd.git
-RUN git clone https://github.com/taketo1024/SwiftyMath.git && cd SwiftyMath && swift build -c release
+RUN git clone https://github.com/kishikawakatsumi/SwiftyMath.git && cd SwiftyMath && swift build -c release
