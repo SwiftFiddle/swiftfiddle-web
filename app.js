@@ -61,7 +61,7 @@ app.post('/run', function(req, res) {
   }
 
   const commandInjectionOperators = [';', '&', '&&', '||', '`', '(', ')', '#'];
-  if (operators.some(operator => options.includes(operator))) {
+  if (commandInjectionOperators.some(operator => options.includes(operator))) {
     const error = 'Invalid control characters found';
     res.send({ output: '', errors: error, version: '' });
     return;
