@@ -50,19 +50,26 @@ app.post('/run', function(req, res) {
                              '3.1.1',
                              '3.0.2'];
   if (!availableVersions.includes(toolchain_version.toString())) {
-    const error = `Swift '${toolchain_version}' toolchain is not supported.`
-    res.send({ output: '', errors: error, version: '' })
-    return
+    const error = `Swift '${toolchain_version}' toolchain is not supported.`;
+    res.send({ output: '', errors: error, version: '' });
+    return;
   }
   if (!['swift', 'swiftc'].includes(command)) {
-    const error = `Command '${command}' is not supported.`
-    res.send({ output: '', errors: error, version: '' })
-    return
+    const error = `Command '${command}' is not supported.`;
+    res.send({ output: '', errors: error, version: '' });
+    return;
+  }
+
+  const commandInjectionOperators = [';', '&', '&&', '||', '`', '(', ')', '#'];
+  if (operators.some(operator => options.includes(operator))) {
+    const error = 'Invalid control characters found';
+    res.send({ output: '', errors: error, version: '' });
+    return;
   }
   if (!code) {
-    const error = `No code to run.`
-    res.send({ output: '', errors: error, version: '' })
-    return
+    const error = `No code to run.`;
+    res.send({ output: '', errors: error, version: '' });
+    return;
   }
   timeout = parseInt(timeout);
   const maxTimeout = 600;
@@ -74,7 +81,7 @@ app.post('/run', function(req, res) {
 
   const sandbox = new Sandbox(root_dir, temp_dir, filename, toolchain_version, command, options, code, timeout);
   sandbox.run(function(data, error, version) {
-    res.send({ output: data, errors: error, version: version })
+    res.send({ output: data, errors: error, version: version });
   });
 });
 
