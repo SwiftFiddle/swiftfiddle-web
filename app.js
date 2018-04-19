@@ -40,7 +40,7 @@ app.post('/run', function(req, res) {
   const code = req.body.code;
   let timeout = req.body.timeout || 30;
 
-  const availableVersions = ['2018-04-16-a',
+  const availableVersions = ['2018-04-18-a',
                              '4.1',
                              '4.0.3',
                              '4.0.2',
