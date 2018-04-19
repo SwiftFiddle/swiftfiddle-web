@@ -55,9 +55,9 @@ Sandbox.prototype.execute = function(success) {
 
   exec(['sh', path.join(this.root_dir, "run.sh"), this.timeout + 's', '-v', path.join(this.root_dir, this.temp_dir) + ':/usercode', '-v', path.join(this.root_dir, 'vendor') + ':/vendor:ro', 'kishikawakatsumi/swift-' + this.toolchain_version, 'sh', '/usercode/script.sh', [this.command, this.options].join(' ')].join(' '));
 
+  const work_dir = path.join(sandbox.root_dir, sandbox.temp_dir)
   const intid = setInterval(function() {
     counter = counter + 1;
-    const work_dir = path.join(sandbox.root_dir, sandbox.temp_dir)
     fs.readFile(path.join(work_dir, 'completed'), 'utf8', function(error, data) {
       if (error && counter < sandbox.timeout) {
         return;
