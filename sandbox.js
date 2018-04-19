@@ -67,6 +67,7 @@ Sandbox.prototype.execute = function(success) {
             errorlog = ""
           }
           const version = fs.readFileSync(path.join(work_dir, 'version'), 'utf8');
+          execSync('rm', ['-rf', sandbox.temp_dir]);
           success(data, errorlog, version);
         });
       } else {
@@ -75,10 +76,10 @@ Sandbox.prototype.execute = function(success) {
             errorlog = 'Timed out.'
           }
           const version = fs.readFileSync(path.join(work_dir, 'version'), 'utf8');
+          execSync('rm', ['-rf', sandbox.temp_dir]);
           success(data, errorlog, version)
         });
       }
-      execSync('rm', ['-rf', sandbox.temp_dir]);
       clearInterval(intid);
     });
   }, 1000);
