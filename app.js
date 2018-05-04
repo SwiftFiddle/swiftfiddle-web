@@ -6,6 +6,18 @@ const Express = require("express");
 
 const app = Express();
 
+const availableVersions = ['2018-04-18-a',
+                           '4.1',
+                           '4.0.3',
+                           '4.0.2',
+                           '4.0',
+                           '3.1.1',
+                           '3.1',
+                           '3.0.2',
+                           '3.0.1'];
+const latestVersion = availableVersions[0];
+const stableVersion = '4.1';
+
 function random(size) {
   return require("crypto").randomBytes(size).toString('hex');
 }
@@ -26,6 +38,10 @@ app.get('/', function(req, res) {
   res.sendfile("./index.html");
 });
 
+app.get('/versions', function(req, res) {
+  res.send({ versions: availableVersions });
+});
+
 app.post('/run', function(req, res) {
   const path = require('path');
   const Sandbox = require('./sandbox');
@@ -34,26 +50,23 @@ app.post('/run', function(req, res) {
   const temp_dir = path.join('temp', random(10));
   const filename = 'main.swift';
 
-  const toolchain_version = req.body.toolchain_version || '4.1';
+  let toolchain_version = req.body.toolchain_version || stableVersion;
+  if (toolchain_version == 'latest') {
+    toolchain_version = latestVersion;
+  } else if (toolchain_version == 'stable') {
+    toolchain_version = stableVersion;
+  }
   const command = req.body.command || 'swift';
   const options = req.body.options || '';
   const code = req.body.code;
   let timeout = req.body.timeout || 30;
 
-  const availableVersions = ['2018-04-18-a',
-                             '4.1',
-                             '4.0.3',
-                             '4.0.2',
-                             '4.0',
-                             '3.1.1',
-                             '3.1',
-                             '3.0.2',
-                             '3.0.1'];
   if (!availableVersions.includes(toolchain_version.toString())) {
     const error = `Swift '${toolchain_version}' toolchain is not supported.`;
     res.send({ output: '', errors: error, version: '' });
     return;
   }
+
   if (!['swift', 'swiftc'].includes(command)) {
     const error = `Command '${command}' is not supported.`;
     res.send({ output: '', errors: error, version: '' });
@@ -66,11 +79,13 @@ app.post('/run', function(req, res) {
     res.send({ output: '', errors: error, version: '' });
     return;
   }
+
   if (!code) {
     const error = `No code to run.`;
     res.send({ output: '', errors: error, version: '' });
     return;
   }
+
   timeout = parseInt(timeout);
   const maxTimeout = 600;
   if (isNaN(timeout)) {
