@@ -17,10 +17,10 @@ function availableVersions() {
       return a < b;
     }
     if (a.includes('.')) {
-      return true;
+      return 1;
     }
     if (b.includes('.')) {
-      return false;
+      return -1;
     }
     return a < b;
   });
