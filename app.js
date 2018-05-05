@@ -12,12 +12,23 @@ function random(size) {
 
 function availableVersions() {
   const result = require('child_process').execSync('docker images kishikawakatsumi/swift --format "{{.Tag}}"').toString();
-  return result.split('\n').sort();
+  return result.split('\n').sort((a, b) => {
+    if (a.includes('.') && b.includes('.')) {
+      return a < b;
+    }
+    if (a.includes('.')) {
+      return true;
+    }
+    if (b.includes('.')) {
+      return false;
+    }
+    return a < b;
+  });
 }
 
 function latestVersion() {
   const versions = availableVersions();
-  return versions[versions.length - 1];
+  return versions[0];
 }
 
 function stableVersion() {
