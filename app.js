@@ -12,7 +12,7 @@ function random(size) {
 
 function availableVersions() {
   const result = require('child_process').execSync('docker images kishikawakatsumi/swift --format "{{.Tag}}"').toString();
-  return result.join('\n').sort();
+  return result.split('\n').sort();
 }
 
 function latestVersion() {
