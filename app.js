@@ -6,20 +6,22 @@ const Express = require("express");
 
 const app = Express();
 
-const availableVersions = ['2018-04-18-a',
-                           '4.1',
-                           '4.0.3',
-                           '4.0.2',
-                           '4.0',
-                           '3.1.1',
-                           '3.1',
-                           '3.0.2',
-                           '3.0.1'];
-const latestVersion = availableVersions[0];
-const stableVersion = '4.1';
-
 function random(size) {
   return require("crypto").randomBytes(size).toString('hex');
+}
+
+function availableVersions() {
+  const result = require('child_process').execSync('docker images kishikawakatsumi/swift --format "{{.Tag}}"').toString();
+  return result.join('\n').sort();
+}
+
+function latestVersion() {
+  const versions = availableVersions();
+  return versions[versions.length - 1];
+}
+
+function stableVersion() {
+  return '4.1';
 }
 
 app.use(Compression())
@@ -39,7 +41,7 @@ app.get('/', function(req, res) {
 });
 
 app.get('/versions', function(req, res) {
-  res.send({ versions: availableVersions });
+  res.send({ versions: availableVersions() });
 });
 
 app.post('/run', function(req, res) {
@@ -61,7 +63,7 @@ app.post('/run', function(req, res) {
   const code = req.body.code;
   let timeout = req.body.timeout || 30;
 
-  if (!availableVersions.includes(toolchain_version.toString())) {
+  if (!availableVersions().includes(toolchain_version.toString())) {
     const error = `Swift '${toolchain_version}' toolchain is not supported.`;
     res.send({ output: '', errors: error, version: '' });
     return;
