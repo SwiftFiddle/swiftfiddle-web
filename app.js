@@ -52,11 +52,11 @@ app.post('/run', function(req, res) {
   const temp_dir = path.join('temp', random(10));
   const filename = 'main.swift';
 
-  let toolchain_version = req.body.toolchain_version || stableVersion;
+  let toolchain_version = req.body.toolchain_version || stableVersion();
   if (toolchain_version == 'latest') {
-    toolchain_version = latestVersion;
+    toolchain_version = latestVersion();
   } else if (toolchain_version == 'stable') {
-    toolchain_version = stableVersion;
+    toolchain_version = stableVersion();
   }
   const command = req.body.command || 'swift';
   const options = req.body.options || '';
