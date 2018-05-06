@@ -97,7 +97,7 @@ app.post('/run', function(req, res) {
   }
 
   if (!code) {
-    const error = 'No code to run.';
+    const error = 'There is no code to run.';
     res.send({ output: '', errors: error, version: '' });
     return;
   }
