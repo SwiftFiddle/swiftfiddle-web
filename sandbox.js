@@ -8,21 +8,21 @@ const Sandbox = function(root_dir, temp_dir, filename, toolchain_version, comman
   this.command = command;
   this.options = options;
   this.code = code;
-  let to = parseInt(timeout)
+  let to = parseInt(timeout);
   if (isNaN(to)) {
-    to = 60
+    to = 60;
   } else if (to > 600) {
-    to = 600
+    to = 600;
   }
   this.timeout = to;
-}
+};
 
 Sandbox.prototype.run = function(success) {
   const sandbox = this;
   this.prepare(function() {
     sandbox.execute(success);
   });
-}
+};
 
 Sandbox.prototype.prepare = function(success) {
   const exec = require('child_process').spawnSync;
@@ -32,8 +32,8 @@ Sandbox.prototype.prepare = function(success) {
 
   const work_dir = path.join(this.root_dir, this.temp_dir);
   exec('mkdir', [work_dir]);
-  exec('cp', [path.join(this.root_dir, "script.sh"), work_dir])
-  exec('chmod', ['777', work_dir])
+  exec('cp', [path.join(this.root_dir, 'script.sh'), work_dir]);
+  exec('chmod', ['777', work_dir]);
 
   fs.writeFile(path.join(work_dir, sandbox.filename), sandbox.code, function(error) {
     if (error) {
@@ -42,7 +42,7 @@ Sandbox.prototype.prepare = function(success) {
       success();
     }
   });
-}
+};
 
 Sandbox.prototype.execute = function(success) {
   const exec = require('child_process').exec;
@@ -53,9 +53,9 @@ Sandbox.prototype.execute = function(success) {
   const sandbox = this;
   let counter = 0;
 
-  exec(['sh', path.join(this.root_dir, "run.sh"), this.timeout + 's', '-v', path.join(this.root_dir, this.temp_dir) + ':/usercode', '-v', path.join(this.root_dir, 'Libraries') + ':/Libraries:ro', 'kishikawakatsumi/swift:' + this.toolchain_version, 'sh', '/usercode/script.sh', [this.command, this.options].join(' ')].join(' '));
+  exec(['sh', path.join(this.root_dir, 'run.sh'), this.timeout + 's', '-v', path.join(this.root_dir, this.temp_dir) + ':/usercode', '-v', path.join(this.root_dir, 'Libraries') + ':/Libraries:ro', 'kishikawakatsumi/swift:' + this.toolchain_version, 'sh', '/usercode/script.sh', [this.command, this.options].join(' ')].join(' '));
 
-  const work_dir = path.join(sandbox.root_dir, sandbox.temp_dir)
+  const work_dir = path.join(sandbox.root_dir, sandbox.temp_dir);
   const intid = setInterval(function() {
     counter = counter + 1;
     fs.readFile(path.join(work_dir, 'completed'), 'utf8', function(error, data) {
@@ -64,7 +64,7 @@ Sandbox.prototype.execute = function(success) {
       } else if (counter < sandbox.timeout) {
         fs.readFile(path.join(work_dir, 'errors'), 'utf8', function(error, errorlog) {
           if (!errorlog) {
-            errorlog = ""
+            errorlog = '';
           }
           const version = fs.readFileSync(path.join(work_dir, 'version'), 'utf8');
           execSync('rm', ['-rf', sandbox.temp_dir]);
@@ -73,16 +73,16 @@ Sandbox.prototype.execute = function(success) {
       } else {
         fs.readFile(path.join(work_dir, 'errors'), 'utf8', function(error, errorlog) {
           if (!errorlog) {
-            errorlog = 'Timed out.'
+            errorlog = 'Timed out.';
           }
           const version = fs.readFileSync(path.join(work_dir, 'version'), 'utf8');
           execSync('rm', ['-rf', sandbox.temp_dir]);
-          success(data, errorlog, version)
+          success(data, errorlog, version);
         });
       }
       clearInterval(intid);
     });
   }, 1000);
-}
+};
 
 module.exports = Sandbox;

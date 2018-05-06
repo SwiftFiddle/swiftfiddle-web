@@ -2,12 +2,12 @@
 
 const BodyParser = require('body-parser');
 const Compression = require('compression');
-const Express = require("express");
+const Express = require('express');
 
 const app = Express();
 
 function random(size) {
-  return require("crypto").randomBytes(size).toString('hex');
+  return require('crypto').randomBytes(size).toString('hex');
 }
 
 function availableVersions() {
@@ -36,7 +36,7 @@ function stableVersion() {
   return '4.1';
 }
 
-app.use(Compression())
+app.use(Compression());
 app.use(Express.static(__dirname + '/static'));
 app.use(BodyParser.urlencoded({ extended: false }));
 app.use(BodyParser.json());
@@ -49,7 +49,7 @@ app.all('*', function(req, res, next) {
 });
 
 app.get('/', function(req, res) {
-  res.sendfile("./index.html");
+  res.sendfile('./index.html');
 });
 
 app.get('/versions', function(req, res) {
@@ -95,13 +95,14 @@ app.post('/run', function(req, res) {
   }
 
   if (!code) {
-    const error = `No code to run.`;
+    const error = 'No code to run.';
     res.send({ output: '', errors: error, version: '' });
     return;
   }
 
   timeout = parseInt(timeout);
   const maxTimeout = 600;
+  const defaultTimeout = 30;
   if (isNaN(timeout)) {
     timeout = defaultTimeout;
   } else if (timeout > maxTimeout) {
@@ -114,7 +115,7 @@ app.post('/run', function(req, res) {
   });
 });
 
-var server = require("http").createServer(app);
+var server = require('http').createServer(app);
 server.listen(8080, function() {
-  console.log("Playground app listening on port " + server.address().port);
+  console.log('Playground app listening on port ' + server.address().port);
 });
