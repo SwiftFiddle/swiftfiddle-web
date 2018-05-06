@@ -180,7 +180,7 @@ print(greet(person: "Brian"))
           code: code
         };
         $.post('/run', json, function(data, error, xhr) {
-          resultsEditor.setValue(data.errors + data.output);
+          resultsEditor.setValue(data.version + data.errors + data.output);
           resultsEditor.clearSelection();
           clearInterval(intid);
           editor.focus();
