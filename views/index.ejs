@@ -72,7 +72,7 @@
               <select class="form-control" id="versionSelect">
                 <% versions.forEach(function (version) { %>
                 var selected = ( version == "4.1.1" ) ? "selected" : "";
-                <option value="<%= version %>" <%= selected %>><%= version %></option>
+                <option value="<%= version %>" selected="<%= selected %>"><%= version %></option>
                 <% }); %>
               </select>
             </div>
