@@ -37,9 +37,11 @@ function stableVersion() {
 }
 
 app.use(Compression());
-app.use(Express.static(__dirname + '/static'));
 app.use(BodyParser.urlencoded({ extended: false }));
 app.use(BodyParser.json());
+app.use(Express.static(__dirname + '/static'));
+app.set('views', __dirname + '/views');
+app.set('view engine', 'ejs');
 
 app.all('*', function(req, res, next) {
   res.header('Access-Control-Allow-Origin', '*');
@@ -49,7 +51,7 @@ app.all('*', function(req, res, next) {
 });
 
 app.get('/', function(req, res) {
-  res.sendfile('./index.html');
+  res.render('index', {title: 'Swift Playground', versions: availableVersions()});
 });
 
 app.get('/versions', function(req, res) {

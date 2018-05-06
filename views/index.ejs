@@ -25,7 +25,7 @@
 
     <style type="text/css">
       .ace_editor {
-        height: 480px;
+        height: 600px;
         padding: 0;
         margin: 0;
       }
@@ -64,8 +64,18 @@
     <div class="container" style="margin-top: 30px;">
       <div class="row">
         <div class="col" style="margin-bottom: 15px;">
-          <h4>Swift Playground</h4>
-          <p><a href="https://github.com/kishikawakatsumi/swift-playground">github.com/kishikawakatsumi/swift-playground</a></p>
+          <h4><%= title %></h4>
+        </div>
+        <div class="col-md-2">
+          <form>
+            <div class="form-group">
+              <select class="form-control" id="versionSelect">
+                <% versions.forEach(function (version) { %>
+                <option value="<%= version %>"><%= version %></option>
+                <% }); %>
+              </select>
+            </div>
+          </form>
         </div>
       </div>
     </div>
@@ -165,6 +175,7 @@ print(greet(person: "Brian"))
         const intid = showProgress(resultsEditor);
         const code = editor.getSession().getValue();
         const json = {
+          toolchain_version: $("#versionSelect").val(),
           code: code
         };
         $.post('/run', json, function(data, error, xhr) {
