@@ -9,7 +9,6 @@ final class AllTests: XCTestCase {
         XCTAssertEqual(All().text, "Hello, World!")
     }
 
-
     static var allTests = [
         ("testExample", testExample),
     ]
