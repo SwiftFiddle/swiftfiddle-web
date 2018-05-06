@@ -205,13 +205,7 @@ print(greet(person: "Brian"))
         let counter = 0
         return setInterval(function() {
           if (counter == 0) {
-            resultsEditor.setValue('Creating a sandbox...');
-            counter += 1;
-          } else if (counter == 1) {
-            resultsEditor.setValue(resultsEditor.getSession().getValue() + '\nSpinning up a container...');
-            counter += 1;
-          } else if (counter == 2) {
-            resultsEditor.setValue(resultsEditor.getSession().getValue() + '\nBuilding.');
+            resultsEditor.setValue('Executing...');
             counter += 1;
           } else {
             resultsEditor.setValue(resultsEditor.getSession().getValue() + '.');
