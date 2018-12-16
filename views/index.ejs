@@ -70,7 +70,7 @@
           <form>
             <div class="form-group">
               <select class="form-control" id="versionSelect">
-                <% versions.map.forEach(function (version) { %>
+                <% versions.forEach(function (version) { %>
                 <% var selected = ( version == "4.2.1" ) ? "selected" : ""; %>
                 <option value="<%= version %>" <%= selected %>><%= version.replace('_', '/') %></option>
                 <% }); %>
