@@ -87,6 +87,7 @@
 
 #if swift(>=5)
 // [SE-200] Raw strings
+
 func rawStrings() {
     print("\n[SE-200] Raw strings\n")
 
@@ -173,8 +174,29 @@ func dynamicCallable() {
 
 dynamicCallable()
 
+// [SE-228] Fix ExpressibleByStringInterpolation
+
+extension String.StringInterpolation {
+  mutating func appendInterpolation(_ val: Any?, default defaultValue: String) {
+    if let val = val {
+      appendInterpolation(val)
+    } else {
+      defaultValue.write(to: &self)
+    }
+  }
+}
+
+func fixExpressibleByStringInterpolation() {
+    print("\n[SE-228] Fix ExpressibleByStringInterpolation\n")
+
+    let value: Int? = nil
+    print("The value is: \(value, default: "<nil>")")
+}
+
+fixExpressibleByStringInterpolation()
 #else
 // [SE-200] Raw strings
+
 func rawStrings() {
     // Backslashes need to be escaped.
     let html = "<img src=\"/images/iPhone XS Max\" alt=\"iPhone XS Max\" />"
