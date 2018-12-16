@@ -79,9 +79,10 @@ app.post('/run', function(req, res) {
     toolchain_version = stableVersion();
   }
   const defaultCommand = 'swift';
-  const command = req.body.command || defaultCommand;
+  let command = req.body.command || defaultCommand;
   let options = req.body.options || '';
   if (options.length == 0 && command == defaultCommand) {
+    command = 'PYTHON_LIBRARY=libpython3.5.so swift'
     options = [
       `-I /Libraries/All/${toolchain_version}/.build/release`,
       `-L /Libraries/All/${toolchain_version}/.build/release`,
