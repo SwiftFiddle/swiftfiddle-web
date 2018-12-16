@@ -88,6 +88,8 @@
 #if swift(>=5)
 // [SE-200] Raw strings
 func rawStrings() {
+    print("\n[SE-200] Raw strings\n")
+
     // Backslashes no longer need to be escaped!
     let html = #"<img src="/images/iPhone XS Max" alt="iPhone XS Max" />"#
     print("html: \(html)")
@@ -160,6 +162,8 @@ extension PythonObject: CustomStringConvertible {
 }
 
 func dynamicCallable() {
+    print("\n[SE-0216] @dynamicCallable\n")
+
     let sys = Python.import("sys")
 
     print("Python \(sys.version_info.major)")
