@@ -176,7 +176,7 @@ print(greet(person: "Brian"))
         const intid = showProgress(resultsEditor);
         const code = editor.getSession().getValue();
         const json = {
-          toolchain_version: $("#versionSelect").val(),
+          toolchain_version: $("#versionSelect").val().replace('/', '_'),
           code: code
         };
         $.post('/run', json, function(data, error, xhr) {
