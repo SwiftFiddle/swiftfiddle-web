@@ -12,8 +12,14 @@ function random(size) {
 
 function availableVersions() {
   const result = require('child_process').execSync('docker images kishikawakatsumi/swift --format "{{.Tag}}"').toString();
-  return result.split('\n').filter(version => version.length > 0).sort((a, b) => {
+  return result.split('\n').map(version => version.replace('_', '/');).filter(version => version.length > 0).sort((a, b) => {
     const compareVersions = require('compare-versions');
+    if (a.includes('/')) {
+      a = a.split('/')[1]
+    }
+    if (b.includes('/')) {
+      b = b.split('/')[1]
+    }
     if (a.includes('.') && b.includes('.')) {
       return compareVersions(a, b) * -1;
     }
