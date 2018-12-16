@@ -80,7 +80,15 @@ app.post('/run', function(req, res) {
   }
   const defaultCommand = 'swift';
   const command = req.body.command || defaultCommand;
-  const options = req.body.options || '';
+  let options = req.body.options || '';
+  if (options.length == 0 && command == defaultCommand && version.includes('_')) {
+    options = [
+      '-I /Libraries/All/.build/release',
+      '-L /Libraries/All/.build/release',
+      '-lAll'
+    ].join(' ');
+  }
+
   const code = req.body.code;
   let timeout = req.body.timeout || 30;
 
