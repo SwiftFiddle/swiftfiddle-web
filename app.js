@@ -99,7 +99,7 @@ app.post('/run', function(req, res) {
     return;
   }
 
-  if (!['swift', 'swiftc'].includes(command)) {
+  if (!['swift', 'swiftc', 'PYTHON_LIBRARY=libpython3.5.so swift'].includes(command)) {
     const error = `Command '${command}' is not supported.`;
     res.send({ output: '', errors: error, version: '' });
     return;
