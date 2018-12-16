@@ -78,18 +78,8 @@ app.post('/run', function(req, res) {
   } else if (toolchain_version == 'stable') {
     toolchain_version = stableVersion();
   }
-  const defaultCommand = 'swift';
-  let command = req.body.command || defaultCommand;
-  let options = req.body.options || '';
-  if (options.length == 0 && command == defaultCommand) {
-    command = 'PYTHON_LIBRARY=libpython3.5.so swift'
-    options = [
-      `-I /Libraries/All/${toolchain_version}/.build/release`,
-      `-L /Libraries/All/${toolchain_version}/.build/release`,
-      '-lAll'
-    ].join(' ');
-  }
-
+  const command = req.body.command || 'swift';
+  const options = req.body.options || '';
   const code = req.body.code;
   let timeout = req.body.timeout || 30;
 
@@ -99,7 +89,7 @@ app.post('/run', function(req, res) {
     return;
   }
 
-  if (!['swift', 'swiftc', 'PYTHON_LIBRARY=libpython3.5.so swift'].includes(command)) {
+  if (!['swift', 'swiftc'].includes(command)) {
     const error = `Command '${command}' is not supported.`;
     res.send({ output: '', errors: error, version: '' });
     return;
