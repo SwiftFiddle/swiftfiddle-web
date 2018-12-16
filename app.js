@@ -81,10 +81,10 @@ app.post('/run', function(req, res) {
   const defaultCommand = 'swift';
   const command = req.body.command || defaultCommand;
   let options = req.body.options || '';
-  if (options.length == 0 && command == defaultCommand && toolchain_version.includes('_')) {
+  if (options.length == 0 && command == defaultCommand) {
     options = [
-      '-I /Libraries/All/.build/release',
-      '-L /Libraries/All/.build/release',
+      `-I /Libraries/All/${toolchain_version}/.build/release`,
+      `-L /Libraries/All/${toolchain_version}/.build/release`,
       '-lAll'
     ].join(' ');
   }
