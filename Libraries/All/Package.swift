@@ -12,16 +12,19 @@ let package = Package(
             targets: ["All"]),
     ],
     dependencies: [
-        .package(url: "https://github.com/ReactiveX/RxSwift.git", from: "4.1.2"),
-        .package(url: "https://github.com/krzyzanowskim/CryptoSwift.git", from: "0.9.0"),
-        .package(url: "https://github.com/taketo1024/SwiftyMath.git", .revision("8a70d3920b45222faf6b05ddfc926df24f2ae228")),
-    ],
+        .package(url: "https://github.com/pvieito/PythonKit.git", .branch("master")),
+//        .package(url: "https://github.com/ReactiveX/RxSwift.git", from: "4.1.2"),
+//        .package(url: "https://github.com/krzyzanowskim/CryptoSwift.git", from: "0.9.0"),
+//        .package(url: "https://github.com/taketo1024/SwiftyMath.git", .revision("8a70d3920b45222faf6b05ddfc926df24f2ae228")),
+        ],
     targets: [
         .target(
             name: "All",
-            dependencies: ["RxSwift", "CryptoSwift", "SwiftyMath", "SwiftyTopology"]),
-        .testTarget(
-            name: "AllTests",
-            dependencies: ["All"]),
+            dependencies: ["PythonKit",
+//                           "RxSwift",
+//                           "CryptoSwift",
+//                           "SwiftyMath",
+//                           "SwiftyTopology",
+                           ]),
     ]
 )
