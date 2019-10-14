@@ -10,13 +10,13 @@
   "author": "Katsumi Kishikawa",
   "license": "MIT",
   "dependencies": {
-    "body-parser": "^1.18.2",
-    "compare-versions": "^3.1.0",
-    "compression": "^1.7.2",
-    "ejs": "^2.6.1",
-    "express": "^4.16.3"
+    "body-parser": "^1.19.0",
+    "compare-versions": "^3.5.1",
+    "compression": "^1.7.4",
+    "ejs": "^2.7.1",
+    "express": "^4.17.1"
   },
   "devDependencies": {
-    "eslint": "^4.19.1"
+    "eslint": "^6.5.1"
   }
 }
