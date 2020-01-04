@@ -13,10 +13,10 @@
     "body-parser": "^1.19.0",
     "compare-versions": "^3.5.1",
     "compression": "^1.7.4",
-    "ejs": "^2.7.1",
+    "ejs": "^3.0.1",
     "express": "^4.17.1"
   },
   "devDependencies": {
-    "eslint": "^6.6.0"
+    "eslint": "^6.8.0"
   }
 }
