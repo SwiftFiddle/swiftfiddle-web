@@ -39,7 +39,7 @@ function latestVersion() {
 }
 
 function stableVersion() {
-  return '5.1';
+  return '5.1.3';
 }
 
 app.use(Compression());
