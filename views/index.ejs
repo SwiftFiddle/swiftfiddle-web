@@ -71,7 +71,7 @@
             <div class="form-group">
               <select class="form-control" id="versionSelect">
                 <% versions.forEach(function (version) { %>
-                <% var selected = ( version == "5.1.3" ) ? "selected" : ""; %>
+                <% var selected = ( version == "5.2" ) ? "selected" : ""; %>
                 <option value="<%= version %>" <%= selected %>><%= version.replace('_', '/') %></option>
                 <% }); %>
               </select>
@@ -85,137 +85,41 @@
         <div class="col-md-6">
           <pre id="editor"><xmp>import Foundation
 
-#if swift(>=5)
-// [SE-200] Raw strings
+import Foundation
 
-func rawStrings() {
-    print("\n[SE-200] Raw strings\n")
+// SE-0249: Key Path Expressions as Functions
 
-    // Backslashes no longer need to be escaped!
-    let html = #"<img src="/images/iPhone XS Max" alt="iPhone XS Max" />"#
-    print("html: \(html)")
-
-    let pattern = #"\<img.+src\=(?:\"|\')(.+?)(?:\"|\')(?:.+?)\>"#
-    print("regex: \(pattern)")
-
-    guard let regex = try? NSRegularExpression(pattern: pattern) else { return }
-    guard let result = regex.firstMatch(in: html, options: [], range: NSRange(location: 0, length: html.utf16.count)) else { return }
-    guard let range = Range(result.range(at: 1), in: html) else { return }
-
-    let src = html[range]
-    print("match: \(src)")
+struct User {
+  var id: Int
 }
 
-rawStrings()
+let user1 = User(id: 1)
+let user2 = User(id: 2)
 
-// [SE-0216] @dynamicCallable
+let users = [User(id: 1), User(id: 2)]
+print("SE-0249: Key Path Expressions as Functions")
+print(#"users.map(\.id) => \#(users.map(\.id))"#) // => [1, 2]
+// Swift 5.1.x `ambiguous reference to member 'map'`
 
-let Python = PythonInterface()
 
-@dynamicMemberLookup
-struct PythonInterface {
-    init() {}
+// SE-0253: Callable values of user-defined nominal types
 
-    func `import`(_ name: String) -> PythonObject {
-        return PythonObject(reference: name)
-    }
+/// Linear function
+struct Linear {
+  var a: Double
+  var b: Double
 
-    subscript(dynamicMember name: String) -> PythonObject {
-        return PythonObject(reference: "")
-    }
-}
-
-@dynamicCallable
-@dynamicMemberLookup
-struct PythonObject {
-    var reference: String
-
-    init(reference: String) {
-        self.reference = reference
-    }
-
-    @discardableResult
-    func dynamicallyCall(withArguments args: [String] = []) -> PythonObject {
-        let arguments = "\(args)"
-            .replacingOccurrences(of: "[", with: "(")
-            .replacingOccurrences(of: "]", with: ")")
-        return PythonObject(reference: "\(reference)\(arguments)")
-    }
-
-    @discardableResult
-    func dynamicallyCall(withKeywordArguments args: KeyValuePairs<String, String> = [:]) -> PythonObject {
-        let arguments = "\(args.map { "\($0.key)=\($0.value)"})"
-            .replacingOccurrences(of: "[", with: "(")
-            .replacingOccurrences(of: "]", with: ")")
-            .replacingOccurrences(of: "\"", with: "")
-        return PythonObject(reference: "\(reference)\(arguments)")
-    }
-
-    public subscript(dynamicMember name: String) -> PythonObject {
-        return PythonObject(reference: "\(reference).\(name)")
-    }
-}
-
-extension PythonObject: CustomStringConvertible {
-    public var description: String {
-        return reference
-    }
-}
-
-func dynamicCallable() {
-    print("\n[SE-0216] @dynamicCallable\n")
-
-    let sys = Python.import("sys")
-
-    print("Python \(sys.version_info.major)")
-    print("Python Version: \(sys.version)")
-    print("Python Encoding: \(sys.getdefaultencoding().upper())")
-}
-
-dynamicCallable()
-
-// [SE-228] Fix ExpressibleByStringInterpolation
-
-extension String.StringInterpolation {
-  mutating func appendInterpolation(_ val: Any?, default defaultValue: String) {
-    if let val = val {
-      appendInterpolation(val)
-    } else {
-      defaultValue.write(to: &self)
-    }
+  func callAsFunction(_ x: Double) -> Double {
+    a * x + b
   }
 }
 
-func fixExpressibleByStringInterpolation() {
-    print("\n[SE-228] Fix ExpressibleByStringInterpolation\n")
+let f = Linear(a: 2, b: 3) // => 2x + 3
+print("\nSE-0253: Callable values of user-defined nominal types")
+let y = f(5)
+print("f(5) = \(y)")
+// Swift 5.1.x `error: cannot call value of non-function type 'Linear'`
 
-    let value: Int? = nil
-    print("The value is: \(value, default: "<nil>")")
-}
-
-fixExpressibleByStringInterpolation()
-#else
-// [SE-200] Raw strings
-
-func rawStrings() {
-    // Backslashes need to be escaped.
-    let html = "<img src=\"/images/iPhone XS Max\" alt=\"iPhone XS Max\" />"
-    print("html: \(html)")
-
-    let pattern = "\\<img.+src\\=(?:\\\"|\\\')(.+?)(?:\\\"|\\\')(?:.+?)\\>"
-    print("regex: \(pattern)")
-
-    guard let regex = try? NSRegularExpression(pattern: pattern) else { fatalError() }
-    guard let result = regex.firstMatch(in: html, options: [], range: NSRange(location: 0, length: html.utf16.count)) else { fatalError() }
-    guard let range = Range(result.range(at: 1), in: html) else { fatalError() }
-
-    let src = html[range]
-    print("match: \(src)")
-}
-
-rawStrings()
-
-#endif
 </xmp>
 </pre>
         </div>
