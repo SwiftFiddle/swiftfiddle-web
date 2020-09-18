@@ -71,7 +71,7 @@
             <div class="form-group">
               <select class="form-control" id="versionSelect">
                 <% versions.forEach(function (version) { %>
-                <% var selected = ( version == "5.2" ) ? "selected" : ""; %>
+                <% var selected = ( version == "5.3" ) ? "selected" : ""; %>
                 <option value="<%= version %>" <%= selected %>><%= version.replace('_', '/') %></option>
                 <% }); %>
               </select>
@@ -93,9 +93,7 @@ func greet(person: String) -> String {
 print(greet(person: "Anna"))
 // Prints "Hello, Anna!"
 print(greet(person: "Brian"))
-// Prints "Hello, Brian!"
-
-</xmp>
+// Prints "Hello, Brian!"</xmp>
 </pre>
         </div>
         <div class="col-md-6">
