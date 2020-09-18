@@ -85,40 +85,15 @@
         <div class="col-md-6">
           <pre id="editor"><xmp>import Foundation
 
-import Foundation
-
-// SE-0249: Key Path Expressions as Functions
-
-struct User {
-  var id: Int
+func greet(person: String) -> String {
+    let greeting = "Hello, " + person + "!"
+    return greeting
 }
 
-let user1 = User(id: 1)
-let user2 = User(id: 2)
-
-let users = [User(id: 1), User(id: 2)]
-print("SE-0249: Key Path Expressions as Functions")
-print(#"users.map(\.id) => \#(users.map(\.id))"#) // => [1, 2]
-// Swift 5.1.x `ambiguous reference to member 'map'`
-
-
-// SE-0253: Callable values of user-defined nominal types
-
-/// Linear function
-struct Linear {
-  var a: Double
-  var b: Double
-
-  func callAsFunction(_ x: Double) -> Double {
-    a * x + b
-  }
-}
-
-let f = Linear(a: 2, b: 3) // => 2x + 3
-print("\nSE-0253: Callable values of user-defined nominal types")
-let y = f(5)
-print("f(5) = \(y)")
-// Swift 5.1.x `error: cannot call value of non-function type 'Linear'`
+print(greet(person: "Anna"))
+// Prints "Hello, Anna!"
+print(greet(person: "Brian"))
+// Prints "Hello, Brian!"
 
 </xmp>
 </pre>

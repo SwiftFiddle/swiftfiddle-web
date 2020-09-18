@@ -53,7 +53,7 @@ Sandbox.prototype.execute = function(success) {
   const sandbox = this;
   let counter = 0;
 
-  exec(['sh', path.join(this.root_dir, 'run.sh'), this.timeout + 's', '-v', path.join(this.root_dir, this.temp_dir) + ':/usercode', '-v', path.join(this.root_dir, 'Libraries') + ':/Libraries:ro', 'kishikawakatsumi/swift:' + this.toolchain_version, 'sh', '/usercode/script.sh', [this.command, this.options].join(' ')].join(' '));
+  exec(['sh', path.join(this.root_dir, 'run.sh'), this.timeout + 's', '-v', path.join(this.root_dir, this.temp_dir) + ':/usercode', 'kishikawakatsumi/swift:' + this.toolchain_version, 'sh', '/usercode/script.sh', [this.command, this.options].join(' ')].join(' '));
 
   const work_dir = path.join(sandbox.root_dir, sandbox.temp_dir);
   const intid = setInterval(function() {

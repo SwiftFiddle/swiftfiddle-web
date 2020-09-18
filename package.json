@@ -11,12 +11,12 @@
   "license": "MIT",
   "dependencies": {
     "body-parser": "^1.19.0",
-    "compare-versions": "^3.5.1",
+    "compare-versions": "^3.6.0",
     "compression": "^1.7.4",
-    "ejs": "^3.0.1",
+    "ejs": "^3.1.5",
     "express": "^4.17.1"
   },
   "devDependencies": {
-    "eslint": "^6.8.0"
+    "eslint": "^7.9.0"
   }
 }
