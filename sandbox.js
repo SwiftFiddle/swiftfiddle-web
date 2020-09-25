@@ -1,7 +1,9 @@
 "use strict";
 
 const util = require("util");
-const spawn = util.promisify(require("child_process").spawn);
+
+const exec = util.promisify(require("child_process").exec);
+const execFile = util.promisify(require("child_process").execFile);
 
 class Sandbox {
   constructor(
@@ -38,15 +40,14 @@ class Sandbox {
   }
 
   async prepare(success) {
-    const exec = require("child_process").spawnSync;
     const fs = require("fs").promises;
     const path = require("path");
     const sandbox = this;
 
     const work_dir = path.join(this.root_dir, this.temp_dir);
-    exec("mkdir", [work_dir]);
-    exec("cp", [path.join(this.root_dir, "script.sh"), work_dir]);
-    exec("chmod", ["777", work_dir]);
+    await execFile("mkdir", [work_dir]);
+    await execFile("cp", [path.join(this.root_dir, "script.sh"), work_dir]);
+    await execFile("chmod", ["777", work_dir]);
 
     try {
       await fs.writeFile(path.join(work_dir, sandbox.filename), sandbox.code);
