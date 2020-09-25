@@ -1,8 +1,7 @@
 "use strict";
 
+const path = require("path");
 const util = require("util");
-
-const exec = util.promisify(require("child_process").exec);
 const execFile = util.promisify(require("child_process").execFile);
 
 class Sandbox {
@@ -41,7 +40,6 @@ class Sandbox {
 
   async prepare(success) {
     const fs = require("fs").promises;
-    const path = require("path");
     const sandbox = this;
 
     const work_dir = path.join(this.root_dir, this.temp_dir);
@@ -59,9 +57,7 @@ class Sandbox {
 
   execute(success) {
     const exec = require("child_process").exec;
-    const execSync = require("child_process").spawnSync;
     const fs = require("fs");
-    const path = require("path");
 
     const sandbox = this;
     let counter = 0;
@@ -83,42 +79,41 @@ class Sandbox {
     const work_dir = path.join(sandbox.root_dir, sandbox.temp_dir);
     const intid = setInterval(function () {
       counter = counter + 1;
-      fs.readFile(path.join(work_dir, "completed"), "utf8", function (
-        error,
-        data
-      ) {
+      fs.readFile(path.join(work_dir, "completed"), "utf8", (error, data) => {
         if (error && counter < sandbox.timeout) {
           return;
         } else if (counter < sandbox.timeout) {
-          fs.readFile(path.join(work_dir, "errors"), "utf8", function (
-            error,
-            errorlog
-          ) {
-            if (!errorlog) {
-              errorlog = "";
+          fs.readFile(
+            path.join(work_dir, "errors"),
+            "utf8",
+            async (error, errorlog) => {
+              if (!errorlog) {
+                errorlog = "";
+              }
+              const version = fs.readFileSync(
+                path.join(work_dir, "version"),
+                "utf8"
+              );
+              await execFile("rm", ["-rf", sandbox.temp_dir]);
+              success(data, errorlog, version);
             }
-            const version = fs.readFileSync(
-              path.join(work_dir, "version"),
-              "utf8"
-            );
-            execSync("rm", ["-rf", sandbox.temp_dir]);
-            success(data, errorlog, version);
-          });
+          );
         } else {
-          fs.readFile(path.join(work_dir, "errors"), "utf8", function (
-            error,
-            errorlog
-          ) {
-            if (!errorlog) {
-              errorlog = "Timed out.";
+          fs.readFile(
+            path.join(work_dir, "errors"),
+            "utf8",
+            async (error, errorlog) => {
+              if (!errorlog) {
+                errorlog = "Timed out.";
+              }
+              const version = fs.readFileSync(
+                path.join(work_dir, "version"),
+                "utf8"
+              );
+              await execFile("rm", ["-rf", sandbox.temp_dir]);
+              success(data, errorlog, version);
             }
-            const version = fs.readFileSync(
-              path.join(work_dir, "version"),
-              "utf8"
-            );
-            execSync("rm", ["-rf", sandbox.temp_dir]);
-            success(data, errorlog, version);
-          });
+          );
         }
         clearInterval(intid);
       });
