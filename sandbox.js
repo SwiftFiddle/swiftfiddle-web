@@ -1,5 +1,8 @@
 "use strict";
 
+const util = require("util");
+const spawn = util.promisify(require("child_process").spawn);
+
 class Sandbox {
   constructor(
     root_dir,
@@ -26,15 +29,17 @@ class Sandbox {
     }
     this.timeout = to;
   }
-  run(success) {
+
+  async run(success) {
     const sandbox = this;
-    this.prepare(function () {
+    await this.prepare(function () {
       sandbox.execute(success);
     });
   }
-  prepare(success) {
+
+  async prepare(success) {
     const exec = require("child_process").spawnSync;
-    const fs = require("fs");
+    const fs = require("fs").promises;
     const path = require("path");
     const sandbox = this;
 
@@ -43,16 +48,14 @@ class Sandbox {
     exec("cp", [path.join(this.root_dir, "script.sh"), work_dir]);
     exec("chmod", ["777", work_dir]);
 
-    fs.writeFile(path.join(work_dir, sandbox.filename), sandbox.code, function (
-      error
-    ) {
-      if (error) {
-        console.log(error);
-      } else {
-        success();
-      }
-    });
+    try {
+      await fs.writeFile(path.join(work_dir, sandbox.filename), sandbox.code);
+      success();
+    } catch (error) {
+      console.log(error);
+    }
   }
+
   execute(success) {
     const exec = require("child_process").exec;
     const execSync = require("child_process").spawnSync;
