@@ -67,6 +67,7 @@ app.get("/", async (req, res) => {
   res.render("index", {
     title: "Swift Playground",
     versions: versions,
+    stable_version: stableVersion(),
   });
 });
 
