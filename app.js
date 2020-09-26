@@ -45,6 +45,7 @@ app.get("/", async (req, res) => {
     versions: versions,
     default_version: stableVersion(),
     code: `${defaultSampleCode()}\n`,
+    ogp_image_url: "./default_ogp.jpeg",
   });
 });
 
