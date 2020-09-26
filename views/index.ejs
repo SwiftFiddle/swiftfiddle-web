@@ -65,18 +65,18 @@
       }
     </style>
 
-    <title>Swift Playground</title>
+    <title><%= title %></title>
   </head>
   <body style="background-color: #F7F7F7; color: #333333;">
     <div class="container" style="margin-top: 30px;">
       <div class="row">
         <div class="col" style="margin-bottom: 15px;">
-          <h4><%= title %></h4>
+          <h4><i class="fab fa-swift fa-lg" style="color: #F05138"></i> <%= title %></h4>
         </div>
         <div class="col-md-2">
           <form>
             <div class="form-group">
-              <select class="form-control" id="versionSelect">
+              <select class="form-control custom-select" id="versionSelect" >
                 <% versions.forEach(function (version) { %>
                 <% var selected = ( version == default_version ) ? "selected" : ""; %>
                 <option value="<%= version %>" <%= selected %>><%= version.replace('_', '/') %></option>
