@@ -4,7 +4,10 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    <link rel="stylesheet" href="css/fontawesome/css/all.min.css">
+    <link rel="stylesheet" href="css/share_sheet.css">
+    <link rel="stylesheet" href="css/button.css">
 
     <link rel="apple-touch-icon" sizes="57x57" href="images/apple-icon-57x57.png">
     <link rel="apple-touch-icon" sizes="60x60" href="images/apple-icon-60x60.png">
@@ -56,7 +59,6 @@
         background-color: #F7F7F7;
       }
     </style>
-    <script src="https://use.fontawesome.com/ab7ee5aca9.js"></script>
 
     <title>Swift Playground</title>
   </head>
@@ -83,18 +85,7 @@
     <div class="container-fluid" style="padding-right: 0; padding-left: 0; padding-bottom: 15px;">
       <div class="row no-gutters">
         <div class="col-md-6">
-          <pre id="editor"><xmp>import Foundation
-
-func greet(person: String) -> String {
-    let greeting = "Hello, " + person + "!"
-    return greeting
-}
-
-print(greet(person: "Anna"))
-// Prints "Hello, Anna!"
-print(greet(person: "Brian"))
-// Prints "Hello, Brian!"</xmp>
-</pre>
+          <pre id="editor"><xmp><%- code %></xmp></pre>
         </div>
         <div class="col-md-6">
           <pre id="results-editor"></pre>
@@ -103,11 +94,72 @@ print(greet(person: "Brian"))
     </div>
     <div class="container">
       <div class="row">
-        <div class="col-md-3 mx-auto" style="margin-top: 15px; margin-bottom: 30px;">
+        <div class="col-md-3 mx-auto" style="margin-top: 20px; margin-bottom: 20px;">
           <button id="run-button" type="button" class="btn btn-primary btn-block btn-lg">Run&nbsp;&nbsp;<i class="fa fa-play" aria-hidden="true"></i></button>
         </div>
       </div>
     </div>
+    <div class="container">
+      <div class="row">
+        <div class="col text-center">
+          <button type="button" class="btn btn-info btn-circle m-1" onclick="showShareSheet();"><i class="fa fa-share-alt" aria-hidden="true"></i></button>
+          <button type="button" class="btn btn-secondary btn-circle m-1" data-toggle="modal" data-target="#helpSheet"><i class="fa fa-question" aria-hidden="true"></i></button>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal fade" id="shareSheet" tabindex="-1" role="dialog" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content col-12">
+          <div class="modal-header">
+            <h5 class="modal-title">Share</h5><button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          </div>
+          <div class="modal-body">
+            <div class="icon-container1 d-flex">
+              <div class="smd"><i class=" img-thumbnail fab fa-twitter fa-2x" style="color:#4c6ef5;background-color: #eceff5"></i>
+                <p>Twitter</p>
+              </div>
+              <div class="smd"><i class="img-thumbnail fab fa-facebook fa-2x" style="color: #3b5998;background-color: #eceff5;"></i>
+                <p>Facebook</p>
+              </div>
+              <div class="smd"><i class="img-thumbnail fab fa-discord fa-2x " style="color: #738adb;background-color: #eceff5;"></i>
+                <p>Discord</p>
+              </div>
+              <div class="smd"><i class="img-thumbnail fab fa-facebook-messenger fa-2x" style="color: #3b5998;background-color: #eceff5;"></i>
+                <p>Messenger</p>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer"> <label style="font-weight: 600">Page Link <span class="share-sheet-message"></span></label><br />
+            <div class="row">
+              <input class="col-10 ur" type="url" placeholder="https://www.arcardio.app/acodyseyy" aria-describedby="inputGroup-sizing-default" style="height: 40px;"> <button class="cpy" onclick="copyShareURL()"><i class="far fa-clone"></i></button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal fade" id="helpSheet" tabindex="-1" role="dialog" aria-hidden="true">
+      <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content col-12">
+          <div class="modal-header">
+            <h5 class="modal-title">Help</h5><button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          </div>
+          <div class="modal-body">
+            <dl>
+              <dt>Import</dt>
+              <dd>There are a few different ways to import code into Playground:</dd>
+            </dl>
+            <ul>
+              <li>Drop a file onto the editor</li>
+              <li>Append a GitHub gist ID to the URL<br>(e.g. <code>swift-playground.kishikawakatsumi.com/<code style="background-color: #F0F0F0; padding: 2px;">&lt;gist_id_goes_here&gt;</code></code>)</li>
+              <li>Or just start typing!</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <footer class="footer">
       <div class="container">
         <div class="row">
@@ -118,11 +170,17 @@ print(greet(person: "Brian"))
       </div>
     </footer>
 
-    <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
 
-    <script src="ace/ace.js"></script>
-    <script src="ace/ext-language_tools.js"></script>
+    <script src="https://pagecdn.io/lib/ace/1.4.12/ace.min.js" crossorigin="anonymous" integrity="sha256-T5QdmsCQO5z8tBAXMrCZ4f3RX8wVdiA0Fu17FGnU1vU="></script>
+    <script src="https://pagecdn.io/lib/ace/1.4.12/ext-language_tools.min.js" crossorigin="anonymous"></script>
+    <script src="https://pagecdn.io/lib/ace/1.4.12/theme-xcode.min.js" crossorigin="anonymous"></script>
+    <script src="https://pagecdn.io/lib/ace/1.4.12/theme-terminal.min.js" crossorigin="anonymous"></script>
+    <script src="https://pagecdn.io/lib/ace/1.4.12/mode-swift.min.js" crossorigin="anonymous"></script>
+
+    <script src="js/share_sheet.js"></script>
+
     <script type="text/javascript">
       ace.require("ace/ext/language_tools");
       const editor = ace.edit("editor");
@@ -213,6 +271,32 @@ print(greet(person: "Brian"))
           resultsEditor.clearSelection();
         }, 1500);
       }
+    </script>
+
+    <script>
+      function handleFileSelect(evt) {
+        evt.stopPropagation();
+        evt.preventDefault();
+
+        var files = evt.dataTransfer.files; // FileList object.
+        var reader = new FileReader();
+        reader.onload = function(event) {
+          const editor = ace.edit("editor");
+          editor.setValue(event.target.result);
+          editor.clearSelection();
+        }
+        reader.readAsText(files[0],"UTF-8");
+      }
+
+      function handleDragOver(evt) {
+        evt.stopPropagation();
+        evt.preventDefault();
+        evt.dataTransfer.dropEffect = 'copy'; // Explicitly show this is a copy.
+      }
+
+      const dropZone = document.getElementById('editor');
+      dropZone.addEventListener('dragover', handleDragOver, false);
+      dropZone.addEventListener('drop', handleFileSelect, false);
     </script>
   </body>
 </html>
