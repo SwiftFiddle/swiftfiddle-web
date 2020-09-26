@@ -107,7 +107,7 @@
     <div class="container">
       <div class="row">
         <div class="col text-center">
-          <button type="button" class="btn btn-info btn-circle m-1" onclick="showShareSheet();"><i class="fa fa-share-alt" aria-hidden="true"></i></button>
+          <button type="button" id="share-button" class="btn btn-info btn-circle m-1" onclick="showShareSheet();"><i class="fa fa-share-alt" aria-hidden="true"></i></button>
           <button type="button" class="btn btn-secondary btn-circle m-1" data-toggle="modal" data-target="#helpSheet"><i class="fa fa-question" aria-hidden="true"></i></button>
         </div>
       </div>
@@ -203,6 +203,15 @@
       editor.renderer.setOptions({
         showFoldWidgets: false,
         showPrintMargin: false,
+      });
+      editor.on('change', function() {
+        if (!editor.getValue()) {
+          $("#run-button").prop('disabled', true)
+          $("#share-button").prop('disabled', true)
+        } else {
+          $("#run-button").prop('disabled', false)
+          $("#share-button").prop('disabled', false)
+        }
       });
       const row = editor.session.getLength() - 1
       const column = editor.session.getLine(row).length
