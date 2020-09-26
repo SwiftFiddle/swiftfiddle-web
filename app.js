@@ -8,6 +8,8 @@ const path = require("path");
 const util = require("util");
 const uuid = require("uuid");
 
+const exec = util.promisify(require("child_process").exec);
+
 const admin = require("firebase-admin");
 const serviceAccount = require(path.join(__dirname, "key.json"));
 admin.initializeApp({
@@ -20,6 +22,7 @@ const app = express();
 app.use(compression());
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
+
 app.use(express.static(path.join(__dirname, "/static")));
 app.use(
   "/css/fontawesome",
@@ -27,6 +30,9 @@ app.use(
     path.join(__dirname, "/node_modules/@fortawesome/fontawesome-free/")
   )
 );
+app.use(function (req, res) {
+  handlePageNotFound(req, res);
+});
 
 app.set("views", path.join(__dirname, "/views"));
 app.set("view engine", "ejs");
@@ -38,6 +44,11 @@ app.all("*", (req, res, next) => {
   next();
 });
 
+/**
+ * Handle a shared link.
+ *
+ * Import a code snippet from a shared link.
+ */
 app.get("/", async (req, res) => {
   const versions = await availableVersions();
   res.render("index", {
@@ -71,6 +82,11 @@ app.get(/^\/([A-Z2-7]{26})$/i, async (req, res) => {
   });
 });
 
+/**
+ * Handle GitHub Gist.
+ *
+ * Import a code snippet from GitHub Gist ID.
+ */
 app.get(/^\/([a-f0-9]{32})$/i, async (req, res) => {
   const versions = await availableVersions();
 
@@ -86,6 +102,9 @@ app.get(/^\/([a-f0-9]{32})$/i, async (req, res) => {
   });
 });
 
+/**
+ * Generate OGP image.
+ */
 app.get(/^\/([A-Z2-7]{26}).png$/i, async (req, res) => {
   const id = req.params[0];
 
@@ -113,6 +132,9 @@ app.get(/^\/([A-Z2-7]{26}).png$/i, async (req, res) => {
   res.end(data, "binary");
 });
 
+/**
+ * Generate OGP image.
+ */
 app.get(/^\/([a-f0-9]{32}).png$/i, async (req, res) => {
   const gistId = req.params[0];
   const content = await getGistContent(gistId);
@@ -135,10 +157,16 @@ app.get(/^\/([a-f0-9]{32}).png$/i, async (req, res) => {
   res.end(data, "binary");
 });
 
+/**
+ * Return available Swift runtime versions.
+ */
 app.get("/versions", async (req, res) => {
   res.send({ versions: await availableVersions() });
 });
 
+/**
+ * Execute.
+ */
 app.post("/run", async (req, res) => {
   const Sandbox = require("./sandbox");
 
@@ -208,6 +236,9 @@ app.post("/run", async (req, res) => {
   });
 });
 
+/**
+ * Create a shared link.
+ */
 app.post("/shared_link", async (req, res) => {
   const id = base32Encode(
     Buffer.from(uuid.v4().replace(/-/g, ""), "hex"),
@@ -232,10 +263,6 @@ app.post("/shared_link", async (req, res) => {
   res.send(shared_link);
 });
 
-app.use(function (req, res) {
-  handlePageNotFound(req, res);
-});
-
 app.listen(8080);
 
 function random(size) {
@@ -243,32 +270,36 @@ function random(size) {
 }
 
 async function availableVersions() {
-  const exec = util.promisify(require("child_process").exec);
-  const result = await exec(
-    'docker images kishikawakatsumi/swift --format "{{.Tag}}"'
-  );
-  return result.stdout
-    .split("\n")
-    .filter((version) => version.length > 0)
-    .sort((a, b) => {
-      const compareVersions = require("compare-versions");
-      if (a.includes("_")) {
-        a = a.split("_")[1];
-      }
-      if (b.includes("_")) {
-        b = b.split("_")[1];
-      }
-      if (a.includes(".") && b.includes(".")) {
-        return compareVersions(a, b) * -1;
-      }
-      if (a.includes(".")) {
-        return 1;
-      }
-      if (b.includes(".")) {
-        return -1;
-      }
-      return a < b;
-    });
+  try {
+    const result = await exec(
+      'docker images kishikawakatsumi/swift --format "{{.Tag}}"'
+    );
+    return result.stdout
+      .split("\n")
+      .filter((version) => version.length > 0)
+      .sort((a, b) => {
+        const compareVersions = require("compare-versions");
+        if (a.includes("_")) {
+          a = a.split("_")[1];
+        }
+        if (b.includes("_")) {
+          b = b.split("_")[1];
+        }
+        if (a.includes(".") && b.includes(".")) {
+          return compareVersions(a, b) * -1;
+        }
+        if (a.includes(".")) {
+          return 1;
+        }
+        if (b.includes(".")) {
+          return -1;
+        }
+        return a < b;
+      });
+  } catch (error) {
+    // Fallback if no Swift runtime images
+    return ["5.3", "5.2", "5.1.5", "5.0.3", "4.2.2"];
+  }
 }
 
 async function latestVersion() {
