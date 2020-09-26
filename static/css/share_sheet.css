@@ -20,17 +20,6 @@ body {
   height: 61px;
 }
 
-.fab:before {
-  position: relative;
-  top: 13px;
-}
-
-.smd {
-  width: 200px;
-  font-size: small;
-  text-align: center;
-}
-
 .modal-footer {
   display: block;
 }
@@ -63,6 +52,50 @@ button:focus {
 }
 
 .share-sheet-copy-message {
-  font-size: 11px;
+  font-size: 12px;
   color: #ee5535;
+}
+
+.btn-social,
+.btn-social:visited,
+.btn-social:focus,
+.btn-social:hover,
+.btn-social:active {
+  color: #ffffff;
+  text-decoration: none;
+  transition: opacity 0.15s ease-in-out;
+}
+
+.btn-social:hover,
+.btn-social:active {
+  opacity: 0.75;
+}
+
+.btn-facebook {
+  background-color: #3b5998;
+}
+
+.btn-twitter {
+  background-color: #1da1f2;
+}
+
+.btn-line {
+  background-color: #00b900;
+}
+
+.btn-pocket {
+  background-color: #ef4157;
+}
+
+.fluid {
+  display: flex;
+}
+
+.fluid a {
+  flex-grow: 1;
+  margin-right: 0.25rem;
+}
+
+.fluid a:last-child {
+  margin-right: 0rem;
 }

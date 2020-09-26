@@ -109,30 +109,30 @@
     </div>
 
     <div class="modal fade" id="shareSheet" tabindex="-1" role="dialog" aria-hidden="true">
-      <div class="modal-dialog" role="document">
+      <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content col-12">
           <div class="modal-header">
             <h5 class="modal-title">Share</h5><button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
           </div>
           <div class="modal-body">
-            <div class="icon-container1 d-flex">
-              <div class="smd"><i class=" img-thumbnail fab fa-twitter fa-2x" style="color:#4c6ef5;background-color: #eceff5"></i>
-                <p>Twitter</p>
-              </div>
-              <div class="smd"><i class="img-thumbnail fab fa-facebook fa-2x" style="color: #3b5998;background-color: #eceff5;"></i>
-                <p>Facebook</p>
-              </div>
-              <div class="smd"><i class="img-thumbnail fab fa-discord fa-2x " style="color: #738adb;background-color: #eceff5;"></i>
-                <p>Discord</p>
-              </div>
-              <div class="smd"><i class="img-thumbnail fab fa-facebook-messenger fa-2x" style="color: #3b5998;background-color: #eceff5;"></i>
-                <p>Messenger</p>
-              </div>
+            <div class="fluid">
+              <a class="btn btn-sm btn-social btn-facebook" href="#" target="_blank" rel="nofollow noopener noreferrer" title="Share this post on Facebook">
+                <i class="fab fa-facebook-square"></i> Facebook
+              </a>
+              <a class="btn btn-sm btn-social btn-twitter" href="#" target="_blank" rel="nofollow noopener noreferrer" title="Share this post on Twitter">
+                <i class="fab fa-twitter"></i> Twitter
+              </a>
+              <a class="btn btn-sm btn-social btn-line" href="#" target="_blank" rel="nofollow noopener noreferrer" target="_blank" title="Share this post on Discord">
+                <i class="fab fa-line"></i> LINE
+              </a>
+              <a class="btn btn-sm btn-social btn-pocket" href="#" target="_blank" rel="nofollow noopener noreferrer" target="_blank" title="Share this post on Slack">
+                <i class="fab fa-get-pocket"></i> Pocket
+              </a>
             </div>
           </div>
-          <div class="modal-footer"> <label style="font-weight: 600">Page Link <span class="share-sheet-copy-message"></span></label><br />
-            <div class="row">
-              <input class="col-10 ur" id="shared_link" type="url" disabled="disabled" aria-describedby="inputGroup-sizing-default" style="height: 40px;"> <button class="cpy" onclick="copySharedLink()"><i class="far fa-clone"></i></button>
+          <div class="modal-footer"><label style="font-weight: 600">Page Link <span class="share-sheet-copy-message"></span></label><br>
+            <div class="fluid">
+              <input class="ur" id="shared_link" type="url" disabled="disabled" aria-describedby="inputGroup-sizing-default" style="width: 96%; height: 40px;"> <button class="cpy" onclick="copySharedLink()"><i class="far fa-clone"></i></button>
             </div>
           </div>
         </div>
@@ -280,10 +280,16 @@
         };
         $.post("/shared_link", params, function (data, error, xhr) {
           if (data) {
-            $("#shared_link").val(data.shared_link.url);
+            const url = data.shared_link.url
+            $("#shared_link").val(url);
+            $(".btn-facebook").attr("href", `https://www.facebook.com/sharer/sharer.php?u=${url}`)
+            $(".btn-twitter").attr("href", `https://twitter.com/intent/tweet?text=&url=${url}`)
+            $(".btn-line").attr("href", `https://social-plugins.line.me/lineit/share?url=${url}`)
+            $(".btn-pocket").attr("href", `https://getpocket.com/edit?url=${url}`)
             $("#shareSheet").modal();
           }
         });
+        $("#shareSheet").modal();
       }
 
       function copySharedLink() {
@@ -292,7 +298,7 @@
         }
         const message = $(".share-sheet-copy-message");
         message.hide();
-        message.text("link copied");
+        message.text("link copied!");
         message.fadeIn(500).delay(1000).fadeOut(500);
       }
     </script>
