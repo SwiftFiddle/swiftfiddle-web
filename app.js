@@ -48,6 +48,28 @@ app.get("/", async (req, res) => {
   });
 });
 
+app.get(/^\/([A-Z2-7]{26})$/i, async (req, res) => {
+  const versions = await availableVersions();
+  const id = req.params[0];
+
+  const ref = db.collection("code_snippets").doc(id);
+  const doc = await ref.get();
+  if (!doc.exists) {
+    handlePageNotFound(req, res);
+    return;
+  }
+
+  const shared_link = doc.data().shared_link;
+  const content = shared_link.content;
+  res.render("index", {
+    title: "Swift Playground",
+    versions: versions,
+    default_version: shared_link.swift_version,
+    code: `${content || `${defaultSampleCode()}\n`}`,
+    ogp_image_url: `${shared_link.url}.png`,
+  });
+});
+
 app.get(/^\/([a-f0-9]{32})$/i, async (req, res) => {
   const versions = await availableVersions();
   const gistId = req.params[0];
@@ -73,11 +95,11 @@ app.get(/^\/([a-f0-9]{32})$/i, async (req, res) => {
     versions: versions,
     default_version: stableVersion(),
     code: `${code || defaultSampleCode()}\n`,
+    ogp_image_url: `https://swift-playground.kishikawakatsumi.com/${gistId}.png`,
   });
 });
 
-app.get(/^\/([A-Z2-7]{26})$/i, async (req, res) => {
-  const versions = await availableVersions();
+app.get(/^\/([A-Z2-7]{26}).png$/i, async (req, res) => {
   const id = req.params[0];
 
   const ref = db.collection("code_snippets").doc(id);
@@ -89,12 +111,37 @@ app.get(/^\/([A-Z2-7]{26})$/i, async (req, res) => {
 
   const shared_link = doc.data().shared_link;
   const content = shared_link.content;
-  res.render("index", {
-    title: "Swift Playground",
-    versions: versions,
-    default_version: shared_link.swift_version,
-    code: `${content || `${defaultSampleCode()}\n`}`,
+
+  const response = await getShareImage(content);
+
+  if (response.status != 200 || !response.data) {
+    handlePageNotFound(req, res);
+    return;
+  }
+
+  res.writeHead(200, {
+    "Content-Type": "image/png",
+    "Content-Length": response.data.length,
   });
+  res.end(response.data, "binary");
+});
+
+app.get(/^\/([a-f0-9]{32}).png$/i, async (req, res) => {
+  const gistId = req.params[0];
+  const content = getGistContent(gistId);
+
+  if (!content) {
+    handlePageNotFound(req, res);
+    return;
+  }
+
+  const response = await getShareImage(content);
+
+  res.writeHead(200, {
+    "Content-Type": "image/png",
+    "Content-Length": response.data.length,
+  });
+  res.end(response.data, "binary");
 });
 
 app.get("/versions", async (req, res) => {
@@ -255,6 +302,45 @@ print(greet(person: "Anna"))
 
 // Prints "Hello, Brian!"
 print(greet(person: "Brian"))`;
+}
+
+async function getGistContent(gistId) {
+  const url = `https://api.github.com/gists/${gistId}`;
+  try {
+    const response = await axios.get(url, {
+      headers: {
+        accept: "application/json",
+      },
+    });
+    if (response.data) {
+      const files = response.data.files;
+      return files[Object.keys(files)[0]].content;
+    } else {
+      return null;
+    }
+  } catch (error) {
+    return null;
+  }
+}
+
+async function getShareImage(code) {
+  await axios.post(
+    "https://carbonara.now.sh/api/cook",
+    {
+      code: code,
+      backgroundColor: "rgba(255, 255, 255, 0)",
+      language: "swift",
+      paddingHorizontal: "0px",
+      paddingVertical: "0px",
+      theme: "one-light",
+    },
+    {
+      headers: {
+        "Content-Type": "application/json",
+      },
+      responseType: "arraybuffer",
+    }
+  );
 }
 
 function handlePageNotFound(req, res) {
