@@ -129,6 +129,7 @@ app.get(/^\/([A-Z2-7]{26}).png$/i, async (req, res) => {
 app.get(/^\/([a-f0-9]{32}).png$/i, async (req, res) => {
   const gistId = req.params[0];
   const content = getGistContent(gistId);
+  console.log(content);
 
   if (!content) {
     handlePageNotFound(req, res);
