@@ -317,7 +317,7 @@ async function getShareImage(code) {
     const response = await axios.post(
       "https://carbonara.now.sh/api/cook",
       {
-        code: code,
+        code: code.split("\n").slice(0, 20).join("\n"),
         backgroundColor: "rgba(255, 255, 255, 0)",
         language: "swift",
         paddingHorizontal: "0px",
