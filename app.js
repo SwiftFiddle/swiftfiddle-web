@@ -87,7 +87,7 @@ app.get(/^\/([a-f0-9]{32})$/i, async (req, res) => {
         return files[Object.keys(files)[0]].content;
       }
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
     return null;
   })();
@@ -328,28 +328,33 @@ async function getGistContent(gistId) {
 }
 
 async function getShareImage(code) {
-  const response = await axios.post(
-    "https://carbonara.now.sh/api/cook",
-    {
-      code: code,
-      backgroundColor: "rgba(255, 255, 255, 0)",
-      language: "swift",
-      paddingHorizontal: "0px",
-      paddingVertical: "0px",
-      theme: "one-light",
-    },
-    {
-      headers: {
-        "Content-Type": "application/json",
+  try {
+    const response = await axios.post(
+      "https://carbonara.now.sh/api/cook",
+      {
+        code: code,
+        backgroundColor: "rgba(255, 255, 255, 0)",
+        language: "swift",
+        paddingHorizontal: "0px",
+        paddingVertical: "0px",
+        theme: "one-light",
       },
-      responseType: "arraybuffer",
-    }
-  );
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+        responseType: "arraybuffer",
+      }
+    );
 
-  if (response.status != 200 || !response.data) {
+    if (response.status != 200 || !response.data) {
+      return null;
+    }
+    return response.data;
+  } catch (error) {
+    console.error(error);
     return null;
   }
-  return response.data;
 }
 
 function handlePageNotFound(req, res) {
