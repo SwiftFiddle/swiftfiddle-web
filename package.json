@@ -11,12 +11,16 @@
   "license": "MIT",
   "dependencies": {
     "@fortawesome/fontawesome-free": "^5.14.0",
+    "arraybuffer-to-string": "^1.0.2",
     "axios": "^0.20.0",
-    "body-parser": "^1.19.0",
+    "base32-encode": "^1.1.1",
     "compare-versions": "^3.6.0",
     "compression": "^1.7.4",
     "ejs": "^3.1.5",
-    "express": "^4.17.1"
+    "express": "^4.17.1",
+    "firebase-admin": "^9.2.0",
+    "minimist": "^1.2.5",
+    "uuid-base32": "^1.0.0"
   },
   "devDependencies": {
     "eslint": "^7.9.0"

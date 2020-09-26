@@ -130,9 +130,9 @@
               </div>
             </div>
           </div>
-          <div class="modal-footer"> <label style="font-weight: 600">Page Link <span class="share-sheet-message"></span></label><br />
+          <div class="modal-footer"> <label style="font-weight: 600">Page Link <span class="share-sheet-copy-message"></span></label><br />
             <div class="row">
-              <input class="col-10 ur" type="url" placeholder="https://www.arcardio.app/acodyseyy" aria-describedby="inputGroup-sizing-default" style="height: 40px;"> <button class="cpy" onclick="copyShareURL()"><i class="far fa-clone"></i></button>
+              <input class="col-10 ur" id="shared_link" type="url" disabled="disabled" aria-describedby="inputGroup-sizing-default" style="height: 40px;"> <button class="cpy" onclick="copySharedLink()"><i class="far fa-clone"></i></button>
             </div>
           </div>
         </div>
@@ -178,8 +178,6 @@
     <script src="https://pagecdn.io/lib/ace/1.4.12/theme-xcode.min.js" crossorigin="anonymous"></script>
     <script src="https://pagecdn.io/lib/ace/1.4.12/theme-terminal.min.js" crossorigin="anonymous"></script>
     <script src="https://pagecdn.io/lib/ace/1.4.12/mode-swift.min.js" crossorigin="anonymous"></script>
-
-    <script src="js/share_sheet.js"></script>
 
     <script type="text/javascript">
       ace.require("ace/ext/language_tools");
@@ -233,11 +231,11 @@
         const buttonTitle = deactivate(sender);
         const intid = showProgress(resultsEditor);
         const code = editor.getSession().getValue();
-        const json = {
+        const params = {
           toolchain_version: $("#versionSelect").val().replace('/', '_'),
           code: code
         };
-        $.post('/run', json, function(data, error, xhr) {
+        $.post('/run', params, function(data, error, xhr) {
           resultsEditor.setValue(data.version + data.errors + data.output);
           resultsEditor.clearSelection();
           clearInterval(intid);
@@ -270,6 +268,32 @@
           }
           resultsEditor.clearSelection();
         }, 1500);
+      }
+    </script>
+
+    <script>
+      function showShareSheet() {
+        const code = editor.getSession().getValue();
+        const params = {
+          toolchain_version: $("#versionSelect").val().replace("/", "_"),
+          code: code,
+        };
+        $.post("/shared_link", params, function (data, error, xhr) {
+          if (data) {
+            $("#shared_link").val(data.shared_link.url);
+            $("#shareSheet").modal();
+          }
+        });
+      }
+
+      function copySharedLink() {
+        if (navigator.clipboard) {
+          navigator.clipboard.writeText($("#shared_link").val());
+        }
+        const message = $(".share-sheet-copy-message");
+        message.hide();
+        message.text("link copied");
+        message.fadeIn(500).delay(1000).fadeOut(500);
       }
     </script>
 

@@ -62,7 +62,7 @@ button:focus {
   box-shadow: none !important;
 }
 
-.message {
+.share-sheet-copy-message {
   font-size: 11px;
   color: #ee5535;
 }
