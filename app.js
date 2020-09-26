@@ -9,7 +9,7 @@ const util = require("util");
 const uuid = require("uuid");
 
 const admin = require("firebase-admin");
-const serviceAccount = require(path.join(__dirname, "serviceAccountKey.json"));
+const serviceAccount = require(path.join(__dirname, "key.json"));
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
 });
@@ -43,7 +43,7 @@ app.get("/", async (req, res) => {
   res.render("index", {
     title: "Swift Playground",
     versions: versions,
-    stable_version: stableVersion(),
+    default_version: stableVersion(),
     code: `${defaultSampleCode()}\n`,
   });
 });
@@ -71,7 +71,7 @@ app.get(/^\/([a-f0-9]{32})$/i, async (req, res) => {
   res.render("index", {
     title: "Swift Playground",
     versions: versions,
-    stable_version: stableVersion(),
+    default_version: stableVersion(),
     code: `${code || defaultSampleCode()}\n`,
   });
 });
@@ -87,11 +87,12 @@ app.get(/^\/([A-Z2-7]{26})$/i, async (req, res) => {
     return;
   }
 
-  const content = doc.data().shared_link.content;
+  const shared_link = doc.data().shared_link;
+  const content = shared_link.content;
   res.render("index", {
     title: "Swift Playground",
     versions: versions,
-    stable_version: stableVersion(),
+    default_version: shared_link.swift_version,
     code: `${content || `${defaultSampleCode()}\n`}`,
   });
 });
