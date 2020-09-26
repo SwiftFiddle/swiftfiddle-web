@@ -108,6 +108,7 @@ app.get(/^\/([A-Z2-7]{26}).png$/i, async (req, res) => {
   res.writeHead(200, {
     "Content-Type": "image/png",
     "Content-Length": data.length,
+    "Cache-Control": "public, max-age=31536000",
   });
   res.end(data, "binary");
 });
@@ -129,6 +130,7 @@ app.get(/^\/([a-f0-9]{32}).png$/i, async (req, res) => {
   res.writeHead(200, {
     "Content-Type": "image/png",
     "Content-Length": data.length,
+    "Cache-Control": "public, max-age=31536000",
   });
   res.end(data, "binary");
 });
