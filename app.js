@@ -145,7 +145,6 @@ function random(size) {
 }
 
 async function availableVersions() {
-  return [];
   const exec = util.promisify(require("child_process").exec);
   const result = await exec(
     'docker images kishikawakatsumi/swift --format "{{.Tag}}"'
