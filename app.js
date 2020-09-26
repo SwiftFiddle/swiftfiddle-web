@@ -30,9 +30,6 @@ app.use(
     path.join(__dirname, "/node_modules/@fortawesome/fontawesome-free/")
   )
 );
-app.use(function (req, res) {
-  handlePageNotFound(req, res);
-});
 
 app.set("views", path.join(__dirname, "/views"));
 app.set("view engine", "ejs");
@@ -261,6 +258,10 @@ app.post("/shared_link", async (req, res) => {
   await doc.set(shared_link);
 
   res.send(shared_link);
+});
+
+app.use(function (req, res) {
+  handlePageNotFound(req, res);
 });
 
 app.listen(8080);
