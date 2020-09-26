@@ -73,29 +73,15 @@ app.get(/^\/([A-Z2-7]{26})$/i, async (req, res) => {
 
 app.get(/^\/([a-f0-9]{32})$/i, async (req, res) => {
   const versions = await availableVersions();
+
   const gistId = req.params[0];
-  const url = `https://api.github.com/gists/${gistId}`;
-  const code = await (async () => {
-    try {
-      const response = await axios.get(url, {
-        headers: {
-          accept: "application/json",
-        },
-      });
-      if (response.data) {
-        const files = response.data.files;
-        return files[Object.keys(files)[0]].content;
-      }
-    } catch (error) {
-      console.error(error);
-    }
-    return null;
-  })();
+  const content = await getGistContent(gistId);
+
   res.render("index", {
     title: "Swift Playground",
     versions: versions,
     default_version: stableVersion(),
-    code: `${code || defaultSampleCode()}\n`,
+    code: `${content || defaultSampleCode()}\n`,
     ogp_image_url: `https://swift-playground.kishikawakatsumi.com/${gistId}.png`,
   });
 });
@@ -128,9 +114,7 @@ app.get(/^\/([A-Z2-7]{26}).png$/i, async (req, res) => {
 
 app.get(/^\/([a-f0-9]{32}).png$/i, async (req, res) => {
   const gistId = req.params[0];
-  const content = getGistContent(gistId);
-  console.log(content);
-
+  const content = await getGistContent(gistId);
   if (!content) {
     handlePageNotFound(req, res);
     return;
