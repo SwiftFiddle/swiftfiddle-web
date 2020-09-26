@@ -112,18 +112,17 @@ app.get(/^\/([A-Z2-7]{26}).png$/i, async (req, res) => {
   const shared_link = doc.data().shared_link;
   const content = shared_link.content;
 
-  const response = await getShareImage(content);
-
-  if (response.status != 200 || !response.data) {
+  const data = await getShareImage(content);
+  if (!data) {
     handlePageNotFound(req, res);
     return;
   }
 
   res.writeHead(200, {
     "Content-Type": "image/png",
-    "Content-Length": response.data.length,
+    "Content-Length": data.length,
   });
-  res.end(response.data, "binary");
+  res.end(data, "binary");
 });
 
 app.get(/^\/([a-f0-9]{32}).png$/i, async (req, res) => {
@@ -135,13 +134,17 @@ app.get(/^\/([a-f0-9]{32}).png$/i, async (req, res) => {
     return;
   }
 
-  const response = await getShareImage(content);
+  const data = await getShareImage(content);
+  if (!data) {
+    handlePageNotFound(req, res);
+    return;
+  }
 
   res.writeHead(200, {
     "Content-Type": "image/png",
-    "Content-Length": response.data.length,
+    "Content-Length": data.length,
   });
-  res.end(response.data, "binary");
+  res.end(data, "binary");
 });
 
 app.get("/versions", async (req, res) => {
@@ -324,7 +327,7 @@ async function getGistContent(gistId) {
 }
 
 async function getShareImage(code) {
-  await axios.post(
+  const response = await axios.post(
     "https://carbonara.now.sh/api/cook",
     {
       code: code,
@@ -341,6 +344,11 @@ async function getShareImage(code) {
       responseType: "arraybuffer",
     }
   );
+
+  if (response.status != 200 || !response.data) {
+    return null;
+  }
+  return response.data;
 }
 
 function handlePageNotFound(req, res) {
