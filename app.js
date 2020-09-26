@@ -260,13 +260,6 @@ app.post("/shared_link", async (req, res) => {
   res.send(shared_link);
 });
 
-app.use(function (req, res, next) {
-  if (req.path.startsWith("/.well-known/acme-challenge")) {
-    return next();
-  }
-  handlePageNotFound(req, res);
-});
-
 app.listen(8080);
 
 function random(size) {
