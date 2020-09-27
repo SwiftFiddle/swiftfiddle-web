@@ -8,11 +8,14 @@
     <meta property="twitter:image" content="<%= ogp_image_url %>"/>
     <meta property="og:image" content="<%= ogp_image_url %>"/>
     <meta property="og:title" content="Swift Online Playground">
+    <meta property="og:description" content="SwiftFiddle is an online playground for creating, sharing and embedding Swift fiddles (little Swift programs that run directly in your browser)."/>
+    <meta property="og:site_name" content="SwiftFiddle - Swift Online Playground" />
 
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
     <link rel="stylesheet" href="css/fontawesome/css/all.min.css">
-    <link rel="stylesheet" href="css/share_sheet.css">
+
     <link rel="stylesheet" href="css/button.css">
+    <link rel="stylesheet" href="css/share_sheet.css">
 
     <link rel="apple-touch-icon" sizes="57x57" href="images/apple-icon-57x57.png">
     <link rel="apple-touch-icon" sizes="60x60" href="images/apple-icon-60x60.png">
@@ -47,6 +50,7 @@
           padding-left: 0;
         }
       }
+
       /* Sticky footer styles */
       html {
         position: relative;
@@ -65,13 +69,13 @@
       }
     </style>
 
-    <title><%= title %></title>
+    <title>SwiftFiddle - Swift Online Playground</title>
   </head>
   <body style="background-color: #F7F7F7; color: #333333;">
     <div class="container" style="margin-top: 30px;">
       <div class="row">
         <div class="col" style="margin-bottom: 15px;">
-          <h4><i class="fab fa-swift fa-lg" style="color: #F05138"></i> <%= title %></h4>
+          <h4><i class="fab fa-swift fa-lg" style="color: #F05138"></i> Swift Playground</h4>
         </div>
         <div class="col-md-2">
           <form>
@@ -322,7 +326,7 @@
         evt.stopPropagation();
         evt.preventDefault();
 
-        var files = evt.dataTransfer.files; // FileList object.
+        var files = evt.dataTransfer.files;
         var reader = new FileReader();
         reader.onload = function(event) {
           const editor = ace.edit("editor");
@@ -335,7 +339,7 @@
       function handleDragOver(evt) {
         evt.stopPropagation();
         evt.preventDefault();
-        evt.dataTransfer.dropEffect = 'copy'; // Explicitly show this is a copy.
+        evt.dataTransfer.dropEffect = 'copy';
       }
 
       const dropZone = document.getElementById('editor');
