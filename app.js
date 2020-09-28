@@ -266,10 +266,9 @@ app.post("/shared_link", async (req, res) => {
  */
 
 app.post("/request/initialize", async (req, res) => {
+  const session = req.body.session;
+  const text = req.body.text;
   try {
-    const session = req.body.session;
-    const text = req.body.text;
-
     if (session && text) {
       const workspacePath = path.join(
         path.join(__dirname, "workspaces"),
@@ -316,6 +315,17 @@ let package = Package(
       res.sendStatus(400);
     }
   } catch (error) {
+    if (session) {
+      const workspacePath = path.join(
+        path.join(__dirname, "workspaces"),
+        session
+      );
+      try {
+        await fs.rmdir(workspacePath, { recursive: true });
+      } catch (error) {
+        console.error(error);
+      }
+    }
     res.sendStatus(500);
   }
 });
