@@ -298,7 +298,7 @@ let package = Package(
       const sourcePath = path.join(sourceRootPath, "main.swift");
       await fs.writeFile(sourcePath, text);
       await axios.post(
-        `http://[::1]:3000${req.path}`,
+        `http://localhost:3000${req.path}`,
         {
           workspacePath: workspacePath,
           documentPath: sourcePath,
@@ -338,7 +338,7 @@ app.post("/request/textDocument/completion", async (req, res) => {
       );
       const sourcePath = path.join(sourceRootPath, "main.swift");
       const response = await axios.post(
-        `http://[::1]:3000${req.path}`,
+        `http://localhost:3000${req.path}`,
         {
           documentPath: sourcePath,
           line: +row,
@@ -377,7 +377,7 @@ app.post("/notification/textDocument/didChange", async (req, res) => {
       );
       const sourcePath = path.join(sourceRootPath, "main.swift");
       await axios.post(
-        `http://[::1]:3000${req.path}`,
+        `http://localhost:3000${req.path}`,
         {
           documentPath: sourcePath,
           version: +version,
