@@ -4,6 +4,7 @@ const axios = require("axios").default;
 const base32Encode = require("base32-encode");
 const compression = require("compression");
 const express = require("express");
+const fs = require("fs").promises;
 const path = require("path");
 const util = require("util");
 const uuid = require("uuid");
@@ -260,11 +261,173 @@ app.post("/shared_link", async (req, res) => {
   res.send(shared_link);
 });
 
+/*
+ * SourceKit-LSP Integration.
+ */
+
+app.post("/request/initialize", async (req, res) => {
+  try {
+    const session = req.body.session;
+    const text = req.body.text;
+
+    if (session && text) {
+      const workspacePath = path.join(
+        path.join(__dirname, "workspaces"),
+        session
+      );
+      const sourceRootPath = path.join(
+        path.join(workspacePath, "Sources"),
+        session
+      );
+      await fs.mkdir(sourceRootPath, {
+        recursive: true,
+      });
+      await fs.writeFile(
+        path.join(workspacePath, "Package.swift"),
+        `// swift-tools-version:5.3
+import PackageDescription
+let package = Package(
+    name: "${session}",
+    dependencies: [],
+    targets: [
+        .target(name: "${session}", dependencies: []),
+    ]
+)
+`
+      );
+      const sourcePath = path.join(sourceRootPath, "main.swift");
+      await fs.writeFile(sourcePath, text);
+      await axios.post(
+        `http://[::1]:3000${req.path}`,
+        {
+          workspacePath: workspacePath,
+          documentPath: sourcePath,
+          text: text,
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            accept: "application/json",
+          },
+        }
+      );
+      res.sendStatus(200);
+    } else {
+      res.sendStatus(400);
+    }
+  } catch (error) {
+    res.sendStatus(500);
+  }
+});
+
+app.post("/request/textDocument/completion", async (req, res) => {
+  try {
+    const session = req.body.session;
+    const row = req.body["cursorPosition[row]"];
+    const column = req.body["cursorPosition[column]"];
+    const prefix = req.body["prefix"];
+
+    if (session && row && column) {
+      const workspacePath = path.join(
+        path.join(__dirname, "workspaces"),
+        session
+      );
+      const sourceRootPath = path.join(
+        path.join(workspacePath, "Sources"),
+        session
+      );
+      const sourcePath = path.join(sourceRootPath, "main.swift");
+      const response = await axios.post(
+        `http://[::1]:3000${req.path}`,
+        {
+          documentPath: sourcePath,
+          line: +row,
+          character: +column,
+          prefix: prefix,
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            accept: "application/json",
+          },
+        }
+      );
+      res.send(response.data);
+    } else {
+      res.sendStatus(400);
+    }
+  } catch (error) {
+    res.sendStatus(500);
+  }
+});
+
+app.post("/notification/textDocument/didChange", async (req, res) => {
+  try {
+    const session = req.body.session;
+    const version = req.body["change[id]"];
+    const text = req.body["text"];
+    if (session && version) {
+      const workspacePath = path.join(
+        path.join(__dirname, "workspaces"),
+        session
+      );
+      const sourceRootPath = path.join(
+        path.join(workspacePath, "Sources"),
+        session
+      );
+      const sourcePath = path.join(sourceRootPath, "main.swift");
+      await axios.post(
+        `http://[::1]:3000${req.path}`,
+        {
+          documentPath: sourcePath,
+          version: +version,
+          text: text,
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            accept: "application/json",
+          },
+        }
+      );
+    }
+    res.sendStatus(200);
+  } catch (error) {
+    res.sendStatus(500);
+  }
+});
+
+app.post("/notification/textDocument/didClose", async (req, res) => {
+  try {
+    const session = req.body.session;
+    if (session) {
+      const workspacePath = path.join(
+        path.join(__dirname, "workspaces"),
+        session
+      );
+      await fs.rmdir(workspacePath, { recursive: true });
+      res.sendStatus(200);
+    } else {
+      res.sendStatus(400);
+    }
+  } catch (error) {
+    res.sendStatus(500);
+  }
+});
+
+/*
+ * 404 Page not found.
+ */
 app.use(function (req, res) {
   handlePageNotFound(req, res);
 });
 
+// Launch the server.
 app.listen(8080);
+
+/*
+ * Utility functions.
+ */
 
 function random(size) {
   return require("crypto").randomBytes(size).toString("hex");
