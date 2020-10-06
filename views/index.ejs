@@ -1,498 +1,568 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <meta name="twitter:card" content="summary_large_image"/>
-    <meta property="twitter:image" content="<%= ogp_image_url %>"/>
-    <meta property="og:image" content="<%= ogp_image_url %>"/>
-    <meta property="og:title" content="Swift Online Playground">
-    <meta property="og:description" content="SwiftFiddle is an online playground for creating, sharing and embedding Swift fiddles (little Swift programs that run directly in your browser)."/>
-    <meta property="og:site_name" content="SwiftFiddle - Swift Online Playground" />
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
-    <link rel="stylesheet" href="css/fontawesome/css/all.min.css">
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta property="twitter:image" content="<%= ogp_image_url %>" />
+  <meta property="og:image" content="<%= ogp_image_url %>" />
+  <meta property="og:title" content="Swift Online Playground">
+  <meta property="og:description"
+    content="SwiftFiddle is an online playground for creating, sharing and embedding Swift fiddles (little Swift programs that run directly in your browser)." />
+  <meta property="og:site_name" content="SwiftFiddle - Swift Online Playground" />
 
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.2.0/styles/default.min.css" integrity="sha512-kZqGbhf9JTB4bVJ0G8HCkqmaPcRgo88F0dneK30yku5Y/dep7CZfCnNml2Je/sY4lBoqoksXz4PtVXS4GHSUzQ==" crossorigin="anonymous" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.2.0/styles/xcode.min.css" integrity="sha512-ybdAWCxicaDEY4FipBITKDwSRqSDUcV1pPngUvjnCliYYU42rmMvt5obpvCZp7xCEpNU0OKIh6M60VGCVH1Z/w==" crossorigin="anonymous" />
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+    integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+  <link rel="stylesheet" href="css/fontawesome/css/all.min.css">
 
-    <link rel="stylesheet" href="css/button.css">
-    <link rel="stylesheet" href="css/share_sheet.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.2.0/styles/default.min.css"
+    integrity="sha512-kZqGbhf9JTB4bVJ0G8HCkqmaPcRgo88F0dneK30yku5Y/dep7CZfCnNml2Je/sY4lBoqoksXz4PtVXS4GHSUzQ=="
+    crossorigin="anonymous" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.2.0/styles/xcode.min.css"
+    integrity="sha512-ybdAWCxicaDEY4FipBITKDwSRqSDUcV1pPngUvjnCliYYU42rmMvt5obpvCZp7xCEpNU0OKIh6M60VGCVH1Z/w=="
+    crossorigin="anonymous" />
 
-    <link rel="apple-touch-icon" sizes="57x57" href="images/apple-icon-57x57.png">
-    <link rel="apple-touch-icon" sizes="60x60" href="images/apple-icon-60x60.png">
-    <link rel="apple-touch-icon" sizes="72x72" href="images/apple-icon-72x72.png">
-    <link rel="apple-touch-icon" sizes="76x76" href="images/apple-icon-76x76.png">
-    <link rel="apple-touch-icon" sizes="114x114" href="images/apple-icon-114x114.png">
-    <link rel="apple-touch-icon" sizes="120x120" href="images/apple-icon-120x120.png">
-    <link rel="apple-touch-icon" sizes="144x144" href="images/apple-icon-144x144.png">
-    <link rel="apple-touch-icon" sizes="152x152" href="images/apple-icon-152x152.png">
-    <link rel="apple-touch-icon" sizes="180x180" href="images/apple-icon-180x180.png">
-    <link rel="icon" type="image/png" sizes="192x192"  href="images/android-icon-192x192.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="images/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="96x96" href="images/favicon-96x96.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="images/favicon-16x16.png">
-    <meta name="msapplication-TileColor" content="#ffffff">
-    <meta name="msapplication-TileImage" content="images/ms-icon-144x144.png">
-    <meta name="theme-color" content="#ffffff">
+  <link rel="stylesheet" href="css/button.css">
+  <link rel="stylesheet" href="css/share_sheet.css">
 
-    <style type="text/css">
-      .ace_editor {
-        height: 600px;
-        padding: 0;
-        margin: 0;
+  <link rel="apple-touch-icon" sizes="57x57" href="images/apple-icon-57x57.png">
+  <link rel="apple-touch-icon" sizes="60x60" href="images/apple-icon-60x60.png">
+  <link rel="apple-touch-icon" sizes="72x72" href="images/apple-icon-72x72.png">
+  <link rel="apple-touch-icon" sizes="76x76" href="images/apple-icon-76x76.png">
+  <link rel="apple-touch-icon" sizes="114x114" href="images/apple-icon-114x114.png">
+  <link rel="apple-touch-icon" sizes="120x120" href="images/apple-icon-120x120.png">
+  <link rel="apple-touch-icon" sizes="144x144" href="images/apple-icon-144x144.png">
+  <link rel="apple-touch-icon" sizes="152x152" href="images/apple-icon-152x152.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="images/apple-icon-180x180.png">
+  <link rel="icon" type="image/png" sizes="192x192" href="images/android-icon-192x192.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="images/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="96x96" href="images/favicon-96x96.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="images/favicon-16x16.png">
+  <meta name="msapplication-TileColor" content="#ffffff">
+  <meta name="msapplication-TileImage" content="images/ms-icon-144x144.png">
+  <meta name="theme-color" content="#ffffff">
+
+  <style type="text/css">
+    .ace_editor {
+      height: 600px;
+      padding: 0;
+      margin: 0;
+    }
+
+    .no-gutters {
+      margin-right: 0;
+      margin-left: 0;
+
+      >.col,
+      >[class*="col-"] {
+        padding-right: 0;
+        padding-left: 0;
       }
-      .no-gutters {
-        margin-right: 0;
-        margin-left: 0;
+    }
 
-        > .col,
-        > [class*="col-"] {
-          padding-right: 0;
-          padding-left: 0;
+    /* Sticky footer styles */
+    html {
+      position: relative;
+      min-height: 100%;
+    }
+
+    body {
+      margin-bottom: 60px;
+      /* Margin bottom by footer height */
+    }
+
+    .footer {
+      position: absolute;
+      bottom: 0;
+      width: 100%;
+      height: 60px;
+      /* Set the fixed height of the footer here */
+      line-height: 60px;
+      /* Vertically center the text there */
+      background-color: #F7F7F7;
+    }
+  </style>
+
+  <title>SwiftFiddle - Swift Online Playground</title>
+</head>
+
+<body style="background-color: #F7F7F7; color: #333333;">
+  <div class="container" style="margin-top: 30px;">
+    <div class="row">
+      <div class="col" style="margin-bottom: 15px;">
+        <h4><i class="fab fa-swift fa-lg" style="color: #F05138"></i> Swift Playground</h4>
+      </div>
+      <div class="col-md-2">
+        <form>
+          <div class="form-group">
+            <select class="form-control custom-select" id="versionSelect">
+              <% versions.forEach((version) => { %>
+              <% var selected = ( version == default_version ) ? "selected" : ""; %>
+              <option value="<%= version %>" <%= selected %>><%= version.replace('_', '/') %></option>
+              <% }); %>
+            </select>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  <div class="container-fluid" style="padding-right: 0; padding-left: 0; padding-bottom: 15px;">
+    <div class="row no-gutters">
+      <div class="col-md-6">
+        <pre id="editor"><%- code %></pre>
+      </div>
+      <div class="col-md-6">
+        <pre id="results-editor"></pre>
+      </div>
+    </div>
+  </div>
+  <div class="container">
+    <div class="row">
+      <div class="col-md-3 mx-auto" style="margin-top: 20px; margin-bottom: 20px;">
+        <button id="run-button" type="button" class="btn btn-primary btn-block btn-lg">Run&nbsp;&nbsp;<i
+            class="fa fa-play" aria-hidden="true"></i></button>
+      </div>
+    </div>
+  </div>
+  <div class="container">
+    <div class="row">
+      <div class="col text-center">
+        <button type="button" id="share-button" class="btn btn-info btn-circle m-1" onclick="showShareSheet();"><i
+            class="fa fa-share-alt" aria-hidden="true"></i></button>
+        <button type="button" class="btn btn-secondary btn-circle m-1" data-toggle="modal" data-target="#helpSheet"><i
+            class="fa fa-question" aria-hidden="true"></i></button>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="shareSheet" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content col-12">
+        <div class="modal-header">
+          <h5 class="modal-title">Share</h5><button type="button" class="close" data-dismiss="modal"
+            aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        </div>
+        <div class="modal-body">
+          <div class="fluid">
+            <a class="btn btn-sm btn-social btn-facebook" href="#" target="_blank" rel="nofollow noopener noreferrer"
+              title="Share this post on Facebook">
+              <i class="fab fa-facebook-square"></i> Facebook
+            </a>
+            <a class="btn btn-sm btn-social btn-twitter" href="#" target="_blank" rel="nofollow noopener noreferrer"
+              title="Share this post on Twitter">
+              <i class="fab fa-twitter"></i> Twitter
+            </a>
+            <a class="btn btn-sm btn-social btn-line" href="#" target="_blank" rel="nofollow noopener noreferrer"
+              target="_blank" title="Share this post on Discord">
+              <i class="fab fa-line"></i> LINE
+            </a>
+            <a class="btn btn-sm btn-social btn-pocket" href="#" target="_blank" rel="nofollow noopener noreferrer"
+              target="_blank" title="Share this post on Slack">
+              <i class="fab fa-get-pocket"></i> Pocket
+            </a>
+          </div>
+        </div>
+        <div class="modal-footer"><label style="font-weight: 600">Page Link <span
+              class="share-sheet-copy-message"></span></label><br>
+          <div class="fluid">
+            <input class="ur" id="shared_link" type="url" disabled="disabled"
+              aria-describedby="inputGroup-sizing-default" style="width: 96%; height: 40px;"> <button class="cpy"
+              onclick="copySharedLink()"><i class="far fa-clone"></i></button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="helpSheet" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content col-12">
+        <div class="modal-header">
+          <h5 class="modal-title">Help</h5><button type="button" class="close" data-dismiss="modal"
+            aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        </div>
+        <div class="modal-body">
+          <dl>
+            <dt>Import</dt>
+            <dd>There are a few different ways to import code into Playground:</dd>
+          </dl>
+          <ul>
+            <li>Drop a file onto the editor</li>
+            <li>Append a GitHub gist ID to the URL<br>(e.g. <code>swiftfiddle.com/<code
+                  style="background-color: #F0F0F0; padding: 2px;">&lt;gist_id_goes_here&gt;</code></code>)</li>
+            <li>Or just start typing!</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="row">
+        <div class="mx-auto">
+          <a href="https://github.com/kishikawakatsumi/swift-playground" style="color: #999999;"><i
+              class="fab fa-github fa-2x"></i></a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="https://code.jquery.com/jquery-3.5.1.min.js"
+    integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"
+    integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous">
+  </script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.12/ace.min.js"
+    integrity="sha512-GoORoNnxst42zE3rYPj4bNBm0Q6ZRXKNH2D9nEmNvVF/z24ywVnijAWVi/09iBiVDQVf3UlZHpzhAJIdd9BXqw=="
+    crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.12/ext-language_tools.min.js"
+    integrity="sha512-8qx1DL/2Wsrrij2TWX5UzvEaYOFVndR7BogdpOyF4ocMfnfkw28qt8ULkXD9Tef0bLvh3TpnSAljDC7uyniEuQ=="
+    crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.12/theme-xcode.min.js"
+    integrity="sha512-S3wipD42Bs0Dthj5mI3YkgHBB60mCkmID1qcxv4GZXV/bVivb9PIvEEBwTeIQTcZXUHo4aj7CktRhA/c2k7ftQ=="
+    crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.12/theme-terminal.min.js"
+    integrity="sha512-Tw4o9yJl67xiLPUU5do1oSzDGys0tLrb8NMcVP25Pn6VWRfJART2nZ/X2p9ocWpNcs3jbO2fnnBJmFJzlZ1k1Q=="
+    crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.12/mode-swift.min.js"
+    integrity="sha512-5NanghFVFTJf0tjHV2hWFuF/r9LuNKq9c0Pcs+TF7vWuD0AavR6az6X/vLW1AvLCo/AZg6EIBtm2WzLKNleDAQ=="
+    crossorigin="anonymous"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.2.0/highlight.min.js"
+    integrity="sha512-TDKKr+IvoqZnPzc3l35hdjpHD0m+b2EC2SrLEgKDRWpxf2rFCxemkgvJ5kfU48ip+Y+m2XVKyOCD85ybtlZDmw=="
+    crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.2.0/languages/swift.min.js"
+    integrity="sha512-EShXEgqHHatDPL5k8+RCRdEvZWVr77b8z8GgkzaFmYUfyWd/X5SHz6VuERyeB729QU5a9MPF1lPGynFXVLgMMg=="
+    crossorigin="anonymous"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/uuid/8.3.0/uuidv4.min.js"
+    integrity="sha512-Uty7RUUiqucKlBdWuDQVKAhohBvgRCQ3pu7hm6F26YV14VDYCOdfzMKfm8NE0rxTPJZHx6tDvJc6YqMCIQggoQ=="
+    crossorigin="anonymous"></script>
+
+  <script type="text/javascript">
+    const lang = ace.require("ace/lib/lang");
+    const langTools = ace.require("ace/ext/language_tools");
+
+    const editor = ace.edit("editor");
+    editor.setTheme("ace/theme/xcode");
+    editor.session.setMode("ace/mode/swift");
+    editor.$blockScrolling = Infinity
+    editor.setOptions({
+      useSoftTabs: true,
+      autoScrollEditorIntoView: true,
+      fontFamily: "menlo",
+      fontSize: "11pt",
+      showInvisibles: false,
+      enableBasicAutocompletion: true,
+      enableSnippets: true,
+      enableLiveAutocompletion: true,
+    });
+    editor.renderer.setOptions({
+      showFoldWidgets: false,
+      showPrintMargin: false,
+    });
+
+    if (!editor.completer) {
+      // make sure completer is initialized
+      editor.execCommand("startAutocomplete")
+      editor.completer.detach()
+    }
+    editor.completer.popup.container.style.width = "30%"
+
+    const row = editor.session.getLength() - 1
+    const column = editor.session.getLine(row).length
+    editor.gotoLine(row + 1, column)
+    editor.focus();
+
+    const sessionId = uuidv4()
+
+    editor.on('change', (change, editor) => {
+      switch (change.action) {
+        case "insert":
+          let lines = change.lines;
+          let character = lines[0];
+          if (lines.length === 1 && character.length === 1 && character === ".") {
+            setTimeout(() => {
+              editor.commands.byName.startAutocomplete.exec(editor);
+            }, 0);
+          }
+          break;
+      }
+
+      $.post('/notification/textDocument/didChange', {
+        session: sessionId,
+        change: change,
+        text: editor.getValue()
+      });
+
+      if (!editor.getValue()) {
+        $("#run-button").prop('disabled', true)
+        $("#share-button").prop('disabled', true)
+      } else {
+        $("#run-button").prop('disabled', false)
+        $("#share-button").prop('disabled', false)
+      }
+    });
+    editor.commands.addCommand({
+      name: "triggerAutoCompletion",
+      bindKey: {
+        win: "escape",
+        mac: "escape"
+      },
+      exec: (editor) => {
+        const cursorPosition = editor.getCursorPosition();
+        setTimeout(() => {
+          editor.commands.byName.startAutocomplete.exec(editor);
+        }, 0);
+      }
+    })
+
+    ace.require("ace/autocomplete").FilteredList.prototype.setFilter = function (str) {
+      if (str.length > this.filterText && str.lastIndexOf(this.filterText, 0) === 0)
+        var matches = this.filtered;
+      else
+        var matches = this.all;
+
+      let customItems = [];
+      const index = matches.findIndex((e) => e["sourcekit-lsp"])
+      if (index >= 0) {
+        customItems = matches.splice(index);
+      }
+
+      this.filterText = str;
+      matches = this.filterCompletions(matches, this.filterText);
+      matches = matches.sort(function (a, b) {
+        return b.exactMatch - a.exactMatch || b.$score - a.$score ||
+          (a.caption || a.value).localeCompare(b.caption || b.value);
+      });
+
+      matches = customItems.concat(matches);
+
+      // make unique
+      var prev = null;
+      matches = matches.filter(function (item) {
+        var caption = item.snippet || item.caption || item.value;
+        if (caption === prev) return false;
+        prev = caption;
+        return true;
+      });
+
+      this.filtered = matches;
+    };
+
+    let completions = [];
+    var completer = {
+      getCompletions: (editor, session, pos, prefix, callback) => {
+        if (completions.length) {
+          callback(null, completions);
+          completions = [];
+          return;
         }
-      }
+        $.post("/request/textDocument/completion", {
+          session: sessionId,
+          cursorPosition: {
+            row: pos.row,
+            column: pos.column
+          },
+          prefix: prefix
+        }, (data, error, xhr) => {
+          if (data && data.length) {
+            completions = data.map((item) => {
+              let insertText = item.lebel;
+              if (item.textEdit) {
+                insertText = item.textEdit.newText;
+              }
+              return {
+                caption: item.filterText || item.label,
+                name: item.label,
+                value: insertText,
+                meta: item.detail,
+                "sourcekit-lsp-kind": item.kind,
+                "sourcekit-lsp": true,
+              };
+            })
+            editor.commands.byName.startAutocomplete.exec(editor);
+          }
+        });
+      },
+      getDocTooltip: (item) => {
+        if (!item["sourcekit-lsp"]) {
+          return;
+        }
 
-      /* Sticky footer styles */
-      html {
-        position: relative;
-        min-height: 100%;
-      }
-      body {
-        margin-bottom: 60px; /* Margin bottom by footer height */
-      }
-      .footer {
-        position: absolute;
-        bottom: 0;
-        width: 100%;
-        height: 60px; /* Set the fixed height of the footer here */
-        line-height: 60px; /* Vertically center the text there */
-        background-color: #F7F7F7;
-      }
-    </style>
-
-    <title>SwiftFiddle - Swift Online Playground</title>
-  </head>
-  <body style="background-color: #F7F7F7; color: #333333;">
-    <div class="container" style="margin-top: 30px;">
-      <div class="row">
-        <div class="col" style="margin-bottom: 15px;">
-          <h4><i class="fab fa-swift fa-lg" style="color: #F05138"></i> Swift Playground</h4>
-        </div>
-        <div class="col-md-2">
-          <form>
-            <div class="form-group">
-              <select class="form-control custom-select" id="versionSelect" >
-                <% versions.forEach((version) => { %>
-                <% var selected = ( version == default_version ) ? "selected" : ""; %>
-                <option value="<%= version %>" <%= selected %>><%= version.replace('_', '/') %></option>
-                <% }); %>
-              </select>
-            </div>
-          </form>
-        </div>
-      </div>
-    </div>
-    <div class="container-fluid" style="padding-right: 0; padding-left: 0; padding-bottom: 15px;">
-      <div class="row no-gutters">
-        <div class="col-md-6">
-          <pre id="editor"><xmp><%- code %></xmp></pre>
-        </div>
-        <div class="col-md-6">
-          <pre id="results-editor"></pre>
-        </div>
-      </div>
-    </div>
-    <div class="container">
-      <div class="row">
-        <div class="col-md-3 mx-auto" style="margin-top: 20px; margin-bottom: 20px;">
-          <button id="run-button" type="button" class="btn btn-primary btn-block btn-lg">Run&nbsp;&nbsp;<i class="fa fa-play" aria-hidden="true"></i></button>
-        </div>
-      </div>
-    </div>
-    <div class="container">
-      <div class="row">
-        <div class="col text-center">
-          <button type="button" id="share-button" class="btn btn-info btn-circle m-1" onclick="showShareSheet();"><i class="fa fa-share-alt" aria-hidden="true"></i></button>
-          <button type="button" class="btn btn-secondary btn-circle m-1" data-toggle="modal" data-target="#helpSheet"><i class="fa fa-question" aria-hidden="true"></i></button>
-        </div>
-      </div>
-    </div>
-
-    <div class="modal fade" id="shareSheet" tabindex="-1" role="dialog" aria-hidden="true">
-      <div class="modal-dialog modal-lg" role="document">
-        <div class="modal-content col-12">
-          <div class="modal-header">
-            <h5 class="modal-title">Share</h5><button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-          </div>
-          <div class="modal-body">
-            <div class="fluid">
-              <a class="btn btn-sm btn-social btn-facebook" href="#" target="_blank" rel="nofollow noopener noreferrer" title="Share this post on Facebook">
-                <i class="fab fa-facebook-square"></i> Facebook
-              </a>
-              <a class="btn btn-sm btn-social btn-twitter" href="#" target="_blank" rel="nofollow noopener noreferrer" title="Share this post on Twitter">
-                <i class="fab fa-twitter"></i> Twitter
-              </a>
-              <a class="btn btn-sm btn-social btn-line" href="#" target="_blank" rel="nofollow noopener noreferrer" target="_blank" title="Share this post on Discord">
-                <i class="fab fa-line"></i> LINE
-              </a>
-              <a class="btn btn-sm btn-social btn-pocket" href="#" target="_blank" rel="nofollow noopener noreferrer" target="_blank" title="Share this post on Slack">
-                <i class="fab fa-get-pocket"></i> Pocket
-              </a>
-            </div>
-          </div>
-          <div class="modal-footer"><label style="font-weight: 600">Page Link <span class="share-sheet-copy-message"></span></label><br>
-            <div class="fluid">
-              <input class="ur" id="shared_link" type="url" disabled="disabled" aria-describedby="inputGroup-sizing-default" style="width: 96%; height: 40px;"> <button class="cpy" onclick="copySharedLink()"><i class="far fa-clone"></i></button>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="modal fade" id="helpSheet" tabindex="-1" role="dialog" aria-hidden="true">
-      <div class="modal-dialog modal-lg" role="document">
-        <div class="modal-content col-12">
-          <div class="modal-header">
-            <h5 class="modal-title">Help</h5><button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-          </div>
-          <div class="modal-body">
-            <dl>
-              <dt>Import</dt>
-              <dd>There are a few different ways to import code into Playground:</dd>
-            </dl>
-            <ul>
-              <li>Drop a file onto the editor</li>
-              <li>Append a GitHub gist ID to the URL<br>(e.g. <code>swift-playground.kishikawakatsumi.com/<code style="background-color: #F0F0F0; padding: 2px;">&lt;gist_id_goes_here&gt;</code></code>)</li>
-              <li>Or just start typing!</li>
-            </ul>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <footer class="footer">
-      <div class="container">
-        <div class="row">
-          <div class="mx-auto">
-            <a href="https://github.com/kishikawakatsumi/swift-playground" style="color: #999999;"><i class="fab fa-github fa-2x"></i></a>
-          </div>
-        </div>
-      </div>
-    </footer>
-
-    <script src="https://code.jquery.com/jquery-3.5.1.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
-
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.12/ace.min.js" integrity="sha512-GoORoNnxst42zE3rYPj4bNBm0Q6ZRXKNH2D9nEmNvVF/z24ywVnijAWVi/09iBiVDQVf3UlZHpzhAJIdd9BXqw==" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.12/ext-language_tools.min.js" integrity="sha512-8qx1DL/2Wsrrij2TWX5UzvEaYOFVndR7BogdpOyF4ocMfnfkw28qt8ULkXD9Tef0bLvh3TpnSAljDC7uyniEuQ==" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.12/theme-xcode.min.js" integrity="sha512-S3wipD42Bs0Dthj5mI3YkgHBB60mCkmID1qcxv4GZXV/bVivb9PIvEEBwTeIQTcZXUHo4aj7CktRhA/c2k7ftQ==" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.12/theme-terminal.min.js" integrity="sha512-Tw4o9yJl67xiLPUU5do1oSzDGys0tLrb8NMcVP25Pn6VWRfJART2nZ/X2p9ocWpNcs3jbO2fnnBJmFJzlZ1k1Q==" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.12/mode-swift.min.js" integrity="sha512-5NanghFVFTJf0tjHV2hWFuF/r9LuNKq9c0Pcs+TF7vWuD0AavR6az6X/vLW1AvLCo/AZg6EIBtm2WzLKNleDAQ==" crossorigin="anonymous"></script>
-
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.2.0/highlight.min.js" integrity="sha512-TDKKr+IvoqZnPzc3l35hdjpHD0m+b2EC2SrLEgKDRWpxf2rFCxemkgvJ5kfU48ip+Y+m2XVKyOCD85ybtlZDmw==" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.2.0/languages/swift.min.js" integrity="sha512-EShXEgqHHatDPL5k8+RCRdEvZWVr77b8z8GgkzaFmYUfyWd/X5SHz6VuERyeB729QU5a9MPF1lPGynFXVLgMMg==" crossorigin="anonymous"></script>
-
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/uuid/8.3.0/uuidv4.min.js" integrity="sha512-Uty7RUUiqucKlBdWuDQVKAhohBvgRCQ3pu7hm6F26YV14VDYCOdfzMKfm8NE0rxTPJZHx6tDvJc6YqMCIQggoQ==" crossorigin="anonymous"></script>
-
-    <script type="text/javascript">
-      const lang = ace.require("ace/lib/lang");
-      const langTools = ace.require("ace/ext/language_tools");
-
-      const editor = ace.edit("editor");
-      editor.setTheme("ace/theme/xcode");
-      editor.session.setMode("ace/mode/swift");
-      editor.$blockScrolling = Infinity
-      editor.setOptions({
-        useSoftTabs: true,
-        autoScrollEditorIntoView: true,
-        fontFamily: "menlo",
-        fontSize: "11pt",
-        showInvisibles: false,
-        enableBasicAutocompletion: true,
-        enableSnippets: true,
-        enableLiveAutocompletion: true,
-      });
-      editor.renderer.setOptions({
-        showFoldWidgets: false,
-        showPrintMargin: false,
-      });
-
-      if (!editor.completer) {
-        // make sure completer is initialized
-        editor.execCommand("startAutocomplete")
-        editor.completer.detach()
-      }
-      editor.completer.popup.container.style.width = "30%"
-
-      const row = editor.session.getLength() - 1
-      const column = editor.session.getLine(row).length
-      editor.gotoLine(row + 1, column)
-      editor.focus();
-
-      const sessionId = uuidv4()
-
-      editor.on('change', (change, editor) => {
-        switch (change.action) {
-          case "insert":
-            let lines = change.lines;
-            let character = lines[0];
-            if (lines.length === 1 && character.length === 1 && character === ".") {
-              setTimeout(() => {
-                editor.commands.byName.startAutocomplete.exec(editor);
-              }, 0);
-            }
+        let kind = null;
+        switch (item["sourcekit-lsp-kind"]) {
+          case 1:
+            kind = "M"; // method
+            break;
+          case 2:
+            kind = "F"; // function
+            break;
+          case 6:
+            kind = "C"; // class
+            break;
+          case 7:
+            kind = "I"; // interface
+            break;
+          case 10:
+            kind = "P"; // property
+            break;
+          case 12:
+            kind = "E"; // enum
+            break;
+          case 21:
+            kind = "S"; // struct
             break;
         }
+        const img = kind ?
+          `<img srcset="images/${kind}.png, images/${kind}@2x.png 2x, images/${kind}@3x.png 3x" width="16" height="16" align="center" style="vertical-align: text-bottom;"/>` :
+          ""
+        item.docHTML =
+          `${img} ${hljs.highlight("swift", `${lang.escapeHTML(item.name)} -> ${lang.escapeHTML(item.meta)}`).value}`;
+      }
+    };
+    langTools.addCompleter(completer);
 
-        $.post('/notification/textDocument/didChange', { session: sessionId, change: change, text: editor.getValue() });
+    $.post('/request/initialize', {
+      session: sessionId,
+      text: editor.getValue()
+    }, (data, error, xhr) => {
+      $(window).on('beforeunload', (e) => {
+        $.post('/notification/textDocument/didClose', {
+          session: sessionId
+        });
+      });
+    });
 
-        if (!editor.getValue()) {
-          $("#run-button").prop('disabled', true)
-          $("#share-button").prop('disabled', true)
+    const resultsEditor = ace.edit("results-editor");
+    resultsEditor.setTheme("ace/theme/terminal");
+    resultsEditor.session.setMode("ace/mode/text");
+    resultsEditor.$blockScrolling = Infinity
+    resultsEditor.setOptions({
+      readOnly: true,
+      highlightActiveLine: false,
+      highlightSelectedWord: false,
+      autoScrollEditorIntoView: true,
+    });
+    resultsEditor.renderer.setOptions({
+      showGutter: false,
+      showPrintMargin: false,
+      showInvisibles: false,
+      fontFamily: "menlo",
+      fontSize: "11pt",
+    });
+    resultsEditor.renderer.hideCursor();
+
+    $("#run-button").click(function (e) {
+      e.preventDefault();
+      run($(this), editor);
+    });
+
+    function run(sender, editor) {
+      const buttonTitle = deactivate(sender);
+      const intid = showProgress(resultsEditor);
+      const code = editor.getValue();
+      const params = {
+        toolchain_version: $("#versionSelect").val().replace('/', '_'),
+        code: code
+      };
+      $.post('/run', params, (data, error, xhr) => {
+        resultsEditor.setValue(data.version + data.errors + data.output);
+        resultsEditor.clearSelection();
+        clearInterval(intid);
+        editor.focus();
+        activate(sender, buttonTitle);
+      });
+    }
+
+    function activate(button, buttonTitle) {
+      button.prop("disabled", false);
+      button.html(buttonTitle);
+    }
+
+    function deactivate(button) {
+      button.prop("disabled", true);
+      var buttonTitle = button.html();
+      button.html('<i class="fa fa-circle-o-notch fa-spin" aria-hidden="true"></i> Processing...');
+      resultsEditor.setValue("");
+      return buttonTitle
+    }
+
+    function showProgress(editor) {
+      let counter = 0
+      return setInterval(() => {
+        if (counter == 0) {
+          resultsEditor.setValue('Executing...');
+          counter += 1;
         } else {
-          $("#run-button").prop('disabled', false)
-          $("#share-button").prop('disabled', false)
+          resultsEditor.setValue(resultsEditor.getValue() + '.');
         }
-      });
-      editor.commands.addCommand({
-        name: "triggerAutoCompletion",
-        bindKey: { win: "escape", mac: "escape" },
-        exec: (editor) => {
-          const cursorPosition = editor.getCursorPosition();
-          setTimeout(() => {
-            editor.commands.byName.startAutocomplete.exec(editor);
-          }, 0);
-        }
-      })
+        resultsEditor.clearSelection();
+      }, 1500);
+    }
+  </script>
 
-      ace.require("ace/autocomplete").FilteredList.prototype.setFilter = function (str) {
-        if (str.length > this.filterText && str.lastIndexOf(this.filterText, 0) === 0)
-          var matches = this.filtered;
-        else
-          var matches = this.all;
-
-        let customItems = [];
-        const index = matches.findIndex((e) => e["sourcekit-lsp"])
-        if (index >= 0) {
-          customItems = matches.splice(index);
-        }
-
-        this.filterText = str;
-        matches = this.filterCompletions(matches, this.filterText);
-        matches = matches.sort(function(a, b) {
-          return b.exactMatch - a.exactMatch || b.$score - a.$score
-            || (a.caption || a.value).localeCompare(b.caption || b.value);
-        });
-
-        matches = customItems.concat(matches);
-
-        // make unique
-        var prev = null;
-        matches = matches.filter(function(item){
-          var caption = item.snippet || item.caption || item.value;
-          if (caption === prev) return false;
-          prev = caption;
-          return true;
-        });
-
-        this.filtered = matches;
+  <script>
+    function showShareSheet() {
+      const code = editor.getValue();
+      const params = {
+        toolchain_version: $("#versionSelect").val().replace("/", "_"),
+        code: code,
       };
-
-      let completions = [];
-      var completer = {
-        getCompletions: (editor, session, pos, prefix, callback) => {
-          if (completions.length) {
-            callback(null, completions);
-            completions = [];
-            return;
-          }
-          $.post("/request/textDocument/completion", { session: sessionId, cursorPosition: { row: pos.row, column: pos.column }, prefix: prefix }, (data, error, xhr) => {
-            if (data && data.length) {
-              completions = data.map((item) => {
-                let insertText = item.lebel;
-                if (item.textEdit) {
-                  insertText = item.textEdit.newText;
-                }
-                return {
-                  caption: item.filterText || item.label,
-                  name: item.label,
-                	value: insertText,
-                	meta: item.detail,
-                  "sourcekit-lsp-kind": item.kind,
-                  "sourcekit-lsp": true,
-                };
-              })
-              editor.commands.byName.startAutocomplete.exec(editor);
-            }
-          });
-        },
-        getDocTooltip: (item) => {
-          if (!item["sourcekit-lsp"]) {
-            return;
-          }
-
-          let kind = null;
-          switch (item["sourcekit-lsp-kind"]) {
-            case 1:
-              kind = "M"; // method
-              break;
-            case 2:
-              kind = "F"; // function
-              break;
-            case 6:
-              kind = "C"; // class
-              break;
-            case 7:
-              kind = "I"; // interface
-              break;
-            case 10:
-              kind = "P"; // property
-              break;
-            case 12:
-              kind = "E"; // enum
-              break;
-            case 21:
-              kind = "S"; // struct
-              break;
-          }
-          const img = kind ? `<img srcset="images/${kind}.png, images/${kind}@2x.png 2x, images/${kind}@3x.png 3x" width="16" height="16" align="center" style="vertical-align: text-bottom;"/>` : ""
-          item.docHTML = `${img} ${hljs.highlight("swift", `${lang.escapeHTML(item.name)} -> ${lang.escapeHTML(item.meta)}`).value}`;
+      $.post("/shared_link", params, (data, error, xhr) => {
+        if (data) {
+          const url = data.shared_link.url
+          $("#shared_link").val(url);
+          $(".btn-facebook").attr("href", `https://www.facebook.com/sharer/sharer.php?u=${url}`)
+          $(".btn-twitter").attr("href", `https://twitter.com/intent/tweet?text=&url=${url}`)
+          $(".btn-line").attr("href", `https://social-plugins.line.me/lineit/share?url=${url}`)
+          $(".btn-pocket").attr("href", `https://getpocket.com/edit?url=${url}`)
+          $("#shareSheet").modal();
         }
-      };
-      langTools.addCompleter(completer);
-
-      $.post('/request/initialize', { session: sessionId, text: editor.getValue() }, (data, error, xhr) => {
-        $(window).on('beforeunload', (e) => {
-          $.post('/notification/textDocument/didClose', { session: sessionId });
-        });
       });
+      $("#shareSheet").modal();
+    }
 
-      const resultsEditor = ace.edit("results-editor");
-      resultsEditor.setTheme("ace/theme/terminal");
-      resultsEditor.session.setMode("ace/mode/text");
-      resultsEditor.$blockScrolling = Infinity
-      resultsEditor.setOptions({
-        readOnly: true,
-        highlightActiveLine: false,
-        highlightSelectedWord: false,
-        autoScrollEditorIntoView: true,
-      });
-      resultsEditor.renderer.setOptions({
-        showGutter: false,
-        showPrintMargin: false,
-        showInvisibles: false,
-        fontFamily: "menlo",
-        fontSize: "11pt",
-      });
-      resultsEditor.renderer.hideCursor();
-
-      $("#run-button").click(function (e){
-        e.preventDefault();
-        run($(this), editor);
-      });
-
-      function run(sender, editor) {
-        const buttonTitle = deactivate(sender);
-        const intid = showProgress(resultsEditor);
-        const code = editor.getValue();
-        const params = {
-          toolchain_version: $("#versionSelect").val().replace('/', '_'),
-          code: code
-        };
-        $.post('/run', params, (data, error, xhr) => {
-          resultsEditor.setValue(data.version + data.errors + data.output);
-          resultsEditor.clearSelection();
-          clearInterval(intid);
-          editor.focus();
-          activate(sender, buttonTitle);
-        });
+    function copySharedLink() {
+      if (navigator.clipboard) {
+        navigator.clipboard.writeText($("#shared_link").val());
       }
+      const message = $(".share-sheet-copy-message");
+      message.hide();
+      message.text("link copied!");
+      message.fadeIn(500).delay(1000).fadeOut(500);
+    }
+  </script>
 
-      function activate(button, buttonTitle) {
-        button.prop("disabled", false);
-        button.html(buttonTitle);
+  <script>
+    function handleFileSelect(evt) {
+      evt.stopPropagation();
+      evt.preventDefault();
+
+      var files = evt.dataTransfer.files;
+      var reader = new FileReader();
+      reader.onload = (event) => {
+        const editor = ace.edit("editor");
+        editor.setValue(event.target.result);
+        editor.clearSelection();
       }
+      reader.readAsText(files[0], "UTF-8");
+    }
 
-      function deactivate(button) {
-        button.prop("disabled", true);
-        var buttonTitle = button.html();
-        button.html('<i class="fa fa-circle-o-notch fa-spin" aria-hidden="true"></i> Processing...');
-        resultsEditor.setValue("");
-        return buttonTitle
-      }
+    function handleDragOver(evt) {
+      evt.stopPropagation();
+      evt.preventDefault();
+      evt.dataTransfer.dropEffect = 'copy';
+    }
 
-      function showProgress(editor) {
-        let counter = 0
-        return setInterval(() => {
-          if (counter == 0) {
-            resultsEditor.setValue('Executing...');
-            counter += 1;
-          } else {
-            resultsEditor.setValue(resultsEditor.getValue() + '.');
-          }
-          resultsEditor.clearSelection();
-        }, 1500);
-      }
-    </script>
+    const dropZone = document.getElementById('editor');
+    dropZone.addEventListener('dragover', handleDragOver, false);
+    dropZone.addEventListener('drop', handleFileSelect, false);
+  </script>
+</body>
 
-    <script>
-      function showShareSheet() {
-        const code = editor.getValue();
-        const params = {
-          toolchain_version: $("#versionSelect").val().replace("/", "_"),
-          code: code,
-        };
-        $.post("/shared_link", params, (data, error, xhr) => {
-          if (data) {
-            const url = data.shared_link.url
-            $("#shared_link").val(url);
-            $(".btn-facebook").attr("href", `https://www.facebook.com/sharer/sharer.php?u=${url}`)
-            $(".btn-twitter").attr("href", `https://twitter.com/intent/tweet?text=&url=${url}`)
-            $(".btn-line").attr("href", `https://social-plugins.line.me/lineit/share?url=${url}`)
-            $(".btn-pocket").attr("href", `https://getpocket.com/edit?url=${url}`)
-            $("#shareSheet").modal();
-          }
-        });
-        $("#shareSheet").modal();
-      }
-
-      function copySharedLink() {
-        if (navigator.clipboard) {
-          navigator.clipboard.writeText($("#shared_link").val());
-        }
-        const message = $(".share-sheet-copy-message");
-        message.hide();
-        message.text("link copied!");
-        message.fadeIn(500).delay(1000).fadeOut(500);
-      }
-    </script>
-
-    <script>
-      function handleFileSelect(evt) {
-        evt.stopPropagation();
-        evt.preventDefault();
-
-        var files = evt.dataTransfer.files;
-        var reader = new FileReader();
-        reader.onload = (event) => {
-          const editor = ace.edit("editor");
-          editor.setValue(event.target.result);
-          editor.clearSelection();
-        }
-        reader.readAsText(files[0],"UTF-8");
-      }
-
-      function handleDragOver(evt) {
-        evt.stopPropagation();
-        evt.preventDefault();
-        evt.dataTransfer.dropEffect = 'copy';
-      }
-
-      const dropZone = document.getElementById('editor');
-      dropZone.addEventListener('dragover', handleDragOver, false);
-      dropZone.addEventListener('drop', handleFileSelect, false);
-    </script>
-  </body>
 </html>
