@@ -239,7 +239,7 @@ func availableVersions() throws -> [String] {
     guard let output = try process.result?.utf8Output(), !output.isEmpty else  {
         return [stableVersion()]
     }
-    let versions = Array(Set(output.split(separator: "\n").filter { $0.starts(with: "swift") && !$0.contains("playground") }.map { $0.split(separator: "-").dropFirst().joined(separator: "-") }.map { String($0) })).sorted(by: >)
+    let versions = Set(output.split(separator: "\n").map { $0.replacingOccurrences(of: "-bionic", with: "").replacingOccurrences(of: "-focal", with: "") }).sorted(by: >)
     return versions.isEmpty ? [stableVersion()] : versions
 }
 
