@@ -206,7 +206,6 @@ func routes(_ app: Application) throws {
         let code = parameter.code
         let swiftVersion = parameter.toolchain_version
         let id = Base32.base32Encode(UUID().uuidString.replacingOccurrences(of: "-", with: "").hexaData).replacingOccurrences(of: "=", with: "").lowercased()
-        print(id)
 
         let promise = req.eventLoop.makePromise(of: [String: String].self)
 
@@ -237,19 +236,26 @@ private func availableVersions() throws -> [String] {
     guard let output = try process.result?.utf8Output(), !output.isEmpty else  {
         return [stableVersion()]
     }
+
     let versions = Set(output.split(separator: "\n").map { $0.replacingOccurrences(of: "-bionic", with: "").replacingOccurrences(of: "-focal", with: "") }).sorted(by: >)
     return versions.isEmpty ? [stableVersion()] : versions
 }
 
 private func imageTag(for prefix: String) throws -> String? {
-    let process = Process(args: "docker", "images", "--filter=reference=swift", "--filter=reference=*/swift", "--format", "{{.Tag}}{{.Repository}}:{{.Tag}}")
+    let process = Process(args: "docker", "images", "--filter=reference=swift", "--filter=reference=*/swift", "--format", "{{.Tag}} {{.Repository}}:{{.Tag}}")
     try process.launch()
     try process.waitUntilExit()
 
     guard let output = try process.result?.utf8Output(), !output.isEmpty else  {
         return nil
     }
-    return output.split(separator: "\n").sorted().filter { $0.starts(with: prefix) }.map { String($0) }.first
+
+    return output
+        .split(separator: "\n")
+        .sorted()
+        .filter { $0.starts(with: prefix) }
+        .map { String($0.split(separator: " ")[1]) }
+        .first
 }
 
 struct RequestParameter: Decodable {
