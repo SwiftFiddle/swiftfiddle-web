@@ -17,13 +17,3 @@ workflows:
             #!/usr/bin/env bash
             set -ex
             export NSUnbufferedIO=YES
-
-            ssh katsumi@138.68.23.220 <<EOC
-            set -ex
-            hostname
-            cd 'swift-playground'
-            git pull --rebase origin master
-            [ -s "/home/katsumi/.nvm/nvm.sh" ] && \. "/home/katsumi/.nvm/nvm.sh"
-            npm install
-            forever restart app.js
-            EOC

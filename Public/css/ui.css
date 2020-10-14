@@ -1,0 +1,37 @@
+html {
+  position: relative;
+  min-height: 100%;
+}
+
+body {
+  /* Margin bottom by footer height */
+  margin-bottom: 60px;
+  background-color: #F5F5F5; color: #333333;
+}
+
+/* Swift Logo */
+.fa-swift {
+  color: #F05138;
+}
+
+#run-button {
+  width: 230px;
+}
+
+.fa-play-circle {
+  margin-left: 12px;
+}
+
+.footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 60px;
+  line-height: 60px;
+  background-color: #F5F5F5;
+}
+
+/* GitHub Icon */
+.fa.fa-github {
+  color: #999999;
+}

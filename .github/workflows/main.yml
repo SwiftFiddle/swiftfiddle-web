@@ -1,0 +1,14 @@
+name: CI
+on:
+  push:
+    branches: [master]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Deploy
+        run: |
+          set -ex
+          export NSUnbufferedIO=YES

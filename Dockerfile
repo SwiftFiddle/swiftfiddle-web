@@ -1,42 +1,42 @@
-FROM ubuntu:16.04
-LABEL maintainer="Katsumi Kishikawa <kishikawakatsumi@mac.com>"
-LABEL Description="Docker Container for the Apple's Swift programming language"
+FROM swift:5.3-focal as build
 
-# Install related packages and set LLVM 3.8 as the compiler
-RUN apt-get -q update && \
-    apt-get -q install -y \
-    make \
-    libc6-dev \
-    clang-3.8 \
+RUN export DEBIAN_FRONTEND=noninteractive DEBCONF_NONINTERACTIVE_SEEN=true \
+    && apt-get -q update \
+    && apt-get -q dist-upgrade -y \
+    && apt-get install -y --no-install-recommends libsqlite3-dev \
+    && rm -rf /var/lib/apt/lists/*
+
+WORKDIR /build
+
+COPY ./Package.* ./
+RUN swift package resolve
+COPY . .
+RUN swift build --enable-test-discovery -c release
+
+WORKDIR /staging
+
+RUN cp "$(swift build --package-path /build -c release --show-bin-path)/Run" ./
+RUN mv /build/Public ./Public && chmod -R a-w ./Public && mv /build/Resources ./Resources && chmod -R a-w ./Resources
+
+FROM swift:5.3-focal-slim
+
+RUN export DEBIAN_FRONTEND=noninteractive DEBCONF_NONINTERACTIVE_SEEN=true && \
+    apt-get -q update && apt-get -q dist-upgrade -y && rm -r /var/lib/apt/lists/*
+
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    apt-transport-https \
+    ca-certificates \
     curl \
-    libedit-dev \
-    libpython2.7 \
-    libicu-dev \
-    libssl-dev \
-    libxml2 \
-    tzdata \
-    git \
-    libcurl4-openssl-dev \
-    pkg-config \
-    && update-alternatives --quiet --install /usr/bin/clang clang /usr/bin/clang-3.8 100 \
-    && update-alternatives --quiet --install /usr/bin/clang++ clang++ /usr/bin/clang++-3.8 100 \
-    && rm -r /var/lib/apt/lists/*
+    gnupg-agent \
+    software-properties-common \
+    && curl -fsSL https://download.docker.com/linux/ubuntu/gpg | apt-key add - \ 
+    && add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" \
+    && apt-get update && apt-get install -y --no-install-recommends docker-ce docker-ce-cli containerd.io
 
-ARG SWIFT_PLATFORM=ubuntu16.04
-ARG SWIFT_BRANCH=swift-4.1-release
-ARG SWIFT_VERSION=swift-4.1-RELEASE
+WORKDIR /app
+COPY --from=build /staging /app
 
-ENV SWIFT_PLATFORM=$SWIFT_PLATFORM \
-    SWIFT_BRANCH=$SWIFT_BRANCH \
-    SWIFT_VERSION=$SWIFT_VERSION
+EXPOSE 8080
 
-RUN SWIFT_URL=https://swift.org/builds/$SWIFT_BRANCH/$(echo "$SWIFT_PLATFORM" | tr -d .)/$SWIFT_VERSION/$SWIFT_VERSION-$SWIFT_PLATFORM.tar.gz \
-    && curl -fSsL $SWIFT_URL -o swift.tar.gz \
-    && curl -fSsL $SWIFT_URL.sig -o swift.tar.gz.sig \
-    && export GNUPGHOME="$(mktemp -d)" \
-    && tar -xzf swift.tar.gz --directory / --strip-components=1 \
-    && rm -r "$GNUPGHOME" swift.tar.gz.sig swift.tar.gz \
-    && chmod -R o+r /usr/lib/swift
-
-# Print Installed Swift Version
-RUN swift --version
+ENTRYPOINT ["./Run"]
+CMD ["serve", "--env", "production", "--hostname", "0.0.0.0", "--port", "8080"]
