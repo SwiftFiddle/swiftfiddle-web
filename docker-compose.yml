@@ -37,147 +37,95 @@ services:
     image: swift:5.2.5-focal
     container_name: swift-5.2.5
   swift-5.2.4:
-    build:
-      context: ./swift-docker/5.2.4
     image: swift:5.2.4
     container_name: swift-5.2.4
   swift-5.2.3:
-    build:
-      context: ./swift-docker/5.2.3
     image: swift:5.2.3
     container_name: swift-5.2.3
   swift-5.2.2:
-    build:
-      context: ./swift-docker/5.2.2
     image: swift:5.2.2
     container_name: swift-5.2.2
   swift-5.2.1:
-    build:
-      context: ./swift-docker/5.2.1
     image: swift:5.2.1
     container_name: swift-5.2.1
   swift-5.2:
-    build:
-      context: ./swift-docker/5.2
-    image: swift:5.2
+    image: kishikawakatsumi/swift:5.2
     container_name: swift-5.2
   swift-5.1.5:
     image: swift:5.1.5-bionic
     container_name: swift-5.1.5
   swift-5.1.4:
-    build:
-      context: ./swift-docker/5.1.4
     image: swift:5.1.4
     container_name: swift-5.1.4
   swift-5.1.3:
-    build:
-      context: ./swift-docker/5.1.3
     image: swift:5.1.3
     container_name: swift-5.1.3
   swift-5.1.2:
-    build:
-      context: ./swift-docker/5.1.2
     image: swift:5.1.2
     container_name: swift-5.1.2
   swift-5.1.1:
-    build:
-      context: ./swift-docker/5.1.1
     image: swift:5.1.1
     container_name: swift-5.1.1
   swift-5.1:
-    build:
-      context: ./swift-docker/5.1
-    image: swift:5.1
+    image: kishikawakatsumi/swift:5.1
     container_name: swift-5.1
   swift-5.0.3:
     image: swift:5.0.3-bionic
     container_name: swift-5.0.3
   swift-5.0.2:
-    build:
-      context: ./swift-docker/5.0.2
     image: swift:5.0.2
     container_name: swift-5.0.2
   swift-5.0.1:
-    build:
-      context: ./swift-docker/5.0.1
     image: swift:5.0.1
     container_name: swift-5.0.1
   swift-5.0:
-    build:
-      context: ./swift-docker/5.0
-    image: swift:5.0
+    image: kishikawakatsumi/swift:5.0
     container_name: swift-5.0
   swift-4.2.4:
     image: swift:4.2.4
     container_name: swift-4.2.4
   swift-4.2.3:
-    build:
-      context: ./swift-docker/4.2.3
     image: swift:4.2.3
     container_name: swift-4.2.3
   swift-4.2.2:
-    build:
-      context: ./swift-docker/4.2.2
     image: swift:4.2.2
     container_name: swift-4.2.2
   swift-4.2.1:
-    build:
-      context: ./swift-docker/4.2.1
     image: swift:4.2.1
     container_name: swift-4.2.1
   swift-4.2:
-    build:
-      context: ./swift-docker/4.2
-    image: swift:4.2
+    image: kishikawakatsumi/swift:4.2
     container_name: swift-4.2
   swift-4.1.3:
     image: swift:4.1.3
     container_name: swift-4.1.3
   swift-4.1.2:
-    build:
-      context: ./swift-docker/4.1.2
-    image: swift:4.1.2
+    image: kishikawakatsumi/swift:4.1.2
     container_name: swift-4.1.2
   swift-4.1.1:
-    build:
-      context: ./swift-docker/4.1.1
-    image: swift:4.1.1
+    image: kishikawakatsumi/swift:4.1.1
     container_name: swift-4.1.1
   swift-4.1:
-    build:
-      context: ./swift-docker/4.1
-    image: swift:4.1
+    image: kishikawakatsumi/swift:4.1
     container_name: swift-4.1
   swift-4.0.3:
     image: swift:4.0.3
     container_name: swift-4.0.3
   swift-4.0.2:
-    build:
-      context: ./swift-docker/4.0.2
     image: swift:4.0.2
     container_name: swift-4.0.2
   swift-4.0:
-    build:
-      context: ./swift-docker/4.0
-    image: swift:4.0
+    image: kishikawakatsumi/swift:4.0
     container_name: swift-4.0
   swift-3.1.1:
-    build:
-      context: ./swift-docker/3.1.1
     image: swift:3.1.1
     container_name: swift-3.1.1
   swift-3.1:
-    build:
-      context: ./swift-docker/3.1
-    image: swift:3.1
+    image: kishikawakatsumi/swift:3.1
     container_name: swift-3.1
   swift-3.0.2:
-    build:
-      context: ./swift-docker/3.0.2
     image: swift:3.0.2
     container_name: swift-3.0.2
   swift-3.0.1:
-    build:
-      context: ./swift-docker/3.0.1
-    image: swift:3.0.1
+    image: kishikawakatsumi/swift:3.0.1
     container_name: swift-3.0.1
