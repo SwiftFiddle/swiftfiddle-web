@@ -58,7 +58,7 @@ func routes(_ app: Application) throws {
 
         if let id = try SharedLink.id(from: req.url.path) {
             let promise = req.eventLoop.makePromise(of: Response.self)
-            try SharedLink.content(client: req.client, id: id)
+            try SharedLink.content(client: req.client, id: id.replacingOccurrences(of: ".png", with: ""))
                 .whenComplete {
                     switch $0 {
                     case .success(let content):
