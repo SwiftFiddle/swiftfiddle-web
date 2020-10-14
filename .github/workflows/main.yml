@@ -30,7 +30,7 @@ jobs:
 
           dc='docker run --rm -v /var/run/docker.sock:/var/run/docker.sock -v "\$PWD:\$PWD" -w="\$PWD" docker/compose:1.27.4'
           eval \$dc pull
-          eval \$dc up app nginx-proxy letsencrypt --detach
+          eval \$dc up --detach app nginx-proxy letsencrypt
 
           docker image prune --force
           exit 0
