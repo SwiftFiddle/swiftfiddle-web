@@ -241,15 +241,15 @@ private func availableVersions() throws -> [String] {
     return versions.isEmpty ? [stableVersion()] : versions
 }
 
-private func imageTag(for infix: String) throws -> String? {
-    let process = Process(args: "docker", "images", "--filter=reference=swift", "--filter=reference=*/swift", "--format", "{{.Repository}}:{{.Tag}}")
+private func imageTag(for prefix: String) throws -> String? {
+    let process = Process(args: "docker", "images", "--filter=reference=swift", "--filter=reference=*/swift", "--format", "{{.Tag}}{{.Repository}}:{{.Tag}}")
     try process.launch()
     try process.waitUntilExit()
 
     guard let output = try process.result?.utf8Output(), !output.isEmpty else  {
         return nil
     }
-    return output.split(separator: "\n").filter { $0.contains(infix) }.map { String($0) }.first
+    return output.split(separator: "\n").sorted().filter { $0.starts(with: prefix) }.map { String($0) }.first
 }
 
 struct RequestParameter: Decodable {
