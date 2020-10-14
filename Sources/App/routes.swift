@@ -232,7 +232,7 @@ func routes(_ app: Application) throws {
 }
 
 func availableVersions() throws -> [String] {
-    let process = Process(args: "docker", "ps", "--all", "--format", "{{.Names}}")
+    let process = Process(args: "docker", "images", "--filter=reference=swift", "--filter=reference=*/swift", "--format", "{{.Tag}}")
     try process.launch()
     try process.waitUntilExit()
 
