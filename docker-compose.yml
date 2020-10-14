@@ -31,6 +31,7 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock:ro
       - $PWD/Resources/Temp:/app/Resources/Temp
     network_mode: bridge
+    restart: always
 
   nginx-proxy:
     image: jwilder/nginx-proxy
@@ -46,6 +47,7 @@ services:
       - /var/run/docker.sock:/tmp/docker.sock:ro
       - ./certs:/etc/nginx/certs:ro
     network_mode: bridge
+    restart: always
 
   letsencrypt:
     image: jrcs/letsencrypt-nginx-proxy-companion
@@ -58,6 +60,7 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock:ro
       - ./certs:/etc/nginx/certs:rw
     network_mode: bridge
+    restart: always
 
   swift-nightly-master:
     image: swiftlang/swift:nightly-master
