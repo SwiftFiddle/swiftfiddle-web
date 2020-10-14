@@ -82,7 +82,7 @@ function run(sender, editor) {
     toolchain_version: $("#versionPicker").val().replace('/', '_'),
     code: code
   };
-  console.log(params)
+
   $.post('/run', params, (data, error, xhr) => {
     resultsEditor.setValue(data.version + data.errors + data.output);
     resultsEditor.clearSelection();
@@ -139,8 +139,6 @@ function showShareSheet() {
 }
 
 function copySharedLink() {
-  console.log(navigator.clipboard);
-  console.log($("#shared_link").val());
   if (navigator.clipboard) {
     navigator.clipboard.writeText($("#shared_link").val());
   }
