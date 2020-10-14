@@ -141,8 +141,8 @@ func routes(_ app: Application) throws {
             try code.data(using: .utf8)?.write(to: temporaryPath.appendingPathComponent("main.swift"))
 
             let image: String
-            if let imageTag = try imageTag(for: toolchainVersion) {
-                image = "swift:\(imageTag)"
+            if let tag = try imageTag(for: toolchainVersion) {
+                image = tag
             } else {
                 throw Abort(.internalServerError)
             }
@@ -242,7 +242,7 @@ private func availableVersions() throws -> [String] {
 }
 
 private func imageTag(for prefix: String) throws -> String? {
-    let process = Process(args: "docker", "images", "--filter=reference=swift", "--filter=reference=*/swift", "--format", "{{.Tag}}")
+    let process = Process(args: "docker", "images", "--filter=reference=swift", "--filter=reference=*/swift", "--format", "{{.Repository}}:{{.Tag}}")
     try process.launch()
     try process.waitUntilExit()
 
