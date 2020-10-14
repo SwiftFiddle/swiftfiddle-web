@@ -211,10 +211,6 @@
     integrity="sha512-yDlE7vpGDP7o2eftkCiPZ+yuUyEcaBwoJoIhdXv71KZWugFqEphIS3PU60lEkFaz8RxaVsMpSvQxMBaKVwA5xg=="
     crossorigin="anonymous"></script>
 
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/uuid/8.3.0/uuidv4.min.js"
-    integrity="sha512-Uty7RUUiqucKlBdWuDQVKAhohBvgRCQ3pu7hm6F26YV14VDYCOdfzMKfm8NE0rxTPJZHx6tDvJc6YqMCIQggoQ=="
-    crossorigin="anonymous"></script>
-
   <script src="js/editor.js"></script>
 </body>
 
