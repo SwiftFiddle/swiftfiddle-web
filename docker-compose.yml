@@ -32,32 +32,32 @@ services:
       - $PWD/Resources/Temp:/app/Resources/Temp
     network_mode: bridge
 
-    nginx-proxy:
-      image: jwilder/nginx-proxy
-      container_name: nginx-proxy
-      labels:
-        - com.github.jrcs.letsencrypt_nginx_proxy_companion.nginx_proxy=jwilder/nginx-proxy
-      ports:
-        - 80:80
-        - 443:443
-      volumes:
-        - proxy:/etc/nginx/vhost.d
-        - proxy:/usr/share/nginx/html
-        - /var/run/docker.sock:/tmp/docker.sock:ro
-        - ./certs:/etc/nginx/certs:ro
-      network_mode: bridge
+  nginx-proxy:
+    image: jwilder/nginx-proxy
+    container_name: nginx-proxy
+    labels:
+      - com.github.jrcs.letsencrypt_nginx_proxy_companion.nginx_proxy=jwilder/nginx-proxy
+    ports:
+      - 80:80
+      - 443:443
+    volumes:
+      - proxy:/etc/nginx/vhost.d
+      - proxy:/usr/share/nginx/html
+      - /var/run/docker.sock:/tmp/docker.sock:ro
+      - ./certs:/etc/nginx/certs:ro
+    network_mode: bridge
 
-    letsencrypt:
-      image: jrcs/letsencrypt-nginx-proxy-companion
-      container_name: letsencrypt
-      depends_on:
-        - nginx-proxy
-      volumes:
-        - proxy:/etc/nginx/vhost.d
-        - proxy:/usr/share/nginx/html
-        - /var/run/docker.sock:/var/run/docker.sock:ro
-        - ./certs:/etc/nginx/certs:rw
-      network_mode: bridge
+  letsencrypt:
+    image: jrcs/letsencrypt-nginx-proxy-companion
+    container_name: letsencrypt
+    depends_on:
+      - nginx-proxy
+    volumes:
+      - proxy:/etc/nginx/vhost.d
+      - proxy:/usr/share/nginx/html
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - ./certs:/etc/nginx/certs:rw
+    network_mode: bridge
 
   swift-nightly-master:
     image: swiftlang/swift:nightly-master
