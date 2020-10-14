@@ -12,3 +12,26 @@ jobs:
         run: |
           set -ex
           export NSUnbufferedIO=YES
+
+          docker login --username ${{ secrets.DOCKER_HUB_USERNAME }} --password ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
+          docker build --rm --no-cache --tag kishikawakatsumi/swift-playground .
+          docker push kishikawakatsumi/swift-playground
+
+          mkdir -p ~/.ssh
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+
+          TERM=xterm ssh -t -t -o 'StrictHostKeyChecking no' "${{ secrets.SSH_LOGIN_USER }}@${{ secrets.SSH_HOST }}" <<EOC
+          set -ex
+          hostname
+
+          cd "\$HOME/app"
+          git pull --rebase origin master
+
+          dc='docker run --rm -v /var/run/docker.sock:/var/run/docker.sock -v "\$PWD:\$PWD" -w="\$PWD" docker/compose:1.27.4'
+          eval \$dc pull
+          eval \$dc up app nginx-proxy letsencrypt --detach
+
+          docker image prune --force
+          exit 0
+          EOC
