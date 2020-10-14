@@ -141,9 +141,7 @@ func routes(_ app: Application) throws {
             try code.data(using: .utf8)?.write(to: temporaryPath.appendingPathComponent("main.swift"))
 
             let image: String
-            if let imageName = try imageName(for: toolchainVersion) {
-                image = imageName
-            } else if let imageTag = try imageTag(for: toolchainVersion) {
+            if let imageTag = try imageTag(for: toolchainVersion) {
                 image = "swift:\(imageTag)"
             } else {
                 throw Abort(.internalServerError)
@@ -231,7 +229,7 @@ func routes(_ app: Application) throws {
     }
 }
 
-func availableVersions() throws -> [String] {
+private func availableVersions() throws -> [String] {
     let process = Process(args: "docker", "images", "--filter=reference=swift", "--filter=reference=*/swift", "--format", "{{.Tag}}")
     try process.launch()
     try process.waitUntilExit()
@@ -243,19 +241,8 @@ func availableVersions() throws -> [String] {
     return versions.isEmpty ? [stableVersion()] : versions
 }
 
-private func imageName(for containerName: String) throws -> String? {
-    let process = Process(args: "docker", "ps", "--all", "--filter", "name=^/swift-\(containerName)$", "--format", "{{.Image}}")
-    try process.launch()
-    try process.waitUntilExit()
-
-    guard let output = try process.result?.utf8Output(), !output.isEmpty else  {
-        return nil
-    }
-    return output.trimmingCharacters(in: .whitespacesAndNewlines)
-}
-
 private func imageTag(for prefix: String) throws -> String? {
-    let process = Process(args: "docker", "images", "swift", "--format", "{{.Tag}}")
+    let process = Process(args: "docker", "images", "--filter=reference=swift", "--filter=reference=*/swift", "--format", "{{.Tag}}")
     try process.launch()
     try process.waitUntilExit()
 
