@@ -4,13 +4,19 @@ services:
   app:
     image: kishikawakatsumi/swift-playground:latest
     container_name: swift-playground
+    depends_on:
+      - letsencrypt
     env_file:
       - .env
     environment:
       LOG_LEVEL: ${LOG_LEVEL:-info}
       HOST_PWD: $PWD
+      VIRTUAL_HOST: swiftfiddle.com
+      VIRTUAL_PORT: 8080
+      LETSENCRYPT_HOST: swiftfiddle.com
+      LETSENCRYPT_EMAIL: kishikawakatsumi@mac.com
     ports:
-      - "8080:8080"
+      - 8080:8080
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
       - $PWD/Resources/Temp:/app/Resources/Temp
@@ -24,6 +30,8 @@ services:
         "--port",
         "8080",
       ]
+    network_mode: bridge
+
   swift-nightly-master:
     image: swiftlang/swift:nightly-master
     container_name: swift-nightly-master
@@ -129,3 +137,33 @@ services:
   swift-3.0.1:
     image: kishikawakatsumi/swift:3.0.1
     container_name: swift-3.0.1
+
+  nginx-proxy:
+    image: jwilder/nginx-proxy
+    container_name: nginx-proxy
+    labels:
+      - com.github.jrcs.letsencrypt_nginx_proxy_companion.nginx_proxy=jwilder/nginx-proxy
+    ports:
+      - 80:80
+      - 443:443
+    volumes:
+      - proxy:/etc/nginx/vhost.d
+      - proxy:/usr/share/nginx/html
+      - /var/run/docker.sock:/tmp/docker.sock:ro
+      - ./certs:/etc/nginx/certs:ro
+    network_mode: bridge
+
+  letsencrypt:
+    image: jrcs/letsencrypt-nginx-proxy-companion
+    container_name: letsencrypt
+    depends_on:
+      - nginx-proxy
+    volumes:
+      - proxy:/etc/nginx/vhost.d
+      - proxy:/usr/share/nginx/html
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - ./certs:/etc/nginx/certs:rw
+    network_mode: bridge
+
+volumes:
+  proxy:
