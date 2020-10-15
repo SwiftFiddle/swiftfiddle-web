@@ -79,9 +79,9 @@
     <div class="row">
       <div class="col-sm3 mx-auto" style="margin-top: 15px; margin-bottom: 20px;">
         <div class="btn-group" role="group">
-          <div class="btn-group" style="width: 40%;" role="group">
+          <div class="btn-group" style="width: 50%;" role="group">
             <select id="versionPicker" class="selectpicker show-tick dropdown" data-style="btn btn-lg btn-secondary"
-              data-width="auto" data-tickIcon="fa-check">
+              data-tickIcon="fa-check">
               #for(versionGroup in versions):
               <optgroup label="#(versionGroup.majorVersion)">
                 #for(version in versionGroup.versions):
