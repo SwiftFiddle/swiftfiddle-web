@@ -19,15 +19,13 @@ body {
   line-height: 1;
 }
 
+/* Dropdown group button style */
 .dropdown-toggle {
   border-top-right-radius: 0;
   border-bottom-right-radius: 0;
 }
 
-.filter-option {
-  font-stretch: semi-condensed;
-}
-
+/* Dropdown caret */
 .dropup .dropdown-toggle::after {
   border-top: .3em solid;
   border-right: .3em solid transparent;
