@@ -9,12 +9,12 @@ steps:
     set -ex
     export NSUnbufferedIO=YES
 
-    docker login --username ${{ secrets.DOCKER_HUB_USERNAME }} --password ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
+    docker login --username $DOCKER_HUB_USERNAME --password $DOCKER_HUB_ACCESS_TOKEN
     docker build --rm --no-cache --tag kishikawakatsumi/swift-ast-explorer .
     docker push kishikawakatsumi/swift-ast-explorer
 
     mkdir -p ~/.ssh
-    echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+    echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
     chmod 600 ~/.ssh/id_rsa
 
     TERM=xterm ssh -t -t -o 'StrictHostKeyChecking no' "$SSH_LOGIN_USER@$SSH_HOST" <<EOC
