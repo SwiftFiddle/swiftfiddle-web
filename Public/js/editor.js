@@ -26,7 +26,6 @@ editor.renderer.setOptions({
   showFoldWidgets: false,
   showPrintMargin: false,
 });
-editor.container.style.lineHeight = 1.5;
 
 if (!editor.completer) {
   editor.execCommand("startAutocomplete");
@@ -66,7 +65,6 @@ resultsEditor.renderer.setOptions({
   fontFamily: "Menlo,sans-serif,monospace",
   fontSize: "11pt",
 });
-resultsEditor.container.style.lineHeight = 1.5;
 resultsEditor.renderer.hideCursor();
 
 $("#run-button").click(function (e) {
@@ -83,13 +81,19 @@ function run(sender, editor) {
     code: code,
   };
 
-  $.post("/run", params, (data, error, xhr) => {
-    resultsEditor.setValue(data.version + data.errors + data.output);
-    resultsEditor.clearSelection();
-    clearInterval(intid);
-    editor.focus();
-    activate(sender, buttonTitle);
-  });
+  $.post("/run", params)
+    .done(function (data, xhr) {
+      resultsEditor.setValue(data.version + data.errors + data.output);
+      resultsEditor.clearSelection();
+    })
+    .fail(function (response) {
+      alert(`[Status: ${response.status}] Something went wrong`);
+    })
+    .always(function () {
+      clearInterval(intid);
+      editor.focus();
+      activate(sender, buttonTitle);
+    });
 }
 
 function activate(button, buttonTitle) {

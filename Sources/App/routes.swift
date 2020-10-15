@@ -132,6 +132,13 @@ func routes(_ app: Application) throws {
             throw Abort(.badRequest)
         }
 
+        let image: String
+        if let tag = try imageTag(for: toolchainVersion) {
+            image = tag
+        } else {
+            throw Abort(.internalServerError)
+        }
+
         let promise = req.eventLoop.makePromise(of: ExecutionResponse.self)
         do {
             let sandboxPath = URL(fileURLWithPath: "\(app.directory.resourcesDirectory)Sandbox")
@@ -139,13 +146,6 @@ func routes(_ app: Application) throws {
             let temporaryPath = URL(fileURLWithPath: "\(app.directory.resourcesDirectory)Temp/\(random)")
             try FileManager().copyItem(at: sandboxPath, to: temporaryPath)
             try code.data(using: .utf8)?.write(to: temporaryPath.appendingPathComponent("main.swift"))
-
-            let image: String
-            if let tag = try imageTag(for: toolchainVersion) {
-                image = tag
-            } else {
-                throw Abort(.internalServerError)
-            }
 
             let process = Process(
                 args: "sh", temporaryPath.appendingPathComponent("run.sh").path,
@@ -162,16 +162,21 @@ func routes(_ app: Application) throws {
             let interval = 0.2
             var counter: Double = 0
             let timer = DispatchSource.makeTimerSource()
+
+            let completedPath = temporaryPath.appendingPathComponent("completed")
+            let errorsPath = temporaryPath.appendingPathComponent("errors")
+            let versionPath = temporaryPath.appendingPathComponent("version")
+
             timer.setEventHandler {
                 counter += 1
-                if let completed = try? String(contentsOf: temporaryPath.appendingPathComponent("completed")) {
+                if let completed = try? String(contentsOf: completedPath) {
                     var errorlog = ""
-                    if let errors = try? String(contentsOf: temporaryPath.appendingPathComponent("errors")) {
+                    if let errors = try? String(contentsOf: errorsPath) {
                         errorlog = errors
                     } else {
                         errorlog = ""
                     }
-                    let version = try? String(contentsOf: temporaryPath.appendingPathComponent("version"))
+                    let version = try? String(contentsOf: versionPath)
                     promise.succeed(ExecutionResponse(output: completed, errors: errorlog, version: version ?? ""))
 
                     try? FileManager().removeItem(at: temporaryPath)
@@ -180,12 +185,12 @@ func routes(_ app: Application) throws {
                     return
                 } else {
                     var errorlog = ""
-                    if let errors = try? String(contentsOf: temporaryPath.appendingPathComponent("errors")) {
+                    if let errors = try? String(contentsOf: errorsPath) {
                         errorlog = errors
                     } else {
                         errorlog = "Maximum execution time of \(timeout) seconds exceeded."
                     }
-                    let version = try? String(contentsOf: temporaryPath.appendingPathComponent("version"))
+                    let version = try? String(contentsOf: versionPath)
                     promise.succeed(ExecutionResponse(output: "", errors: errorlog, version: version ?? ""))
 
                     try? FileManager().removeItem(at: temporaryPath)
