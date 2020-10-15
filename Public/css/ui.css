@@ -14,7 +14,7 @@ body {
   color: #F05138;
 }
 
-.dropdown-item {
+.dropdown-menu, .dropdown-item {
   line-height: 1;
 }
 
