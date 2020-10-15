@@ -7,7 +7,7 @@ func routes(_ app: Application) throws {
         req.view.render(
             "index", InitialPageResponse(
                 title: "Swift Playground",
-                versions: try availableVersions(),
+                versions: try VersionGroup.grouped(versions: availableVersions()),
                 stableVersion: stableVersion(),
                 latestVersion: try latestVersion(),
                 codeSnippet: defaultCodeSnippet,
@@ -20,7 +20,7 @@ func routes(_ app: Application) throws {
         req.view.render(
             "index", InitialPageResponse(
                 title: "Swift Playground",
-                versions: try availableVersions(),
+                versions: try VersionGroup.grouped(versions: availableVersions()),
                 stableVersion: stableVersion(),
                 latestVersion: try latestVersion(),
                 codeSnippet: defaultCodeSnippet,
@@ -44,7 +44,7 @@ func routes(_ app: Application) throws {
                 return req.view.render(
                     "index", InitialPageResponse(
                         title: "Swift Playground",
-                        versions: try availableVersions(),
+                        versions: try VersionGroup.grouped(versions: availableVersions()),
                         stableVersion: stableVersion(),
                         latestVersion: try latestVersion(),
                         codeSnippet: code,
@@ -103,8 +103,8 @@ func routes(_ app: Application) throws {
         }
     }
 
-    app.on(.POST, "run", body: .collect(maxSize: "10mb")) { req -> EventLoopFuture<ExecutedResponse> in
-        let parameter = try req.content.decode(RequestParameter.self)
+    app.on(.POST, "run", body: .collect(maxSize: "10mb")) { req -> EventLoopFuture<ExecutionResponse> in
+        let parameter = try req.content.decode(ExecutionRequestParameter.self)
 
         var toolchainVersion = parameter.toolchain_version ?? stableVersion()
         if (toolchainVersion == "latest") {
@@ -132,7 +132,7 @@ func routes(_ app: Application) throws {
             throw Abort(.badRequest)
         }
 
-        let promise = req.eventLoop.makePromise(of: ExecutedResponse.self)
+        let promise = req.eventLoop.makePromise(of: ExecutionResponse.self)
         do {
             let sandboxPath = URL(fileURLWithPath: "\(app.directory.resourcesDirectory)Sandbox")
             let random = UUID().uuidString
@@ -172,7 +172,7 @@ func routes(_ app: Application) throws {
                         errorlog = ""
                     }
                     let version = try? String(contentsOf: temporaryPath.appendingPathComponent("version"))
-                    promise.succeed(ExecutedResponse(output: completed, errors: errorlog, version: version ?? ""))
+                    promise.succeed(ExecutionResponse(output: completed, errors: errorlog, version: version ?? ""))
 
                     try? FileManager().removeItem(at: temporaryPath)
                     timer.cancel()
@@ -186,7 +186,7 @@ func routes(_ app: Application) throws {
                         errorlog = "Maximum execution time of \(timeout) seconds exceeded."
                     }
                     let version = try? String(contentsOf: temporaryPath.appendingPathComponent("version"))
-                    promise.succeed(ExecutedResponse(output: "", errors: errorlog, version: version ?? ""))
+                    promise.succeed(ExecutionResponse(output: "", errors: errorlog, version: version ?? ""))
 
                     try? FileManager().removeItem(at: temporaryPath)
                     timer.cancel()
@@ -258,7 +258,7 @@ private func imageTag(for prefix: String) throws -> String? {
         .first
 }
 
-struct RequestParameter: Decodable {
+struct ExecutionRequestParameter: Decodable {
     let toolchain_version: String?
     let command: String?
     let options: String?
@@ -273,14 +273,45 @@ struct SharedLinkRequestParameter: Decodable {
 
 struct InitialPageResponse: Encodable {
     let title: String
-    let versions: [String]
+    let versions: [VersionGroup]
     let stableVersion: String
     let latestVersion: String
     let codeSnippet: String
     let ogpImageUrl: String
 }
 
-struct ExecutedResponse: Content {
+final class VersionGroup: Encodable {
+    let majorVersion: String
+    var versions: [String]
+
+    init(majorVersion: String, versions: [String]) {
+        self.majorVersion = majorVersion
+        self.versions = versions
+    }
+
+    static func grouped(versions: [String]) -> [VersionGroup] {
+        versions.reduce(into: [VersionGroup]()) { (versionGroup, version) in
+            let nightlyVersion = version.split(separator: "-")
+            if nightlyVersion.count == 2 {
+                let majorVersion = String(nightlyVersion[0])
+                if majorVersion != versionGroup.last?.majorVersion {
+                    versionGroup.append(VersionGroup(majorVersion: String(majorVersion), versions: [version]))
+                } else {
+                    versionGroup.last?.versions.append(version)
+                }
+            } else {
+                let majorVersion = "Swift \(version.split(separator: ".")[0])"
+                if majorVersion != versionGroup.last?.majorVersion {
+                    versionGroup.append(VersionGroup(majorVersion: majorVersion, versions: [version]))
+                } else {
+                    versionGroup.last?.versions.append(version)
+                }
+            }
+        }
+    }
+}
+
+struct ExecutionResponse: Content {
     let output: String
     let errors: String
     let version: String

@@ -78,15 +78,19 @@
   <div class="container">
     <div class="row">
       <div class="col-sm3 mx-auto" style="margin-top: 15px; margin-bottom: 20px;">
-        <select id="versionPicker" class="selectpicker show-tick" data-style="btn btn-lg btn-secondary"
-          data-width="auto" data-tickIcon="fa-check">
-          #for(version in versions):
-          #if(version == stableVersion):
-          <option value="#(version)" selected>#(version)</option>
-          #else:
-          <option value="#(version)">#(version)</option>
-          #endif
-          #endfor
+        <select id="versionPicker" class="selectpicker show-tick dropdown dropdown"
+          data-style="btn btn-lg btn-secondary" data-width="auto" data-tickIcon="fa-check">
+          #for(versionGroup in versions):
+          <optgroup label="#(versionGroup.majorVersion)">
+            #for(version in versionGroup.versions):
+            #if(version == stableVersion):
+            <option value="#(version)" selected>#(version)</option>
+            #else:
+            <option value="#(version)">#(version)</option>
+            #endif
+            #endfor
+            #endfor
+          </optgroup>
         </select>
 
         <button id="run-button" type="button" class="btn btn-lg btn-primary">Run<i

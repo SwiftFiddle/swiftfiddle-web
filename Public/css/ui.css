@@ -14,8 +14,12 @@ body {
   color: #F05138;
 }
 
+.dropdown-item {
+  line-height: 1;
+}
+
 #run-button {
-  width: 230px;
+  width: 240px;
 }
 
 .fa-play-circle {
