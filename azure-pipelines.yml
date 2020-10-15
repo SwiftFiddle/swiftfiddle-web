@@ -10,8 +10,8 @@ steps:
     export NSUnbufferedIO=YES
 
     docker login --username $DOCKER_HUB_USERNAME --password $DOCKER_HUB_ACCESS_TOKEN
-    docker build --rm --no-cache --tag kishikawakatsumi/swift-ast-explorer .
-    docker push kishikawakatsumi/swift-ast-explorer
+    docker build --rm --no-cache --tag kishikawakatsumi/swift-playground .
+    docker push kishikawakatsumi/swift-playground
 
     mkdir -p ~/.ssh
     echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
