@@ -1,0 +1,51 @@
+trigger:
+- master
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+steps:
+- script: |
+    set -ex
+    export NSUnbufferedIO=YES
+
+    docker login --username ${{ secrets.DOCKER_HUB_USERNAME }} --password ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
+    docker build --rm --no-cache --tag kishikawakatsumi/swift-ast-explorer .
+    docker push kishikawakatsumi/swift-ast-explorer
+
+    mkdir -p ~/.ssh
+    echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+    chmod 600 ~/.ssh/id_rsa
+
+    TERM=xterm ssh -t -t -o 'StrictHostKeyChecking no' "$SSH_LOGIN_USER@$SSH_HOST" <<EOC
+    set -ex
+    hostname
+
+    cd "\$HOME/app"
+    git pull --rebase origin master
+
+    dc='docker run --rm -v /var/run/docker.sock:/var/run/docker.sock -v "\$PWD:\$PWD" -w="\$PWD" docker/compose:1.27.4'
+    eval \$dc pull
+    eval \$dc up --detach
+
+    docker image prune --force
+
+    curl -X POST "https://api.cloudflare.com/client/v4/zones/$CLOUDFLARE_ZONE_ID/purge_cache" \
+      -H "X-Auth-Email: $CLOUDFLARE_EMAIL" \
+      -H "X-Auth-Key: $CLOUDFLARE_API_KEY" \
+      -H "Content-Type:application/json" \
+      --data '{"purge_everything":true}'
+
+    exit 0
+    EOC
+  displayName: 'Deploy'
+  env:
+    CLOUDFLARE_API_KEY: $(CLOUDFLARE_API_KEY)
+    CLOUDFLARE_EMAIL: $(CLOUDFLARE_EMAIL)
+    CLOUDFLARE_ZONE_ID: $(CLOUDFLARE_ZONE_ID)
+    DOCKER_HUB_ACCESS_TOKEN: $(DOCKER_HUB_ACCESS_TOKEN)
+    DOCKER_HUB_USERNAME: $(DOCKER_HUB_USERNAME)
+    SSH_HOST: $(SSH_HOST)
+    SSH_LOGIN_USER: $(SSH_LOGIN_USER)
+    SSH_PRIVATE_KEY: $(SSH_PRIVATE_KEY)
+    SSH_PUBLIC_KEY: $(SSH_PUBLIC_KEY)
