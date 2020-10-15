@@ -6,7 +6,8 @@ html {
 body {
   /* Margin bottom by footer height */
   margin-bottom: 60px;
-  background-color: #F5F5F5; color: #333333;
+  background-color: #F5F5F5;
+  color: #333333;
 }
 
 /* Swift Logo */
@@ -14,7 +15,8 @@ body {
   color: #F05138;
 }
 
-.dropdown-menu, .dropdown-item {
+.dropdown-menu,
+.dropdown-item {
   line-height: 1;
 }
 

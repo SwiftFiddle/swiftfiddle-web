@@ -1,8 +1,8 @@
 "use strict";
 
-$('.selectpicker').selectpicker({
-  iconBase: 'fas',
-  tickIcon: 'fa-check'
+$(".selectpicker").selectpicker({
+  iconBase: "fas",
+  tickIcon: "fa-check",
 });
 
 const lang = ace.require("ace/lib/lang");
@@ -11,7 +11,7 @@ const langTools = ace.require("ace/ext/language_tools");
 const editor = ace.edit("editor");
 editor.setTheme("ace/theme/xcode");
 editor.session.setMode("ace/mode/swift");
-editor.$blockScrolling = Infinity
+editor.$blockScrolling = Infinity;
 editor.setOptions({
   useSoftTabs: true,
   autoScrollEditorIntoView: true,
@@ -29,30 +29,30 @@ editor.renderer.setOptions({
 editor.container.style.lineHeight = 1.5;
 
 if (!editor.completer) {
-  editor.execCommand("startAutocomplete")
-  editor.completer.detach()
+  editor.execCommand("startAutocomplete");
+  editor.completer.detach();
 }
-editor.completer.popup.container.style.width = "30%"
+editor.completer.popup.container.style.width = "30%";
 
-const row = editor.session.getLength() - 1
-const column = editor.session.getLine(row).length
-editor.gotoLine(row + 1, column)
+const row = editor.session.getLength() - 1;
+const column = editor.session.getLine(row).length;
+editor.gotoLine(row + 1, column);
 editor.focus();
 
-editor.on('change', (change, editor) => {
+editor.on("change", (change, editor) => {
   if (!editor.getValue()) {
-    $("#run-button").prop('disabled', true)
-    $("#share-button").prop('disabled', true)
+    $("#run-button").prop("disabled", true);
+    $("#share-button").prop("disabled", true);
   } else {
-    $("#run-button").prop('disabled', false)
-    $("#share-button").prop('disabled', false)
+    $("#run-button").prop("disabled", false);
+    $("#share-button").prop("disabled", false);
   }
 });
 
 const resultsEditor = ace.edit("results-editor");
 resultsEditor.setTheme("ace/theme/terminal");
 resultsEditor.session.setMode("ace/mode/text");
-resultsEditor.$blockScrolling = Infinity
+resultsEditor.$blockScrolling = Infinity;
 resultsEditor.setOptions({
   readOnly: true,
   highlightActiveLine: false,
@@ -79,11 +79,11 @@ function run(sender, editor) {
   const intid = showProgress(resultsEditor);
   const code = editor.getValue();
   const params = {
-    toolchain_version: $("#versionPicker").val().replace('/', '_'),
-    code: code
+    toolchain_version: $("#versionPicker").val().replace("/", "_"),
+    code: code,
   };
 
-  $.post('/run', params, (data, error, xhr) => {
+  $.post("/run", params, (data, error, xhr) => {
     resultsEditor.setValue(data.version + data.errors + data.output);
     resultsEditor.clearSelection();
     clearInterval(intid);
@@ -100,19 +100,21 @@ function activate(button, buttonTitle) {
 function deactivate(button) {
   button.prop("disabled", true);
   var buttonTitle = button.html();
-  button.html('<i class="fa fa-circle-o-notch fa-spin" aria-hidden="true"></i> Processing...');
+  button.html(
+    '<i class="fa fa-circle-o-notch fa-spin" aria-hidden="true"></i> Processing...'
+  );
   resultsEditor.setValue("");
-  return buttonTitle
+  return buttonTitle;
 }
 
 function showProgress(editor) {
-  let counter = 0
+  let counter = 0;
   return setInterval(() => {
     if (counter == 0) {
-      resultsEditor.setValue('Executing...');
+      resultsEditor.setValue("Executing...");
       counter += 1;
     } else {
-      resultsEditor.setValue(resultsEditor.getValue() + '.');
+      resultsEditor.setValue(resultsEditor.getValue() + ".");
     }
     resultsEditor.clearSelection();
   }, 1500);
@@ -126,12 +128,21 @@ function showShareSheet() {
   };
   $.post("/shared_link", params, (data, error, xhr) => {
     if (data) {
-      const url = data.url
+      const url = data.url;
       $("#shared_link").val(url);
-      $(".btn-facebook").attr("href", `https://www.facebook.com/sharer/sharer.php?u=${url}`)
-      $(".btn-twitter").attr("href", `https://twitter.com/intent/tweet?text=&url=${url}`)
-      $(".btn-line").attr("href", `https://social-plugins.line.me/lineit/share?url=${url}`)
-      $(".btn-pocket").attr("href", `https://getpocket.com/edit?url=${url}`)
+      $(".btn-facebook").attr(
+        "href",
+        `https://www.facebook.com/sharer/sharer.php?u=${url}`
+      );
+      $(".btn-twitter").attr(
+        "href",
+        `https://twitter.com/intent/tweet?text=&url=${url}`
+      );
+      $(".btn-line").attr(
+        "href",
+        `https://social-plugins.line.me/lineit/share?url=${url}`
+      );
+      $(".btn-pocket").attr("href", `https://getpocket.com/edit?url=${url}`);
       $("#shareSheet").modal();
     }
   });
@@ -158,16 +169,16 @@ function handleFileSelect(event) {
     const editor = ace.edit("editor");
     editor.setValue(event.target.result);
     editor.clearSelection();
-  }
+  };
   reader.readAsText(files[0], "UTF-8");
 }
 
 function handleDragOver(event) {
   event.stopPropagation();
   event.preventDefault();
-  event.dataTransfer.dropEffect = 'copy';
+  event.dataTransfer.dropEffect = "copy";
 }
 
-const dropZone = document.getElementById('editor');
-dropZone.addEventListener('dragover', handleDragOver, false);
-dropZone.addEventListener('drop', handleFileSelect, false);
+const dropZone = document.getElementById("editor");
+dropZone.addEventListener("dragover", handleDragOver, false);
+dropZone.addEventListener("drop", handleFileSelect, false);
