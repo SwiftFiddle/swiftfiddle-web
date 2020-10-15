@@ -167,6 +167,13 @@
                   style="background-color: \#F0F0F0; padding: 2px;">&lt;gist_id_goes_here&gt;</code></code>)</li>
             <li>Or just start typing!</li>
           </ul>
+          <dl>
+            <dt>Bug Report</dt>
+            <dd>
+              <a
+                href="https://github.com/kishikawakatsumi/swift-playground/issues/new">github.com/kishikawakatsumi/swift-playground</a>
+            </dd>
+          </dl>
         </div>
       </div>
     </div>
