@@ -15,13 +15,17 @@ body {
   color: #F05138;
 }
 
-.dropdown-menu,
-.dropdown-item {
+.dropdown-menu {
   line-height: 1;
 }
 
-#run-button {
-  width: 240px;
+.dropdown-toggle {
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+.filter-option {
+  font-stretch: semi-condensed;
 }
 
 .fa-play-circle {
