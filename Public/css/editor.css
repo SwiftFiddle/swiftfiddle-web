@@ -19,3 +19,11 @@
 #results-editor {
   line-height: 1.5;
 }
+
+.ace-terminal-theme .ace_marker-layer .ace_bracket {
+  background: transparent;
+}
+
+.ace-terminal-theme .ace_marker-layer .ace_bracket-start {
+  background: transparent;
+}
