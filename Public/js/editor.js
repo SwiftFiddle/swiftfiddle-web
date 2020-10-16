@@ -131,6 +131,7 @@ function run(sender, editor) {
     .done(function (data) {
       results.setValue(data.version + data.errors + data.output);
       updateHighlightRules(results, data.version, data.errors);
+      updateAnnotations(editor, data.errors);
       results.clearSelection();
     })
     .fail(function (response) {
@@ -156,6 +157,22 @@ function updateHighlightRules(editor, systemText, errorText) {
     });
     editor.session.bgTokenizer.start(0);
   });
+}
+
+function updateAnnotations(editor, errors) {
+  const matches = errors.matchAll(
+    /main\.swift:(\d+):(\d+): (error|warning|note): ([\s\S]*?)\n*(?=(?:\/|$))/gi
+  );
+  editor.session.setAnnotations(
+    [...matches].map((match) => {
+      return {
+        row: match[1] - 1,
+        column: match[2] - 1,
+        text: match[4],
+        type: match[3].replace("note", "information"),
+      };
+    })
+  );
 }
 
 function showLoading() {
