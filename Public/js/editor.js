@@ -5,8 +5,9 @@ $(".selectpicker").selectpicker({
   tickIcon: "fa-check",
 });
 
-const lang = ace.require("ace/lib/lang");
-const langTools = ace.require("ace/ext/language_tools");
+ace.require("ace/lib/lang");
+ace.require("ace/ext/language_tools");
+ace.require("ace/range").Range;
 
 const editor = ace.edit("editor");
 editor.setTheme("ace/theme/xcode");
@@ -21,6 +22,7 @@ editor.setOptions({
   enableBasicAutocompletion: true,
   enableSnippets: true,
   enableLiveAutocompletion: true,
+  scrollPastEnd: 0.5, // Overscroll
 });
 editor.renderer.setOptions({
   showFoldWidgets: false,
@@ -54,7 +56,7 @@ resultsEditor.session.setMode("ace/mode/text");
 resultsEditor.$blockScrolling = Infinity;
 resultsEditor.setOptions({
   readOnly: true,
-  highlightActiveLine: false,
+  highlightActiveLine: true,
   highlightSelectedWord: false,
   autoScrollEditorIntoView: true,
 });
@@ -82,8 +84,9 @@ function run(sender, editor) {
   };
 
   $.post("/run", params)
-    .done(function (data, xhr) {
+    .done(function (data) {
       resultsEditor.setValue(data.version + data.errors + data.output);
+      updateHighlighRules(resultsEditor, data.version);
       resultsEditor.clearSelection();
     })
     .fail(function (response) {
@@ -94,6 +97,59 @@ function run(sender, editor) {
       editor.focus();
       activate(sender, buttonTitle);
     });
+}
+
+function updateHighlighRules(editor, text) {
+  define("DynHighlightRules", function (require, exports, module) {
+    require("ace/lib/oop");
+    const TextHighlightRules = require("ace/mode/text_highlight_rules")
+      .TextHighlightRules;
+    module.exports = function () {
+      this.setKeywords = function (kwMap) {
+        this.keywordRule.onMatch = this.createKeywordMapper(
+          kwMap,
+          "identifier"
+        );
+      };
+      this.keywordRule = {
+        regex: ".+",
+        onMatch: function () {
+          return "text";
+        },
+      };
+
+      this.$rules = {
+        start: [
+          {
+            token: "string",
+            start: '"',
+            end: '"',
+            next: [
+              {
+                token: "constant.language.escape.lsl",
+                regex: /\\[tn"\\]/,
+              },
+            ],
+          },
+          this.keywordRule,
+        ],
+      };
+      this.normalizeRules();
+    };
+    module.exports.prototype = TextHighlightRules.prototype;
+  });
+
+  require(["ace/ace", "DynHighlightRules"], function (ace) {
+    const TextMode = require("ace/mode/text").Mode;
+    const dynamicMode = new TextMode();
+    dynamicMode.$id = "DynHighlightRules";
+    dynamicMode.HighlightRules = require("DynHighlightRules");
+    editor.session.setMode(dynamicMode);
+    dynamicMode.$highlightRules.setKeywords({
+      "support.function": text.split("\n").join("|"),
+    });
+    editor.session.bgTokenizer.start(0);
+  });
 }
 
 function activate(button, buttonTitle) {
