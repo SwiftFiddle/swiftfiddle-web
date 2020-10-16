@@ -70,7 +70,7 @@
         <pre id="editor">#(codeSnippet)</pre>
       </div>
       <div class="col-md-6">
-        <pre id="results-editor"></pre>
+        <pre id="results"></pre>
       </div>
     </div>
   </div>

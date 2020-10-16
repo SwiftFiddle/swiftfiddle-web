@@ -51,11 +51,11 @@ editor.on("change", (change, editor) => {
   }
 });
 
-const resultsEditor = ace.edit("results-editor");
-resultsEditor.setTheme("ace/theme/terminal");
-resultsEditor.session.setMode("ace/mode/text");
-resultsEditor.$blockScrolling = Infinity;
-resultsEditor.setOptions({
+const results = ace.edit("results");
+results.setTheme("ace/theme/terminal");
+results.session.setMode("ace/mode/text");
+results.$blockScrolling = Infinity;
+results.setOptions({
   readOnly: true,
   highlightActiveLine: true,
   highlightSelectedWord: false,
@@ -63,14 +63,14 @@ resultsEditor.setOptions({
   scrollPastEnd: 0.5, // Overscroll
   wrap: "free",
 });
-resultsEditor.renderer.setOptions({
+results.renderer.setOptions({
   showGutter: true,
   showPrintMargin: false,
   showInvisibles: false,
   fontFamily: "Menlo,sans-serif,monospace",
   fontSize: "11pt",
 });
-resultsEditor.renderer.hideCursor();
+results.renderer.hideCursor();
 
 define("DynHighlightRules", function (require, exports, module) {
   require("ace/lib/oop");
@@ -114,10 +114,10 @@ $("#run-button").click(function (e) {
 });
 
 function run(sender, editor) {
-  resultsEditor.setValue("");
+  results.setValue("");
 
   showLoading();
-  const progressInterval = showSpinner(resultsEditor, "Running...");
+  const progressInterval = showSpinner(results, "Running...");
 
   const code = editor.getValue();
   const params = {
@@ -127,9 +127,9 @@ function run(sender, editor) {
 
   $.post("/run", params)
     .done(function (data) {
-      resultsEditor.setValue(data.version + data.errors + data.output);
-      updateHighlightRules(resultsEditor, data.version, data.errors);
-      resultsEditor.clearSelection();
+      results.setValue(data.version + data.errors + data.output);
+      updateHighlightRules(results, data.version, data.errors);
+      results.clearSelection();
     })
     .fail(function (response) {
       alert(`[Status: ${response.status}] Something went wrong`);
