@@ -23,6 +23,7 @@ editor.setOptions({
   enableSnippets: true,
   enableLiveAutocompletion: true,
   scrollPastEnd: 0.5, // Overscroll
+  wrap: "free",
 });
 editor.renderer.setOptions({
   showFoldWidgets: false,
@@ -59,6 +60,8 @@ resultsEditor.setOptions({
   highlightActiveLine: true,
   highlightSelectedWord: false,
   autoScrollEditorIntoView: true,
+  scrollPastEnd: 0.5, // Overscroll
+  wrap: "free",
 });
 resultsEditor.renderer.setOptions({
   showGutter: true,
