@@ -72,6 +72,42 @@ resultsEditor.renderer.setOptions({
 });
 resultsEditor.renderer.hideCursor();
 
+define("DynHighlightRules", function (require, exports, module) {
+  require("ace/lib/oop");
+  const TextHighlightRules = require("ace/mode/text_highlight_rules")
+    .TextHighlightRules;
+  module.exports = function () {
+    this.setKeywords = function (kwMap) {
+      this.keywordRule.onMatch = this.createKeywordMapper(kwMap, "identifier");
+    };
+    this.keywordRule = {
+      regex: `\.+`,
+      onMatch: function () {
+        return "text";
+      },
+    };
+
+    this.$rules = {
+      start: [
+        {
+          token: "string",
+          start: '"',
+          end: '"',
+          next: [
+            {
+              token: "constant.language.escape.lsl",
+              regex: /\\[tn"\\]/,
+            },
+          ],
+        },
+        this.keywordRule,
+      ],
+    };
+    this.normalizeRules();
+  };
+  module.exports.prototype = TextHighlightRules.prototype;
+});
+
 $("#run-button").click(function (e) {
   e.preventDefault();
   run($(this), editor);
@@ -79,9 +115,10 @@ $("#run-button").click(function (e) {
 
 function run(sender, editor) {
   resultsEditor.setValue("");
-  showLoading();
 
-  const intid = showProgress(resultsEditor);
+  showLoading();
+  const progressInterval = showSpinner(resultsEditor, "Running...");
+
   const code = editor.getValue();
   const params = {
     toolchain_version: $("#versionPicker").val().replace("/", "_"),
@@ -91,59 +128,20 @@ function run(sender, editor) {
   $.post("/run", params)
     .done(function (data) {
       resultsEditor.setValue(data.version + data.errors + data.output);
-      updateHighlighRules(resultsEditor, data.version, data.errors);
+      updateHighlightRules(resultsEditor, data.version, data.errors);
       resultsEditor.clearSelection();
     })
     .fail(function (response) {
       alert(`[Status: ${response.status}] Something went wrong`);
     })
     .always(function () {
-      clearInterval(intid);
       hideLoading();
+      clearInterval(progressInterval);
       editor.focus();
     });
 }
 
-function updateHighlighRules(editor, systemText, errorText) {
-  define("DynHighlightRules", function (require, exports, module) {
-    require("ace/lib/oop");
-    const TextHighlightRules = require("ace/mode/text_highlight_rules")
-      .TextHighlightRules;
-    module.exports = function () {
-      this.setKeywords = function (kwMap) {
-        this.keywordRule.onMatch = this.createKeywordMapper(
-          kwMap,
-          "identifier"
-        );
-      };
-      this.keywordRule = {
-        regex: ".+",
-        onMatch: function () {
-          return "text";
-        },
-      };
-
-      this.$rules = {
-        start: [
-          {
-            token: "string",
-            start: '"',
-            end: '"',
-            next: [
-              {
-                token: "constant.language.escape.lsl",
-                regex: /\\[tn"\\]/,
-              },
-            ],
-          },
-          this.keywordRule,
-        ],
-      };
-      this.normalizeRules();
-    };
-    module.exports.prototype = TextHighlightRules.prototype;
-  });
-
+function updateHighlightRules(editor, systemText, errorText) {
   require(["ace/ace", "DynHighlightRules"], function (ace) {
     const TextMode = require("ace/mode/text").Mode;
     const dynamicMode = new TextMode();
@@ -151,8 +149,8 @@ function updateHighlighRules(editor, systemText, errorText) {
     dynamicMode.HighlightRules = require("DynHighlightRules");
     editor.session.setMode(dynamicMode);
     dynamicMode.$highlightRules.setKeywords({
-      "compiler.message": systemText.split("\n").join("|"),
-      "compiler.error": errorText.split("\n").join("|"),
+      "compiler.message": (systemText || "").split("\n").join("|"),
+      "compiler.error": (errorText || "").split("\n").join("|"),
     });
     editor.session.bgTokenizer.start(0);
   });
@@ -172,17 +170,20 @@ function hideLoading() {
   $("#run-button-spinner").hide();
 }
 
-function showProgress(editor) {
-  let counter = 0;
+function showSpinner(editor, message) {
+  const SPINNER = ["⠋", "⠙", "⠹", "⠸", "⠼", "⠴", "⠦", "⠧", "⠇", "⠏"];
+  let spins = 0;
+  function updateSpinner(editor, message) {
+    const progressText = `${SPINNER[spins % SPINNER.length]}`;
+    editor.setValue(progressText);
+    editor.clearSelection();
+    spins++;
+  }
+
+  updateSpinner(editor, message);
   return setInterval(() => {
-    if (counter == 0) {
-      resultsEditor.setValue("Executing...");
-      counter += 1;
-    } else {
-      resultsEditor.setValue(resultsEditor.getValue() + ".");
-    }
-    resultsEditor.clearSelection();
-  }, 1500);
+    updateSpinner(editor, message);
+  }, 200);
 }
 
 function showShareSheet() {
