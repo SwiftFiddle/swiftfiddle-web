@@ -7,7 +7,7 @@ $(".selectpicker").selectpicker({
 
 ace.require("ace/lib/lang");
 ace.require("ace/ext/language_tools");
-ace.require("ace/range").Range;
+const Range = ace.require("ace/range").Range;
 
 const editor = ace.edit("editor");
 editor.setTheme("ace/theme/xcode");
@@ -130,8 +130,11 @@ function run(sender, editor) {
   $.post("/run", params)
     .done(function (data) {
       results.setValue(data.version + data.errors + data.output);
-      updateHighlightRules(results, data.version, data.errors);
-      updateAnnotations(editor, data.errors);
+
+      const annotations = parceErrorMessage(data.errors);
+      updateAnnotations(editor, annotations);
+      showErrorMessages(results, data.version, data.errors, annotations);
+
       results.clearSelection();
     })
     .fail(function (response) {
@@ -144,7 +147,21 @@ function run(sender, editor) {
     });
 }
 
-function updateHighlightRules(editor, systemText, errorText) {
+function parceErrorMessage(message) {
+  const matches = message.matchAll(
+    /main\.swift:(\d+):(\d+): (error|warning|note): ([\s\S]*?)\n*(?=(?:\/|$))/gi
+  );
+  return [...matches].map((match) => {
+    return {
+      row: match[1] - 1,
+      column: match[2] - 1,
+      text: match[4],
+      type: match[3].replace("note", "info"),
+    };
+  });
+}
+
+function showErrorMessages(editor, systemText, errorText, annotations) {
   require(["ace/ace", "DynHighlightRules"], function (ace) {
     const TextMode = require("ace/mode/text").Mode;
     const dynamicMode = new TextMode();
@@ -159,20 +176,22 @@ function updateHighlightRules(editor, systemText, errorText) {
   });
 }
 
-function updateAnnotations(editor, errors) {
-  const matches = errors.matchAll(
-    /main\.swift:(\d+):(\d+): (error|warning|note): ([\s\S]*?)\n*(?=(?:\/|$))/gi
-  );
-  editor.session.setAnnotations(
-    [...matches].map((match) => {
-      return {
-        row: match[1] - 1,
-        column: match[2] - 1,
-        text: match[4],
-        type: match[3].replace("note", "information"),
-      };
-    })
-  );
+function updateAnnotations(editor, annotations) {
+  editor.session.setAnnotations(annotations);
+
+  annotations.forEach((annotation) => {
+    const marker = annotation.text.match(/\^\~*/i);
+    editor.session.addMarker(
+      new Range(
+        annotation.row,
+        annotation.column,
+        annotation.row,
+        annotation.column + (marker ? marker[0].length : 1)
+      ),
+      "editor-marker",
+      "text"
+    );
+  });
 }
 
 function showLoading() {

@@ -20,6 +20,12 @@
   line-height: 1.5;
 }
 
+.editor-marker {
+  position: absolute;
+  border-bottom: 2px solid red;
+  border-radius: 0;
+}
+
 .ace-terminal-theme .ace_marker-layer .ace_bracket {
   background: transparent;
 }
@@ -39,4 +45,12 @@
 
 .ace-terminal-theme .ace_compiler.ace_error {
   color: #D54E53
+}
+
+.ace-terminal-theme .ace_compiler.ace_warning {
+  color: #E7C547
+}
+
+.ace-terminal-theme .ace_compiler.ace_note {
+  color: #B9CA4A
 }
