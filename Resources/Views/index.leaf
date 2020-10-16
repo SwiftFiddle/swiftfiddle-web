@@ -96,8 +96,10 @@
             </select>
           </div>
 
-          <button id="run-button" type="button" class="btn btn-lg btn-primary"><span class="mx-4">Run<i
-                class="far fa-play-circle fa-lg"></i></span></button>
+          <button id="run-button" type="button" class="btn btn-lg btn-primary"><span id="run-button-text"
+              class="mx-4">Run <i id="run-button-icon" class="far fa-play-circle fa-lg"></i></span><span
+              id="run-button-spinner" class="spinner-border spinner-border-sm mx-5"
+              style="width: 1.5rem; height: 1.5rem; display: none;" role="status" aria-hidden="true"></span></button>
         </div>
       </div>
     </div>

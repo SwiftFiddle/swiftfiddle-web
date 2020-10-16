@@ -27,3 +27,16 @@
 .ace-terminal-theme .ace_marker-layer .ace_bracket-start {
   background: transparent;
 }
+
+.ace-terminal-theme .ace_marker-layer .ace_bracket-unmatched {
+  margin: -1px 0 0 -1px;
+  border: 1px solid transparent
+}
+
+.ace-terminal-theme .ace_compiler.ace_message {
+  color: #9F9F9F
+}
+
+.ace-terminal-theme .ace_compiler.ace_error {
+  color: #D54E53
+}

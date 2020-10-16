@@ -61,7 +61,7 @@ resultsEditor.setOptions({
   autoScrollEditorIntoView: true,
 });
 resultsEditor.renderer.setOptions({
-  showGutter: false,
+  showGutter: true,
   showPrintMargin: false,
   showInvisibles: false,
   fontFamily: "Menlo,sans-serif,monospace",
@@ -75,7 +75,9 @@ $("#run-button").click(function (e) {
 });
 
 function run(sender, editor) {
-  const buttonTitle = deactivate(sender);
+  resultsEditor.setValue("");
+  showLoading();
+
   const intid = showProgress(resultsEditor);
   const code = editor.getValue();
   const params = {
@@ -86,7 +88,7 @@ function run(sender, editor) {
   $.post("/run", params)
     .done(function (data) {
       resultsEditor.setValue(data.version + data.errors + data.output);
-      updateHighlighRules(resultsEditor, data.version);
+      updateHighlighRules(resultsEditor, data.version, data.errors);
       resultsEditor.clearSelection();
     })
     .fail(function (response) {
@@ -94,12 +96,12 @@ function run(sender, editor) {
     })
     .always(function () {
       clearInterval(intid);
+      hideLoading();
       editor.focus();
-      activate(sender, buttonTitle);
     });
 }
 
-function updateHighlighRules(editor, text) {
+function updateHighlighRules(editor, systemText, errorText) {
   define("DynHighlightRules", function (require, exports, module) {
     require("ace/lib/oop");
     const TextHighlightRules = require("ace/mode/text_highlight_rules")
@@ -146,25 +148,25 @@ function updateHighlighRules(editor, text) {
     dynamicMode.HighlightRules = require("DynHighlightRules");
     editor.session.setMode(dynamicMode);
     dynamicMode.$highlightRules.setKeywords({
-      "support.function": text.split("\n").join("|"),
+      "compiler.message": systemText.split("\n").join("|"),
+      "compiler.error": errorText.split("\n").join("|"),
     });
     editor.session.bgTokenizer.start(0);
   });
 }
 
-function activate(button, buttonTitle) {
-  button.prop("disabled", false);
-  button.html(buttonTitle);
+function showLoading() {
+  $("#run-button").addClass("disabled");
+  $("#run-button-text").hide();
+  $("#run-button-icon").hide();
+  $("#run-button-spinner").show();
 }
 
-function deactivate(button) {
-  button.prop("disabled", true);
-  var buttonTitle = button.html();
-  button.html(
-    '<i class="fa fa-circle-o-notch fa-spin" aria-hidden="true"></i> Processing...'
-  );
-  resultsEditor.setValue("");
-  return buttonTitle;
+function hideLoading() {
+  $("#run-button").removeClass("disabled");
+  $("#run-button-text").show();
+  $("#run-button-icon").show();
+  $("#run-button-spinner").hide();
 }
 
 function showProgress(editor) {
