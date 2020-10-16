@@ -32,7 +32,8 @@ func routes(_ app: Application) throws {
     app.get("versions") { req in try availableVersions() }
 
     app.get("*") { req -> EventLoopFuture<Response> in
-        func handleImportContent(_ req: Request, _ promise: EventLoopPromise<Response>, _ id: String, _ code: String) throws {
+        func handleImportContent(_ req: Request, _ promise: EventLoopPromise<Response>,
+                                 _ id: String, _ code: String, _ swiftVersion: String?) throws {
             if req.url.path.hasSuffix(".png") {
                 return try ShareImage.image(client: req.client, from: code)
                     .flatMapThrowing {
@@ -45,7 +46,7 @@ func routes(_ app: Application) throws {
                     "index", InitialPageResponse(
                         title: "Swift Playground",
                         versions: try VersionGroup.grouped(versions: availableVersions()),
-                        stableVersion: stableVersion(),
+                        stableVersion: swiftVersion ?? stableVersion(),
                         latestVersion: try latestVersion(),
                         codeSnippet: code,
                         ogpImageUrl: "https://swiftfiddle.com/\(id).png"
@@ -65,7 +66,8 @@ func routes(_ app: Application) throws {
                         do {
                             if let content = content {
                                 let code = content.fields.shared_link.mapValue.fields.content.stringValue
-                                try handleImportContent(req, promise, id, code)
+                                let swiftVersion = content.fields.shared_link.mapValue.fields.swift_version.stringValue
+                                try handleImportContent(req, promise, id, code, swiftVersion)
                             } else {
                                 promise.fail(Abort(.notFound))
                             }
@@ -86,7 +88,7 @@ func routes(_ app: Application) throws {
                         do {
                             if let content = content {
                                 let code = Array(content.files.values)[0].content
-                                try handleImportContent(req, promise, id, code)
+                                try handleImportContent(req, promise, id, code, nil)
                             } else {
                                 promise.fail(Abort(.notFound))
                             }
