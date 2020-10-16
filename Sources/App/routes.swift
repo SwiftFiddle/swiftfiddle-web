@@ -114,7 +114,7 @@ func routes(_ app: Application) throws {
         }
         let command = parameter.command ?? "swift"
         let options = parameter.options ?? ""
-        let timeout = parameter.timeout ?? 30
+        let timeout = parameter.timeout ?? 30 // Default timeout
 
         guard try availableVersions().contains(toolchainVersion) else {
             throw Abort(.badRequest)
@@ -124,6 +124,7 @@ func routes(_ app: Application) throws {
             throw Abort(.badRequest)
         }
 
+        // Security check
         if [";", "&", "&&", "||", "`", "(", ")", "#"].contains(where: { options.contains($0) }) {
             throw Abort(.badRequest)
         }
