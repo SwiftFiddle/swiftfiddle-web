@@ -1,10 +1,10 @@
 #!/bin/bash
 
-echo "$(swift --version)" > /usercode/version
+echo "$(swift --version)" > /[REDACTED]/version
 
-exec 1> "/usercode/log"
-exec 2> "/usercode/errors"
+exec 1> "/[REDACTED]/log"
+exec 2> "/[REDACTED]/errors"
 
-$@ /usercode/main.swift
+$@ /[REDACTED]/main.swift
 
-mv /usercode/log /usercode/completed
+mv /[REDACTED]/log /[REDACTED]/completed

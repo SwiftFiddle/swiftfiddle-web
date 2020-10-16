@@ -152,10 +152,10 @@ func routes(_ app: Application) throws {
                 args: "sh", temporaryPath.appendingPathComponent("run.sh").path,
                 "\(timeout)s",
                 "--volume",
-                "\(Environment.get("HOST_PWD") ?? app.directory.workingDirectory)/Resources/Temp/\(random):/usercode",
+                "\(Environment.get("HOST_PWD") ?? app.directory.workingDirectory)/Resources/Temp/\(random):/[REDACTED]",
                 image,
                 "sh",
-                "/usercode/script.sh",
+                "/[REDACTED]/script.sh",
                 [command, options].joined(separator: " ")
             )
             try process.launch()
