@@ -113,7 +113,7 @@ func routes(_ app: Application) throws {
             toolchainVersion = stableVersion();
         }
         let command = parameter.command ?? "swift"
-        let options = parameter.options ?? ""
+        let options = parameter.options ?? toolchainVersion == "nightly-master" ? "-Xfrontend -enable-experimental-concurrency" : ""
         let timeout = parameter.timeout ?? 30 // Default timeout
 
         guard try availableVersions().contains(toolchainVersion) else {
