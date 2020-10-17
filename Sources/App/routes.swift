@@ -138,13 +138,22 @@ func routes(_ app: Application) throws {
             let random = UUID().uuidString
             let temporaryPath = URL(fileURLWithPath: "\(app.directory.resourcesDirectory)Temp/\(random)")
             try FileManager().copyItem(at: sandboxPath, to: temporaryPath)
-            try code.data(using: .utf8)?.write(to: temporaryPath.appendingPathComponent("main.swift"))
+            try """
+                import Glibc
+                setbuf(stdout, nil)
+
+                /* Start user code. Do not edit comment generated here */
+                \(code)
+                /* End user code. Do not edit comment generated here */
+                """
+                .data(using: .utf8)?
+                .write(to: temporaryPath.appendingPathComponent("main.swift"))
 
             let process = Process(
                 args: "sh", temporaryPath.appendingPathComponent("sandobox.sh").path,
                 "\(timeout)s",
                 "--volume",
-                "\(Environment.get("HOST_PWD") ?? app.directory.workingDirectory)/Resources/Temp/\(random):/[REDACTED]",
+                "\(Environment.get("HOST_PWD") ?? app.directory.workingDirectory)Resources/Temp/\(random):/[REDACTED]",
                 image,
                 "sh",
                 "/[REDACTED]/run.sh",
@@ -157,34 +166,29 @@ func routes(_ app: Application) throws {
             let timer = DispatchSource.makeTimerSource()
 
             let completedPath = temporaryPath.appendingPathComponent("completed")
-            let errorsPath = temporaryPath.appendingPathComponent("errors")
+            let stdoutPath = temporaryPath.appendingPathComponent("stdout")
+            let stderrPath = temporaryPath.appendingPathComponent("stderr")
             let versionPath = temporaryPath.appendingPathComponent("version")
 
             timer.setEventHandler {
                 counter += 1
                 if let completed = try? String(contentsOf: completedPath) {
-                    var errorlog = ""
-                    if let errors = try? String(contentsOf: errorsPath) {
-                        errorlog = errors
-                    } else {
-                        errorlog = ""
-                    }
-                    let version = try? String(contentsOf: versionPath)
-                    promise.succeed(ExecutionResponse(output: completed, errors: errorlog, version: version ?? ""))
+                    let stderr = (try? String(contentsOf: stderrPath)) ?? ""
+                    let version = (try? String(contentsOf: versionPath)) ?? "N/A"
+
+                    promise.succeed(ExecutionResponse(output: completed, errors: stderr, version: version))
 
                     try? FileManager().removeItem(at: temporaryPath)
                     timer.cancel()
                 } else if interval * counter < Double(timeout) {
                     return
                 } else {
-                    var errorlog = ""
-                    if let errors = try? String(contentsOf: errorsPath) {
-                        errorlog = errors
-                    } else {
-                        errorlog = "Maximum execution time of \(timeout) seconds exceeded."
-                    }
-                    let version = try? String(contentsOf: versionPath)
-                    promise.succeed(ExecutionResponse(output: "", errors: errorlog, version: version ?? ""))
+                    let stdout = (try? String(contentsOf: stdoutPath)) ?? ""
+
+                    let stderr = "\((try? String(contentsOf: stderrPath)) ?? "")Maximum execution time of \(timeout) seconds exceeded.\n"
+                    let version = (try? String(contentsOf: versionPath)) ?? "N/A"
+
+                    promise.succeed(ExecutionResponse(output: stdout, errors: stderr, version: version))
 
                     try? FileManager().removeItem(at: temporaryPath)
                     timer.cancel()

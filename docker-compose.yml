@@ -9,7 +9,7 @@ services:
     env_file:
       - .env
     environment:
-      HOST_PWD: $PWD
+      HOST_PWD: $PWD/
       LOG_LEVEL: ${LOG_LEVEL:-info}
       VIRTUAL_HOST: swiftfiddle.com
       VIRTUAL_PORT: 8080

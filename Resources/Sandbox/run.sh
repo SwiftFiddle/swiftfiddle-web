@@ -2,10 +2,10 @@
 
 echo "$(swift --version)" > /[REDACTED]/version
 
-exec 1> "/[REDACTED]/log"
-exec 2> "/[REDACTED]/errors"
+exec 1> "/[REDACTED]/stdout"
+exec 2> "/[REDACTED]/stderr"
 
 export TERM=xterm-256color
 sh /[REDACTED]/faketty.sh $@ /[REDACTED]/main.swift
 
-mv /[REDACTED]/log /[REDACTED]/completed
+mv /[REDACTED]/stdout /[REDACTED]/completed

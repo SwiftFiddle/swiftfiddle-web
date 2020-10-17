@@ -19,17 +19,22 @@ function run(editor) {
     toolchain_version: $("#versionPicker").val(),
     code: editor.getValue(),
   };
+
+  const startTime = performance.now();
   $.post("/run", params)
     .done(function (data) {
+      const endTime = performance.now();
+      const execTime = ` ${((endTime - startTime) / 1000).toFixed(1)}s`;
+
       hideSpinner(terminal, cancelToken);
 
       const now = new Date();
-      const timestamp = `${now.toLocaleString("en-US", {
-        hour: "2-digit",
+      const timestamp = now.toLocaleString("en-US", {
+        hour: "numeric",
         minute: "2-digit",
         second: "2-digit",
         hour12: false,
-      })}.${now.getMilliseconds()}`;
+      });
 
       terminal.write(
         `\x1b[38;5;72m${data.version
@@ -37,25 +42,49 @@ function run(editor) {
           .map((l, i) => {
             return i == 0
               ? `${
-                  terminal.cols - l.length - timestamp.length < 0
-                    ? `\x1b[0m${timestamp}\n`
+                  terminal.cols -
+                    l.length -
+                    timestamp.length -
+                    execTime.length <
+                  0
+                    ? `\x1b[0m\x1b[2m${timestamp}\x1b[0m${execTime}\n`
                     : ""
-                }\x1b[38;5;72m${l}\x1b[0m${
-                  terminal.cols - l.length - timestamp.length >= 0
+                }\x1b[38;5;72m\x1b[2m${l}\x1b[0m${
+                  terminal.cols -
+                    l.length -
+                    timestamp.length -
+                    execTime.length >=
+                  0
                     ? `${" ".repeat(
-                        terminal.cols - l.length - timestamp.length
-                      )}\x1b[0m${timestamp}`
+                        terminal.cols -
+                          l.length -
+                          timestamp.length -
+                          execTime.length
+                      )}\x1b[0m\x1b[2m${timestamp}\x1b[0m${execTime}`
                     : ""
                 }`
-              : `\x1b[38;5;72m${l}\x1b[0m`;
+              : `\x1b[38;5;72m\x1b[2m${l}\x1b[0m`;
           })
           .join("\n")}\x1b[0m`
       );
-      terminal.write(`${data.errors}\x1b[0m`);
+
+      const match = data.errors.match(
+        /Maximum execution time of \d+ seconds exceeded\./
+      );
+      if (match) {
+        terminal.write(`${data.errors.replace(match[0], "")}\x1b[0m`);
+      } else {
+        terminal.write(`${data.errors}\x1b[0m`);
+      }
+
       if (data.output) {
         terminal.write(`\x1b[37m${data.output}\x1b[0m`);
       } else {
-        terminal.write(`\x1b[0m*** No output. ***\n`);
+        terminal.write(`\x1b[0m\x1b[1m*** No output. ***\x1b[0m\n`);
+      }
+
+      if (match) {
+        terminal.write(`\x1b[31;1m${match[0]}\n`);
       }
 
       const annotations = parceErrorMessage(data.errors);
