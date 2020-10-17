@@ -52,7 +52,11 @@ function run(editor) {
           .join("\n")}\x1b[0m`
       );
       terminal.write(`${data.errors}\x1b[0m`);
-      terminal.write(`\x1b[37m${data.output}\x1b[0m`);
+      if (data.output) {
+        terminal.write(`\x1b[37m${data.output}\x1b[0m`);
+      } else {
+        terminal.write(`\x1b[0m*** No output. ***\n`);
+      }
 
       const annotations = parceErrorMessage(data.errors);
       updateAnnotations(editor, annotations);

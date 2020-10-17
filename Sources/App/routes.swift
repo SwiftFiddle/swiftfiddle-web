@@ -3,31 +3,21 @@ import TSCBasic
 import Base32
 
 func routes(_ app: Application) throws {
-    app.get { req in
-        req.view.render(
+    func index(_ req: Request) throws -> EventLoopFuture<View> {
+        return req.view.render(
             "index", InitialPageResponse(
                 title: "Swift Playground",
                 versions: try VersionGroup.grouped(versions: availableVersions()),
                 stableVersion: stableVersion(),
                 latestVersion: try latestVersion(),
-                codeSnippet: defaultCodeSnippet,
+                codeSnippet: defaultCodeSnippet.data(using: .utf8)?.base64EncodedString() ?? "",
                 ogpImageUrl: "./default_ogp.jpeg"
             )
         )
     }
 
-    app.get("index.html") { req -> EventLoopFuture<View> in
-        req.view.render(
-            "index", InitialPageResponse(
-                title: "Swift Playground",
-                versions: try VersionGroup.grouped(versions: availableVersions()),
-                stableVersion: stableVersion(),
-                latestVersion: try latestVersion(),
-                codeSnippet: defaultCodeSnippet,
-                ogpImageUrl: "./default_ogp.jpeg"
-            )
-        )
-    }
+    app.get { req in try index(req) }
+    app.get("index.html") { req in try index(req) }
 
     app.get("versions") { req in try availableVersions() }
 
