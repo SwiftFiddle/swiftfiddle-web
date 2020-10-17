@@ -179,6 +179,15 @@ services:
   swift-3.0.1:
     image: kishikawakatsumi/swift:3.0.1
     container_name: swift-3.0.1
+  swift-3.0:
+    image: kishikawakatsumi/swift:3.0
+    container_name: swift-3.0
+  swift-2.2.1:
+    image: kishikawakatsumi/swift:2.2.1
+    container_name: swift-2.2.1
+  swift-2.2:
+    image: kishikawakatsumi/swift:2.2
+    container_name: swift-2.2
 
 volumes:
   proxy:
