@@ -1,24 +1,11 @@
 #!/bin/bash
-set -e
 
-to=$1
-shift
+echo "$(swift --version)" > /[REDACTED]/version
 
-if type timeout > /dev/null 2>&1; then
-    timeoutCommand='timeout'
-else
-    timeoutCommand='gtimeout'
-fi
+exec 1> "/[REDACTED]/log"
+exec 2> "/[REDACTED]/errors"
 
-containerId=$(docker run --rm -d "$@")
-status=$($timeoutCommand "$to" docker wait "$containerId" || true)
-docker kill $containerId &> /dev/null
-echo -n 'status: '
-if [ -z "$status" ]; then
-    echo 'timeout'
-else
-    echo "exited: $status"
-fi
+export TERM=xterm-256color
+sh /[REDACTED]/faketty.sh $@ /[REDACTED]/main.swift
 
-docker logs $containerId | sed 's/^/\t/'
-docker rm $containerId &> /dev/null
+mv /[REDACTED]/log /[REDACTED]/completed

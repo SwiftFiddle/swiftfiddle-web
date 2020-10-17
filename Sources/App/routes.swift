@@ -151,13 +151,13 @@ func routes(_ app: Application) throws {
             try code.data(using: .utf8)?.write(to: temporaryPath.appendingPathComponent("main.swift"))
 
             let process = Process(
-                args: "sh", temporaryPath.appendingPathComponent("run.sh").path,
+                args: "sh", temporaryPath.appendingPathComponent("sandobox.sh").path,
                 "\(timeout)s",
                 "--volume",
                 "\(Environment.get("HOST_PWD") ?? app.directory.workingDirectory)/Resources/Temp/\(random):/[REDACTED]",
                 image,
                 "sh",
-                "/[REDACTED]/script.sh",
+                "/[REDACTED]/run.sh",
                 [command, options].joined(separator: " ")
             )
             try process.launch()

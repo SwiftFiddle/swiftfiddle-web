@@ -13,14 +13,11 @@ RUN swift package resolve
 COPY . .
 RUN swift build --enable-test-discovery -c release
 
-RUN echo "int isatty(int fd) { return 1; }" | clang -O2 -fpic -shared -ldl -o isatty.so -xc -
-
 WORKDIR /staging
 
 RUN cp "$(swift build --package-path /build -c release --show-bin-path)/Run" ./
 RUN mv /build/Public ./Public && chmod -R a-w ./Public \
-    && mv /build/Resources ./Resources && chmod -R a-w ./Resources \
-    && cp /build/isatty.so ./Resources/Sandbox
+    && mv /build/Resources ./Resources && chmod -R a-w ./Resources
 
 FROM swift:5.3-focal-slim
 
