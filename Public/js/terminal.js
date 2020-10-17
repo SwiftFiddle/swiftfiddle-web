@@ -28,6 +28,7 @@ const terminal = new Terminal({
   convertEol: true,
   cursorStyle: "underline",
   cursorBlink: false,
+  scrollback: 100000,
 });
 
 const fitAddon = new FitAddon.FitAddon();
