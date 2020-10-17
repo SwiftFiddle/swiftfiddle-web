@@ -233,6 +233,8 @@
     integrity="sha512-EShXEgqHHatDPL5k8+RCRdEvZWVr77b8z8GgkzaFmYUfyWd/X5SHz6VuERyeB729QU5a9MPF1lPGynFXVLgMMg=="
     crossorigin="anonymous"></script>
 
+  <script src="https://cdn.jsdelivr.net/npm/js-base64@3.5.2/base64.min.js"></script>
+
   <script src="js/editor.js"></script>
   <script src="js/terminal.js"></script>
   <script src="js/share_sheet.js"></script>
