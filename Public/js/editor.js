@@ -1,10 +1,5 @@
 "use strict";
 
-$(".selectpicker").selectpicker({
-  iconBase: "fas",
-  tickIcon: "fa-check",
-});
-
 ace.require("ace/lib/lang");
 ace.require("ace/ext/language_tools");
 const Range = ace.require("ace/range").Range;
@@ -15,17 +10,17 @@ editor.session.setMode("ace/mode/swift");
 editor.$blockScrolling = Infinity;
 editor.setOptions({
   useSoftTabs: true,
+  displayIndentGuides: true,
   autoScrollEditorIntoView: true,
+  scrollPastEnd: 0.5, // Overscroll
   fontFamily: "Menlo,sans-serif,monospace",
   fontSize: "11pt",
+  wrap: "free",
   showInvisibles: false,
   enableAutoIndent: true,
   enableBasicAutocompletion: true,
   enableSnippets: true,
   enableLiveAutocompletion: true,
-  scrollPastEnd: 0.5, // Overscroll
-  wrap: "free",
-  displayIndentGuides: true,
 });
 editor.renderer.setOptions({
   showFoldWidgets: false,
@@ -53,61 +48,43 @@ editor.on("change", (change, editor) => {
   }
 });
 
-const results = ace.edit("results");
-results.setTheme("ace/theme/terminal");
-results.session.setMode("ace/mode/text");
-results.$blockScrolling = Infinity;
-results.setOptions({
-  readOnly: true,
-  highlightActiveLine: true,
-  highlightSelectedWord: false,
-  autoScrollEditorIntoView: true,
-  scrollPastEnd: 0.5, // Overscroll
-  wrap: "free",
-});
-results.renderer.setOptions({
-  showGutter: true,
-  showPrintMargin: false,
-  showInvisibles: false,
+var terminal = new Terminal({
+  theme: {
+    // https://ethanschoonover.com/solarized/
+    brightBlack: "#002b36", // base03
+    black: "#073642", // base02
+    brightGreen: "#586e75", // base01
+    brightYellow: "#657b83", // base00
+    brightBlue: "#839496", // base0
+    brightCyan: "#93a1a1", // base1
+    white: "#eee8d5", // base2
+    brightWhite: "#fdf6e3", // base3
+    yellow: "#b58900", // yellow
+    brightRed: "#cb4b16", // orange
+    red: "#dc322f", // red
+    magenta: "#d33682", // magenta
+    brightMagenta: "#6c71c4", // violet
+    blue: "#268bd2", // blue
+    cyan: "#2aa198", // cyan
+    green: "#859900", // green
+    background: "#002b36",
+    foreground: "#93a1a1",
+  },
   fontFamily: "Menlo,sans-serif,monospace",
-  fontSize: "11pt",
+  fontSize: 16,
+  lineHeight: 1.2,
+  convertEol: true,
+  cursorStyle: "underline",
+  cursorBlink: false,
 });
-results.renderer.hideCursor();
+const fitAddon = new FitAddon.FitAddon();
+terminal.loadAddon(fitAddon);
+terminal.open(document.getElementById("terminal"));
+fitAddon.fit();
 
-define("DynHighlightRules", function (require, exports, module) {
-  require("ace/lib/oop");
-  const TextHighlightRules = require("ace/mode/text_highlight_rules")
-    .TextHighlightRules;
-  module.exports = function () {
-    this.setKeywords = function (kwMap) {
-      this.keywordRule.onMatch = this.createKeywordMapper(kwMap, "identifier");
-    };
-    this.keywordRule = {
-      regex: `\.+`,
-      onMatch: function () {
-        return "text";
-      },
-    };
-
-    this.$rules = {
-      start: [
-        {
-          token: "string",
-          start: '"',
-          end: '"',
-          next: [
-            {
-              token: "constant.language.escape.lsl",
-              regex: /\\[tn"\\]/,
-            },
-          ],
-        },
-        this.keywordRule,
-      ],
-    };
-    this.normalizeRules();
-  };
-  module.exports.prototype = TextHighlightRules.prototype;
+$(".selectpicker").selectpicker({
+  iconBase: "fas",
+  tickIcon: "fa-check",
 });
 
 $("#run-button").click(function (e) {
@@ -116,40 +93,44 @@ $("#run-button").click(function (e) {
 });
 
 function run(sender, editor) {
-  results.setValue("");
-
+  clearMarkers(editor);
   showLoading();
-  const progressInterval = showSpinner(results, "Running...");
+  const cancelToken = showSpinner(terminal, "Running");
 
-  const code = editor.getValue();
   const params = {
-    toolchain_version: $("#versionPicker").val().replace("/", "_"),
-    code: code,
+    toolchain_version: $("#versionPicker").val(),
+    code: editor.getValue(),
   };
-
   $.post("/run", params)
     .done(function (data) {
-      results.setValue(data.version + data.errors + data.output);
+      hideSpinner(terminal, cancelToken);
+
+      terminal.write(`\x1b[38;5;72m${data.version}\x1b[0m`);
+      terminal.write(`${data.errors}\x1b[0m`);
+      terminal.write(`\x1b[37m${data.output}\x1b[0m`);
 
       const annotations = parceErrorMessage(data.errors);
       updateAnnotations(editor, annotations);
-      showErrorMessages(results, data.version, data.errors, annotations);
-
-      results.clearSelection();
     })
     .fail(function (response) {
+      hideSpinner(terminal, cancelToken);
       alert(`[Status: ${response.status}] Something went wrong`);
     })
     .always(function () {
       hideLoading();
-      clearInterval(progressInterval);
       editor.focus();
     });
 }
 
+function clearMarkers(editor) {
+  Object.entries(editor.session.getMarkers()).forEach(([key, value]) => {
+    editor.session.removeMarker(value.id);
+  });
+}
+
 function parceErrorMessage(message) {
   const matches = message.matchAll(
-    /main\.swift:(\d+):(\d+): (error|warning|note): ([\s\S]*?)\n*(?=(?:\/|$))/gi
+    /\/\[REDACTED\]\/main\.swift:(\d+):(\d+): (error|warning|note): ([\s\S]*?)\n*(?=(?:\/|$))/gi
   );
   return [...matches].map((match) => {
     return {
@@ -157,22 +138,8 @@ function parceErrorMessage(message) {
       column: match[2] - 1,
       text: match[4],
       type: match[3].replace("note", "info"),
+      full: match[0],
     };
-  });
-}
-
-function showErrorMessages(editor, systemText, errorText, annotations) {
-  require(["ace/ace", "DynHighlightRules"], function (ace) {
-    const TextMode = require("ace/mode/text").Mode;
-    const dynamicMode = new TextMode();
-    dynamicMode.$id = "DynHighlightRules";
-    dynamicMode.HighlightRules = require("DynHighlightRules");
-    editor.session.setMode(dynamicMode);
-    dynamicMode.$highlightRules.setKeywords({
-      "compiler.message": (systemText || "").split("\n").join("|"),
-      "compiler.error": (errorText || "").split("\n").join("|"),
-    });
-    editor.session.bgTokenizer.start(0);
   });
 }
 
@@ -188,7 +155,7 @@ function updateAnnotations(editor, annotations) {
         annotation.row,
         annotation.column + (marker ? marker[0].length : 1)
       ),
-      "editor-marker",
+      `editor-marker-${annotation.type}`,
       "text"
     );
   });
@@ -208,20 +175,29 @@ function hideLoading() {
   $("#run-button-spinner").hide();
 }
 
-function showSpinner(editor, message) {
+function showSpinner(terminal, message) {
   const SPINNER = ["⠋", "⠙", "⠹", "⠸", "⠼", "⠴", "⠦", "⠧", "⠇", "⠏"];
   let spins = 0;
-  function updateSpinner(editor, message) {
-    const progressText = `${SPINNER[spins % SPINNER.length]}`;
-    editor.setValue(progressText);
-    editor.clearSelection();
+  function updateSpinner(terminal, message) {
+    const progressText = `${SPINNER[spins % SPINNER.length]} ${message}`;
+    terminal.write("\x1b[2K\r");
+    terminal.write(
+      `\x1b[37m${progressText} ${".".repeat(
+        Math.floor((spins * 2) / 4) % 4
+      )} \x1b[0m`
+    );
     spins++;
   }
 
-  updateSpinner(editor, message);
+  updateSpinner(terminal, message);
   return setInterval(() => {
-    updateSpinner(editor, message);
+    updateSpinner(terminal, message);
   }, 200);
+}
+
+function hideSpinner(terminal, cancelToken) {
+  clearInterval(cancelToken);
+  terminal.write("\x1b[2K\r");
 }
 
 function showShareSheet() {

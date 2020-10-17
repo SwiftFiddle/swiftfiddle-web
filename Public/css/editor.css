@@ -4,6 +4,16 @@
   margin: 0;
 }
 
+#terminal {
+  height: 680px;
+  padding: 0;
+  margin: 0;
+}
+
+.terminal.xterm {
+  padding: 5px;
+}
+
 .no-gutters {
   margin-right: 0;
   margin-left: 0;
@@ -15,42 +25,24 @@
   }
 }
 
-#editor,
-#results {
+#editor {
   line-height: 1.5;
 }
 
-.editor-marker {
+.editor-marker-error {
   position: absolute;
   border-bottom: 2px solid red;
   border-radius: 0;
 }
 
-.ace-terminal-theme .ace_marker-layer .ace_bracket {
-  background: transparent;
+.editor-marker-warning {
+  position: absolute;
+  border-bottom: 2px solid gold;
+  border-radius: 0;
 }
 
-.ace-terminal-theme .ace_marker-layer .ace_bracket-start {
-  background: transparent;
-}
-
-.ace-terminal-theme .ace_marker-layer .ace_bracket-unmatched {
-  margin: -1px 0 0 -1px;
-  border: 1px solid transparent
-}
-
-.ace-terminal-theme .ace_compiler.ace_message {
-  color: #9F9F9F
-}
-
-.ace-terminal-theme .ace_compiler.ace_error {
-  color: #D54E53
-}
-
-.ace-terminal-theme .ace_compiler.ace_warning {
-  color: #E7C547
-}
-
-.ace-terminal-theme .ace_compiler.ace_note {
-  color: #B9CA4A
+.editor-marker-info {
+  position: absolute;
+  border-bottom: 2px solid gold;
+  border-radius: 0;
 }
