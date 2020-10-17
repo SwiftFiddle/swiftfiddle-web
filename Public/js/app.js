@@ -7,10 +7,10 @@ $(".selectpicker").selectpicker({
 
 $("#run-button").click(function (e) {
   e.preventDefault();
-  run($(this), editor);
+  run(editor);
 });
 
-function run(sender, editor) {
+function run(editor) {
   clearMarkers(editor);
   showLoading();
   const cancelToken = showSpinner(terminal, "Running");
@@ -47,9 +47,14 @@ function clearMarkers(editor) {
 }
 
 function parceErrorMessage(message) {
-  const matches = message.matchAll(
-    /\/\[REDACTED\]\/main\.swift:(\d+):(\d+): (error|warning|note): ([\s\S]*?)\n*(?=(?:\/|$))/gi
-  );
+  const matches = message
+    .replace(
+      /[\u001b\u009b][[()#;?]*(?:[0-9]{1,4}(?:;[0-9]{0,4})*)?[0-9A-ORZcf-nqry=><]/g,
+      ""
+    )
+    .matchAll(
+      /\/\[REDACTED\]\/main\.swift:(\d+):(\d+): (error|warning|note): ([\s\S]*?)\n*(?=(?:\/|$))/gi
+    );
   return [...matches].map((match) => {
     return {
       row: match[1] - 1,
