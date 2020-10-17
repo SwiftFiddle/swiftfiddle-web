@@ -24,7 +24,7 @@ function run(editor) {
   $.post("/run", params)
     .done(function (data) {
       const endTime = performance.now();
-      const execTime = ` ${((endTime - startTime) / 1000).toFixed(1)}s`;
+      const execTime = ` ${((endTime - startTime) / 1000).toFixed(0)}s`;
 
       hideSpinner(terminal, cancelToken);
 
@@ -159,23 +159,26 @@ function hideLoading() {
 }
 
 function showSpinner(terminal, message) {
+  const interval = 200;
   const SPINNER = ["⠋", "⠙", "⠹", "⠸", "⠼", "⠴", "⠦", "⠧", "⠇", "⠏"];
   let spins = 0;
   function updateSpinner(terminal, message) {
     const progressText = `${SPINNER[spins % SPINNER.length]} ${message}`;
-    terminal.write("\x1b[2K\r");
-    terminal.write(
-      `\x1b[37m${progressText} ${".".repeat(
-        Math.floor((spins * 2) / 4) % 4
-      )} \x1b[0m`
+    terminal.write("\x1b[2K\r"); // Clear current line
+    const dotCount = Math.floor((spins * 2) / 4) % 4;
+    const animationText = `${progressText} ${".".repeat(dotCount)}`;
+    const seconds = `${Math.floor(spins / 5)}s`;
+    const speces = " ".repeat(
+      terminal.cols - animationText.length - seconds.length
     );
+    terminal.write(`\x1b[37m${animationText}\x1b[0m${speces}${seconds}`);
     spins++;
   }
 
   updateSpinner(terminal, message);
   return setInterval(() => {
     updateSpinner(terminal, message);
-  }, 200);
+  }, interval);
 }
 
 function hideSpinner(terminal, cancelToken) {
