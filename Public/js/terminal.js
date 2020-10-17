@@ -34,3 +34,5 @@ const fitAddon = new FitAddon.FitAddon();
 terminal.loadAddon(fitAddon);
 terminal.open(document.getElementById("terminal"));
 fitAddon.fit();
+
+terminal.write(`\x1b[37mWelcome to SwiftFiddle.\x1b[0m\n`);

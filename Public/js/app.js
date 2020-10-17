@@ -23,7 +23,34 @@ function run(editor) {
     .done(function (data) {
       hideSpinner(terminal, cancelToken);
 
-      terminal.write(`\x1b[38;5;72m${data.version}\x1b[0m`);
+      const now = new Date();
+      const timestamp = `${now.toLocaleString("en-US", {
+        hour: "2-digit",
+        minute: "2-digit",
+        second: "2-digit",
+        hour12: false,
+      })}.${now.getMilliseconds()}`;
+
+      terminal.write(
+        `\x1b[38;5;72m${data.version
+          .split("\n")
+          .map((l, i) => {
+            return i == 0
+              ? `${
+                  terminal.cols - l.length - timestamp.length < 0
+                    ? `\x1b[0m${timestamp}\n`
+                    : ""
+                }\x1b[38;5;72m${l}\x1b[0m${
+                  terminal.cols - l.length - timestamp.length >= 0
+                    ? `${" ".repeat(
+                        terminal.cols - l.length - timestamp.length
+                      )}\x1b[0m${timestamp}`
+                    : ""
+                }`
+              : `\x1b[38;5;72m${l}\x1b[0m`;
+          })
+          .join("\n")}\x1b[0m`
+      );
       terminal.write(`${data.errors}\x1b[0m`);
       terminal.write(`\x1b[37m${data.output}\x1b[0m`);
 
