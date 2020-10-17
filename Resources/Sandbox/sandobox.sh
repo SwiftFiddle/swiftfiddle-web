@@ -11,8 +11,8 @@ fi
 
 # 10MB file size limit
 # 10 processes limit
-# 20% CPU usage
-containerId=$(docker run --rm --detach --ulimit fsize=10000000:10000000 --pids-limit 10 --cpus="0.2" "$@")
+# 40% CPU usage
+containerId=$(docker run --rm --detach --ulimit fsize=10000000:10000000 --pids-limit 10 --cpus="0.4" "$@")
 status=$($timeoutCommand "$to" docker wait "$containerId" || true)
 docker kill $containerId &> /dev/null
 
