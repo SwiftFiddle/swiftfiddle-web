@@ -2,7 +2,7 @@ name: URL Health Check
 
 on:
   schedule:
-    - cron: "*/5 * * * *"
+    - cron: "*/10 * * * *"
 
 jobs:
   healthcheck:
@@ -10,7 +10,6 @@ jobs:
     steps:
       - uses: Jtalk/url-health-check-action@v1
         with:
-          # Check the following URLs one by one sequentially
           url: https://swiftfiddle.com|https://www.swiftfiddle.com|https://swift-playground.com|https://www.swift-playground.com|https://swift-playground.kishikawakatsumi.com
           follow-redirect: yes
           max-attempts: 3
