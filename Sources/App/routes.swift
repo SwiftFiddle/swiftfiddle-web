@@ -106,6 +106,10 @@ func routes(_ app: Application) throws {
         let command = parameter.command ?? "swift"
         let options = parameter.options ?? toolchainVersion == "nightly-master" ? "-Xfrontend -enable-experimental-concurrency" : ""
         let timeout = parameter.timeout ?? 30 // Default timeout
+        let color = parameter._color ?? false
+
+        var environment = ProcessEnv.vars
+        environment["_COLOR"] = "\(color)"
 
         guard try availableVersions().contains(toolchainVersion) else {
             throw Abort(.badRequest)
@@ -156,7 +160,8 @@ func routes(_ app: Application) throws {
                 image,
                 "sh",
                 "/[REDACTED]/run.sh",
-                [command, options].joined(separator: " ")
+                [command, options].joined(separator: " "),
+                environment: environment
             )
             try process.launch()
 
@@ -269,6 +274,7 @@ struct ExecutionRequestParameter: Decodable {
     let options: String?
     let code: String?
     let timeout: Int?
+    let _color: Bool?
 }
 
 struct SharedLinkRequestParameter: Decodable {

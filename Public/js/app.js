@@ -18,6 +18,7 @@ function run(editor) {
   const params = {
     toolchain_version: $("#versionPicker").val(),
     code: editor.getValue(),
+    _color: true,
   };
 
   const startTime = performance.now();
