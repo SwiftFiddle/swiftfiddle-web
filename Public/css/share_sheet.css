@@ -29,7 +29,6 @@
   cursor: pointer;
 }
 
-#shared-link-copy-button,
 button:disabled {
   cursor: default;
 }
