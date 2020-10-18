@@ -3,6 +3,8 @@ import TSCBasic
 import Base32
 
 func routes(_ app: Application) throws {
+    app.get { req in try index(req) }
+    app.get("index.html") { (req) in try index(req) }
     func index(_ req: Request) throws -> EventLoopFuture<View> {
         return req.view.render(
             "index", InitialPageResponse(
@@ -16,10 +18,7 @@ func routes(_ app: Application) throws {
         )
     }
 
-    app.get { req in try index(req) }
-    app.get("index.html") { req in try index(req) }
-
-    app.get("versions") { req in try availableVersions() }
+    app.get("versions") { (req) in try availableVersions() }
 
     app.get("*") { req -> EventLoopFuture<Response> in
         func handleImportContent(_ req: Request, _ promise: EventLoopPromise<Response>,
@@ -95,7 +94,7 @@ func routes(_ app: Application) throws {
         }
     }
 
-    app.on(.POST, "run", body: .collect(maxSize: "10mb")) { req -> EventLoopFuture<ExecutionResponse> in
+    app.on(.POST, "run", body: .collect(maxSize: "10mb")) { (req) -> EventLoopFuture<ExecutionResponse> in
         let parameter = try req.content.decode(ExecutionRequestParameter.self)
 
         var toolchainVersion = parameter.toolchain_version ?? stableVersion()
@@ -203,7 +202,7 @@ func routes(_ app: Application) throws {
         return promise.futureResult
     }
 
-    app.post("shared_link") { req -> EventLoopFuture<[String: String]> in
+    app.post("shared_link") { (req) -> EventLoopFuture<[String: String]> in
         let parameter = try req.content.decode(SharedLinkRequestParameter.self)
         let code = parameter.code
         let swiftVersion = parameter.toolchain_version
@@ -228,6 +227,10 @@ func routes(_ app: Application) throws {
 
         return promise.futureResult
     }
+
+    app.get("\(loaderioVerificationToken)") { (req) in return loaderioVerificationToken }
+    app.get("\(loaderioVerificationToken).txt") { (req) in return loaderioVerificationToken }
+    app.get("\(loaderioVerificationToken).html") { (req) in return loaderioVerificationToken }
 }
 
 private func availableVersions() throws -> [String] {
@@ -350,3 +353,5 @@ extension StringProtocol {
         }
     }
 }
+
+private let loaderioVerificationToken = "loaderio-28dcf65c633864d2ea288eddddbb9da6"
