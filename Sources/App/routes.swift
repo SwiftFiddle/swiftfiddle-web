@@ -136,10 +136,11 @@ func routes(_ app: Application) throws {
         }
 
         let promise = req.eventLoop.makePromise(of: ExecutionResponse.self)
+        let sandboxPath = URL(fileURLWithPath: "\(app.directory.resourcesDirectory)Sandbox")
+        let random = UUID().uuidString
+        let temporaryPath = URL(fileURLWithPath: "\(app.directory.resourcesDirectory)Temp/\(random)")
+
         do {
-            let sandboxPath = URL(fileURLWithPath: "\(app.directory.resourcesDirectory)Sandbox")
-            let random = UUID().uuidString
-            let temporaryPath = URL(fileURLWithPath: "\(app.directory.resourcesDirectory)Temp/\(random)")
             try FileManager().copyItem(at: sandboxPath, to: temporaryPath)
             try """
                 import Glibc
@@ -201,6 +202,7 @@ func routes(_ app: Application) throws {
             timer.schedule(deadline: .now() + .milliseconds(200), repeating: .milliseconds(200))
             timer.resume()
         } catch {
+            try? FileManager().removeItem(at: temporaryPath)
             return req.eventLoop.makeFailedFuture(error)
         }
 
