@@ -8,8 +8,12 @@ function showShareSheet() {
   };
   $.post("/shared_link", params, (data, error, xhr) => {
     if (data) {
+      $("#shared-link-spinner").hide();
+      $("#shared-link-copy-button-icon").show();
+      $("#shared-link-copy-button").prop("disabled", false);
+
       const url = data.url;
-      $("#shared_link").val(url);
+      $("#shared-link").val(url);
       $(".btn-facebook").attr(
         "href",
         `https://www.facebook.com/sharer/sharer.php?u=${url}`
@@ -24,6 +28,9 @@ function showShareSheet() {
       );
       $(".btn-pocket").attr("href", `https://getpocket.com/edit?url=${url}`);
       $("#shareSheet").modal();
+    } else {
+      $("#shared-link-spinner").hide();
+      $("#shared-link-failure").show();
     }
   });
   $("#shareSheet").modal();
@@ -31,7 +38,7 @@ function showShareSheet() {
 
 function copySharedLink() {
   if (navigator.clipboard) {
-    navigator.clipboard.writeText($("#shared_link").val());
+    navigator.clipboard.writeText($("#shared-link").val());
   }
   const message = $(".share-sheet-copy-message");
   message.hide();

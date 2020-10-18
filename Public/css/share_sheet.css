@@ -29,6 +29,11 @@
   cursor: pointer;
 }
 
+#shared-link-copy-button,
+button:disabled {
+  cursor: default;
+}
+
 button.focus,
 button:focus {
   outline: 0;

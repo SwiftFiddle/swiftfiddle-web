@@ -149,9 +149,14 @@
         <div class="modal-footer"><label style="font-weight: 600">Page Link <span
               class="share-sheet-copy-message"></span></label><br>
           <div class="fluid">
-            <input class="ur" id="shared_link" type="url" disabled="disabled"
-              aria-describedby="inputGroup-sizing-default" style="width: 96%; height: 40px;"> <button class="cpy"
-              onclick="copySharedLink()"><i class="far fa-clone"></i></button>
+            <input class="ur" id="shared-link" type="url" disabled="disabled"
+              aria-describedby="inputGroup-sizing-default" style="width: 96%; height: 40px;"> <button
+              id='shared-link-copy-button' class="cpy" onclick="copySharedLink()" disabled><i
+                id='shared-link-copy-button-icon' class="far fa-clone" style="display: none;"></i>
+              <div id='shared-link-spinner' class="spinner-border spinner-border-sm" role="status">
+                <span class="sr-only">Loading...</span>
+              </div><i id='shared-link-failure' class="far fa-exclamation-triangle fa-sm" style="display: none;"></i>
+            </button>
           </div>
         </div>
       </div>
