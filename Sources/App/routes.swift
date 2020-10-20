@@ -1,6 +1,5 @@
 import Vapor
 import TSCBasic
-import Base32
 
 func routes(_ app: Application) throws {
     app.get { req in try index(req) }
@@ -213,7 +212,8 @@ func routes(_ app: Application) throws {
         let parameter = try req.content.decode(SharedLinkRequestParameter.self)
         let code = parameter.code
         let swiftVersion = parameter.toolchain_version
-        let id = Base32.base32Encode(UUID().uuidString.replacingOccurrences(of: "-", with: "").hexaData).replacingOccurrences(of: "=", with: "").lowercased()
+
+        guard let id = Base32.encoode(bytes: convertHexToBytes(UUID().uuidString.replacingOccurrences(of: "-", with: "")))?.lowercased() else { throw Abort(.internalServerError) }
 
         let promise = req.eventLoop.makePromise(of: [String: String].self)
 
@@ -348,18 +348,5 @@ print(greet(person: "Anna"))
 print(greet(person: "Brian"))
 
 """#
-
-extension StringProtocol {
-    var hexaData: Data { .init(hexa) }
-    var hexaBytes: [UInt8] { .init(hexa) }
-    private var hexa: UnfoldSequence<UInt8, Index> {
-        sequence(state: startIndex) { startIndex in
-            guard startIndex < self.endIndex else { return nil }
-            let endIndex = self.index(startIndex, offsetBy: 2, limitedBy: self.endIndex) ?? self.endIndex
-            defer { startIndex = endIndex }
-            return UInt8(self[startIndex..<endIndex], radix: 16)
-        }
-    }
-}
 
 private let loaderioVerificationToken = "loaderio-28dcf65c633864d2ea288eddddbb9da6"
