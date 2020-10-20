@@ -1,6 +1,11 @@
 "use strict";
 
 function showShareSheet() {
+  $("#shared-link").val("");
+  $("#shared-link-spinner").show();
+  $("#shared-link-copy-button-icon").hide();
+  $("#shared-link-copy-button").prop("disabled", true);
+
   const code = editor.getValue();
   const params = {
     toolchain_version: $("#versionPicker").val().replace("/", "_"),
@@ -27,7 +32,6 @@ function showShareSheet() {
         `https://social-plugins.line.me/lineit/share?url=${url}`
       );
       $(".btn-pocket").attr("href", `https://getpocket.com/edit?url=${url}`);
-      $("#shareSheet").modal();
     } else {
       $("#shared-link-spinner").hide();
       $("#shared-link-failure").show();
