@@ -1,10 +1,8 @@
 "use strict";
 
 function showShareSheet() {
-  $("#shared-link").val("");
-  $("#shared-link-spinner").show();
-  $("#shared-link-copy-button-icon").hide();
-  $("#shared-link-copy-button").prop("disabled", true);
+  reset();
+  loading();
 
   const code = editor.getValue();
   const params = {
@@ -13,9 +11,7 @@ function showShareSheet() {
   };
   $.post("/shared_link", params, (data, error, xhr) => {
     if (data) {
-      $("#shared-link-spinner").hide();
-      $("#shared-link-copy-button-icon").show();
-      $("#shared-link-copy-button").prop("disabled", false);
+      success();
 
       const url = data.url;
       $("#shared-link").val(url);
@@ -33,11 +29,39 @@ function showShareSheet() {
       );
       $(".btn-pocket").attr("href", `https://getpocket.com/edit?url=${url}`);
     } else {
-      $("#shared-link-spinner").hide();
-      $("#shared-link-failure").show();
+      failed();
     }
   });
   $("#shareSheet").modal();
+}
+
+function reset() {
+  $("#shared-link").val("");
+  $("#shared-link-spinner").hide();
+  $("#shared-link-copy-button-icon").show();
+  $("#shared-link-copy-button").prop("disabled", false);
+  $("#shared-link-failure").hide();
+}
+
+function loading() {
+  $("#shared-link-spinner").show();
+  $("#shared-link-copy-button-icon").hide();
+  $("#shared-link-copy-button").prop("disabled", true);
+  $("#shared-link-failure").hide();
+}
+
+function success() {
+  $("#shared-link-spinner").hide();
+  $("#shared-link-copy-button-icon").show();
+  $("#shared-link-copy-button").prop("disabled", false);
+  $("#shared-link-failure").hide();
+}
+
+function failed() {
+  $("#shared-link-spinner").hide();
+  $("#shared-link-copy-button-icon").hide();
+  $("#shared-link-copy-button").prop("disabled", true);
+  $("#shared-link-failure").show();
 }
 
 function copySharedLink() {
