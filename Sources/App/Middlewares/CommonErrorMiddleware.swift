@@ -11,7 +11,7 @@ final class CommonErrorMiddleware: Middleware {
             case let abort as AbortError:
                 headers = abort.headers
                 status = abort.status
-                title = "Not Found"
+                title = abort.reason
                 reason = status == .notFound ? "Sorry, an error has occured, Requested page not found!" : abort.reason
             default:
                 headers = [:]
