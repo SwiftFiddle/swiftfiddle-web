@@ -19,7 +19,7 @@ jobs:
           chmod 600 ~/.ssh/id_rsa
 
           TERM=xterm ssh -t -t -o 'StrictHostKeyChecking no' "${{ secrets.SSH_LOGIN_USER }}@${{ secrets.SSH_HOST }}" "grep "^docker:" /etc/group | sed -e 's/^[^:]\+:[^:]\+:\([^:]\+\):[^:]\+$/\1/g'" > gid
-          REMOTE_DOCKER_GID=$(tail -n 1 gid)
+          REMOTE_DOCKER_GID=$(tail -n 1 gid | tr -d '\n')
 
           docker login --username ${{ secrets.DOCKER_HUB_USERNAME }} --password ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
           docker build \

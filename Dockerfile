@@ -26,7 +26,7 @@ ARG HOST_DOCKER_GROUP_ID
 
 RUN useradd --user-group --create-home --system --skel /dev/null --home-dir /app vapor
 
-RUN groupmod -g ${HOST_DOCKER_GROUP_ID} docker && \
+RUN groupadd docker -g ${HOST_DOCKER_GROUP_ID} && \
     usermod -a -G docker vapor
 
 RUN export DEBIAN_FRONTEND=noninteractive DEBCONF_NONINTERACTIVE_SEEN=true && \
