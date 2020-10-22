@@ -182,7 +182,7 @@
             <li>Or just start typing!</li>
           </ul>
           <dl>
-            <dt>Bug Report</dt>
+            <dt>Feedback / Bug Report</dt>
             <dd>
               <a
                 href="https://github.com/kishikawakatsumi/swift-playground/issues/new">github.com/kishikawakatsumi/swift-playground</a>
