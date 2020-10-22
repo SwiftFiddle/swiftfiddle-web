@@ -14,32 +14,39 @@ jobs:
         run: |
           set -ex
 
-          docker login --username ${{ secrets.DOCKER_HUB_USERNAME }} --password ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
-          docker build --rm --no-cache --tag kishikawakatsumi/swift-playground .
-          docker push kishikawakatsumi/swift-playground
+          TERM=xterm ssh -t -t -o 'StrictHostKeyChecking no' "${{ secrets.SSH_LOGIN_USER }}@${{ secrets.SSH_HOST }}" > gid
+          REMOTE_DOCKER_GID=$(tail -n 1 gid)
+          echo $REMOTE_DOCKER_GID
 
-          mkdir -p ~/.ssh
-          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
-          chmod 600 ~/.ssh/id_rsa
+          # docker login --username ${{ secrets.DOCKER_HUB_USERNAME }} --password ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
+          # docker build \
+          #   --build-arg \
+          #     HOST_DOCKER_GROUP_ID=$(grep "^docker:" /etc/group | sed -e 's/^[^:]\+:[^:]\+:\([^:]\+\):[^:]\+$/\1/g') \
+          #   --rm --no-cache --tag kishikawakatsumi/swift-playground .
+          # docker push kishikawakatsumi/swift-playground
 
-          TERM=xterm ssh -t -t -o 'StrictHostKeyChecking no' "${{ secrets.SSH_LOGIN_USER }}@${{ secrets.SSH_HOST }}" <<EOC
-          set -ex
-          hostname
+          # mkdir -p ~/.ssh
+          # echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+          # chmod 600 ~/.ssh/id_rsa
 
-          cd "\$HOME/app"
-          git pull --rebase origin master
+          # TERM=xterm ssh -t -t -o 'StrictHostKeyChecking no' "${{ secrets.SSH_LOGIN_USER }}@${{ secrets.SSH_HOST }}" <<EOC
+          # set -ex
+          # hostname
 
-          dc='docker run --rm -v /var/run/docker.sock:/var/run/docker.sock -v "\$PWD:\$PWD" -w="\$PWD" docker/compose:1.27.4'
-          eval \$dc pull
-          eval \$dc up --detach app carbonara nginx-proxy letsencrypt
+          # cd "\$HOME/app"
+          # git pull --rebase origin master
 
-          docker image prune --force
+          # dc='docker run --rm -v /var/run/docker.sock:/var/run/docker.sock -v "\$PWD:\$PWD" -w="\$PWD" docker/compose:1.27.4'
+          # eval \$dc pull
+          # eval \$dc up --detach app carbonara nginx-proxy letsencrypt
 
-          curl -X POST "https://api.cloudflare.com/client/v4/zones/${{ secrets.CLOUDFLARE_ZONE_ID }}/purge_cache" \
-            -H "X-Auth-Email: ${{ secrets.CLOUDFLARE_EMAIL }}" \
-            -H "X-Auth-Key: ${{ secrets.CLOUDFLARE_API_KEY }}" \
-            -H "Content-Type:application/json" \
-            --data '{"purge_everything":true}'
+          # docker image prune --force
 
-          exit 0
-          EOC
+          # curl -X POST "https://api.cloudflare.com/client/v4/zones/${{ secrets.CLOUDFLARE_ZONE_ID }}/purge_cache" \
+          #   -H "X-Auth-Email: ${{ secrets.CLOUDFLARE_EMAIL }}" \
+          #   -H "X-Auth-Key: ${{ secrets.CLOUDFLARE_API_KEY }}" \
+          #   -H "Content-Type:application/json" \
+          #   --data '{"purge_everything":true}'
+
+          # exit 0
+          # EOC
