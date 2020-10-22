@@ -22,13 +22,6 @@ RUN mv /build/Public ./Public && chmod -R a-w ./Public \
 
 FROM swift:5.3-focal-slim
 
-ARG HOST_DOCKER_GROUP_ID
-
-RUN useradd --user-group --create-home --system --skel /dev/null --home-dir /app vapor
-
-RUN groupadd docker -g ${HOST_DOCKER_GROUP_ID} && \
-    usermod -a -G docker vapor
-
 RUN export DEBIAN_FRONTEND=noninteractive DEBCONF_NONINTERACTIVE_SEEN=true && \
     apt-get -q update && apt-get -q dist-upgrade -y && rm -r /var/lib/apt/lists/*
 
@@ -41,6 +34,11 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     && curl -fsSL https://download.docker.com/linux/ubuntu/gpg | apt-key add - \ 
     && add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" \
     && apt-get update && apt-get install -y --no-install-recommends docker-ce docker-ce-cli containerd.io
+
+ARG HOST_DOCKER_GROUP_ID
+RUN useradd --user-group --create-home --system --skel /dev/null --home-dir /app vapor
+RUN groupadd docker -g ${HOST_DOCKER_GROUP_ID} && \
+    usermod -a -G docker vapor
 
 WORKDIR /app
 COPY --from=build /staging /app
