@@ -25,7 +25,8 @@ FROM swift:5.3-focal-slim
 ARG HOST_DOCKER_GROUP_ID
 
 RUN useradd --user-group --create-home --system --skel /dev/null --home-dir /app vapor
-RUN groupadd docker -g ${HOST_DOCKER_GROUP_ID} && \
+
+RUN groupmod -g ${HOST_DOCKER_GROUP_ID} docker && \
     usermod -a -G docker vapor
 
 RUN export DEBIAN_FRONTEND=noninteractive DEBCONF_NONINTERACTIVE_SEEN=true && \
