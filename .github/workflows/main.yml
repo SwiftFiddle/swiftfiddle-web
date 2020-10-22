@@ -14,10 +14,6 @@ jobs:
         run: |
           set -ex
 
-          TERM=xterm ssh -t -t -o 'StrictHostKeyChecking no' "${{ secrets.SSH_LOGIN_USER }}@${{ secrets.SSH_HOST }}" > gid
-          REMOTE_DOCKER_GID=$(tail -n 1 gid)
-          echo $REMOTE_DOCKER_GID
-
           # docker login --username ${{ secrets.DOCKER_HUB_USERNAME }} --password ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
           # docker build \
           #   --build-arg \
@@ -25,9 +21,13 @@ jobs:
           #   --rm --no-cache --tag kishikawakatsumi/swift-playground .
           # docker push kishikawakatsumi/swift-playground
 
-          # mkdir -p ~/.ssh
-          # echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
-          # chmod 600 ~/.ssh/id_rsa
+          mkdir -p ~/.ssh
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+
+          TERM=xterm ssh -t -t -o 'StrictHostKeyChecking no' "${{ secrets.SSH_LOGIN_USER }}@${{ secrets.SSH_HOST }}" > gid
+          REMOTE_DOCKER_GID=$(tail -n 1 gid)
+          echo $REMOTE_DOCKER_GID
 
           # TERM=xterm ssh -t -t -o 'StrictHostKeyChecking no' "${{ secrets.SSH_LOGIN_USER }}@${{ secrets.SSH_HOST }}" <<EOC
           # set -ex
