@@ -44,7 +44,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 WORKDIR /app
 COPY --from=build /staging /app
 
-# USER vapor:vapor
+USER vapor:vapor
 EXPOSE 8080
 
 ENTRYPOINT ["./Run"]
