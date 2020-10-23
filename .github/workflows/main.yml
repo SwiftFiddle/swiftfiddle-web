@@ -43,6 +43,7 @@ jobs:
 
           exit 0
           EOC
+
       - name: Purge Cache
         run: |
           set -ex
@@ -52,6 +53,7 @@ jobs:
             -H "X-Auth-Key: ${{ secrets.CLOUDFLARE_API_KEY }}" \
             -H "Content-Type:application/json" \
             --data '{"purge_everything":true}'
+
       - name: Test
         run: |
           set -ex

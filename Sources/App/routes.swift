@@ -19,7 +19,7 @@ func routes(_ app: Application) throws {
 
     app.get("versions") { (req) in try availableVersions() }
 
-    app.get("*") { req -> EventLoopFuture<Response> in
+    app.get(":id") { req -> EventLoopFuture<Response> in
         func handleImportContent(_ req: Request, _ promise: EventLoopPromise<Response>,
                                  _ id: String, _ code: String, _ swiftVersion: String?) throws {
             if req.url.path.hasSuffix(".png") {
@@ -45,7 +45,7 @@ func routes(_ app: Application) throws {
             }
         }
 
-        if let id = try SharedLink.id(from: req.url.path) {
+        if let path = req.parameters.get("id"), let id = try SharedLink.id(from: path) {
             let promise = req.eventLoop.makePromise(of: Response.self)
             try SharedLink.content(client: req.client, id: id.replacingOccurrences(of: ".png", with: ""))
                 .whenComplete {
@@ -67,7 +67,7 @@ func routes(_ app: Application) throws {
                     }
                 }
             return promise.futureResult
-        } else if let id = try Gist.id(from: req.url.path) {
+        } else if let path = req.parameters.get("id"), let id = try Gist.id(from: path) {
             let promise = req.eventLoop.makePromise(of: Response.self)
             Gist.content(client: req.client, id: id.replacingOccurrences(of: ".png", with: ""))
                 .whenComplete{

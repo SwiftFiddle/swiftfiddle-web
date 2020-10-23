@@ -2,7 +2,7 @@ import Vapor
 
 struct SharedLink {
     static func id(from path: String) throws -> String? {
-        guard let pattern = try? NSRegularExpression(pattern: #"^\/([A-Z2-7]{26}(|.png))$"#, options: [.caseInsensitive]) else {
+        guard let pattern = try? NSRegularExpression(pattern: #"^([A-Z2-7]{26}(|.png))$"#, options: [.caseInsensitive]) else {
             throw Abort(.internalServerError)
         }
 
@@ -11,7 +11,7 @@ struct SharedLink {
             return nil
         }
 
-        return NSString(string: path).substring(with: matches[0].range(at: 1))
+        return path
     }
 
     static func content(client: Client, id: String) throws -> EventLoopFuture<Document?> {

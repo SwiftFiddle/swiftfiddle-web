@@ -16,7 +16,7 @@ struct Gist: Codable {
     }
 
     static func id(from path: String) throws -> String? {
-        guard let pattern = try? NSRegularExpression(pattern: #"^\/([a-f0-9]{32}(|.png))$"#, options: [.caseInsensitive]) else {
+        guard let pattern = try? NSRegularExpression(pattern: #"^([a-f0-9]{32}(|.png))$"#, options: [.caseInsensitive]) else {
             throw Abort(.internalServerError)
         }
 
@@ -25,7 +25,7 @@ struct Gist: Codable {
             return nil
         }
         
-        return NSString(string: path).substring(with: matches[0].range(at: 1))
+        return path
     }
 
     static func content(client: Client, id: String) -> EventLoopFuture<Gist?> {
