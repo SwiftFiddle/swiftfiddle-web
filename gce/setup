@@ -1,0 +1,8 @@
+echo alias docker-compose="'"'docker run --rm \
+    -v /var/run/docker.sock:/var/run/docker.sock \
+    -v "$PWD:$PWD" \
+    -w="$PWD" \
+    docker/compose:latest'"'" >> ~/.bashrc
+
+chmod 666 /var/run/docker.sock
+chmod 773 Resources/Temp

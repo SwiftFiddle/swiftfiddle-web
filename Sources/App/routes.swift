@@ -104,7 +104,7 @@ func routes(_ app: Application) throws {
         }
         let command = parameter.command ?? "swift"
         let options = parameter.options ?? toolchainVersion == "nightly-master" ? "-Xfrontend -enable-experimental-concurrency" : ""
-        let timeout = parameter.timeout ?? 30 // Default timeout
+        let timeout = parameter.timeout ?? 60 // Default timeout is 60 seconds
         let color = parameter._color ?? false
 
         var environment = ProcessEnv.vars
@@ -249,7 +249,7 @@ private func availableVersions() throws -> [String] {
         return [stableVersion()]
     }
 
-    let versions = Set(output.split(separator: "\n").map { $0.replacingOccurrences(of: "-bionic", with: "").replacingOccurrences(of: "-focal", with: "") }).sorted(by: >)
+    let versions = Set(output.split(separator: "\n").map { $0.replacingOccurrences(of: "-bionic", with: "").replacingOccurrences(of: "-focal", with: "").replacingOccurrences(of: "-slim", with: "") }).sorted(by: >)
     return versions.isEmpty ? [stableVersion()] : versions
 }
 

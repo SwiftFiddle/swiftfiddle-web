@@ -35,17 +35,40 @@ jobs:
           cd "\$HOME/app"
           git pull --rebase origin master
 
-          dc='docker run --rm -v /var/run/docker.sock:/var/run/docker.sock -v "\$PWD:\$PWD" -w="\$PWD" docker/compose:1.27.4'
+          dc='docker run --rm -v /var/run/docker.sock:/var/run/docker.sock -v "\$PWD:\$PWD" -w="\$PWD" docker/compose:latest'
           eval \$dc pull
           eval \$dc up --detach app carbonara nginx-proxy letsencrypt
 
           docker image prune --force
+
+          exit 0
+          EOC
+      - name: Purge Cache
+        run: |
+          set -ex
 
           curl -X POST "https://api.cloudflare.com/client/v4/zones/${{ secrets.CLOUDFLARE_ZONE_ID }}/purge_cache" \
             -H "X-Auth-Email: ${{ secrets.CLOUDFLARE_EMAIL }}" \
             -H "X-Auth-Key: ${{ secrets.CLOUDFLARE_API_KEY }}" \
             -H "Content-Type:application/json" \
             --data '{"purge_everything":true}'
+      - name: Test
+        run: |
+          set -ex
 
-          exit 0
-          EOC
+          curl --silent --fail -i -X POST "https://swiftfiddle.com/run" \
+            -H "Content-Type:application/json" \
+            --data '{"code":"print(\"Hello, World!\")","toolchain_version":"latest"}'
+          curl --silent --fail -i -X POST "https://swiftfiddle.com/run" \
+            -H "Content-Type:application/json" \
+            --data '{"code":"print(\"Hello, World!\")","toolchain_version":"stable"}'
+            set -ex
+
+          versions=$(curl --silent -X GET "https://swiftfiddle.com/versions" -H "Content-Type:application/json")
+          len=$(echo $versions | jq length)
+          for i in $( seq 0 $(($len - 1)) ); do
+            version=$(echo $versions | jq .[$i])
+            curl --silent --fail -i -X POST "https://swiftfiddle.com/run" \
+              -H "Content-Type:application/json" \
+              --data "{\"code\":\"print(\\\"Hello, World!\\\")\",\"toolchain_version\":$version}"
+          done
