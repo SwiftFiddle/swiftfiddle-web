@@ -70,7 +70,7 @@
   <div class="container-fluid" style="padding-right: 0; padding-left: 0; padding-bottom: 15px;">
     <div class="row no-gutters">
       <div class="col-md-6">
-        <pre id="editor">#(codeSnippet)</pre>
+        <pre id="editor"><xmp>#(codeSnippet)</xmp></pre>
       </div>
       <div class="col-md-6">
         <div id="terminal"></div>
@@ -237,8 +237,6 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.2.0/languages/swift.min.js"
     integrity="sha512-EShXEgqHHatDPL5k8+RCRdEvZWVr77b8z8GgkzaFmYUfyWd/X5SHz6VuERyeB729QU5a9MPF1lPGynFXVLgMMg=="
     crossorigin="anonymous"></script>
-
-  <script src="https://cdn.jsdelivr.net/npm/js-base64@3.5.2/base64.min.js"></script>
 
   <script src="js/editor.js"></script>
   <script src="js/terminal.js"></script>

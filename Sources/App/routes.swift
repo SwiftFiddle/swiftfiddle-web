@@ -11,7 +11,7 @@ func routes(_ app: Application) throws {
                 versions: try VersionGroup.grouped(versions: availableVersions()),
                 stableVersion: stableVersion(),
                 latestVersion: try latestVersion(),
-                codeSnippet: defaultCodeSnippet.data(using: .utf8)?.base64EncodedString() ?? "",
+                codeSnippet: defaultCodeSnippet,
                 ogpImageUrl: "./default_ogp.jpeg"
             )
         )
@@ -36,7 +36,7 @@ func routes(_ app: Application) throws {
                         versions: try VersionGroup.grouped(versions: availableVersions()),
                         stableVersion: swiftVersion ?? stableVersion(),
                         latestVersion: try latestVersion(),
-                        codeSnippet: code.data(using: .utf8)?.base64EncodedString() ?? "",
+                        codeSnippet: code,
                         ogpImageUrl: "https://swiftfiddle.com/\(id).png"
                     )
                 )

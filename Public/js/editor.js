@@ -33,8 +33,6 @@ if (!editor.completer) {
 }
 editor.completer.popup.container.style.width = "30%";
 
-editor.setValue(Base64.decode(editor.getValue()));
-
 const row = editor.session.getLength() - 1;
 const column = editor.session.getLine(row).length;
 editor.gotoLine(row + 1, column);
