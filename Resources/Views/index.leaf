@@ -75,7 +75,7 @@
       <div class="col-md-6">
         <div id="terminal" style="position: relative;">
           <div class="toolbar" role="toolbar">
-            <a id="clear-button" href="#\"><i class="fal fa-times-circle"></i>
+            <a id="clear-button" href="#\"><i class="fas fa-times-circle"></i>
               Clear</a>
           </div>
         </div>
