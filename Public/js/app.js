@@ -118,7 +118,7 @@ function parceErrorMessage(message) {
     );
   return [...matches].map((match) => {
     return {
-      row: match[1] - 1,
+      row: match[1] - 1 - 4, // 4 lines of code inserted by default
       column: match[2] - 1,
       text: match[4],
       type: match[3].replace("note", "info"),
