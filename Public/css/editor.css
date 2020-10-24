@@ -11,6 +11,10 @@
 }
 
 .terminal.xterm {
+  height: 680px;
+}
+
+.terminal.xterm {
   padding: 5px;
 }
 
