@@ -12,18 +12,15 @@ final class CommonErrorMiddleware: Middleware {
                 headers = abort.headers
                 status = abort.status
                 title = abort.reason
-                reason = status == .notFound ? "Sorry, an error has occured, Requested page not found!" : abort.reason
             default:
                 headers = [:]
                 status = .internalServerError
                 title = "Internal Server Error"
-                reason = "Something went wrong."
             }
 
             return request.view.render("error", [
                 "title": title,
                 "status": "\(status.code)",
-                "reason": reason,
             ])
             .encodeResponse(status: status, headers: headers, for: request)
         }
