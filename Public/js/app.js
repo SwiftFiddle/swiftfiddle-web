@@ -10,6 +10,19 @@ $("#run-button").click(function (e) {
   run(editor);
 });
 
+$("#terminal").mouseenter(function () {
+  $("#terminal>div.toolbar").fadeTo("normal", 1);
+});
+
+$("#terminal").mouseleave(function () {
+  $("#terminal>div.toolbar").fadeTo("normal", 0);
+});
+
+$("#clear-button").on("click", function (e) {
+  e.preventDefault();
+  terminal.clear();
+});
+
 function run(editor) {
   clearMarkers(editor);
   showLoading();

@@ -73,7 +73,12 @@
         <pre id="editor"><xmp>#(codeSnippet)</xmp></pre>
       </div>
       <div class="col-md-6">
-        <div id="terminal"></div>
+        <div id="terminal" style="position: relative;">
+          <div class="toolbar" role="toolbar">
+            <a id="clear-button" href="#\"><i class="fal fa-times-circle"></i>
+              Clear</a>
+          </div>
+        </div>
       </div>
     </div>
   </div>
