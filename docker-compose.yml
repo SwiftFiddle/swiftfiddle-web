@@ -80,8 +80,11 @@ services:
   swift-nightly-5.3:
     image: swiftlang/swift:nightly-5.3
     container_name: swift-nightly-5.3
+  swift-5.3.1:
+    image: swift:5.3.1-focal
+    container_name: swift-5.3.1
   swift-5.3:
-    image: swift:5.3-focal
+    image: kishikawakatsumi/swift:5.3
     container_name: swift-5.3
   swift-5.2.5:
     image: swift:5.2.5-focal
