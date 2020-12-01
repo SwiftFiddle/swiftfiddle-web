@@ -5,4 +5,8 @@ echo alias docker-compose="'"'docker run --rm \
     docker/compose:latest'"'" >> ~/.bashrc
 
 sudo chmod 666 /var/run/docker.sock
+
+git clone https://github.com/kishikawakatsumi/swift-playground.git app
+pushd app
 chmod 773 Resources/Temp
+popd
