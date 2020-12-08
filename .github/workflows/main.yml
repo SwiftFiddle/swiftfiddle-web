@@ -58,10 +58,10 @@ jobs:
         run: |
           set -ex
 
-          curl --silent --fail -i -X POST "https://swiftfiddle.com/run" \
+          curl --silent -i -X POST "https://swiftfiddle.com/run" \
             -H "Content-Type:application/json" \
             --data '{"code":"print(\"Hello, World!\")","toolchain_version":"latest"}'
-          curl --silent --fail -i -X POST "https://swiftfiddle.com/run" \
+          curl --silent -i -X POST "https://swiftfiddle.com/run" \
             -H "Content-Type:application/json" \
             --data '{"code":"print(\"Hello, World!\")","toolchain_version":"stable"}'
             set -ex
@@ -70,7 +70,7 @@ jobs:
           len=$(echo $versions | jq length)
           for i in $( seq 0 $(($len - 1)) ); do
             version=$(echo $versions | jq .[$i])
-            curl --silent --fail -i -X POST "https://swiftfiddle.com/run" \
+            curl --silent -i -X POST "https://swiftfiddle.com/run" \
               -H "Content-Type:application/json" \
               --data "{\"code\":\"print(\\\"Hello, World!\\\")\",\"toolchain_version\":$version}"
           done
