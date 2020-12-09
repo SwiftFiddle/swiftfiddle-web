@@ -77,6 +77,9 @@ services:
     network_mode: bridge
     restart: always
 
+  swift-nightly-main:
+    image: swiftlang/swift:nightly-main
+    container_name: swift-nightly-main
   swift-nightly-master:
     image: swiftlang/swift:nightly-master
     container_name: swift-nightly-master
