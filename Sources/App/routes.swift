@@ -103,7 +103,7 @@ func routes(_ app: Application) throws {
             toolchainVersion = stableVersion();
         }
         let command = parameter.command ?? "swift"
-        let options = parameter.options ?? toolchainVersion == "nightly-master" || "nightly-main" ? "-Xfrontend -enable-experimental-concurrency" : ""
+        let options = parameter.options ?? (toolchainVersion == "nightly-master" || toolchainVersion == "nightly-main") ? "-Xfrontend -enable-experimental-concurrency" : ""
         let timeout = parameter.timeout ?? 60 // Default timeout is 60 seconds
         let color = parameter._color ?? false
 
