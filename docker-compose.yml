@@ -60,7 +60,6 @@ services:
       - proxy:/usr/share/nginx/html
       - /var/run/docker.sock:/tmp/docker.sock:ro
       - ./certs:/etc/nginx/certs:ro
-      - ./my_proxy.conf:/etc/nginx/conf.d/my_proxy.conf
     network_mode: bridge
     restart: always
 
