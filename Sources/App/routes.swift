@@ -187,7 +187,7 @@ func routes(_ app: Application) throws {
                 } else if interval * counter < Double(timeout) {
                     return
                 } else {
-                    let stdout = (try? String(contentsOf: stdoutPath)) ?? (try? String(contentsOf: completedPath)) ?? ""
+                    let stdout = (try? String(contentsOf: stdoutPath)) ?? ""
 
                     let stderr = "\((try? String(contentsOf: stderrPath)) ?? "")Maximum execution time of \(timeout) seconds exceeded.\n"
                     let version = (try? String(contentsOf: versionPath)) ?? "N/A"

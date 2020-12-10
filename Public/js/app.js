@@ -106,7 +106,7 @@ function run(editor) {
     })
     .fail(function (response) {
       hideSpinner(terminal, cancelToken);
-      alert(`[Status: ${response.status}] Something went wrong`);
+      alert(`[Status: ${response.status}] ${JSON.stringify(response)} Something went wrong`);
     })
     .always(function () {
       hideLoading();
