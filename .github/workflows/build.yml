@@ -13,8 +13,9 @@ jobs:
           mkdir -p ~/.ssh
           echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
+          export TERM=xterm
 
-          TERM=xterm ssh -t -t -o 'StrictHostKeyChecking no' "${{ secrets.SSH_LOGIN_USER }}@${{ secrets.SSH_HOST }}" \
+          ssh -t -t -o 'StrictHostKeyChecking no' "${{ secrets.SSH_LOGIN_USER }}@${{ secrets.SSH_HOST }}" \
             "grep "^docker:" /etc/group | sed -e 's/^[^:]\+:[^:]\+:\([^:]\+\):[^:]\+$/\1/g'" > gid
 
           REMOTE_DOCKER_GID=$(echo $(tail -n 1 gid) | sed -e 's/\r//g')
@@ -26,7 +27,7 @@ jobs:
             --rm --no-cache --tag kishikawakatsumi/swift-playground .
           docker push kishikawakatsumi/swift-playground
 
-          TERM=xterm ssh -t -t -o 'StrictHostKeyChecking no' "${{ secrets.SSH_LOGIN_USER }}@${{ secrets.SSH_HOST }}" <<EOS
+          ssh -t -t -o 'StrictHostKeyChecking no' "${{ secrets.SSH_LOGIN_USER }}@${{ secrets.SSH_HOST }}" <<EOF
           set -ex
 
           [ -d app ] || git clone https://github.com/kishikawakatsumi/swift-playground.git app
@@ -40,9 +41,9 @@ jobs:
           echo FIREBASE_API_KEY=${{ secrets.FIREBASE_API_KEY }}  > .env
           echo FIREBASE_REFRESH_TOKEN=${{ secrets.FIREBASE_REFRESH_TOKEN }} >> .env
 
-          dc='docker run --rm -v /var/run/docker.sock:/var/run/docker.sock -v "\$PWD:\$PWD" -w="\$PWD" docker/compose:latest'
-          eval \$dc pull
+          docker_compose='docker run --rm -v /var/run/docker.sock:/var/run/docker.sock -v "\$PWD:\$PWD" -w="\$PWD" docker/compose:latest'
+          eval \$docker_compose pull
           docker image prune --force
 
           exit 0
-          EOS
+          EOF

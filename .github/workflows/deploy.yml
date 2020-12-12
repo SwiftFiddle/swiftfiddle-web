@@ -19,7 +19,9 @@ jobs:
           echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
 
-          TERM=xterm ssh -t -t -o 'StrictHostKeyChecking no' "${{ secrets.SSH_LOGIN_USER }}@${{ secrets.SSH_HOST }}" "grep "^docker:" /etc/group | sed -e 's/^[^:]\+:[^:]\+:\([^:]\+\):[^:]\+$/\1/g'" > gid
+          export TERM=xterm
+
+          ssh -t -t -o 'StrictHostKeyChecking no' "${{ secrets.SSH_LOGIN_USER }}@${{ secrets.SSH_HOST }}" "grep "^docker:" /etc/group | sed -e 's/^[^:]\+:[^:]\+:\([^:]\+\):[^:]\+$/\1/g'" > gid
           REMOTE_DOCKER_GID=$(echo $(tail -n 1 gid) | sed -e 's/\r//g')
 
           docker login --username ${{ secrets.DOCKER_HUB_USERNAME }} --password ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
@@ -29,20 +31,20 @@ jobs:
             --rm --no-cache --tag kishikawakatsumi/swift-playground .
           docker push kishikawakatsumi/swift-playground
 
-          TERM=xterm ssh -t -t -o 'StrictHostKeyChecking no' "${{ secrets.SSH_LOGIN_USER }}@${{ secrets.SSH_HOST }}" <<EOS
+          ssh -t -t -o 'StrictHostKeyChecking no' "${{ secrets.SSH_LOGIN_USER }}@${{ secrets.SSH_HOST }}" <<EOF
           set -ex
 
           cd "\$HOME/app"
           git pull --rebase origin master
 
-          dc='docker run --rm -v /var/run/docker.sock:/var/run/docker.sock -v "\$PWD:\$PWD" -w="\$PWD" docker/compose:latest'
-          eval \$dc pull
-          eval \$dc up --detach app carbonara nginx-proxy letsencrypt
+          docker_compose='docker run --rm -v /var/run/docker.sock:/var/run/docker.sock -v "\$PWD:\$PWD" -w="\$PWD" docker/compose:latest'
+          eval \$docker_compose pull
+          eval \$docker_compose up --detach app carbonara nginx-proxy letsencrypt
 
           docker image prune --force
 
           exit 0
-          EOS
+          EOF
 
       - name: Purge Cache
         run: |
