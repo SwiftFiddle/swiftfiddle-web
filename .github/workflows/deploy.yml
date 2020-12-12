@@ -38,6 +38,8 @@ jobs:
           eval \$dc pull
           eval \$dc up --detach app carbonara nginx-proxy letsencrypt
 
+          docker image prune --force
+
           exit 0
           EOC
 
