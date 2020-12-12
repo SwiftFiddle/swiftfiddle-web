@@ -36,9 +36,7 @@ jobs:
 
           dc='docker run --rm -v /var/run/docker.sock:/var/run/docker.sock -v "\$PWD:\$PWD" -w="\$PWD" docker/compose:latest'
           eval \$dc pull
-          eval \$dc up --detach --remove-orphans app carbonara nginx-proxy letsencrypt
-
-          docker image prune --force
+          eval \$dc up --detach app carbonara nginx-proxy letsencrypt
 
           exit 0
           EOC
@@ -54,6 +52,7 @@ jobs:
             --data '{"purge_everything":true}'
   test:
     runs-on: ubuntu-latest
+    needs: deploy
     steps:
       - uses: actions/checkout@v2
       - name: Test
