@@ -1,4 +1,4 @@
-name: CI
+name: Deploy
 on:
   push:
     branches: [master]
@@ -30,7 +30,6 @@ jobs:
 
           TERM=xterm ssh -t -t -o 'StrictHostKeyChecking no' "${{ secrets.SSH_LOGIN_USER }}@${{ secrets.SSH_HOST }}" <<EOC
           set -ex
-          hostname
 
           cd "\$HOME/app"
           git pull --rebase origin master
@@ -53,7 +52,10 @@ jobs:
             -H "X-Auth-Key: ${{ secrets.CLOUDFLARE_API_KEY }}" \
             -H "Content-Type:application/json" \
             --data '{"purge_everything":true}'
-
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
       - name: Test
         run: |
           set -ex

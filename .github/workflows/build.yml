@@ -1,0 +1,45 @@
+name: Build
+on: workflow_dispatch
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Build
+        run: |
+          set -ex
+
+          mkdir -p ~/.ssh
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+
+          TERM=xterm ssh -t -t -o 'StrictHostKeyChecking no' "${{ secrets.SSH_LOGIN_USER }}@${{ secrets.SSH_HOST }}" \
+            "grep "^docker:" /etc/group | sed -e 's/^[^:]\+:[^:]\+:\([^:]\+\):[^:]\+$/\1/g'" > gid
+
+          REMOTE_DOCKER_GID=$(echo $(tail -n 1 gid) | sed -e 's/\r//g')
+
+          docker login --username ${{ secrets.DOCKER_HUB_USERNAME }} --password ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
+          docker build \
+            --build-arg \
+              HOST_DOCKER_GROUP_ID=$REMOTE_DOCKER_GID \
+            --rm --no-cache --tag kishikawakatsumi/swift-playground .
+          docker push kishikawakatsumi/swift-playground
+
+          TERM=xterm ssh -t -t -o 'StrictHostKeyChecking no' "${{ secrets.SSH_LOGIN_USER }}@${{ secrets.SSH_HOST }}" <<EOC
+          set -ex
+
+          [ -d app ] || git clone https://github.com/kishikawakatsumi/swift-playground.git app
+
+          cd app
+          git pull --rebase origin master
+
+          sudo chmod 666 /var/run/docker.sock
+          chmod 773 Resources/Temp
+
+          dc='docker run --rm -v /var/run/docker.sock:/var/run/docker.sock -v "\$PWD:\$PWD" -w="\$PWD" docker/compose:latest'
+          eval \$dc pull
+          docker image prune --force
+
+          exit 0
+          EOC
