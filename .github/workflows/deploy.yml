@@ -4,6 +4,7 @@ on:
     branches: [master]
   schedule:
     - cron: "0 15 * * *"
+  workflow_dispatch:
 
 jobs:
   deploy:
@@ -28,7 +29,7 @@ jobs:
             --rm --no-cache --tag kishikawakatsumi/swift-playground .
           docker push kishikawakatsumi/swift-playground
 
-          TERM=xterm ssh -t -t -o 'StrictHostKeyChecking no' "${{ secrets.SSH_LOGIN_USER }}@${{ secrets.SSH_HOST }}" <<EOC
+          TERM=xterm ssh -t -t -o 'StrictHostKeyChecking no' "${{ secrets.SSH_LOGIN_USER }}@${{ secrets.SSH_HOST }}" <<EOS
           set -ex
 
           cd "\$HOME/app"
@@ -41,7 +42,7 @@ jobs:
           docker image prune --force
 
           exit 0
-          EOC
+          EOS
 
       - name: Purge Cache
         run: |
