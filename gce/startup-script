@@ -1,6 +1,6 @@
 sysctl vm.disk_based_swap=1
 
-fallocate -l 4G /var/swapfile
+fallocate -l 6G /var/swapfile
 chmod 600 /var/swapfile
 mkswap /var/swapfile
 swapon /var/swapfile
