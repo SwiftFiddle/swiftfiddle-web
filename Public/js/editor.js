@@ -13,7 +13,7 @@ editor.setOptions({
   displayIndentGuides: true,
   autoScrollEditorIntoView: true,
   scrollPastEnd: 0.5, // Overscroll
-  fontFamily: "Menlo,sans-serif,monospace",
+  fontFamily: "Menlo,Consolas,sans-serif,monospace",
   fontSize: "11pt",
   wrap: "free",
   showInvisibles: false,

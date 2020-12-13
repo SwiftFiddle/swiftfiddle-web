@@ -22,7 +22,7 @@ const terminal = new Terminal({
     background: "#002b36",
     foreground: "#93a1a1",
   },
-  fontFamily: "Menlo,sans-serif,monospace",
+  fontFamily: "Menlo,Consolas,sans-serif,monospace",
   fontSize: 16,
   lineHeight: 1.2,
   convertEol: true,
