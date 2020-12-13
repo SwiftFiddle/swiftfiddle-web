@@ -31,6 +31,8 @@ function showShareSheet() {
     } else {
       failed();
     }
+  }).fail(function () {
+    failed();
   });
   $("#shareSheet").modal();
 }
