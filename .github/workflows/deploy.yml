@@ -76,7 +76,6 @@ jobs:
           curl --silent -i -X POST "https://swiftfiddle.com/run" \
             -H "Content-Type:application/json" \
             --data '{"code":"print(\"Hello, World!\")","toolchain_version":"stable"}'
-            set -ex
 
           versions=$(curl --silent -X GET "https://swiftfiddle.com/versions" -H "Content-Type:application/json")
           len=$(echo $versions | jq length)
