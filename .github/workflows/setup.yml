@@ -20,9 +20,9 @@ jobs:
 
           VM_NAME=swift-playground-$(date +%Y%m%d-%H%M%S)
           VM_ZONE=us-central1-a
-          VM_MACHINE_TYPE=e2-custom-2-6144
+          VM_MACHINE_TYPE=e2-medium
           VM_DISK_SIZE=120
-          VM_SWAP_SIZE=6G
+          VM_SWAP_SIZE=4G
 
           data=$(cat <<EOF
           {

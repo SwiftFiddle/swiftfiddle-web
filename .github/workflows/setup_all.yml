@@ -22,7 +22,7 @@ jobs:
           VM_ZONE=us-central1-a
           VM_MACHINE_TYPE=e2-medium
           VM_DISK_SIZE=120
-          VM_SWAP_SIZE=6G
+          VM_SWAP_SIZE=4G
 
           data=$(cat <<EOF
           {
@@ -79,7 +79,7 @@ jobs:
           EOF
           )
 
-          curl --silent --fail -X POST \
+          curl --silent -X POST \
             "https://compute.googleapis.com/compute/v1/projects/${{ secrets.GOOGLE_CLOUD_PLATFORM_PROJECT_ID }}/zones/$VM_ZONE/instances?key=${{ secrets.GOOGLE_CLOUD_PLATFORM_API_KEY }}" \
             --header "Authorization: Bearer $GOOGLE_CLOUD_PLATFORM_ACCESS_TOKEN" \
             --header 'Accept: application/json' \
