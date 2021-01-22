@@ -249,7 +249,7 @@ private func availableVersions() throws -> [String] {
         return [stableVersion()]
     }
 
-    let versions = Set(output.split(separator: "\n").map { $0.replacingOccurrences(of: "-bionic", with: "").replacingOccurrences(of: "-focal", with: "").replacingOccurrences(of: "-slim", with: "") }).sorted(by: >)
+    let versions = Set(output.split(separator: "\n").map { $0.replacingOccurrences(of: "-bionic", with: "").replacingOccurrences(of: "-focal", with: "").replacingOccurrences(of: "-slim", with: "").replacingOccurrences(of: "snapshot-", with: "") }).sorted(by: >)
     return versions.isEmpty ? [stableVersion()] : versions
 }
 
@@ -265,7 +265,7 @@ private func imageTag(for prefix: String) throws -> String? {
     return output
         .split(separator: "\n")
         .sorted()
-        .filter { $0.starts(with: prefix) }
+        .filter { $0.replacingOccurrences(of: "snapshot-", with: "").starts(with: prefix) }
         .map { String($0.split(separator: " ")[1]) }
         .first
 }
@@ -311,6 +311,13 @@ final class VersionGroup: Encodable {
                     versionGroup.append(VersionGroup(majorVersion: String(majorVersion), versions: [version]))
                 } else {
                     versionGroup.last?.versions.append(version)
+                }
+            } else if nightlyVersion.count == 5 {
+                let majorVersion = String(nightlyVersion[0])
+                if majorVersion != versionGroup.last?.majorVersion {
+                    versionGroup.append(VersionGroup(majorVersion: String(majorVersion), versions: [nightlyVersion.dropFirst().joined(separator: "-")]))
+                } else {
+                    versionGroup.last?.versions.append(nightlyVersion.dropFirst().joined(separator: "-"))
                 }
             } else {
                 let majorVersion = "Swift \(version.split(separator: ".")[0])"
