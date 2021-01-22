@@ -308,16 +308,16 @@ final class VersionGroup: Encodable {
             if nightlyVersion.count == 2 {
                 let majorVersion = String(nightlyVersion[0])
                 if majorVersion != versionGroup.last?.majorVersion {
-                    versionGroup.append(VersionGroup(majorVersion: String(majorVersion), versions: [version]))
+                    versionGroup.append(VersionGroup(majorVersion: majorVersion, versions: [version]))
                 } else {
                     versionGroup.last?.versions.append(version)
                 }
-            } else if nightlyVersion.count == 5 {
-                let majorVersion = String(nightlyVersion[0])
+            } else if nightlyVersion.count == 4 {
+                let majorVersion = "snapshot"
                 if majorVersion != versionGroup.last?.majorVersion {
-                    versionGroup.append(VersionGroup(majorVersion: "snapshot", versions: [nightlyVersion.dropFirst().joined(separator: "-")]))
+                    versionGroup.append(VersionGroup(majorVersion: majorVersion, versions: [nightlyVersion.joined(separator: "-")]))
                 } else {
-                    versionGroup.last?.versions.append(nightlyVersion.dropFirst().joined(separator: "-"))
+                    versionGroup.last?.versions.append(nightlyVersion.joined(separator: "-"))
                 }
             } else {
                 let majorVersion = "Swift \(version.split(separator: ".")[0])"
