@@ -87,6 +87,9 @@ services:
   swift-nightly-5.3:
     image: swiftlang/swift:nightly-5.3
     container_name: swift-nightly-5.3
+  swift-snapshot-2020-10-27-a:
+    image: kishikawakatsumi/swift:snapshot-2020-10-27-a
+    container_name: swift-snapshot-2020-10-27-a
   swift-5.3.1:
     image: swift:5.3.1-focal
     container_name: swift-5.3.1
