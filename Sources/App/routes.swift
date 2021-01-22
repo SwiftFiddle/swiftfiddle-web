@@ -315,7 +315,7 @@ final class VersionGroup: Encodable {
             } else if nightlyVersion.count == 5 {
                 let majorVersion = String(nightlyVersion[0])
                 if majorVersion != versionGroup.last?.majorVersion {
-                    versionGroup.append(VersionGroup(majorVersion: String(majorVersion), versions: [nightlyVersion.dropFirst().joined(separator: "-")]))
+                    versionGroup.append(VersionGroup(majorVersion: "snapshot", versions: [nightlyVersion.dropFirst().joined(separator: "-")]))
                 } else {
                     versionGroup.last?.versions.append(nightlyVersion.dropFirst().joined(separator: "-"))
                 }
