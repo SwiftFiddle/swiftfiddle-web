@@ -16,6 +16,7 @@ fi
 containerId=$(docker run --env _COLOR=$_COLOR --rm --detach --ulimit fsize=10000000:10000000 --pids-limit 10 --memory 256m --cpus="0.6" "$@")
 status=$($timeoutCommand "$to" docker wait "$containerId" || true)
 docker kill $containerId &> /dev/null
+docker rm -f $containerId &> /dev/null
 
 statusFile="${2%:/\[REDACTED]}/status"
 /bin/echo -n "status: " > "$statusFile"
