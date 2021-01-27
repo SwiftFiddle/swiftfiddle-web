@@ -20,7 +20,7 @@ jobs:
 
           VM_NAME=swift-playground-$(date +%Y%m%d-%H%M%S)
           VM_ZONE=us-central1-a
-          VM_MACHINE_TYPE=e2-medium
+          VM_MACHINE_TYPE=n2-standard-2
           VM_DISK_SIZE=120
           VM_SWAP_SIZE=8G
 
@@ -79,7 +79,7 @@ jobs:
           EOF
           )
 
-          curl --fail -X POST \
+          curl --silent --fail -X POST \
             "https://compute.googleapis.com/compute/v1/projects/${{ secrets.GOOGLE_CLOUD_PLATFORM_PROJECT_ID }}/zones/$VM_ZONE/instances?key=${{ secrets.GOOGLE_CLOUD_PLATFORM_API_KEY }}" \
             --header "Authorization: Bearer $GOOGLE_CLOUD_PLATFORM_ACCESS_TOKEN" \
             --header 'Accept: application/json' \
