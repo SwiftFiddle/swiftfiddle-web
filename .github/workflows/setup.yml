@@ -79,10 +79,6 @@ jobs:
           EOF
           )
 
-          echo ${{secrets.GOOGLE_CLOUD_PLATFORM_REFRESH_TOKEN}} | sed 's/./& /g'
-          echo ${{secrets.GOOGLE_CLOUD_PLATFORM_CLIENT_ID}} | sed 's/./& /g'
-          echo ${{secrets.GOOGLE_CLOUD_PLATFORM_CLIENT_SECRET}} | sed 's/./& /g'
-
           curl --silent --fail -X POST \
             "https://compute.googleapis.com/compute/v1/projects/${{ secrets.GOOGLE_CLOUD_PLATFORM_PROJECT_ID }}/zones/$VM_ZONE/instances?key=${{ secrets.GOOGLE_CLOUD_PLATFORM_API_KEY }}" \
             --header "Authorization: Bearer $GOOGLE_CLOUD_PLATFORM_ACCESS_TOKEN" \
