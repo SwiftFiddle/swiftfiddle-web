@@ -1,11 +1,11 @@
 .ace_editor {
-  height: 680px;
+  height: 100%;
   padding: 0;
   margin: 0;
 }
 
 #terminal {
-  height: 680px;
+  height: 70vh;
   padding: 0;
   margin: 0;
 }
@@ -30,7 +30,7 @@
 }
 
 .terminal.xterm {
-  height: 680px;
+  height: 100%;
 }
 
 .terminal.xterm {
