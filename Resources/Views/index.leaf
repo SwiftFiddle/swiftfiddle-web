@@ -89,7 +89,7 @@
       <div class="col-sm3 mx-auto" style="margin-top: 15px; margin-bottom: 20px;">
         <div class="btn-group" role="group">
           <div class="btn-group" style="width: 45%;" role="group">
-            <select id="versionPicker" class="selectpicker show-tick dropdown" data-style="btn btn-lg btn-secondary"
+            <select id="versionPicker" class="selectpicker show-tick dropdown" data-style="btn btn-secondary"
               data-tickIcon="fa-check">
               #for(versionGroup in versions):
               <optgroup label="#(versionGroup.majorVersion)">
@@ -105,10 +105,10 @@
             </select>
           </div>
 
-          <button id="run-button" type="button" class="btn btn-lg btn-primary"><span id="run-button-text"
-              class="mx-4">Run <i id="run-button-icon" class="far fa-play-circle fa-lg"></i></span><span
-              id="run-button-spinner" class="spinner-border spinner-border-sm mx-5"
-              style="width: 1.5rem; height: 1.5rem; display: none;" role="status" aria-hidden="true"></span></button>
+          <button id="run-button" type="button" class="btn btn-primary"><span id="run-button-text" class="mx-4">Run <i
+                id="run-button-icon" class="far fa-play-circle fa-lg"></i></span><span id="run-button-spinner"
+              class="spinner-border spinner-border-sm mx-5" style="width: 1.5rem; height: 1.5rem; display: none;"
+              role="status" aria-hidden="true"></span></button>
         </div>
       </div>
     </div>
@@ -117,10 +117,10 @@
   <div class="container">
     <div class="row">
       <div class="col text-center">
-        <button type="button" id="share-button" class="btn btn-info btn-circle m-1" onclick="showShareSheet();"><i
-            class="fa fa-share-alt" aria-hidden="true"></i></button>
-        <button type="button" class="btn btn-secondary btn-circle m-1" data-toggle="modal" data-target="\#helpSheet"><i
-            class="fa fa-question" aria-hidden="true"></i></button>
+        <button type="button" id="share-button" class="btn btn-info btn-circle btn-circle-sm m-1"
+          onclick="showShareSheet();"><i class="fa fa-share-alt" aria-hidden="true"></i></button>
+        <button type="button" class="btn btn-secondary btn-circle btn-circle-sm m-1" data-toggle="modal"
+          data-target="\#helpSheet"><i class="fa fa-question" aria-hidden="true"></i></button>
       </div>
     </div>
   </div>
