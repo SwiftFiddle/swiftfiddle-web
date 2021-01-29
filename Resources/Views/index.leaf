@@ -59,11 +59,12 @@
 </head>
 
 <body>
-  <div class="container-fluid" style="margin-top: 15px;">
+  <div class="container-fluid" style="margin-top: 6px;">
     <div class="row">
-      <div class="col" style="margin-bottom: 10px;">
-        <h4><a href="/" class="text-reset text-decoration-none"><i class="fab fa-swift fa-lg"></i> Swift Playground</a>
-        </h4>
+      <div class="col" style="margin-bottom: 0;">
+        <h1 style="font-size: 1.2rem;"><a href="/" class="text-reset text-decoration-none"><i class="fab fa-swift fa-lg"
+              style="vertical-align: middle;"></i> Swift Playground</a>
+        </h1>
       </div>
     </div>
   </div>
