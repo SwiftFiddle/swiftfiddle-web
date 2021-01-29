@@ -1,6 +1,8 @@
 import Vapor
 import TSCBasic
 
+private let cache = Cache<String, ByteBuffer>()
+
 func routes(_ app: Application) throws {
     app.get { req in try index(req) }
     app.get("index.html") { (req) in try index(req) }
@@ -22,7 +24,11 @@ func routes(_ app: Application) throws {
     app.get(":id") { req -> EventLoopFuture<Response> in
         func handleImportContent(_ req: Request, _ promise: EventLoopPromise<Response>,
                                  _ id: String, _ code: String, _ swiftVersion: String?) throws {
-            if req.url.path.hasSuffix(".png") {
+            let path = req.url.path
+            if path.hasSuffix(".png") {
+                if let buffer = cache.object(forKey: path) {
+                    return promise.succeed(Response(status: .ok, headers: ["Content-Type": "image/png"], body: Response.Body(buffer: buffer)))
+                }
                 return try ShareImage.image(client: req.client, from: code)
                     .flatMapThrowing {
                         guard let buffer = $0 else { throw Abort(.notFound) }
@@ -221,6 +227,11 @@ func routes(_ app: Application) throws {
             .whenComplete {
                 switch $0 {
                 case .success:
+                    try? ShareImage.image(client: req.client, from: code)
+                        .whenSuccess {
+                            guard let buffer = $0 else { return }
+                            cache.setObject(buffer, forKey: "/\(id).png")
+                        }
                     promise.succeed(
                         ["swift_version": swiftVersion,
                         "content": code,
