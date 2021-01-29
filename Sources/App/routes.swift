@@ -214,7 +214,7 @@ func routes(_ app: Application) throws {
         return promise.futureResult
     }
 
-    app.post("shared_link") { (req) -> EventLoopFuture<[String: String]> in
+    app.on(.POST, "shared_link", body: .collect(maxSize: "10mb")) { (req) -> EventLoopFuture<[String: String]> in
         let parameter = try req.content.decode(SharedLinkRequestParameter.self)
         let code = parameter.code
         let swiftVersion = parameter.toolchain_version
