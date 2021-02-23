@@ -354,17 +354,19 @@ func stableVersion() -> String { "5.3.1" }
 let defaultCodeSnippet = #"""
 import Foundation
 
-func greet(person: String) -> String {
-    let greeting = "Hello, " + person + "!"
+func greet(_ something: String) -> String {
+    let greeting = "Hello, " + something + "!"
     return greeting
 }
 
-// Prints "Hello, Anna!"
-print(greet(person: "Anna"))
+// Prints "Hello, World!"
+print(greet("World"))
 
-// Prints "Hello, Brian!"
-print(greet(person: "Brian"))
+// Prints "Hello, Swift!"
+print(greet("Swift"))
 
 """#
 
 private let loaderioVerificationToken = "loaderio-28dcf65c633864d2ea288eddddbb9da6"
+
+
