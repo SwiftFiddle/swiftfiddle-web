@@ -108,19 +108,8 @@ func routes(_ app: Application) throws {
         } else if (toolchainVersion == "stable") {
             toolchainVersion = stableVersion();
         }
-        let command = parameter.command ?? toolchainVersion == "nightly-main" ? "swiftc" : "swift"
-        let options: String
-        if let inputOptions = parameter.options {
-            options = inputOptions
-        } else {
-            if toolchainVersion == "nightly-master" {
-                options = "-Xfrontend -enable-experimental-concurrency"
-            } else if toolchainVersion == "nightly-main" {
-                options = "-parse-as-library -Xfrontend -enable-experimental-concurrency"
-            } else {
-                options = ""
-            }
-        }
+        let command = parameter.command ?? "swift"
+        let options = parameter.options ?? ((toolchainVersion == "nightly-master" || toolchainVersion == "nightly-main") ? "-Xfrontend -enable-experimental-concurrency" : "")
         let timeout = parameter.timeout ?? 60 // Default timeout is 60 seconds
         let color = parameter._color ?? false
 
@@ -158,35 +147,14 @@ func routes(_ app: Application) throws {
 
         do {
             try FileManager().copyItem(at: sandboxPath, to: temporaryPath)
+            try """
+                import Glibc
+                setbuf(stdout, nil)
 
-            let codeTemplate: String
-            if toolchainVersion == "nightly-main" {
-                environment["_TYPE_BASED_PROGRAM_ENTORY_POINTS"] = "\(toolchainVersion == "nightly-main")"
-                codeTemplate = """
-                    import Glibc
-                    setbuf(stdout, nil)
-
-                    @main
-                    struct Entrypoint {
-                        static func main() async {
-                    \(code)
-                        }
-                    }
-                    """
-            } else {
-                codeTemplate = """
-                    import Glibc
-                    setbuf(stdout, nil)
-
-
-
-                    /* Start user code. Do not edit comment generated here */
-                    \(code)
-                    /* End user code. Do not edit comment generated here */
-
-                    """
-            }
-            try codeTemplate
+                /* Start user code. Do not edit comment generated here */
+                \(code)
+                /* End user code. Do not edit comment generated here */
+                """
                 .data(using: .utf8)?
                 .write(to: temporaryPath.appendingPathComponent("main.swift"))
 
