@@ -1,5 +1,5 @@
 .ace_editor {
-  height: 100%;
+  height: 70vh;
   padding: 0;
   margin: 0;
 }
@@ -30,7 +30,7 @@
 }
 
 .terminal.xterm {
-  height: 100%;
+  height: 70vh;
 }
 
 .terminal.xterm {
