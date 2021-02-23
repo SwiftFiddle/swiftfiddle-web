@@ -93,6 +93,12 @@ services:
   swift-snapshot-2020-10-27-a:
     image: kishikawakatsumi/swift:snapshot-2020-10-27-a
     container_name: swift-snapshot-2020-10-27-a
+  swift-5.3.3:
+    image: swift:5.3.3-focal
+    container_name: swift-5.3.3
+  swift-5.3.2:
+    image: swift:5.3.2-focal
+    container_name: swift-5.3.2
   swift-5.3.1:
     image: swift:5.3.1-focal
     container_name: swift-5.3.1
