@@ -349,7 +349,7 @@ struct ExecutionResponse: Content {
 }
 
 func latestVersion() throws -> String { try availableVersions()[0] }
-func stableVersion() -> String { "5.3.1" }
+func stableVersion() -> String { "5.3.3" }
 
 let defaultCodeSnippet = #"""
 import Foundation
