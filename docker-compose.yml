@@ -81,9 +81,6 @@ services:
   swift-nightly-main:
     image: swiftlang/swift:nightly-main
     container_name: swift-nightly-main
-  swift-nightly-master:
-    image: swiftlang/swift:nightly-master
-    container_name: swift-nightly-master
   swift-nightly-5.4:
     image: swiftlang/swift:nightly-5.4
     container_name: swift-nightly-5.4
