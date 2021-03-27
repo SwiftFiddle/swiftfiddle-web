@@ -31,7 +31,7 @@ div.run-button-background {
   right: 42px;
   color: white;
   z-index: 9999;
-  background-color: rgba(100, 100, 100, 0.75);
+  background-color: rgba(100, 100, 100, 0.6);
 }
 
 #run-button {
@@ -44,7 +44,7 @@ div.open-button-background {
   right: 0;
   color: white;
   z-index: 9999;
-  background-color: rgba(100, 100, 100, 0.75);
+  background-color: rgba(100, 100, 100, 0.6);
 }
 
 #open-button {
