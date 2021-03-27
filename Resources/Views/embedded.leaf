@@ -33,26 +33,18 @@
 </head>
 
 <body>
-  <div class="container-fluid embedded" style="padding-right: 0; padding-left: 0; padding-bottom: 0;">
-    <div class="row" style="margin-top: 6px; margin-bottom: 6px;">
-      <div class="col-md-4">
-      </div>
-      <div class="col-md-4">
-        <button id="run-button" class="btn btn-outline-secondary btn-sm" type="button"
-          style="display: block; margin: auto;"><i class="fas fa-play fa-lg"></i></button>
-      </div>
-      <div class="col-md-4">
-        <a href="#(url)" target="_blank" rel="noopener" class="btn btn-secondary-link btn-sm" type="button"
-          style="float: right;">
-          <i class="fas fa-external-link-alt"></i> Open in SwiftFiddle</a>
-      </div>
-    </div>
+  <div class="container-fluid embedded">
     <div class="row no-gutters">
       <div class="col-md-6">
         <pre id="editor"><xmp>#(codeSnippet)</xmp></pre>
       </div>
       <div class="col-md-6">
         <div id="terminal" style="position: relative;">
+          <div class="run-button-background"><button id="run-button" class="btn btn-link"><i
+                class="fas fa-play fa-sm"></i></button></div>
+          <div class="open-button-background">
+            <a id="open-button" class="btn btn-link" type="button" href="#(url)" target="_blank" rel="noopener"><i
+                class="fas fa-external-link-alt fa-sm"></i></a></div>
           <div class="toolbar" role="toolbar">
             <a id="clear-button" href="#\"><i class="fas fa-times-circle"></i>
               Clear</a>

@@ -6,11 +6,11 @@ body {
 .embedded {
   background-color: #F5F5F5;
   border: 1px solid #DDDDDD;
-  border-radius: 2px;
+  padding: 0;
 }
 
 .ace_editor {
-  height: calc(100vh - 50px);
+  height: calc(100vh - 2px);
 }
 
 .ace_editor .ace_marker-layer .ace_bracket {
@@ -18,14 +18,35 @@ body {
 }
 
 #terminal {
-  height: calc(100vh - 50px);
+  height: calc(100vh - 2px);
 }
 
 .terminal.xterm {
-  height: calc(100vh - 50px);
+  height: calc(100vh - 2px);
 }
 
-.fa-play {
-  margin-left: 80px;
-  margin-right: 80px;
+div.run-button-background {
+  position: absolute;
+  top: 0;
+  right: 42px;
+  color: white;
+  z-index: 9999;
+  background-color: rgba(100, 100, 100, 0.75);
+}
+
+#run-button {
+  color: white;
+}
+
+div.open-button-background {
+  position: absolute;
+  top: 0;
+  right: 0;
+  color: white;
+  z-index: 9999;
+  background-color: rgba(100, 100, 100, 0.75);
+}
+
+#open-button {
+  color: white;
 }
