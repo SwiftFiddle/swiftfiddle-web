@@ -1,0 +1,31 @@
+body {
+  margin-bottom: 0;
+  background-color: transparent;
+}
+
+.embedded {
+  background-color: #F5F5F5;
+  border: 1px solid #DDDDDD;
+  border-radius: 2px;
+}
+
+.ace_editor {
+  height: calc(100vh - 50px);
+}
+
+.ace_editor .ace_marker-layer .ace_bracket {
+  display: none;
+}
+
+#terminal {
+  height: calc(100vh - 50px);
+}
+
+.terminal.xterm {
+  height: calc(100vh - 50px);
+}
+
+.fa-play {
+  margin-left: 80px;
+  margin-right: 80px;
+}

@@ -31,10 +31,10 @@
     integrity="sha512-ybdAWCxicaDEY4FipBITKDwSRqSDUcV1pPngUvjnCliYYU42rmMvt5obpvCZp7xCEpNU0OKIh6M60VGCVH1Z/w=="
     crossorigin="anonymous" />
 
-  <link rel="stylesheet" href="css/editor.css">
-  <link rel="stylesheet" href="css/ui.css">
-  <link rel="stylesheet" href="css/button.css">
-  <link rel="stylesheet" href="css/share_sheet.css">
+  <link rel="stylesheet" href="/css/editor.css">
+  <link rel="stylesheet" href="/css/ui.css">
+  <link rel="stylesheet" href="/css/button.css">
+  <link rel="stylesheet" href="/css/share_sheet.css">
 
   <link rel="apple-touch-icon" sizes="57x57" href="images/apple-icon-57x57.png">
   <link rel="apple-touch-icon" sizes="60x60" href="images/apple-icon-60x60.png">
@@ -246,10 +246,10 @@
     integrity="sha512-0wwxY+z1FqKkKTfOfJRNMfJ03WpLRzgVW6g2IKPYUkXJhK2wWRtN0TzXzkjV3+k1mXekUtvwsRvqwYPuHtmFBQ=="
     crossorigin="anonymous"></script>
 
-  <script src="js/editor.js"></script>
-  <script src="js/terminal.js"></script>
-  <script src="js/share_sheet.js"></script>
-  <script src="js/app.js"></script>
+  <script src="/js/editor.js"></script>
+  <script src="/js/terminal.js"></script>
+  <script src="/js/share_sheet.js"></script>
+  <script src="/js/app.js"></script>
 </body>
 
 </html>

@@ -14,6 +14,7 @@ func routes(_ app: Application) throws {
                 stableVersion: stableVersion(),
                 latestVersion: try latestVersion(),
                 codeSnippet: defaultCodeSnippet,
+                url: "https://swiftfiddle.com/",
                 ogpImageUrl: "./default_ogp.jpeg"
             )
         )
@@ -22,35 +23,6 @@ func routes(_ app: Application) throws {
     app.get("versions") { (req) in try availableVersions() }
 
     app.get(":id") { req -> EventLoopFuture<Response> in
-        func handleImportContent(_ req: Request, _ promise: EventLoopPromise<Response>,
-                                 _ id: String, _ code: String, _ swiftVersion: String?) throws {
-            let path = req.url.path
-            if path.hasSuffix(".png") {
-                if let buffer = cache.object(forKey: path) {
-                    return promise.succeed(Response(status: .ok, headers: ["Content-Type": "image/png"], body: Response.Body(buffer: buffer)))
-                }
-                return try ShareImage.image(client: req.client, from: code)
-                    .flatMapThrowing {
-                        guard let buffer = $0 else { throw Abort(.notFound) }
-                        return Response(status: .ok, headers: ["Content-Type": "image/png"], body: Response.Body(buffer: buffer))
-                    }
-                    .cascade(to: promise)
-            } else {
-                return req.view.render(
-                    "index", InitialPageResponse(
-                        title: "Swift Playground",
-                        versions: try VersionGroup.grouped(versions: availableVersions()),
-                        stableVersion: swiftVersion ?? stableVersion(),
-                        latestVersion: try latestVersion(),
-                        codeSnippet: code,
-                        ogpImageUrl: "https://swiftfiddle.com/\(id).png"
-                    )
-                )
-                .encodeResponse(for: req)
-                .cascade(to: promise)
-            }
-        }
-
         if let path = req.parameters.get("id"), let id = try SharedLink.id(from: path) {
             let promise = req.eventLoop.makePromise(of: Response.self)
             try SharedLink.content(client: req.client, id: id.replacingOccurrences(of: ".png", with: ""))
@@ -83,6 +55,55 @@ func routes(_ app: Application) throws {
                             if let content = content {
                                 let code = Array(content.files.values)[0].content
                                 try handleImportContent(req, promise, id, code, nil)
+                            } else {
+                                promise.fail(Abort(.notFound))
+                            }
+                        } catch {
+                            promise.fail(Abort(.internalServerError))
+                        }
+                    case .failure(let error):
+                        promise.fail(error)
+                    }
+                }
+            return promise.futureResult
+        } else {
+            throw Abort(.notFound)
+        }
+    }
+
+    app.get(":id", "embedded") { req -> EventLoopFuture<Response> in
+        if let path = req.parameters.get("id"), let id = try SharedLink.id(from: path) {
+            let promise = req.eventLoop.makePromise(of: Response.self)
+            try SharedLink.content(client: req.client, id: id)
+                .whenComplete {
+                    switch $0 {
+                    case .success(let content):
+                        do {
+                            if let content = content {
+                                let code = content.fields.shared_link.mapValue.fields.content.stringValue
+                                let swiftVersion = content.fields.shared_link.mapValue.fields.swift_version.stringValue
+                                try handleEmbeddedContent(req, promise, id, code, swiftVersion)
+                            } else {
+                                promise.fail(Abort(.notFound))
+                            }
+                        } catch {
+                            promise.fail(Abort(.internalServerError))
+                        }
+                    case .failure(let error):
+                        promise.fail(error)
+                    }
+                }
+            return promise.futureResult
+        } else if let path = req.parameters.get("id"), let id = try Gist.id(from: path) {
+            let promise = req.eventLoop.makePromise(of: Response.self)
+            Gist.content(client: req.client, id: id)
+                .whenComplete{
+                    switch $0 {
+                    case .success(let content):
+                        do {
+                            if let content = content {
+                                let code = Array(content.files.values)[0].content
+                                try handleEmbeddedContent(req, promise, id, code, nil)
                             } else {
                                 promise.fail(Abort(.notFound))
                             }
@@ -251,6 +272,53 @@ func routes(_ app: Application) throws {
     app.get("\(loaderioVerificationToken).html") { (req) in return loaderioVerificationToken }
 }
 
+private func handleImportContent(_ req: Request, _ promise: EventLoopPromise<Response>,
+                                 _ id: String, _ code: String, _ swiftVersion: String?) throws {
+    let path = req.url.path
+    if path.hasSuffix(".png") {
+        if let buffer = cache.object(forKey: path) {
+            return promise.succeed(Response(status: .ok, headers: ["Content-Type": "image/png"], body: Response.Body(buffer: buffer)))
+        }
+        return try ShareImage.image(client: req.client, from: code)
+            .flatMapThrowing {
+                guard let buffer = $0 else { throw Abort(.notFound) }
+                return Response(status: .ok, headers: ["Content-Type": "image/png"], body: Response.Body(buffer: buffer))
+            }
+            .cascade(to: promise)
+    } else {
+        return req.view.render(
+            "index", InitialPageResponse(
+                title: "Swift Playground",
+                versions: try VersionGroup.grouped(versions: availableVersions()),
+                stableVersion: swiftVersion ?? stableVersion(),
+                latestVersion: try latestVersion(),
+                codeSnippet: code,
+                url: "https://swiftfiddle.com/\(id)",
+                ogpImageUrl: "https://swiftfiddle.com/\(id).png"
+            )
+        )
+        .encodeResponse(for: req)
+        .cascade(to: promise)
+    }
+}
+
+private func handleEmbeddedContent(_ req: Request, _ promise: EventLoopPromise<Response>,
+                                   _ id: String, _ code: String, _ swiftVersion: String?) throws {
+    req.view.render(
+        "embedded", InitialPageResponse(
+            title: "Swift Playground",
+            versions: try VersionGroup.grouped(versions: availableVersions()),
+            stableVersion: swiftVersion ?? stableVersion(),
+            latestVersion: try latestVersion(),
+            codeSnippet: code,
+            url: "https://swiftfiddle.com/\(id)",
+            ogpImageUrl: "https://swiftfiddle.com/\(id).png"
+        )
+    )
+    .encodeResponse(for: req)
+    .cascade(to: promise)
+}
+
 private func availableVersions() throws -> [String] {
     let process = Process(args: "docker", "images", "--filter=reference=swift", "--filter=reference=*/swift", "--format", "{{.Tag}}")
     try process.launch()
@@ -301,6 +369,7 @@ struct InitialPageResponse: Encodable {
     let stableVersion: String
     let latestVersion: String
     let codeSnippet: String
+    let url: String
     let ogpImageUrl: String
 }
 
@@ -368,5 +437,3 @@ print(greet("Swift"))
 """#
 
 private let loaderioVerificationToken = "loaderio-28dcf65c633864d2ea288eddddbb9da6"
-
-
