@@ -107,7 +107,7 @@
 
           <button id="run-button" type="button" class="btn btn-primary"><span id="run-button-text" class="mx-4">Run <i
                 id="run-button-icon" class="far fa-play-circle fa-lg"></i></span><span id="run-button-spinner"
-              class="spinner-border spinner-border-sm mx-5" style="width: 1.5rem; height: 1.5rem; display: none;"
+              class="spinner-border spinner-border-sm mx-5" style="width: 1.3rem; height: 1.3rem; display: none;"
               role="status" aria-hidden="true"></span></button>
         </div>
       </div>
@@ -153,15 +153,28 @@
           </div>
         </div>
         <div class="modal-footer"><label style="font-weight: 600">Page Link <span
-              class="share-sheet-copy-message"></span></label><br>
+              id="shared-link-copy-message"></span></label><br>
           <div class="fluid">
             <input class="ur" id="shared-link" type="url" disabled="disabled"
               aria-describedby="inputGroup-sizing-default" style="width: 96%; height: 40px;"> <button
-              id='shared-link-copy-button' class="cpy" onclick="copySharedLink()" disabled><i
-                id='shared-link-copy-button-icon' class="far fa-clone" style="display: none;"></i>
-              <div id='shared-link-spinner' class="spinner-border spinner-border-sm" role="status">
+              class="cpy shared-link-copy-button" onclick="copySharedLink()" disabled><i
+                class="far fa-clone shared-link-copy-button-icon" style="display: none;"></i>
+              <div class="spinner-border spinner-border-sm shared-link-spinner" role="status">
                 <span class="sr-only">Loading...</span>
-              </div><i id='shared-link-failure' class="far fa-exclamation-triangle fa-sm" style="display: none;"></i>
+              </div><i class="far fa-exclamation-triangle fa-sm shared-link-failure" style="display: none;"></i>
+            </button>
+          </div>
+        </div>
+        <div class="modal-footer"><label style="font-weight: 600">Embed snippet <span
+              id="embed-snippet-copy-message"></span></label><br>
+          <div class="fluid">
+            <textarea class="ur" id="embed-snippet" rows="3" style="width: 96%; resize: none;"
+              disabled="disabled"></textarea>
+            <button class="cpy shared-link-copy-button" onclick="copyEmbedSnippet()" disabled><i
+                class="far fa-clone shared-link-copy-button-icon" style="display: none;"></i>
+              <div class="spinner-border spinner-border-sm shared-link-spinner" role="status">
+                <span class="sr-only">Loading...</span>
+              </div><i class="far fa-exclamation-triangle fa-sm shared-link-failure" style="display: none;"></i>
             </button>
           </div>
         </div>

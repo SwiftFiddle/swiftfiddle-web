@@ -45,7 +45,12 @@ button:focus {
   box-shadow: none !important;
 }
 
-.share-sheet-copy-message {
+#shared-link-copy-message {
+  font-size: 12px;
+  color: #ee5535;
+}
+
+#embed-snippet-copy-message {
   font-size: 12px;
   color: #ee5535;
 }

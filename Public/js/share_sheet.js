@@ -28,6 +28,12 @@ function showShareSheet() {
         `https://social-plugins.line.me/lineit/share?url=${url}`
       );
       $(".btn-pocket").attr("href", `https://getpocket.com/edit?url=${url}`);
+
+      $("#embed-snippet").val(
+        `<iframe width="100%" height="300" frameborder="0"
+ src="${url}url/embedded/">
+</iframe>`
+      );
     } else {
       failed();
     }
@@ -39,39 +45,50 @@ function showShareSheet() {
 
 function reset() {
   $("#shared-link").val("");
-  $("#shared-link-spinner").hide();
-  $("#shared-link-copy-button-icon").show();
-  $("#shared-link-copy-button").prop("disabled", false);
-  $("#shared-link-failure").hide();
+  $("#embed-snippet").val("");
+  $(".shared-link-spinner").hide();
+  $(".shared-link-copy-button-icon").show();
+  $(".shared-link-copy-button").prop("disabled", false);
+  $(".shared-link-failure").hide();
 }
 
 function loading() {
-  $("#shared-link-spinner").show();
-  $("#shared-link-copy-button-icon").hide();
-  $("#shared-link-copy-button").prop("disabled", true);
-  $("#shared-link-failure").hide();
+  $(".shared-link-spinner").show();
+  $(".shared-link-copy-button-icon").hide();
+  $(".shared-link-copy-button").prop("disabled", true);
+  $(".shared-link-failure").hide();
 }
 
 function success() {
-  $("#shared-link-spinner").hide();
-  $("#shared-link-copy-button-icon").show();
-  $("#shared-link-copy-button").prop("disabled", false);
-  $("#shared-link-failure").hide();
+  $(".shared-link-spinner").hide();
+  $(".shared-link-copy-button-icon").show();
+  $(".shared-link-copy-button").prop("disabled", false);
+  $(".shared-link-failure").hide();
 }
 
 function failed() {
-  $("#shared-link-spinner").hide();
-  $("#shared-link-copy-button-icon").hide();
-  $("#shared-link-copy-button").prop("disabled", true);
-  $("#shared-link-failure").show();
+  $(".shared-link-spinner").hide();
+  $(".shared-link-copy-button-icon").hide();
+  $(".shared-link-copy-button").prop("disabled", true);
+  $(".shared-link-failure").show();
 }
 
 function copySharedLink() {
   if (navigator.clipboard) {
     navigator.clipboard.writeText($("#shared-link").val());
   }
-  const message = $(".share-sheet-copy-message");
+  const message = $("#shared-link-copy-message");
   message.hide();
   message.text("link copied!");
+  message.fadeIn(500).delay(1000).fadeOut(500);
+}
+
+function copyEmbedSnippet() {
+  if (navigator.clipboard) {
+    navigator.clipboard.writeText($("#embed-snippet").val());
+  }
+  const message = $("#embed-snippet-copy-message");
+  message.hide();
+  message.text("snippet copied!");
   message.fadeIn(500).delay(1000).fadeOut(500);
 }
