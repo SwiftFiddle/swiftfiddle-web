@@ -13,16 +13,30 @@ body {
   height: calc(100vh - 2px);
 }
 
-.ace_editor .ace_marker-layer .ace_bracket {
-  display: none;
-}
-
 #terminal {
   height: calc(100vh - 2px);
 }
 
 .terminal.xterm {
   height: calc(100vh - 2px);
+}
+
+@media screen and (max-width: 480px) {
+  .ace_editor {
+    height: calc(50vh - 1px);
+  }
+
+  #terminal {
+    height: calc(50vh - 1px);
+  }
+
+  .terminal.xterm {
+    height: calc(50vh - 1px);
+  }
+}
+
+.ace_editor .ace_marker-layer .ace_bracket {
+  display: none;
 }
 
 div.run-button-background {
