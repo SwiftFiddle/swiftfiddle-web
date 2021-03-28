@@ -10,9 +10,9 @@ editor.session.setMode("ace/mode/swift");
 editor.$blockScrolling = Infinity;
 editor.setOptions({
   useSoftTabs: true,
-  displayIndentGuides: true,
+  displayIndentGuides: false,
   autoScrollEditorIntoView: true,
-  scrollPastEnd: 0.5, // Overscroll
+  scrollPastEnd: false,
   fontFamily: "Menlo,Consolas,sans-serif,monospace",
   fontSize: "11pt",
   wrap: "free",
