@@ -27,8 +27,6 @@
   <link rel="stylesheet" href="/css/ui.css">
   <link rel="stylesheet" href="/css/embedded.css">
 
-  <script src="https://kit.fontawesome.com/108aa91541.js" crossorigin="anonymous"></script>
-
   <title>SwiftFiddle - Swift Online Playground</title>
 </head>
 
@@ -43,7 +41,7 @@
           <div class="run-button-background"><button id="run-button" class="btn btn-link"><i
                 class="fas fa-play fa-sm"></i></button></div>
           <div class="open-button-background">
-            <a id="open-button" class="btn btn-link" type="button" href="#(url)" target="_blank" rel="noopener"><i
+            <a id="open-button" class="btn btn-link" href="#(url)" target="_blank" rel="noopener"><i
                 class="fas fa-external-link-alt fa-sm"></i></a></div>
           <div class="toolbar" role="toolbar">
             <a id="clear-button" href="#\"><i class="fas fa-times-circle"></i>
@@ -115,6 +113,8 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/languages/swift.min.js"
     integrity="sha512-0wwxY+z1FqKkKTfOfJRNMfJ03WpLRzgVW6g2IKPYUkXJhK2wWRtN0TzXzkjV3+k1mXekUtvwsRvqwYPuHtmFBQ=="
     crossorigin="anonymous"></script>
+
+  <script src="https://kit.fontawesome.com/108aa91541.js" crossorigin="anonymous"></script>
 
   <script src="/js/app.js"></script>
   <script src="/js/embedded.js"></script>
