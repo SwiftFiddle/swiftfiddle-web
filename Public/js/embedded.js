@@ -1,8 +1,6 @@
 "use strict";
 
 ace.require("ace/lib/lang");
-ace.require("ace/ext/language_tools");
-const Range = ace.require("ace/range").Range;
 
 const editor = ace.edit("editor");
 editor.setTheme("ace/theme/xcode");
@@ -18,9 +16,6 @@ editor.setOptions({
   wrap: "free",
   showInvisibles: false,
   enableAutoIndent: true,
-  enableBasicAutocompletion: false,
-  enableSnippets: false,
-  enableLiveAutocompletion: false,
   readOnly: true,
   highlightActiveLine: false,
   highlightSelectedWord: false,
@@ -80,8 +75,12 @@ $("#clear-button").unbind("click");
 
 function showLoading() {
   $("#run-button").addClass("disabled");
+  $("#run-button-icon").hide();
+  $("#run-button-spinner").show();
 }
 
 function hideLoading() {
   $("#run-button").removeClass("disabled");
+  $("#run-button-icon").show();
+  $("#run-button-spinner").hide();
 }
