@@ -94,17 +94,19 @@
           <div class="btn-group" style="width: 45%;" role="group">
             <select id="versionPicker" class="selectpicker show-tick dropdown" data-style="btn btn-secondary"
               data-tickIcon="fa-check">
+              <!-- beautify ignore:start -->
               #for(versionGroup in versions):
               <optgroup label="#(versionGroup.majorVersion)">
                 #for(version in versionGroup.versions):
-                #if(version == stableVersion):
-                <option value="#(version)" selected>#(version)</option>
-                #else:
-                <option value="#(version)">#(version)</option>
-                #endif
-                #endfor
+                  #if(version == stableVersion):
+                    <option value="#(version)" selected>#(version)</option>
+                  #else:
+                    <option value="#(version)">#(version)</option>
+                  #endif
                 #endfor
               </optgroup>
+              #endfor
+              <!-- beautify ignore:end -->
             </select>
           </div>
 

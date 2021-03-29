@@ -60,17 +60,19 @@
           <div class="btn-group" style="width: 45%;" role="group">
             <select id="versionPicker" class="selectpicker show-tick dropdown" data-style="btn btn-secondary"
               data-tickIcon="fa-check">
+              <!-- beautify ignore:start -->
               #for(versionGroup in versions):
-              <optgroup label="#(versionGroup.majorVersion)">
-                #for(version in versionGroup.versions):
-                #if(version == stableVersion):
-                <option value="#(version)" selected>#(version)</option>
-                #else:
-                <option value="#(version)">#(version)</option>
-                #endif
-                #endfor
-                #endfor
-              </optgroup>
+                <optgroup label="#(versionGroup.majorVersion)">
+                  #for(version in versionGroup.versions):
+                    #if(version == stableVersion):
+                      <option value="#(version)" selected>#(version)</option>
+                    #else:
+                      <option value="#(version)">#(version)</option>
+                    #endif
+                  #endfor
+                </optgroup>
+              #endfor
+              <!-- beautify ignore:end -->
             </select>
           </div>
         </div>
@@ -118,6 +120,14 @@
 
   <script src="/js/app.js"></script>
   <script src="/js/embedded.js"></script>
+  <!-- beautify ignore:start -->
+  <script>
+    Range = ace.require("ace/range").Range;
+    #for(range in foldRanges):
+    editor.session.addFold("", new Range(#(range.start), 0, #(range.end), 0));
+    #endfor
+  </script>
+  <!-- beautify ignore:end -->
 </body>
 
 </html>

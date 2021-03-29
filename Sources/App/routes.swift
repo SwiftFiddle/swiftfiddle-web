@@ -14,13 +14,10 @@ func routes(_ app: Application) throws {
                 stableVersion: stableVersion(),
                 latestVersion: try latestVersion(),
                 codeSnippet: defaultCodeSnippet,
-                url: "https://swiftfiddle.com/",
                 ogpImageUrl: "./default_ogp.jpeg"
             )
         )
     }
-
-    app.get("versions") { (req) in try availableVersions() }
 
     app.get(":id") { req -> EventLoopFuture<Response> in
         if let path = req.parameters.get("id"), let id = try SharedLink.id(from: path) {
@@ -72,6 +69,14 @@ func routes(_ app: Application) throws {
     }
 
     app.get(":id", "embedded") { req -> EventLoopFuture<Response> in
+        let foldRanges: [FoldRange] = req.query[[String].self, at: "fold"]?.compactMap {
+            let lines = $0.split(separator: "-")
+            guard lines.count == 2 else { return nil }
+            guard let start = Int(lines[0]), let end = Int(lines[1]) else { return nil }
+            guard start <= end else { return nil }
+            return FoldRange(start: start, end: end)
+        } ?? []
+
         if let path = req.parameters.get("id"), let id = try SharedLink.id(from: path) {
             let promise = req.eventLoop.makePromise(of: Response.self)
             try SharedLink.content(client: req.client, id: id)
@@ -82,7 +87,7 @@ func routes(_ app: Application) throws {
                             if let content = content {
                                 let code = content.fields.shared_link.mapValue.fields.content.stringValue
                                 let swiftVersion = content.fields.shared_link.mapValue.fields.swift_version.stringValue
-                                try handleEmbeddedContent(req, promise, id, code, swiftVersion)
+                                try handleEmbeddedContent(req, promise, id, code, swiftVersion, foldRanges)
                             } else {
                                 promise.fail(Abort(.notFound))
                             }
@@ -103,7 +108,7 @@ func routes(_ app: Application) throws {
                         do {
                             if let content = content {
                                 let code = Array(content.files.values)[0].content
-                                try handleEmbeddedContent(req, promise, id, code, nil)
+                                try handleEmbeddedContent(req, promise, id, code, nil, foldRanges)
                             } else {
                                 promise.fail(Abort(.notFound))
                             }
@@ -267,9 +272,7 @@ func routes(_ app: Application) throws {
         return promise.futureResult
     }
 
-    app.get("\(loaderioVerificationToken)") { (req) in return loaderioVerificationToken }
-    app.get("\(loaderioVerificationToken).txt") { (req) in return loaderioVerificationToken }
-    app.get("\(loaderioVerificationToken).html") { (req) in return loaderioVerificationToken }
+    app.get("versions") { (req) in try availableVersions() }
 }
 
 private func handleImportContent(_ req: Request, _ promise: EventLoopPromise<Response>,
@@ -293,7 +296,6 @@ private func handleImportContent(_ req: Request, _ promise: EventLoopPromise<Res
                 stableVersion: swiftVersion ?? stableVersion(),
                 latestVersion: try latestVersion(),
                 codeSnippet: code,
-                url: "https://swiftfiddle.com/\(id)",
                 ogpImageUrl: "https://swiftfiddle.com/\(id).png"
             )
         )
@@ -303,16 +305,17 @@ private func handleImportContent(_ req: Request, _ promise: EventLoopPromise<Res
 }
 
 private func handleEmbeddedContent(_ req: Request, _ promise: EventLoopPromise<Response>,
-                                   _ id: String, _ code: String, _ swiftVersion: String?) throws {
+                                   _ id: String, _ code: String, _ swiftVersion: String?,
+                                   _ foldRanges: [FoldRange]) throws {
     req.view.render(
-        "embedded", InitialPageResponse(
+        "embedded", EmbeddedPageResponse(
             title: "Swift Playground",
             versions: try VersionGroup.grouped(versions: availableVersions()),
             stableVersion: swiftVersion ?? stableVersion(),
             latestVersion: try latestVersion(),
             codeSnippet: code,
             url: "https://swiftfiddle.com/\(id)",
-            ogpImageUrl: "https://swiftfiddle.com/\(id).png"
+            foldRanges: foldRanges
         )
     )
     .encodeResponse(for: req)
@@ -349,7 +352,7 @@ private func imageTag(for prefix: String) throws -> String? {
         .first
 }
 
-struct ExecutionRequestParameter: Decodable {
+private struct ExecutionRequestParameter: Decodable {
     let toolchain_version: String?
     let command: String?
     let options: String?
@@ -358,22 +361,36 @@ struct ExecutionRequestParameter: Decodable {
     let _color: Bool?
 }
 
-struct SharedLinkRequestParameter: Decodable {
+private struct SharedLinkRequestParameter: Decodable {
     let toolchain_version: String
     let code: String
 }
 
-struct InitialPageResponse: Encodable {
+private struct InitialPageResponse: Encodable {
+    let title: String
+    let versions: [VersionGroup]
+    let stableVersion: String
+    let latestVersion: String
+    let codeSnippet: String
+    let ogpImageUrl: String
+}
+
+private struct EmbeddedPageResponse: Encodable {
     let title: String
     let versions: [VersionGroup]
     let stableVersion: String
     let latestVersion: String
     let codeSnippet: String
     let url: String
-    let ogpImageUrl: String
+    let foldRanges: [FoldRange]
 }
 
-final class VersionGroup: Encodable {
+private struct FoldRange: Codable {
+    let start: Int
+    let end: Int
+}
+
+private final class VersionGroup: Encodable {
     let majorVersion: String
     var versions: [String]
 
@@ -411,16 +428,16 @@ final class VersionGroup: Encodable {
     }
 }
 
-struct ExecutionResponse: Content {
+private struct ExecutionResponse: Content {
     let output: String
     let errors: String
     let version: String
 }
 
-func latestVersion() throws -> String { try availableVersions()[0] }
-func stableVersion() -> String { "5.3.3" }
+private func latestVersion() throws -> String { try availableVersions()[0] }
+private func stableVersion() -> String { "5.3.3" }
 
-let defaultCodeSnippet = #"""
+private let defaultCodeSnippet = #"""
 import Foundation
 
 func greet(_ something: String) -> String {
@@ -435,5 +452,3 @@ print(greet("World"))
 print(greet("Swift"))
 
 """#
-
-private let loaderioVerificationToken = "loaderio-28dcf65c633864d2ea288eddddbb9da6"

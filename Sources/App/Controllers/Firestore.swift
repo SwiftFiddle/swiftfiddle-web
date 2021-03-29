@@ -24,6 +24,7 @@ struct Firestore {
                 }
             }
     }
+    
     static func createDocument(client: Client, id: String, type: String = "plain_text", code: String, swiftVersion: String) throws -> EventLoopFuture<Document?> {
         return try refreshAccessToken(client: client)
             .map { $0?.access_token }
