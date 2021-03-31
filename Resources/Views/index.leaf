@@ -11,6 +11,8 @@
   <meta property="og:title" content="Swift Online Playground">
   <meta property="og:description"
     content="SwiftFiddle is an online playground for creating, sharing and embedding Swift fiddles (little Swift programs that run directly in your browser)." />
+  <meta name="description"
+    content="SwiftFiddle is an online playground for creating, sharing and embedding Swift fiddles (little Swift programs that run directly in your browser)." />
   <meta property="og:site_name" content="SwiftFiddle - Swift Online Playground" />
 
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css"
@@ -123,12 +125,12 @@
     <div class="row">
       <div class="col text-center">
         <button type="button" id="share-button" class="btn btn-info btn-circle btn-circle-sm m-1"
-          onclick="showShareSheet();">
-          <span class="fa fa-share-alt" aria-hidden="true"></span>
+          onclick="showShareSheet();" aria-label="Share">
+          <span class="fa fa-share-alt"></span>
         </button>
         <button type="button" class="btn btn-secondary btn-circle btn-circle-sm m-1" data-toggle="modal"
-          data-target="\#helpSheet">
-          <span class="fa fa-question" aria-hidden="true"></span>
+          data-target="\#helpSheet" aria-label="Help">
+          <span class="fa fa-question"></span>
         </button>
       </div>
     </div>
@@ -214,8 +216,8 @@
           <dl>
             <dt>Feedback / Bug Report</dt>
             <dd>
-              <a
-                href="https://github.com/kishikawakatsumi/swift-playground/issues/new">github.com/kishikawakatsumi/swift-playground</a>
+              <a href="https://github.com/kishikawakatsumi/swift-playground/issues/new">github.com/kishikawakatsumi/swift-playground
+              </a>
             </dd>
           </dl>
         </div>
@@ -227,7 +229,8 @@
     <div class="container">
       <div class="row">
         <div class="mx-auto">
-          <a href="https://github.com/kishikawakatsumi/swift-playground"><span class="fa fa-github fa-2x"></span></a>
+          <a href="https://github.com/kishikawakatsumi/swift-playground" aria-label="GitHub Repository"><span
+              class="fa fa-github fa-2x"></span></a>
         </div>
       </div>
     </div>
