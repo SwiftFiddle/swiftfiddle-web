@@ -36,17 +36,17 @@
         <div id="terminal" style="position: relative;">
           <div class="run-button-background">
             <button id="run-button" class="btn btn-link">
-              <i id="run-button-icon" class="fas fa-play fa-sm"></i>
-              <i id="run-button-spinner" class="fad fa-spinner-third fa-spin" style="display: none;"></i>
+              <span id="run-button-icon" class="fas fa-play fa-sm"></span>
+              <span id="run-button-spinner" class="fad fa-spinner-third fa-spin" style="display: none;"></span>
             </button>
           </div>
           <div class="open-button-background">
             <a id="open-button" class="btn btn-link" href="#(url)" target="_blank" rel="noopener">
-              <i class="fas fa-external-link-alt fa-sm"></i>
+              <span class="fas fa-external-link-alt fa-sm"></span>
             </a>
           </div>
           <div class="toolbar" role="toolbar" style="display: none;">
-            <a id="clear-button" href="#\"><i class="fas fa-times-circle"></i>Clear</a>
+            <a id="clear-button" href="#\"><span class="fas fa-times-circle"></span>Clear</a>
           </div>
         </div>
       </div>
@@ -59,7 +59,7 @@
         <div class="btn-group" role="group">
           <div class="btn-group" style="width: 45%;" role="group">
             <select id="versionPicker" class="selectpicker show-tick dropdown" data-style="btn btn-secondary"
-              data-tickIcon="fa-check">
+              data-tickIcon="fa-check" aria-label="Swift Version">
               <!-- beautify ignore:start -->
               #for(versionGroup in versions):
                 <optgroup label="#(versionGroup.majorVersion)">
