@@ -20,7 +20,7 @@ jobs:
 
           VM_NAME=swift-playground-$(date +%Y%m%d-%H%M%S)
           VM_ZONE=us-central1-a
-          VM_MACHINE_TYPE=n2-standard-2
+          VM_MACHINE_TYPE=n2-custom-2-11264
           VM_DISK_SIZE=120
           VM_SWAP_SIZE=8G
 
