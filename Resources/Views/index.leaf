@@ -53,8 +53,6 @@
   <meta name="msapplication-TileImage" content="images/ms-icon-144x144.png">
   <meta name="theme-color" content="\#ffffff">
 
-  <script src="https://kit.fontawesome.com/108aa91541.js" crossorigin="anonymous"></script>
-
   <title>SwiftFiddle - Swift Online Playground</title>
 </head>
 
@@ -274,6 +272,8 @@
     integrity="sha512-0wwxY+z1FqKkKTfOfJRNMfJ03WpLRzgVW6g2IKPYUkXJhK2wWRtN0TzXzkjV3+k1mXekUtvwsRvqwYPuHtmFBQ=="
     crossorigin="anonymous">
   </script>
+
+  <script src="https://kit.fontawesome.com/108aa91541.js" crossorigin="anonymous"></script>
 
   <script src="/js/editor.js"></script>
   <script src="/js/terminal.js"></script>

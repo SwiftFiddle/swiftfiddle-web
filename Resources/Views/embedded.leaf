@@ -120,6 +120,7 @@
 
   <script src="/js/app.js"></script>
   <script src="/js/embedded.js"></script>
+
   <!-- beautify ignore:start -->
   <script>
     Range = ace.require("ace/range").Range;
