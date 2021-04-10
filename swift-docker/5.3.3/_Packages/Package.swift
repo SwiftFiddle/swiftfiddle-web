@@ -7,7 +7,7 @@ let package = Package(
         .library(name: "_Packages", type: .dynamic, targets: ["_Packages"]),
     ],
     dependencies: [
-        .package(url: "https://github.com/apple/swift-algorithms", from: "0.0.1"),
+        .package(url: "https://github.com/apple/swift-algorithms", from: "0.0.4"),
         .package(url: "https://github.com/apple/swift-collections", from: "0.0.1"),
         .package(url: "https://github.com/apple/swift-numerics", from: "0.1.0"),
         .package(url: "https://github.com/apple/swift-system", from: "0.0.1"),
