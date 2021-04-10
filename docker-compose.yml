@@ -91,10 +91,10 @@ services:
     image: kishikawakatsumi/swift:5.3.3
     container_name: swift-5.3.3
   swift-5.3.2:
-    image: kishikawakatsumi/swift:5.3.2
+    image: kishikawakatsumi/swift:5.3.3
     container_name: swift-5.3.2
   swift-5.3.1:
-    image: kishikawakatsumi/swift:5.3.1
+    image: kishikawakatsumi/swift:5.3.3
     container_name: swift-5.3.1
   swift-5.3:
     image: kishikawakatsumi/swift:5.3
@@ -115,7 +115,7 @@ services:
     image: swift:5.2.1
     container_name: swift-5.2.1
   swift-5.2:
-    image: kishikawakatsumi/swift:5.2
+    image: kishikawakatsumi/swift:5.3
     container_name: swift-5.2
   swift-5.1.5:
     image: swift:5.1.5-bionic
@@ -133,7 +133,7 @@ services:
     image: swift:5.1.1
     container_name: swift-5.1.1
   swift-5.1:
-    image: kishikawakatsumi/swift:5.1
+    image: kishikawakatsumi/swift:5.3
     container_name: swift-5.1
   swift-5.0.3:
     image: swift:5.0.3-bionic
@@ -145,7 +145,7 @@ services:
     image: swift:5.0.1
     container_name: swift-5.0.1
   swift-5.0:
-    image: kishikawakatsumi/swift:5.0
+    image: kishikawakatsumi/swift:5.3
     container_name: swift-5.0
   swift-4.2.4:
     image: swift:4.2.4
