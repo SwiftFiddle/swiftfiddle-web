@@ -70,7 +70,7 @@
       </div>
     </div>
   </div>
-  <div class="container-fluid" style="padding-right: 0; padding-left: 0; padding-bottom: 15px;">
+  <div class="container-fluid" style="padding: 0 0 4px 0;">
     <div class="row no-gutters">
       <div class="col-md-6">
         <pre id="editor"><xmp>#(codeSnippet)</xmp></pre>
@@ -89,12 +89,13 @@
 
   <div class="container">
     <div class="row">
-      <div class="mx-auto" style="margin-top: 0; margin-bottom: 12px;">
-        <div class="btn-group" role="group">
-          <div class="btn-group" style="width: 45%;" role="group">
-            <select id="versionPicker" class="selectpicker show-tick dropdown" data-style="btn btn-secondary"
-              data-tickIcon="fa-check" aria-label="Swift Version">
-              <!-- beautify ignore:start -->
+      <div class="mx-auto my-1">
+        <div class="col">
+          <div class="btn-group my-1" role="group">
+            <div class="btn-group" style="width: 45%;" role="group">
+              <select id="versionPicker" class="selectpicker show-tick dropdown" data-style="btn btn-secondary"
+                data-tickIcon="fa-check" aria-label="Swift Version">
+                <!-- beautify ignore:start -->
               #for(versionGroup in versions):
               <optgroup label="#(versionGroup.majorVersion)">
                 #for(version in versionGroup.versions):
@@ -107,30 +108,32 @@
               </optgroup>
               #endfor
               <!-- beautify ignore:end -->
-            </select>
-          </div>
+              </select>
+            </div>
 
-          <button id="run-button" type="button" class="btn btn-primary">
-            <span id="run-button-text" class="mx-4">Run
-              <span id="run-button-icon" class="far fa-play-circle fa-lg"></span></span>
-            <span id="run-button-spinner" class="spinner-border spinner-border-sm mx-5"
-              style="width: 1.3rem; height: 1.3rem; display: none;" role="status" aria-hidden="true"></span>
+            <button id="run-button" type="button" class="btn btn-primary">
+              <span id="run-button-text" class="mx-4">Run
+                <span id="run-button-icon" class="far fa-play-circle fa-lg"></span></span>
+              <span id="run-button-spinner" class="spinner-border spinner-border-sm mx-5"
+                style="width: 1.3rem; height: 1.3rem; display: none;" role="status" aria-hidden="true"></span>
+            </button>
+          </div>
+          <button type="button" id="share-button" class="btn btn-info btn-circle btn-circle-sm"
+            onclick="showShareSheet();" aria-label="Share" style="margin-left: 8px;">
+            <span class="fa fa-share-alt"></span>
+          </button>
+          <button type="button" class="btn btn-secondary btn-circle btn-circle-sm" data-toggle="modal"
+            data-target="\#helpSheet" aria-label="Help" style="margin-left: 2px;">
+            <span class="fa fa-question"></span>
           </button>
         </div>
-        <button type="button" id="share-button" class="btn btn-info btn-circle btn-circle-sm"
-          onclick="showShareSheet();" aria-label="Share" style="margin-left: 8px;">
-          <span class="fa fa-share-alt"></span>
-        </button>
-        <button type="button" class="btn btn-secondary btn-circle btn-circle-sm" data-toggle="modal"
-          data-target="\#helpSheet" aria-label="Help" style="margin-left: 2px;">
-          <span class="fa fa-question"></span>
-        </button>
       </div>
     </div>
-    <div class="row" style="margin: 0; padding: 0;">
+    <div class="row m-1 p-0">
       <div class="card col-sm-6 mx-auto"><a data-toggle="collapse" href="#collapseExample" role="button"
           aria-expanded="false" aria-controls="collapseExample">
-          <h6 class="card-title text-center my-2"> Swift Packages <span class="fas fa-chevron-down mx-2"></span></h6>
+          <h6 class="card-title text-center my-2"> Swift Packages <span class="fas fa-chevron-down mx-2"></span>
+          </h6>
         </a>
         <div class="collapse" id="collapseExample">
           <table class="table table-sm table-borderless">
@@ -188,9 +191,6 @@
         </div>
       </div>
     </div>
-  </div>
-
-  <div class="container">
   </div>
 
   <div class="modal fade" id="shareSheet" tabindex="-1" role="dialog" aria-hidden="true">
