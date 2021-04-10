@@ -330,7 +330,7 @@ private func availableVersions() throws -> [String] {
     try process.waitUntilExit()
 
     guard let output = try process.result?.utf8Output(), !output.isEmpty else  {
-        return [stableVersion()]
+        return [stableVersion(), "4.0"]
     }
 
     let versions = Set(output.split(separator: "\n").map { $0.replacingOccurrences(of: "-bionic", with: "").replacingOccurrences(of: "-focal", with: "").replacingOccurrences(of: "-slim", with: "").replacingOccurrences(of: "snapshot-", with: "") }).sorted(by: >)

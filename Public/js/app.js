@@ -23,6 +23,16 @@ $("#clear-button").on("click", function (e) {
   terminal.clear();
 });
 
+$("#versionPicker").on("change", function () {
+  if (this.value < "5.3") {
+    $(".package-available").hide();
+    $(".package-unavailable").show();
+  } else {
+    $(".package-available").show();
+    $(".package-unavailable").hide();
+  }
+});
+
 function run(editor) {
   clearMarkers(editor);
   showLoading();

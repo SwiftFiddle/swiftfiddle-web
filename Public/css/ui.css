@@ -37,6 +37,11 @@ body {
   margin-left: 12px;
 }
 
+.package-version {
+  color: #999999;
+  font-family: sans-serif, monospace;
+}
+
 .footer {
   position: absolute;
   bottom: 0;

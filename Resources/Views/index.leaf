@@ -89,7 +89,7 @@
 
   <div class="container">
     <div class="row">
-      <div class="col-sm3 mx-auto" style="margin-top: 15px; margin-bottom: 20px;">
+      <div class="mx-auto" style="margin-top: 0; margin-bottom: 12px;">
         <div class="btn-group" role="group">
           <div class="btn-group" style="width: 45%;" role="group">
             <select id="versionPicker" class="selectpicker show-tick dropdown" data-style="btn btn-secondary"
@@ -117,23 +117,80 @@
               style="width: 1.3rem; height: 1.3rem; display: none;" role="status" aria-hidden="true"></span>
           </button>
         </div>
+        <button type="button" id="share-button" class="btn btn-info btn-circle btn-circle-sm"
+          onclick="showShareSheet();" aria-label="Share" style="margin-left: 8px;">
+          <span class="fa fa-share-alt"></span>
+        </button>
+        <button type="button" class="btn btn-secondary btn-circle btn-circle-sm" data-toggle="modal"
+          data-target="\#helpSheet" aria-label="Help" style="margin-left: 2px;">
+          <span class="fa fa-question"></span>
+        </button>
+      </div>
+    </div>
+    <div class="row" style="margin: 0; padding: 0;">
+      <div class="card col-sm-6 mx-auto"><a data-toggle="collapse" href="#collapseExample" role="button"
+          aria-expanded="false" aria-controls="collapseExample">
+          <h6 class="card-title text-center my-2"> Swift Packages <span class="fas fa-chevron-down mx-2"></span></h6>
+        </a>
+        <div class="collapse" id="collapseExample">
+          <table class="table table-sm table-borderless">
+            <tbody>
+              <tr>
+                <td style="width: 40%;">
+                  <a href="https://github.com/apple/swift-algorithms" target="_blank"
+                    rel="noopener">apple/swift-algorithms
+                  </a>
+                </td>
+                <td style="width: 40%;"><code>import Algorithms</code></td>
+                <td class="package-version" style="width: 16%;">0.0.4</td>
+                <td style="width: 4%;">
+                  <span class="fas fa-check text-success package-available"></span>
+                  <span class="fas fa-times text-danger package-unavailable" style="display: none;"></span>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <a href="https://github.com/apple/swift-collections" target="_blank"
+                    rel="noopener">apple/swift-collections</a>
+                </td>
+                <td><code>import Collections</code></td>
+                <td class="package-version">0.0.1</td>
+                <td>
+                  <span class="fas fa-check text-success package-available"></span>
+                  <span class="fas fa-times text-danger package-unavailable" style="display: none;"></span>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <a href="https://github.com/apple/swift-numerics" target="_blank"
+                    rel="noopener">apple/swift-numerics</a>
+                </td>
+                <td><code>import Numerics</code></td>
+                <td class="package-version">0.0.4</td>
+                <td>
+                  <span class="fas fa-check text-success package-available"></span>
+                  <span class="fas fa-times text-danger package-unavailable" style="display: none;"></span>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <a href="https://github.com/apple/swift-system" target="_blank" rel="noopener">apple/swift-system</a>
+                </td>
+                <td><code>import SystemPackage</code></td>
+                <td class="package-version">0.0.1</td>
+                <td>
+                  <span class="fas fa-check text-success package-available"></span>
+                  <span class="fas fa-times text-danger package-unavailable" style="display: none;"></span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   </div>
 
   <div class="container">
-    <div class="row">
-      <div class="col text-center">
-        <button type="button" id="share-button" class="btn btn-info btn-circle btn-circle-sm m-1"
-          onclick="showShareSheet();" aria-label="Share">
-          <span class="fa fa-share-alt"></span>
-        </button>
-        <button type="button" class="btn btn-secondary btn-circle btn-circle-sm m-1" data-toggle="modal"
-          data-target="\#helpSheet" aria-label="Help">
-          <span class="fa fa-question"></span>
-        </button>
-      </div>
-    </div>
   </div>
 
   <div class="modal fade" id="shareSheet" tabindex="-1" role="dialog" aria-hidden="true">
