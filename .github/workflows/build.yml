@@ -17,7 +17,7 @@ jobs:
       - name: Build Docker Images
         run: |
           set -ex
-          (cd swift-docker/5.3 && docker build --rm --tag ${{ secrets.DOCKER_HUB_USERNAME }}/swift:5.3 . && ${{ secrets.DOCKER_HUB_USERNAME }}/swift:5.3)
-          (cd swift-docker/5.3.1 && docker build --rm --tag ${{ secrets.DOCKER_HUB_USERNAME }}/swift:5.3.1 . && ${{ secrets.DOCKER_HUB_USERNAME }}/swift:5.3.1)
-          (cd swift-docker/5.3.2 && docker build --rm --tag ${{ secrets.DOCKER_HUB_USERNAME }}/swift:5.3.2 . && ${{ secrets.DOCKER_HUB_USERNAME }}/swift:5.3.2)
-          (cd swift-docker/5.3.3 && docker build --rm --tag ${{ secrets.DOCKER_HUB_USERNAME }}/swift:5.3.3 . && ${{ secrets.DOCKER_HUB_USERNAME }}/swift:5.3.3)
+          (cd swift-docker/5.3 && docker build --rm --tag ${{ secrets.DOCKER_HUB_USERNAME }}/swift:5.3 . && docker push ${{ secrets.DOCKER_HUB_USERNAME }}/swift:5.3)
+          (cd swift-docker/5.3.1 && docker build --rm --tag ${{ secrets.DOCKER_HUB_USERNAME }}/swift:5.3.1 . && docker push ${{ secrets.DOCKER_HUB_USERNAME }}/swift:5.3.1)
+          (cd swift-docker/5.3.2 && docker build --rm --tag ${{ secrets.DOCKER_HUB_USERNAME }}/swift:5.3.2 . && docker push ${{ secrets.DOCKER_HUB_USERNAME }}/swift:5.3.2)
+          (cd swift-docker/5.3.3 && docker build --rm --tag ${{ secrets.DOCKER_HUB_USERNAME }}/swift:5.3.3 . && docker push ${{ secrets.DOCKER_HUB_USERNAME }}/swift:5.3.3)
