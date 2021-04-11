@@ -14,7 +14,8 @@ func routes(_ app: Application) throws {
                 stableVersion: stableVersion(),
                 latestVersion: try latestVersion(),
                 codeSnippet: defaultCodeSnippet,
-                ogpImageUrl: "./default_ogp.jpeg"
+                ogpImageUrl: "./default_ogp.jpeg",
+                packageInfo: swiftPackageInfo(app)
             )
         )
     }
@@ -298,7 +299,8 @@ private func handleImportContent(_ req: Request, _ promise: EventLoopPromise<Res
                 stableVersion: swiftVersion ?? stableVersion(),
                 latestVersion: try latestVersion(),
                 codeSnippet: code,
-                ogpImageUrl: "https://swiftfiddle.com/\(id).png"
+                ogpImageUrl: "https://swiftfiddle.com/\(id).png",
+                packageInfo: swiftPackageInfo(req.application)
             )
         )
         .encodeResponse(for: req)
@@ -354,6 +356,28 @@ private func imageTag(for prefix: String) throws -> String? {
         .first
 }
 
+private func swiftPackageInfo(_ app: Application) -> [PackageInfo] {
+    let packagePath = URL(fileURLWithPath: "\(app.directory.resourcesDirectory)Views/Package.json")
+    let decoder = JSONDecoder()
+    do {
+        let package = try decoder.decode(Package.self, from: Data(contentsOf: packagePath))
+        guard let target = package.targets.first else { return [] }
+        return zip(package.dependencies, target.dependencies).compactMap { (dependency, target) -> PackageInfo? in
+            guard let product = target.product.first, let productName = product else { return nil }
+            guard let range = dependency.requirement.range.first else { return nil }
+            return PackageInfo(
+                url: dependency.url,
+                name: dependency.name,
+                productName: productName,
+                version: range.lowerBound
+            )
+        }
+
+    } catch {
+        return []
+    }
+}
+
 private struct ExecutionRequestParameter: Decodable {
     let toolchain_version: String?
     let command: String?
@@ -375,6 +399,14 @@ private struct InitialPageResponse: Encodable {
     let latestVersion: String
     let codeSnippet: String
     let ogpImageUrl: String
+    let packageInfo: [PackageInfo]
+}
+
+private struct PackageInfo: Encodable {
+    let url: String
+    let name: String
+    let productName: String
+    let version: String
 }
 
 private struct EmbeddedPageResponse: Encodable {

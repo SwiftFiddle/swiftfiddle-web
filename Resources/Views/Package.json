@@ -1,0 +1,134 @@
+{
+  "cLanguageStandard" : null,
+  "cxxLanguageStandard" : null,
+  "dependencies" : [
+    {
+      "name" : "swift-algorithms",
+      "requirement" : {
+        "range" : [
+          {
+            "lowerBound" : "0.0.4",
+            "upperBound" : "1.0.0"
+          }
+        ]
+      },
+      "url" : "https:\/\/github.com\/apple\/swift-algorithms"
+    },
+    {
+      "name" : "swift-collections",
+      "requirement" : {
+        "range" : [
+          {
+            "lowerBound" : "0.0.2",
+            "upperBound" : "1.0.0"
+          }
+        ]
+      },
+      "url" : "https:\/\/github.com\/apple\/swift-collections"
+    },
+    {
+      "name" : "swift-numerics",
+      "requirement" : {
+        "range" : [
+          {
+            "lowerBound" : "0.1.0",
+            "upperBound" : "1.0.0"
+          }
+        ]
+      },
+      "url" : "https:\/\/github.com\/apple\/swift-numerics"
+    },
+    {
+      "name" : "swift-system",
+      "requirement" : {
+        "range" : [
+          {
+            "lowerBound" : "0.0.1",
+            "upperBound" : "1.0.0"
+          }
+        ]
+      },
+      "url" : "https:\/\/github.com\/apple\/swift-system"
+    }
+  ],
+  "name" : "_Packages",
+  "pkgConfig" : null,
+  "platforms" : [
+
+  ],
+  "products" : [
+    {
+      "name" : "_Packages",
+      "targets" : [
+        "_Packages"
+      ],
+      "type" : {
+        "library" : [
+          "dynamic"
+        ]
+      }
+    }
+  ],
+  "providers" : null,
+  "swiftLanguageVersions" : null,
+  "targets" : [
+    {
+      "dependencies" : [
+        {
+          "product" : [
+            "Algorithms",
+            "swift-algorithms",
+            null
+          ]
+        },
+        {
+          "product" : [
+            "Collections",
+            "swift-collections",
+            null
+          ]
+        },
+        {
+          "product" : [
+            "Numerics",
+            "swift-numerics",
+            null
+          ]
+        },
+        {
+          "product" : [
+            "SystemPackage",
+            "swift-system",
+            null
+          ]
+        }
+      ],
+      "exclude" : [
+
+      ],
+      "name" : "_Packages",
+      "resources" : [
+
+      ],
+      "settings" : [
+        {
+          "condition" : {
+            "config" : "release",
+            "platformNames" : [
+
+            ]
+          },
+          "name" : "unsafeFlags",
+          "tool" : "swift",
+          "value" : [
+            "-cross-module-optimization"
+          ]
+        }
+      ],
+      "type" : "regular"
+    }
+  ],
+  "toolsVersion" : {
+    "_version" : "5.3.0"
+  }
+}

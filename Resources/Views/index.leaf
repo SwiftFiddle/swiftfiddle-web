@@ -96,18 +96,18 @@
               <select id="versionPicker" class="selectpicker show-tick dropdown" data-style="btn btn-secondary"
                 data-tickIcon="fa-check" aria-label="Swift Version">
                 <!-- beautify ignore:start -->
-              #for(versionGroup in versions):
-              <optgroup label="#(versionGroup.majorVersion)">
-                #for(version in versionGroup.versions):
-                  #if(version == stableVersion):
-                    <option value="#(version)" selected>#(version)</option>
-                  #else:
-                    <option value="#(version)">#(version)</option>
-                  #endif
+                #for(versionGroup in versions):
+                <optgroup label="#(versionGroup.majorVersion)">
+                  #for(version in versionGroup.versions):
+                    #if(version == stableVersion):
+                      <option value="#(version)" selected>#(version)</option>
+                    #else:
+                      <option value="#(version)">#(version)</option>
+                    #endif
+                  #endfor
+                </optgroup>
                 #endfor
-              </optgroup>
-              #endfor
-              <!-- beautify ignore:end -->
+                <!-- beautify ignore:end -->
               </select>
             </div>
 
@@ -138,54 +138,21 @@
         <div class="collapse" id="collapseExample">
           <table class="table table-sm table-borderless">
             <tbody>
+              <!-- beautify ignore:start -->
+              #for(package in packageInfo):
               <tr>
                 <td style="width: 40%;">
-                  <a href="https://github.com/apple/swift-algorithms" target="_blank"
-                    rel="noopener">apple/swift-algorithms
-                  </a>
+                  <a href="#(package.url)" target="_blank" rel="noopener">#(package.name)</a>
                 </td>
-                <td style="width: 40%;"><code>import Algorithms</code></td>
-                <td class="package-version" style="width: 16%;">0.0.4</td>
+                <td style="width: 40%;"><code>import #(package.productName)</code></td>
+                <td class="package-version" style="width: 16%;">#(package.version)</td>
                 <td style="width: 4%;">
                   <span class="fas fa-check text-success package-available"></span>
                   <span class="fas fa-times text-danger package-unavailable" style="display: none;"></span>
                 </td>
               </tr>
-              <tr>
-                <td>
-                  <a href="https://github.com/apple/swift-collections" target="_blank"
-                    rel="noopener">apple/swift-collections</a>
-                </td>
-                <td><code>import Collections</code></td>
-                <td class="package-version">0.0.1</td>
-                <td>
-                  <span class="fas fa-check text-success package-available"></span>
-                  <span class="fas fa-times text-danger package-unavailable" style="display: none;"></span>
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  <a href="https://github.com/apple/swift-numerics" target="_blank"
-                    rel="noopener">apple/swift-numerics</a>
-                </td>
-                <td><code>import Numerics</code></td>
-                <td class="package-version">0.0.4</td>
-                <td>
-                  <span class="fas fa-check text-success package-available"></span>
-                  <span class="fas fa-times text-danger package-unavailable" style="display: none;"></span>
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  <a href="https://github.com/apple/swift-system" target="_blank" rel="noopener">apple/swift-system</a>
-                </td>
-                <td><code>import SystemPackage</code></td>
-                <td class="package-version">0.0.1</td>
-                <td>
-                  <span class="fas fa-check text-success package-available"></span>
-                  <span class="fas fa-times text-danger package-unavailable" style="display: none;"></span>
-                </td>
-              </tr>
+              #endfor
+              <!-- beautify ignore:end -->
             </tbody>
           </table>
         </div>
