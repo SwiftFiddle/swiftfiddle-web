@@ -115,7 +115,7 @@ jobs:
           echo FIREBASE_REFRESH_TOKEN=${{ secrets.FIREBASE_REFRESH_TOKEN }} >> .env
 
           docker_compose='docker run --rm -v /var/run/docker.sock:/var/run/docker.sock -v "\$PWD:\$PWD" -w="\$PWD" docker/compose:latest'
-          eval \$docker_compose pull app carbonara nginx-proxy letsencrypt swift-5.3.1
+          eval \$docker_compose pull
           docker image prune --force
 
           exit 0
