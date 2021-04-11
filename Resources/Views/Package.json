@@ -27,6 +27,18 @@
       "url" : "https:\/\/github.com\/apple\/swift-collections"
     },
     {
+      "name" : "swift-crypto",
+      "requirement" : {
+        "range" : [
+          {
+            "lowerBound" : "1.0.0",
+            "upperBound" : "2.0.0"
+          }
+        ]
+      },
+      "url" : "https:\/\/github.com\/apple\/swift-crypto"
+    },
+    {
       "name" : "swift-numerics",
       "requirement" : {
         "range" : [
@@ -85,6 +97,13 @@
           "product" : [
             "Collections",
             "swift-collections",
+            null
+          ]
+        },
+        {
+          "product" : [
+            "Crypto",
+            "swift-crypto",
             null
           ]
         },

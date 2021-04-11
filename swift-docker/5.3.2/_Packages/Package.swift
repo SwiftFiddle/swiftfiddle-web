@@ -9,6 +9,7 @@ let package = Package(
     dependencies: [
         .package(url: "https://github.com/apple/swift-algorithms", from: "0.0.4"),
         .package(url: "https://github.com/apple/swift-collections", from: "0.0.2"),
+        .package(url: "https://github.com/apple/swift-crypto", from: "1.0.0"),
         .package(url: "https://github.com/apple/swift-numerics", from: "0.1.0"),
         .package(url: "https://github.com/apple/swift-system", from: "0.0.1"),
     ],
@@ -18,6 +19,7 @@ let package = Package(
             dependencies: [
                 .product(name: "Algorithms", package: "swift-algorithms"),
                 .product(name: "Collections", package: "swift-collections"),
+                .product(name: "Crypto", package: "swift-crypto"),
                 .product(name: "Numerics", package: "swift-numerics"),
                 .product(name: "SystemPackage", package: "swift-system"),
             ],
