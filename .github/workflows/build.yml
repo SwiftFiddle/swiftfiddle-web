@@ -27,3 +27,4 @@ jobs:
           sh scripts/update_installed_swift_packages.sh
           git add Resources/Views/Package.json
           git commit -m 'Update Package.json'
+          git push origin HEAD
