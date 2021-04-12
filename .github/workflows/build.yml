@@ -17,14 +17,19 @@ jobs:
       - name: Build Docker Images
         run: |
           set -ex
-          (cd swift-docker/5.3 && docker build --rm --tag ${{ secrets.DOCKER_HUB_USERNAME }}/swift:5.3 . && docker push ${{ secrets.DOCKER_HUB_USERNAME }}/swift:5.3)
-          (cd swift-docker/5.3.1 && docker build --rm --tag ${{ secrets.DOCKER_HUB_USERNAME }}/swift:5.3.1 . && docker push ${{ secrets.DOCKER_HUB_USERNAME }}/swift:5.3.1)
-          (cd swift-docker/5.3.2 && docker build --rm --tag ${{ secrets.DOCKER_HUB_USERNAME }}/swift:5.3.2 . && docker push ${{ secrets.DOCKER_HUB_USERNAME }}/swift:5.3.2)
-          (cd swift-docker/5.3.3 && docker build --rm --tag ${{ secrets.DOCKER_HUB_USERNAME }}/swift:5.3.3 . && docker push ${{ secrets.DOCKER_HUB_USERNAME }}/swift:5.3.3)
 
-          git config --local user.email ${{ secrets.GIT_USER_EMAIL }}
-          git config --local user.name ${{ secrets.GIT_USER_NAME }}
           sh scripts/update_installed_swift_packages.sh
-          git add Resources/Views/Package.json
-          git commit -m 'Update Package.json'
-          git push origin HEAD
+
+          if ! git diff --exit-code --quiet Resources/Views/Package.json
+          then
+            (cd swift-docker/5.3 && docker build --rm --tag ${{ secrets.DOCKER_HUB_USERNAME }}/swift:5.3 . && docker push ${{ secrets.DOCKER_HUB_USERNAME }}/swift:5.3)
+            (cd swift-docker/5.3.1 && docker build --rm --tag ${{ secrets.DOCKER_HUB_USERNAME }}/swift:5.3.1 . && docker push ${{ secrets.DOCKER_HUB_USERNAME }}/swift:5.3.1)
+            (cd swift-docker/5.3.2 && docker build --rm --tag ${{ secrets.DOCKER_HUB_USERNAME }}/swift:5.3.2 . && docker push ${{ secrets.DOCKER_HUB_USERNAME }}/swift:5.3.2)
+            (cd swift-docker/5.3.3 && docker build --rm --tag ${{ secrets.DOCKER_HUB_USERNAME }}/swift:5.3.3 . && docker push ${{ secrets.DOCKER_HUB_USERNAME }}/swift:5.3.3)
+
+            git config --local user.email ${{ secrets.GIT_USER_EMAIL }}
+            git config --local user.name ${{ secrets.GIT_USER_NAME }}
+            git add Resources/Views/Package.json
+            git commit -m 'Update Package.json'
+            git push origin HEAD
+          fi
