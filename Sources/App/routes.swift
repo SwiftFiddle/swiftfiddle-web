@@ -137,8 +137,11 @@ func routes(_ app: Application) throws {
         }
         let command = parameter.command ?? "swift"
         let options = parameter.options ??
-            (toolchainVersion.compare("5.3", options: .numeric) != .orderedAscending ? "-I ./swiftfiddle.com/_Packages/.build/release/ -L ./swiftfiddle.com/_Packages/.build/release/ -l_Packages" :
-            toolchainVersion == "nightly-main" ? "-Xfrontend -enable-experimental-concurrency" : "")
+            (toolchainVersion ==
+                "nightly-main" ? "-Xfrontend -enable-experimental-concurrency" :
+             toolchainVersion.compare("5.3", options: .numeric) != .orderedAscending ?
+                "-I ./swiftfiddle.com/_Packages/.build/release/ -L ./swiftfiddle.com/_Packages/.build/release/ -l_Packages" :
+                "")
         let timeout = parameter.timeout ?? 60 // Default timeout is 60 seconds
         let color = parameter._color ?? false
 
