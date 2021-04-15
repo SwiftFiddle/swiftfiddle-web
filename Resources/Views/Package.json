@@ -7,7 +7,7 @@
       "requirement" : {
         "range" : [
           {
-            "lowerBound" : "0.0.4",
+            "lowerBound" : "0.1.1",
             "upperBound" : "1.0.0"
           }
         ]
