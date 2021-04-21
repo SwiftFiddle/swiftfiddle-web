@@ -5,6 +5,7 @@ final class CustomHeaderMiddleware: Middleware {
         return next.respond(to: request).map { response in
             if !request.url.path.hasSuffix("embedded") && !request.url.path.hasSuffix("embedded/") {
                 response.headers.add(name: "X-Frame-Options", value: "DENY")
+                response.headers.add(name: "Permissions-Policy", value: "interest-cohort=()")
             }
             return response
         }
