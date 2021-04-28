@@ -1,4 +1,4 @@
-FROM swift:5.3-focal as build
+FROM swift:5.4-focal as build
 
 RUN export DEBIAN_FRONTEND=noninteractive DEBCONF_NONINTERACTIVE_SEEN=true \
     && apt-get -q update \
@@ -20,7 +20,7 @@ RUN mv /build/Public ./Public && chmod -R a-w ./Public \
     && mv /build/Resources ./Resources && chmod -R a-w ./Resources \
     && chmod g+w ./Resources/Temp
 
-FROM swift:5.3-focal-slim
+FROM swift:5.4-focal-slim
 
 ARG HOST_DOCKER_GROUP_ID
 
