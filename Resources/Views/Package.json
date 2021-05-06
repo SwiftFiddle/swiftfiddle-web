@@ -4,6 +4,7 @@
   "dependencies" : [
     {
       "name" : "swift-algorithms",
+      "productFilter" : null,
       "requirement" : {
         "range" : [
           {
@@ -12,10 +13,11 @@
           }
         ]
       },
-      "url" : "https:\/\/github.com\/apple\/swift-algorithms"
+      "url" : "https://github.com/apple/swift-algorithms"
     },
     {
       "name" : "swift-collections",
+      "productFilter" : null,
       "requirement" : {
         "range" : [
           {
@@ -24,10 +26,11 @@
           }
         ]
       },
-      "url" : "https:\/\/github.com\/apple\/swift-collections"
+      "url" : "https://github.com/apple/swift-collections"
     },
     {
       "name" : "swift-crypto",
+      "productFilter" : null,
       "requirement" : {
         "range" : [
           {
@@ -36,10 +39,11 @@
           }
         ]
       },
-      "url" : "https:\/\/github.com\/apple\/swift-crypto"
+      "url" : "https://github.com/apple/swift-crypto"
     },
     {
       "name" : "swift-numerics",
+      "productFilter" : null,
       "requirement" : {
         "range" : [
           {
@@ -48,10 +52,11 @@
           }
         ]
       },
-      "url" : "https:\/\/github.com\/apple\/swift-numerics"
+      "url" : "https://github.com/apple/swift-numerics"
     },
     {
       "name" : "swift-system",
+      "productFilter" : null,
       "requirement" : {
         "range" : [
           {
@@ -60,10 +65,11 @@
           }
         ]
       },
-      "url" : "https:\/\/github.com\/apple\/swift-system"
+      "url" : "https://github.com/apple/swift-system"
     }
   ],
   "name" : "_Packages",
+  "packageKind" : "root",
   "pkgConfig" : null,
   "platforms" : [
 
