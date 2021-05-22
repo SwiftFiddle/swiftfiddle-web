@@ -4,8 +4,6 @@ services:
   app:
     image: kishikawakatsumi/swift-playground:latest
     container_name: swift-playground
-    depends_on:
-      - letsencrypt
     env_file:
       - .env
     environment:
