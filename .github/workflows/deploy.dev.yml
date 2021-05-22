@@ -103,7 +103,7 @@ jobs:
 
           export TERM=xterm
 
-          ssh -t -t -o 'StrictHostKeyChecking no' "${{ secrets.SSH_LOGIN_USER }}@${{ secrets.SSH_HOST }}" \
+          ssh -t -t -o 'StrictHostKeyChecking no' "${{ secrets.SSH_LOGIN_USER }}@$ip_address" \
             "grep "^docker:" /etc/group | sed -e 's/^[^:]\+:[^:]\+:\([^:]\+\):[^:]\+$/\1/g'" > gid
 
           REMOTE_DOCKER_GID=$(echo $(tail -n 1 gid) | sed -e 's/\r//g')
@@ -115,7 +115,7 @@ jobs:
             --rm --no-cache --tag kishikawakatsumi/swift-playground .
           docker push kishikawakatsumi/swift-playground
 
-          ssh -t -t -o 'StrictHostKeyChecking no' "${{ secrets.SSH_LOGIN_USER }}@${{ secrets.SSH_HOST }}" <<EOF
+          ssh -t -t -o 'StrictHostKeyChecking no' "${{ secrets.SSH_LOGIN_USER }}@$ip_address" <<EOF
           set -ex
 
           [ -d app ] || git clone https://github.com/kishikawakatsumi/swift-playground.git app
