@@ -126,6 +126,7 @@ jobs:
           sudo chmod 666 /var/run/docker.sock
           chmod 773 Resources/Temp
 
+          echo GOOGLE_CLOUD_PLATFORM_PROJECT_ID=${{ secrets.GOOGLE_CLOUD_PLATFORM_PROJECT_ID }} > .env
           echo FIREBASE_API_KEY=${{ secrets.FIREBASE_API_KEY }} > .env
           echo FIREBASE_REFRESH_TOKEN=${{ secrets.FIREBASE_REFRESH_TOKEN }} >> .env
 
