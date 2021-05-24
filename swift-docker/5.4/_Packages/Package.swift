@@ -1,4 +1,4 @@
-// swift-tools-version:5.3
+// swift-tools-version:5.4
 import PackageDescription
 
 let package = Package(
@@ -11,6 +11,12 @@ let package = Package(
         .package(url: "https://github.com/apple/swift-collections", from: "0.0.2"),
         .package(url: "https://github.com/apple/swift-crypto", from: "1.1.6"),
         .package(url: "https://github.com/apple/swift-system", from: "0.0.2"),
+        .package(url: "https://github.com/taketo1024/swm-core.git", from:"1.0.1"),
+        .package(url: "https://github.com/taketo1024/swm-knots.git", from: "1.0.0"),
+        .package(url: "https://github.com/taketo1024/swm-homology.git", from: "1.0.0"),
+        .package(url: "https://github.com/taketo1024/swm-khovanov.git", from: "1.0.0"),
+        .package(url: "https://github.com/taketo1024/swm-hfk.git", from: "1.0.0"),
+        .package(url: "https://github.com/taketo1024/swm-kr.git", from: "0.1.0"),
     ],
     targets: [
         .target(
@@ -20,6 +26,12 @@ let package = Package(
                 .product(name: "Collections", package: "swift-collections"),
                 .product(name: "Crypto", package: "swift-crypto"),
                 .product(name: "SystemPackage", package: "swift-system"),
+                .product(name: "SwmCore", package: "swm-core"),
+                .product(name: "SwmKnots", package: "swm-knots"),
+                .product(name: "SwmHomology", package: "swm-homology"),
+                .product(name: "SwmKhovanov", package: "swm-khovanov"),
+                .product(name: "SwmHFK", package: "swm-hfk"),
+                .product(name: "SwmKR", package: "swm-kr"),
             ],
             swiftSettings: [
                 .unsafeFlags(["-cross-module-optimization"], .when(configuration: .release)),
