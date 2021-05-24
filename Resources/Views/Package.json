@@ -42,19 +42,6 @@
       "url" : "https://github.com/apple/swift-crypto"
     },
     {
-      "name" : "swift-numerics",
-      "productFilter" : null,
-      "requirement" : {
-        "range" : [
-          {
-            "lowerBound" : "0.1.0",
-            "upperBound" : "1.0.0"
-          }
-        ]
-      },
-      "url" : "https://github.com/apple/swift-numerics"
-    },
-    {
       "name" : "swift-system",
       "productFilter" : null,
       "requirement" : {
@@ -66,6 +53,84 @@
         ]
       },
       "url" : "https://github.com/apple/swift-system"
+    },
+    {
+      "name" : "swm-core",
+      "productFilter" : null,
+      "requirement" : {
+        "range" : [
+          {
+            "lowerBound" : "1.0.1",
+            "upperBound" : "2.0.0"
+          }
+        ]
+      },
+      "url" : "https://github.com/taketo1024/swm-core.git"
+    },
+    {
+      "name" : "swm-knots",
+      "productFilter" : null,
+      "requirement" : {
+        "range" : [
+          {
+            "lowerBound" : "1.0.0",
+            "upperBound" : "2.0.0"
+          }
+        ]
+      },
+      "url" : "https://github.com/taketo1024/swm-knots.git"
+    },
+    {
+      "name" : "swm-homology",
+      "productFilter" : null,
+      "requirement" : {
+        "range" : [
+          {
+            "lowerBound" : "1.0.0",
+            "upperBound" : "2.0.0"
+          }
+        ]
+      },
+      "url" : "https://github.com/taketo1024/swm-homology.git"
+    },
+    {
+      "name" : "swm-khovanov",
+      "productFilter" : null,
+      "requirement" : {
+        "range" : [
+          {
+            "lowerBound" : "1.0.0",
+            "upperBound" : "2.0.0"
+          }
+        ]
+      },
+      "url" : "https://github.com/taketo1024/swm-khovanov.git"
+    },
+    {
+      "name" : "swm-hfk",
+      "productFilter" : null,
+      "requirement" : {
+        "range" : [
+          {
+            "lowerBound" : "1.0.0",
+            "upperBound" : "2.0.0"
+          }
+        ]
+      },
+      "url" : "https://github.com/taketo1024/swm-hfk.git"
+    },
+    {
+      "name" : "swm-kr",
+      "productFilter" : null,
+      "requirement" : {
+        "range" : [
+          {
+            "lowerBound" : "0.1.0",
+            "upperBound" : "1.0.0"
+          }
+        ]
+      },
+      "url" : "https://github.com/taketo1024/swm-kr.git"
     }
   ],
   "name" : "_Packages",
@@ -115,15 +180,50 @@
         },
         {
           "product" : [
-            "Numerics",
-            "swift-numerics",
+            "SystemPackage",
+            "swift-system",
             null
           ]
         },
         {
           "product" : [
-            "SystemPackage",
-            "swift-system",
+            "SwmCore",
+            "swm-core",
+            null
+          ]
+        },
+        {
+          "product" : [
+            "SwmKnots",
+            "swm-knots",
+            null
+          ]
+        },
+        {
+          "product" : [
+            "SwmHomology",
+            "swm-homology",
+            null
+          ]
+        },
+        {
+          "product" : [
+            "SwmKhovanov",
+            "swm-khovanov",
+            null
+          ]
+        },
+        {
+          "product" : [
+            "SwmHFK",
+            "swm-hfk",
+            null
+          ]
+        },
+        {
+          "product" : [
+            "SwmKR",
+            "swm-kr",
             null
           ]
         }
@@ -154,6 +254,6 @@
     }
   ],
   "toolsVersion" : {
-    "_version" : "5.3.0"
+    "_version" : "5.4.0"
   }
 }
