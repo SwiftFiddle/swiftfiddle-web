@@ -87,6 +87,9 @@ services:
   swift-nightly-5.3:
     image: swiftlang/swift:nightly-5.3
     container_name: swift-nightly-5.3
+  swift-5.4.1:
+    image: kishikawakatsumi/swift:5.4.1
+    container_name: swift-5.4.1
   swift-5.4:
     image: kishikawakatsumi/swift:5.4
     container_name: swift-5.4
