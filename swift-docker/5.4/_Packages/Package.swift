@@ -8,7 +8,7 @@ let package = Package(
     ],
     dependencies: [
         .package(url: "https://github.com/apple/swift-algorithms", from: "0.2.0"),
-        .package(url: "https://github.com/apple/swift-collections", from: "0.0.2"),
+        .package(url: "https://github.com/apple/swift-collections", from: "0.0.3"),
         .package(url: "https://github.com/apple/swift-crypto", from: "1.1.6"),
         .package(url: "https://github.com/apple/swift-system", from: "0.0.2"),
         .package(url: "https://github.com/taketo1024/swm-core.git", from:"1.1.0"),
