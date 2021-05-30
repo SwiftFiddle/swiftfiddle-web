@@ -53,7 +53,7 @@ function run(editor) {
   const location = window.location;
   const connection = new WebSocket(
     // prettier-ignore
-    `${location.protocol === "https:" ? "wss:" : "ws:"}//swiftfiddle.com${location.pathname}ws/${nonce}/run`
+    `${location.protocol === "https:" ? "wss:" : "ws:"}//${location.host}${location.pathname}ws/${nonce}/run`
   );
   connection.onmessage = (e) => {
     const data = JSON.parse(e.data);
