@@ -16,6 +16,8 @@ editor.setOptions({
   fontFamily: "Menlo,Consolas,sans-serif,monospace",
   fontSize: "11pt",
   wrap: "free",
+  tabSize: 2,
+  useSoftTabs: true,
   showInvisibles: false,
   enableAutoIndent: true,
   enableBasicAutocompletion: true,

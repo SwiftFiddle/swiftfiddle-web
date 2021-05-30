@@ -36,12 +36,65 @@ $("#versionPicker").on("change", function () {
 function run(editor) {
   clearMarkers(editor);
   showLoading();
-  const cancelToken = showSpinner(terminal, "Running");
 
+  const consoleBuffer = [];
+  const cancelToken = showSpinner(terminal, "Running", () => {
+    return consoleBuffer.filter(Boolean);
+  });
+
+  const nonce = uuidv4();
   const params = {
     toolchain_version: $("#versionPicker").val(),
     code: editor.getValue(),
     _color: true,
+    _nonce: nonce,
+  };
+
+  const location = window.location;
+  const connection = new WebSocket(
+    // prettier-ignore
+    `${location.protocol === "https:" ? "wss:" : "ws:"}//swiftfiddle.com${location.pathname}ws/${nonce}/run`
+  );
+  connection.onmessage = (e) => {
+    const data = JSON.parse(e.data);
+    const version = data.version;
+    const stderr = data.errors;
+    const stdout = data.output;
+
+    consoleBuffer.length = 0;
+    if (version) {
+      consoleBuffer.push(
+        ...version
+          .split("\n")
+          .filter(Boolean)
+          .map((line) => {
+            return `\x1b[38;5;72m\x1b[2m${line}\x1b[0m`;
+          })
+      );
+    }
+    if (stderr) {
+      consoleBuffer.push(
+        ...stderr
+          .split("\n")
+          .filter(Boolean)
+          .map((line) => {
+            return `${line}\x1b[0m`;
+          })
+      );
+    }
+    if (stdout) {
+      consoleBuffer.push(
+        ...stdout
+          .split("\n")
+          .filter(Boolean)
+          .map((line) => {
+            return `\x1b[37m${line}\x1b[0m`;
+          })
+      );
+    }
+  };
+  connection.onerror = (e) => {
+    console.log(e);
   };
 
   const startTime = performance.now();
@@ -51,6 +104,7 @@ function run(editor) {
       const execTime = ` ${((endTime - startTime) / 1000).toFixed(0)}s`;
 
       hideSpinner(terminal, cancelToken);
+      clearPreviousLines(consoleBuffer.length);
 
       const now = new Date();
       const timestamp = now.toLocaleString("en-US", {
@@ -63,31 +117,28 @@ function run(editor) {
       terminal.write(
         `\x1b[38;5;72m${data.version
           .split("\n")
-          .map((l, i) => {
-            return i == 0
-              ? `${
-                  terminal.cols -
-                    l.length -
-                    timestamp.length -
-                    execTime.length <
-                  0
-                    ? `\x1b[0m\x1b[2m${timestamp}\x1b[0m${execTime}\n`
-                    : ""
-                }\x1b[38;5;72m\x1b[2m${l}\x1b[0m${
-                  terminal.cols -
-                    l.length -
-                    timestamp.length -
-                    execTime.length >=
-                  0
-                    ? `${" ".repeat(
-                        terminal.cols -
-                          l.length -
-                          timestamp.length -
-                          execTime.length
-                      )}\x1b[0m\x1b[2m${timestamp}\x1b[0m${execTime}`
-                    : ""
-                }`
-              : `\x1b[38;5;72m\x1b[2m${l}\x1b[0m`;
+          .map((line, i) => {
+            const padding =
+              terminal.cols - line.length - timestamp.length - execTime.length;
+            let _1 = "";
+            if (padding < 0) {
+              _1 = `\x1b[0m\x1b[2m${timestamp}\x1b[0m${execTime}\n`;
+            } else {
+              _1 = "";
+            }
+            let _2 = "";
+            if (padding >= 0) {
+              _2 = `${" ".repeat(
+                padding
+              )}\x1b[0m\x1b[2m${timestamp}\x1b[0m${execTime}`;
+            } else {
+              _2 = "";
+            }
+            if (i == 0) {
+              return `${_1}\x1b[38;5;72m\x1b[2m${line}\x1b[0m${_2}`;
+            } else {
+              return `\x1b[38;5;72m\x1b[2m${line}\x1b[0m`;
+            }
           })
           .join("\n")}\x1b[0m`
       );
@@ -108,7 +159,7 @@ function run(editor) {
       }
 
       if (match) {
-        terminal.write(`\x1b[31;1m${match[0]}\n`);
+        terminal.write(`\x1b[31;1m${match[0]}\n`); // Timeout error
       }
 
       const annotations = parceErrorMessage(data.errors);
@@ -182,30 +233,58 @@ function hideLoading() {
   $("#run-button-spinner").hide();
 }
 
-function showSpinner(terminal, message) {
+function showSpinner(terminal, message, onProgress) {
   const interval = 200;
   const SPINNER = ["⠋", "⠙", "⠹", "⠸", "⠼", "⠴", "⠦", "⠧", "⠇", "⠏"];
   let spins = 0;
   function updateSpinner(terminal, message) {
     const progressText = `${SPINNER[spins % SPINNER.length]} ${message}`;
-    terminal.write("\x1b[2K\r"); // Clear current line
     const dotCount = Math.floor((spins * 2) / 4) % 4;
     const animationText = `${progressText} ${".".repeat(dotCount)}`;
     const seconds = `${Math.floor(spins / 5)}s`;
     const speces = " ".repeat(
       terminal.cols - animationText.length - seconds.length
     );
-    terminal.write(`\x1b[37m${animationText}\x1b[0m${speces}${seconds}`);
+    terminal.writeln(`\x1b[37m${animationText}\x1b[0m${speces}${seconds}`);
     spins++;
   }
 
   updateSpinner(terminal, message);
+  let writtenLines = 1;
   return setInterval(() => {
+    clearCurrentLine();
+    clearPreviousLines(writtenLines);
+    const buffer = onProgress();
+    buffer.forEach((line) => {
+      terminal.writeln(line);
+    });
     updateSpinner(terminal, message);
+    writtenLines = buffer.length + 1;
   }, interval);
 }
 
 function hideSpinner(terminal, cancelToken) {
   clearInterval(cancelToken);
+  clearCurrentLine();
+  clearPreviousLines(1);
+}
+
+function clearCurrentLine() {
   terminal.write("\x1b[2K\r");
+}
+
+function clearPreviousLines(n) {
+  for (let i = 0; i < n; i++) {
+    terminal.write(`\x1b[1F`);
+    terminal.write("\x1b[2K\r");
+  }
+}
+
+function uuidv4() {
+  return ([1e7] + -1e3 + -4e3 + -8e3 + -1e11).replace(/[018]/g, (c) =>
+    (
+      c ^
+      (crypto.getRandomValues(new Uint8Array(1))[0] & (15 >> (c / 4)))
+    ).toString(16)
+  );
 }
