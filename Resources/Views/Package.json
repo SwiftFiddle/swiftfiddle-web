@@ -21,7 +21,7 @@
       "requirement" : {
         "range" : [
           {
-            "lowerBound" : "0.0.2",
+            "lowerBound" : "0.0.3",
             "upperBound" : "1.0.0"
           }
         ]
@@ -60,12 +60,38 @@
       "requirement" : {
         "range" : [
           {
-            "lowerBound" : "1.0.1",
+            "lowerBound" : "1.1.0",
             "upperBound" : "2.0.0"
           }
         ]
       },
       "url" : "https://github.com/taketo1024/swm-core.git"
+    },
+    {
+      "name" : "swm-homology",
+      "productFilter" : null,
+      "requirement" : {
+        "range" : [
+          {
+            "lowerBound" : "1.1.0",
+            "upperBound" : "2.0.0"
+          }
+        ]
+      },
+      "url" : "https://github.com/taketo1024/swm-homology.git"
+    },
+    {
+      "name" : "swm-khovanov",
+      "productFilter" : null,
+      "requirement" : {
+        "range" : [
+          {
+            "lowerBound" : "1.1.0",
+            "upperBound" : "2.0.0"
+          }
+        ]
+      },
+      "url" : "https://github.com/taketo1024/swm-khovanov.git"
     },
     {
       "name" : "swm-knots",
@@ -81,56 +107,30 @@
       "url" : "https://github.com/taketo1024/swm-knots.git"
     },
     {
-      "name" : "swm-homology",
-      "productFilter" : null,
-      "requirement" : {
-        "range" : [
-          {
-            "lowerBound" : "1.0.0",
-            "upperBound" : "2.0.0"
-          }
-        ]
-      },
-      "url" : "https://github.com/taketo1024/swm-homology.git"
-    },
-    {
-      "name" : "swm-khovanov",
-      "productFilter" : null,
-      "requirement" : {
-        "range" : [
-          {
-            "lowerBound" : "1.0.0",
-            "upperBound" : "2.0.0"
-          }
-        ]
-      },
-      "url" : "https://github.com/taketo1024/swm-khovanov.git"
-    },
-    {
-      "name" : "swm-hfk",
-      "productFilter" : null,
-      "requirement" : {
-        "range" : [
-          {
-            "lowerBound" : "1.0.0",
-            "upperBound" : "2.0.0"
-          }
-        ]
-      },
-      "url" : "https://github.com/taketo1024/swm-hfk.git"
-    },
-    {
       "name" : "swm-kr",
       "productFilter" : null,
       "requirement" : {
         "range" : [
           {
-            "lowerBound" : "0.1.0",
+            "lowerBound" : "0.2.0",
             "upperBound" : "1.0.0"
           }
         ]
       },
       "url" : "https://github.com/taketo1024/swm-kr.git"
+    },
+    {
+      "name" : "swm-matrix-tools",
+      "productFilter" : null,
+      "requirement" : {
+        "range" : [
+          {
+            "lowerBound" : "1.0.0",
+            "upperBound" : "2.0.0"
+          }
+        ]
+      },
+      "url" : "https://github.com/taketo1024/swm-matrix-tools.git"
     }
   ],
   "name" : "_Packages",
@@ -194,13 +194,6 @@
         },
         {
           "product" : [
-            "SwmKnots",
-            "swm-knots",
-            null
-          ]
-        },
-        {
-          "product" : [
             "SwmHomology",
             "swm-homology",
             null
@@ -215,8 +208,8 @@
         },
         {
           "product" : [
-            "SwmHFK",
-            "swm-hfk",
+            "SwmKnots",
+            "swm-knots",
             null
           ]
         },
@@ -224,6 +217,13 @@
           "product" : [
             "SwmKR",
             "swm-kr",
+            null
+          ]
+        },
+        {
+          "product" : [
+            "SwmMatrixTools",
+            "swm-matrix-tools",
             null
           ]
         }
