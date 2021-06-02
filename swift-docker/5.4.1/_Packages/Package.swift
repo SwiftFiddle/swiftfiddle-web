@@ -7,7 +7,7 @@ let package = Package(
         .library(name: "_Packages", type: .dynamic, targets: ["_Packages"]),
     ],
     dependencies: [
-        .package(url: "https://github.com/apple/swift-algorithms", from: "0.2.0"),
+        .package(url: "https://github.com/apple/swift-algorithms", from: "0.2.1"),
         .package(url: "https://github.com/apple/swift-collections", from: "0.0.3"),
         .package(url: "https://github.com/apple/swift-crypto", from: "1.1.6"),
         .package(url: "https://github.com/apple/swift-system", from: "0.0.2"),
@@ -16,7 +16,6 @@ let package = Package(
         .package(url: "https://github.com/taketo1024/swm-khovanov.git", from: "1.1.0"),
         .package(url: "https://github.com/taketo1024/swm-knots.git", from: "1.0.0"),
         .package(url: "https://github.com/taketo1024/swm-kr.git", from: "0.2.0"),
-        .package(url: "https://github.com/taketo1024/swm-matrix-tools.git", from: "1.0.0"),
     ],
     targets: [
         .target(
@@ -31,7 +30,6 @@ let package = Package(
                 .product(name: "SwmKhovanov", package: "swm-khovanov"),
                 .product(name: "SwmKnots", package: "swm-knots"),
                 .product(name: "SwmKR", package: "swm-kr"),
-                .product(name: "SwmMatrixTools", package: "swm-matrix-tools"),
             ],
             swiftSettings: [
                 .unsafeFlags(["-cross-module-optimization"], .when(configuration: .release)),
