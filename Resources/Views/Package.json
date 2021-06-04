@@ -8,7 +8,7 @@
       "requirement" : {
         "range" : [
           {
-            "lowerBound" : "0.2.0",
+            "lowerBound" : "0.2.1",
             "upperBound" : "1.0.0"
           }
         ]
@@ -60,7 +60,7 @@
       "requirement" : {
         "range" : [
           {
-            "lowerBound" : "1.1.0",
+            "lowerBound" : "1.2.0",
             "upperBound" : "2.0.0"
           }
         ]
@@ -73,7 +73,7 @@
       "requirement" : {
         "range" : [
           {
-            "lowerBound" : "1.1.0",
+            "lowerBound" : "1.2.0",
             "upperBound" : "2.0.0"
           }
         ]
@@ -86,7 +86,7 @@
       "requirement" : {
         "range" : [
           {
-            "lowerBound" : "1.1.0",
+            "lowerBound" : "1.1.1",
             "upperBound" : "2.0.0"
           }
         ]
@@ -99,7 +99,7 @@
       "requirement" : {
         "range" : [
           {
-            "lowerBound" : "1.0.0",
+            "lowerBound" : "1.1.0",
             "upperBound" : "2.0.0"
           }
         ]
@@ -112,7 +112,7 @@
       "requirement" : {
         "range" : [
           {
-            "lowerBound" : "0.2.0",
+            "lowerBound" : "0.3.0",
             "upperBound" : "1.0.0"
           }
         ]
@@ -125,7 +125,7 @@
       "requirement" : {
         "range" : [
           {
-            "lowerBound" : "1.0.0",
+            "lowerBound" : "1.1.1",
             "upperBound" : "2.0.0"
           }
         ]
