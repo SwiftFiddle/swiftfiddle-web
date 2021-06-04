@@ -4,7 +4,7 @@ import TSCBasic
 private let cache = Cache<String, ByteBuffer>()
 
 func routes(_ app: Application) throws {
-    app.get { req in try index(req) }
+    app.get { (req) in try index(req) }
     app.get("index.html") { (req) in try index(req) }
     func index(_ req: Request) throws -> EventLoopFuture<View> {
         return req.view.render(

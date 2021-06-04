@@ -1,0 +1,55 @@
+version: "3.7"
+
+services:
+  app:
+    image: kishikawakatsumi/swift-playground:latest
+    container_name: swift-playground
+    depends_on:
+      - nginx-proxy
+    env_file:
+      - .env
+    environment:
+      HOST_PWD: $PWD/
+      LOG_LEVEL: ${LOG_LEVEL:-info}
+      VIRTUAL_HOST: localhost
+      VIRTUAL_PORT: 8080
+    ports:
+      - 8080:8080
+    user: '0'
+    command:
+      [
+        "serve",
+        "--env",
+        "production",
+        "--hostname",
+        "0.0.0.0",
+        "--port",
+        "8080",
+      ]
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - $PWD/Resources/Temp:/app/Resources/Temp
+    network_mode: bridge
+    restart: always
+
+  nginx-proxy:
+    image: jwilder/nginx-proxy
+    container_name: nginx-proxy
+    ports:
+      - 80:80
+      - 443:443
+    volumes:
+      - proxy:/etc/nginx/vhost.d
+      - proxy:/usr/share/nginx/html
+      - /var/run/docker.sock:/tmp/docker.sock:ro
+      - ./certs:/etc/nginx/certs:ro
+      - ./reverse-proxy/conf.d:/etc/nginx/conf.d
+    network_mode: bridge
+    restart: always
+
+  swift-5.4:
+    image: kishikawakatsumi/swift:5.4
+    container_name: swift-5.4
+
+volumes:
+  proxy:

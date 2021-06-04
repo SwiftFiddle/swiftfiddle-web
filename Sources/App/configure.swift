@@ -2,7 +2,7 @@ import Vapor
 import Leaf
 
 public func configure(_ app: Application) throws {
-    app.middleware = .init()
+    app.middleware = Middlewares()
     app.middleware.use(CommonErrorMiddleware())
     app.middleware.use(CustomHeaderMiddleware())
     app.middleware.use(FileMiddleware(publicDirectory: app.directory.publicDirectory))
