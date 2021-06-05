@@ -115,8 +115,9 @@ jobs:
           echo FIREBASE_API_KEY=${{ secrets.FIREBASE_API_KEY }} >> .env
           echo FIREBASE_REFRESH_TOKEN=${{ secrets.FIREBASE_REFRESH_TOKEN }} >> .env
 
-          docker_compose='docker run --rm -v /var/run/docker.sock:/var/run/docker.sock -v "\$PWD:\$PWD" -w="\$PWD" docker/compose:latest'
-          eval \$docker_compose --file docker-compose.staging.yml pull
+          echo alias docker-compose="'"'docker run --rm -v /var/run/docker.sock:/var/run/docker.sock -v "\$PWD:\$PWD" -w="\$PWD" docker/compose:latest'"'" >> ~/.bashrc
+          source ~/.bashrc
+          docker-compose --file docker-compose.staging.yml pull
           docker image prune --force
 
           exit 0
