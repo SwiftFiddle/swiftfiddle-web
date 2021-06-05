@@ -10,5 +10,4 @@ final class CustomHeaderMiddleware: Middleware {
             return response
         }
     }
-
 }
