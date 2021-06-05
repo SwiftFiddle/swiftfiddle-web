@@ -63,9 +63,9 @@ function run(editor) {
     console.log("onmessage");
     if (e.data.startsWith("x")) {
       console.log(e.data);
-    } else {
       return;
     }
+
     const data = JSON.parse(e.data);
     const version = data.version;
     const stderr = data.errors;
