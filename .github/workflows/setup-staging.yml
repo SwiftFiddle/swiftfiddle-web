@@ -1,4 +1,4 @@
-name: Setup
+name: Setup Staging
 on: workflow_dispatch
 
 jobs:
@@ -21,8 +21,8 @@ jobs:
           VM_NAME=staging-swift-playground-$(date +%Y%m%d-%H%M%S)
           VM_ZONE=us-west1-b
           VM_MACHINE_TYPE=f1-micro
-          VM_DISK_SIZE=120
-          VM_SWAP_SIZE=8G
+          VM_DISK_SIZE=10
+          VM_SWAP_SIZE=1G
 
           data=$(cat <<EOF
           {
@@ -116,7 +116,7 @@ jobs:
           echo FIREBASE_REFRESH_TOKEN=${{ secrets.FIREBASE_REFRESH_TOKEN }} >> .env
 
           docker_compose='docker run --rm -v /var/run/docker.sock:/var/run/docker.sock -v "\$PWD:\$PWD" -w="\$PWD" docker/compose:latest'
-          eval \$docker_compose pull
+          eval \$docker_compose --file docker-compose.staging.yml pull
           docker image prune --force
 
           exit 0
