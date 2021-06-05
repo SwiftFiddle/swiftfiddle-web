@@ -33,22 +33,6 @@ $("#versionPicker").on("change", function () {
   }
 });
 
-// prettier-ignore
-const u = `${location.protocol === "https:" ? "wss:" : "ws:"}//${location.host}${location.pathname}ws/echo`
-console.log(u);
-let c = new WebSocket(u);
-
-c.onconnect = (e) => {
-  console.log("onconnect");
-};
-c.onmessage = (e) => {
-  console.log("onmessage");
-  console.log(e.data);
-};
-setInterval(() => {
-  c.send("Ping");
-}, 1000);
-
 function run(editor) {
   clearMarkers(editor);
   showLoading();
