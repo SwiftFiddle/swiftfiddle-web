@@ -149,17 +149,13 @@ func routes(_ app: Application) throws {
             _ = ws.close()
             return
         }
-
+        let logger = Logger(label: "dev.logger.my")
         let timer = DispatchSource.makeTimerSource()
         timer.setEventHandler {
-            guard let contents = try? FileManager().contentsOfDirectory(atPath: "\(app.directory.resourcesDirectory)Temp/") else {
-                return
-            }
+            logger.info("timer:")
+            guard let path = WorkingDirectoryRegistry.shared.get(prefix: nonce) else { return }
+            logger.info("timer: \(path)")
 
-            let prefix = "\(nonce)_"
-            guard let directory = contents.first(where: { $0.hasPrefix(prefix)}) else { return }
-
-            let path = URL(fileURLWithPath: "\(app.directory.resourcesDirectory)Temp/\(directory)")
             let completedPath = path.appendingPathComponent("completed")
             let stdoutPath = path.appendingPathComponent("stdout")
             let stderrPath = path.appendingPathComponent("stderr")
@@ -457,6 +453,7 @@ private struct Runner {
         let random = UUID().uuidString
         let directory = "\(nonce)_\(random)"
         let temporaryPath = URL(fileURLWithPath: "\(app.directory.resourcesDirectory)Temp/\(directory)")
+        WorkingDirectoryRegistry.shared.register(prefix: nonce, path: temporaryPath)
 
         let fileManager = FileManager()
         do {
@@ -485,6 +482,7 @@ private struct Runner {
             )
             try process.launch()
         } catch {
+            WorkingDirectoryRegistry.shared.remove(path: temporaryPath)
             try? fileManager.removeItem(at: temporaryPath)
             throw error
         }
@@ -506,28 +504,16 @@ private struct Runner {
         let stderrPath = path.appendingPathComponent("stderr")
         let versionPath = path.appendingPathComponent("version")
 
-        let logger = Logger(label: "dev.logger.my")
-        logger.info("===== START")
-
         let fileManager = FileManager()
         timer.setEventHandler {
             counter += 1
-            logger.info("counter: \(counter)")
-            logger.info("\(path)")
-            logger.info("\(try? FileManager().contentsOfDirectory(atPath: path.path))")
-            logger.info("\(path.deletingLastPathComponent())")
-            do {
-                let contents = try FileManager().contentsOfDirectory(atPath: path.deletingLastPathComponent().path)
-                logger.info("\(contents)")
-            } catch {
-                logger.info("\(error)")
-            }
             if let completed = try? String(contentsOf: completedPath) {
                 let stderr = (try? String(contentsOf: stderrPath)) ?? ""
                 let version = (try? String(contentsOf: versionPath)) ?? "N/A"
 
                 onComplete(ExecutionResponse(output: completed, errors: stderr, version: version))
 
+                WorkingDirectoryRegistry.shared.remove(path: path);
                 try? fileManager.removeItem(at: path)
                 timer.cancel()
             } else if interval * counter < Double(timeout) {
@@ -540,6 +526,7 @@ private struct Runner {
 
                 onTimeout(ExecutionResponse(output: stdout, errors: stderr, version: version))
 
+                WorkingDirectoryRegistry.shared.remove(path: path);
                 try? fileManager.removeItem(at: path)
                 timer.cancel()
             }
@@ -613,4 +600,28 @@ private struct Runner {
             self.code = code
         }
     }
+}
+
+private class WorkingDirectoryRegistry {
+    static let shared = WorkingDirectoryRegistry()
+
+    private var directories = [String: URL]()
+    private var prefixes = [URL: String]()
+
+    private init() {}
+
+    func register(prefix: String, path: URL) {
+        if prefix.isEmpty { return }
+        directories[prefix] = path
+        prefixes[path] = prefix
+    }
+
+    func remove(path: URL) {
+        if let prefix = prefixes[path] {
+            directories[prefix] = nil
+            prefixes[path] = nil
+        }
+    }
+
+    func get(prefix: String) -> URL? { directories[prefix] }
 }
