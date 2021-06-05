@@ -215,4 +215,8 @@ services:
     container_name: swift-2.2
 
 volumes:
-  proxy:
+  vhost:
+  html:
+  dhparam:
+  certs:
+  acme:
