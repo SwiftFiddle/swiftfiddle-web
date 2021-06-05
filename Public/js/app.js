@@ -55,6 +55,8 @@ function run(editor) {
     // prettier-ignore
     `${location.protocol === "https:" ? "wss:" : "ws:"}//${location.host}${location.pathname}ws/${nonce}/run`
   );
+  // prettier-ignore
+  console.log(`${location.protocol === "https:" ? "wss:" : "ws:"}//${location.host}${location.pathname}ws/${nonce}/run`);
   connection.onmessage = (e) => {
     const data = JSON.parse(e.data);
     const version = data.version;
