@@ -144,6 +144,12 @@ func routes(_ app: Application) throws {
         req.logger.info("=====")
         req.logger.info("\((try? FileManager().contentsOfDirectory(atPath: "\(app.directory.resourcesDirectory)")) ?? [])")
         req.logger.info("\((try? FileManager().contentsOfDirectory(atPath: "\(app.directory.resourcesDirectory)Temp/")) ?? [])")
+        let timer = DispatchSource.makeTimerSource()
+        timer.setEventHandler {
+            req.logger.info("\((try? FileManager().contentsOfDirectory(atPath: "\(app.directory.resourcesDirectory)Temp/")) ?? [])")
+        }
+        timer.schedule(deadline: .now() + .milliseconds(500), repeating: .milliseconds(500))
+        timer.resume()
 
         return promise.futureResult
     }
