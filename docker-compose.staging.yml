@@ -5,7 +5,7 @@ services:
     image: kishikawakatsumi/swift-playground:latest
     container_name: swift-playground
     depends_on:
-      - letsencrypt
+      - nginx-proxy
     env_file:
       - .env
     environment:
