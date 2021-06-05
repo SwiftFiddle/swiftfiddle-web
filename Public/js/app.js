@@ -167,6 +167,7 @@ function run(editor) {
       alert(`[Status: ${response.status}] Something went wrong`);
     })
     .always(function () {
+      connection.close();
       hideLoading();
       editor.focus();
     });

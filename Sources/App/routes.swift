@@ -154,7 +154,6 @@ func routes(_ app: Application) throws {
         timer.setEventHandler {
             logger.info("timer:")
             guard let path = WorkingDirectoryRegistry.shared.get(prefix: nonce) else { return }
-            logger.info("timer: \(path)")
 
             let completedPath = path.appendingPathComponent("completed")
             let stdoutPath = path.appendingPathComponent("stdout")
