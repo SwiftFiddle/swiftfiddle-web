@@ -516,7 +516,12 @@ private struct Runner {
             logger.info("\(path)")
             logger.info("\(try? FileManager().contentsOfDirectory(atPath: path.path))")
             logger.info("\(path.deletingLastPathComponent())")
-            logger.info("\(try? FileManager().contentsOfDirectory(atPath: path.deletingLastPathComponent().path))")
+            do {
+                let contents = try FileManager().contentsOfDirectory(atPath: path.deletingLastPathComponent().path)
+                logger.info("\(contents)")
+            } catch {
+                logger.info("\(error)")
+            }
             if let completed = try? String(contentsOf: completedPath) {
                 let stderr = (try? String(contentsOf: stderrPath)) ?? ""
                 let version = (try? String(contentsOf: versionPath)) ?? "N/A"
