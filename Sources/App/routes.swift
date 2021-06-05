@@ -2,6 +2,7 @@ import Vapor
 import TSCBasic
 
 private let cache = Cache<String, ByteBuffer>()
+private var timers = [DispatchSourceTimer]()
 
 func routes(_ app: Application) throws {
     app.get { (req) in try index(req) }
@@ -144,9 +145,22 @@ func routes(_ app: Application) throws {
         req.logger.info("=====")
         req.logger.info("\((try? FileManager().contentsOfDirectory(atPath: "\(app.directory.resourcesDirectory)")) ?? [])")
         req.logger.info("\((try? FileManager().contentsOfDirectory(atPath: "\(app.directory.resourcesDirectory)Temp/")) ?? [])")
-        _ = Timer.scheduledTimer(withTimeInterval: 0.5, repeats: true) { (timer) in
+        let timer = DispatchSource.makeTimerSource()
+        var counter = 10
+        timer.setEventHandler {
+            counter += 1
             req.logger.info("\((try? FileManager().contentsOfDirectory(atPath: "\(app.directory.resourcesDirectory)Temp/")) ?? [])")
+            if counter >= 10 {
+                timer.cancel()
+                if let index = timers.firstIndex(where: { $0 === timer }) {
+                    timers.remove(at: index)
+                    req.logger.info("timers: \(timers.count)")
+                }
+            }
         }
+        timer.schedule(deadline: .now() + .milliseconds(500), repeating: .milliseconds(500))
+        timer.activate()
+        timers.append(timer)
 
         return promise.futureResult
     }
