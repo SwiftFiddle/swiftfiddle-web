@@ -150,11 +150,9 @@ func routes(_ app: Application) throws {
             return
         }
 
-        let fileManager = FileManager()
-
         let timer = DispatchSource.makeTimerSource()
         timer.setEventHandler {
-            guard let contents = try? fileManager.contentsOfDirectory(atPath: "\(app.directory.resourcesDirectory)Temp/") else {
+            guard let contents = try? FileManager().contentsOfDirectory(atPath: "\(app.directory.resourcesDirectory)Temp/") else {
                 return
             }
 
