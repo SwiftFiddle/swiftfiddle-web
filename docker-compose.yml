@@ -6,7 +6,6 @@ services:
     container_name: swift-playground
     depends_on:
       - nginx-proxy
-      - acme-companion
       - carbonara
     env_file:
       - .env
@@ -54,7 +53,7 @@ services:
       - 80:80
       - 443:443
     volumes:
-      - ./nginx-proxy/conf.d:/etc/nginx/conf.d
+      - conf:/etc/nginx/conf.d
       - vhost:/etc/nginx/vhost.d
       - html:/usr/share/nginx/html
       - dhparam:/etc/nginx/dhparam
@@ -215,6 +214,7 @@ services:
     container_name: swift-2.2
 
 volumes:
+  conf:
   vhost:
   html:
   dhparam:

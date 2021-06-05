@@ -55,7 +55,17 @@ function run(editor) {
     // prettier-ignore
     `${location.protocol === "https:" ? "wss:" : "ws:"}//${location.host}${location.pathname}ws/${nonce}/run`
   );
+  connection.onopen = (e) => {
+    console.log("onopen");
+    console.log(e);
+  };
   connection.onmessage = (e) => {
+    console.log("onmessage");
+    if (e.data.startsWith("x")) {
+      console.log(e.data);
+    } else {
+      return;
+    }
     const data = JSON.parse(e.data);
     const version = data.version;
     const stderr = data.errors;

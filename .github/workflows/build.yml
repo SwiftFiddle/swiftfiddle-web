@@ -1,4 +1,4 @@
-name: Build Docker Images
+name: Build Swift Packages
 on:
   push:
     branches: [master]
@@ -16,7 +16,7 @@ jobs:
         with:
           username: ${{ secrets.DOCKER_HUB_USERNAME }}
           password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
-      - name: Build Docker Images
+      - name: Build Swift Packages
         run: |
           set -ex
 
@@ -29,6 +29,7 @@ jobs:
             (cd swift-docker/5.3.2 && docker build --rm --tag ${{ secrets.DOCKER_HUB_USERNAME }}/swift:5.3.2 . && docker push ${{ secrets.DOCKER_HUB_USERNAME }}/swift:5.3.2)
             (cd swift-docker/5.3.3 && docker build --rm --tag ${{ secrets.DOCKER_HUB_USERNAME }}/swift:5.3.3 . && docker push ${{ secrets.DOCKER_HUB_USERNAME }}/swift:5.3.3)
             (cd swift-docker/5.4 && docker build --rm --tag ${{ secrets.DOCKER_HUB_USERNAME }}/swift:5.4 . && docker push ${{ secrets.DOCKER_HUB_USERNAME }}/swift:5.4)
+            (cd swift-docker/5.4.1 && docker build --rm --tag ${{ secrets.DOCKER_HUB_USERNAME }}/swift:5.4.1 . && docker push ${{ secrets.DOCKER_HUB_USERNAME }}/swift:5.4.1)
 
             git config --local user.email ${{ secrets.GIT_USER_EMAIL }}
             git config --local user.name ${{ secrets.GIT_USER_NAME }}

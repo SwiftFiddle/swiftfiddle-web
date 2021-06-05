@@ -6,7 +6,6 @@ services:
     container_name: swift-playground
     depends_on:
       - nginx-proxy
-      - acme-companion
       - carbonara
     env_file:
       - .env
