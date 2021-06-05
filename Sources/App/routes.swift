@@ -149,7 +149,7 @@ func routes(_ app: Application) throws {
             _ = ws.close()
             return
         }
-        let logger = Logger(label: "dev.logger.my")
+        
         let timer = DispatchSource.makeTimerSource()
         timer.setEventHandler {
             guard let path = WorkingDirectoryRegistry.shared.get(prefix: nonce) else { return }
