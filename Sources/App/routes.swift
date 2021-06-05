@@ -141,6 +141,10 @@ func routes(_ app: Application) throws {
             }
         )
 
+        req.logger.info("=====")
+        req.logger.info("\((try? FileManager().contentsOfDirectory(atPath: "\(app.directory.resourcesDirectory)")) ?? [])")
+        req.logger.info("\((try? FileManager().contentsOfDirectory(atPath: "\(app.directory.resourcesDirectory)Temp/")) ?? [])")
+
         return promise.futureResult
     }
 
@@ -152,14 +156,12 @@ func routes(_ app: Application) throws {
 
         let timer = DispatchSource.makeTimerSource()
         timer.setEventHandler {
-            req.logger.info("\(URL(fileURLWithPath: "\(app.directory.resourcesDirectory)Temp/").path)")
-            req.logger.info("\((try? FileManager().contentsOfDirectory(at: URL(fileURLWithPath: "\(app.directory.resourcesDirectory)Temp/"), includingPropertiesForKeys: nil, options: [])) ?? [])")
-            guard let contents = try? FileManager().contentsOfDirectory(at: URL(fileURLWithPath: "\(app.directory.resourcesDirectory)Temp/"), includingPropertiesForKeys: nil, options: []) else {
+            guard let contents = try? FileManager().contentsOfDirectory(atPath: "\(app.directory.resourcesDirectory)Temp/") else {
                 return
             }
 
             let prefix = "\(nonce)_"
-            guard let directory = contents.first(where: { $0.path.hasPrefix(prefix)}) else { return }
+            guard let directory = contents.first(where: { $0.hasPrefix(prefix)}) else { return }
 
             let path = URL(fileURLWithPath: "\(app.directory.resourcesDirectory)Temp/\(directory)")
             let completedPath = path.appendingPathComponent("completed")
