@@ -460,8 +460,9 @@ private struct Runner {
         let directory = "\(nonce)_\(random)"
         let temporaryPath = URL(fileURLWithPath: "\(app.directory.resourcesDirectory)Temp/\(directory)")
 
+        let fileManager = FileManager()
         do {
-            try FileManager().copyItem(at: sandboxPath, to: temporaryPath)
+            try fileManager.copyItem(at: sandboxPath, to: temporaryPath)
             try """
                 import Glibc
                 setbuf(stdout, nil)
@@ -486,7 +487,7 @@ private struct Runner {
             )
             try process.launch()
         } catch {
-            try? FileManager().removeItem(at: temporaryPath)
+            try? fileManager.removeItem(at: temporaryPath)
             throw error
         }
 
@@ -507,6 +508,7 @@ private struct Runner {
         let stderrPath = path.appendingPathComponent("stderr")
         let versionPath = path.appendingPathComponent("version")
 
+        let fileManager = FileManager()
         timer.setEventHandler {
             counter += 1
             if let completed = try? String(contentsOf: completedPath) {
@@ -515,7 +517,7 @@ private struct Runner {
 
                 onComplete(ExecutionResponse(output: completed, errors: stderr, version: version))
 
-                try? FileManager().removeItem(at: path)
+                try? fileManager.removeItem(at: path)
                 timer.cancel()
             } else if interval * counter < Double(timeout) {
                 return
@@ -527,7 +529,7 @@ private struct Runner {
 
                 onTimeout(ExecutionResponse(output: stdout, errors: stderr, version: version))
 
-                try? FileManager().removeItem(at: path)
+                try? fileManager.removeItem(at: path)
                 timer.cancel()
             }
         }

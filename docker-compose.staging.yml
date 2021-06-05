@@ -1,0 +1,92 @@
+version: "3.7"
+
+services:
+  app:
+    image: kishikawakatsumi/swift-playground:latest
+    container_name: swift-playground
+    depends_on:
+      - letsencrypt
+    env_file:
+      - .env
+    environment:
+      HOST_PWD: $PWD/
+      LOG_LEVEL: ${LOG_LEVEL:-info}
+      VIRTUAL_HOST: staging.swiftfiddle.com
+      VIRTUAL_PORT: 8080
+      LETSENCRYPT_HOST: staging.swiftfiddle.com
+      LETSENCRYPT_EMAIL: kishikawakatsumi@mac.com
+    ports:
+      - 8080:8080
+    command:
+      [
+        "serve",
+        "--env",
+        "production",
+        "--hostname",
+        "0.0.0.0",
+        "--port",
+        "8080",
+      ]
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - $PWD/Resources/Temp:/app/Resources/Temp
+    network_mode: bridge
+    links:
+      - carbonara
+    restart: always
+
+  carbonara:
+    image: petersolopov/carbonara
+    container_name: carbonara
+    ports:
+      - 3000:3000
+    cap_add:
+      - SYS_ADMIN
+    network_mode: bridge
+    restart: always
+
+  nginx-proxy:
+    image: nginxproxy/nginx-proxy
+    container_name: nginx-proxy
+    environment:
+      DEFAULT_EMAIL: kishikawakatsumi@mac.com
+    ports:
+      - 80:80
+      - 443:443
+    volumes:
+      - conf:/etc/nginx/conf.d
+      - vhost:/etc/nginx/vhost.d
+      - html:/usr/share/nginx/html
+      - dhparam:/etc/nginx/dhparam
+      - certs:/etc/nginx/certs:ro
+      - /var/run/docker.sock:/tmp/docker.sock:ro
+      - ./nginx-proxy/conf.d:/etc/nginx/conf.d
+    restart: always
+
+  acme-companion:
+    image: nginxproxy/acme-companion
+    container_name: nginx-proxy-acme
+    depends_on:
+      - nginx-proxy
+    volumes:
+      - vhost:/etc/nginx/vhost.d
+      - html:/usr/share/nginx/html
+      - dhparam:/etc/nginx/dhparam:ro
+      - certs:/etc/nginx/certs
+      - acme:/etc/acme.sh
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    environment:
+      - NGINX_PROXY_CONTAINER=nginx-proxy
+    restart: always
+
+  swift-5.4:
+    image: kishikawakatsumi/swift:5.4
+    container_name: swift-5.4
+
+volumes:
+  conf:
+  vhost:
+  html:
+  dhparam:
+  certs:
+  acme:

@@ -60,7 +60,7 @@ services:
       - proxy:/usr/share/nginx/html
       - /var/run/docker.sock:/tmp/docker.sock:ro
       - ./certs:/etc/nginx/certs:ro
-      - ./reverse-proxy/conf.d:/etc/nginx/conf.d
+      - ./nginx-proxy/conf.d:/etc/nginx/conf.d
     network_mode: bridge
     restart: always
 
@@ -81,6 +81,9 @@ services:
   swift-nightly-main:
     image: swiftlang/swift:nightly-main
     container_name: swift-nightly-main
+  swift-nightly-5.5:
+    image: swiftlang/swift:nightly-5.5
+    container_name: swift-nightly-5.5
   swift-nightly-5.4:
     image: swiftlang/swift:nightly-5.4
     container_name: swift-nightly-5.4
