@@ -506,9 +506,17 @@ private struct Runner {
         let stderrPath = path.appendingPathComponent("stderr")
         let versionPath = path.appendingPathComponent("version")
 
+        let logger = Logger(label: "dev.logger.my")
+        logger.info("===== START")
+
         let fileManager = FileManager()
         timer.setEventHandler {
             counter += 1
+            logger.info("counter: \(counter)")
+            logger.info("\(path)")
+            logger.info("\(try? FileManager().contentsOfDirectory(atPath: path.path))")
+            logger.info("\(path.deletingLastPathComponent())")
+            logger.info("\(try? FileManager().contentsOfDirectory(atPath: path.deletingLastPathComponent().path))")
             if let completed = try? String(contentsOf: completedPath) {
                 let stderr = (try? String(contentsOf: stderrPath)) ?? ""
                 let version = (try? String(contentsOf: versionPath)) ?? "N/A"
