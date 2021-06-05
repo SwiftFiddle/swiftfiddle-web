@@ -155,7 +155,7 @@ func routes(_ app: Application) throws {
         req.logger.info("\((try? FileManager().contentsOfDirectory(atPath: "\(app.directory.resourcesDirectory)Temp/")) ?? [])")
         let timer = DispatchSource.makeTimerSource()
         let wrapped = ObjectWrapper(timer)
-        var counter = 10
+        var counter = 0
         timer.setEventHandler {
             counter += 1
             req.logger.info("\((try? FileManager().contentsOfDirectory(atPath: "\(app.directory.resourcesDirectory)Temp/")) ?? [])")
