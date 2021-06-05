@@ -145,7 +145,6 @@ func routes(_ app: Application) throws {
     }
 
     app.webSocket("ws", ":nonce", "run") { (req, ws) in
-        ws.send("x: \(req.parameters.get("nonce") ?? "nonce is nil")")
         guard let nonce = req.parameters.get("nonce") else {
             _ = ws.close()
             return
@@ -153,15 +152,16 @@ func routes(_ app: Application) throws {
 
         let timer = DispatchSource.makeTimerSource()
         timer.setEventHandler {
-            ws.send("x: timer 1")
+            req.logger.info("\(app.directory.resourcesDirectory)")
+            req.logger.notice("\(app.directory.resourcesDirectory)")
+            req.logger.info("\((try? FileManager().contentsOfDirectory(atPath: "\(app.directory.resourcesDirectory)Temp/")) ?? [])")
+            req.logger.notice("\((try? FileManager().contentsOfDirectory(atPath: "\(app.directory.resourcesDirectory)Temp/")) ?? [])")
             guard let contents = try? FileManager().contentsOfDirectory(atPath: "\(app.directory.resourcesDirectory)Temp/") else {
                 return
             }
-            ws.send("x: timer 2")
 
             let prefix = "\(nonce)_"
             guard let directory = contents.first(where: { $0.hasPrefix(prefix)}) else { return }
-            ws.send("x: timer 3")
 
             let path = URL(fileURLWithPath: "\(app.directory.resourcesDirectory)Temp/\(directory)")
             let completedPath = path.appendingPathComponent("completed")
@@ -170,11 +170,9 @@ func routes(_ app: Application) throws {
             let versionPath = path.appendingPathComponent("version")
 
             guard let version = (try? String(contentsOf: versionPath)) else { return }
-            ws.send("x: timer 4")
 
             let stdout = (try? String(contentsOf: stdoutPath)) ?? ""
             let stderr = (try? String(contentsOf: stderrPath)) ?? ""
-            ws.send("x: timer 5")
 
             let encoder = JSONEncoder()
             if let response = try? String(data: encoder.encode(ExecutionResponse(output: stdout, errors: stderr, version: version)), encoding: .utf8) {
