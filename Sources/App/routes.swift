@@ -2,15 +2,6 @@ import Vapor
 import TSCBasic
 
 private let cache = Cache<String, ByteBuffer>()
-private var timers = [ObjectWrapper]()
-
-private class ObjectWrapper {
-    let value: Any
-
-    init(_ value: Any) {
-        self.value = value
-    }
-}
 
 func routes(_ app: Application) throws {
     app.get { (req) in try index(req) }
@@ -150,27 +141,6 @@ func routes(_ app: Application) throws {
             }
         )
 
-        req.logger.info("=====")
-        req.logger.info("\((try? FileManager().contentsOfDirectory(atPath: "\(app.directory.resourcesDirectory)")) ?? [])")
-        req.logger.info("\((try? FileManager().contentsOfDirectory(atPath: "\(app.directory.resourcesDirectory)Temp/")) ?? [])")
-        let timer = DispatchSource.makeTimerSource()
-        let wrapped = ObjectWrapper(timer)
-        var counter = 0
-        timer.setEventHandler {
-            counter += 1
-            req.logger.info("\((try? FileManager().contentsOfDirectory(atPath: "\(app.directory.resourcesDirectory)Temp/")) ?? [])")
-            if counter >= 10 {
-                timer.cancel()
-                if let index = timers.firstIndex(where: { $0 === wrapped }) {
-                    timers.remove(at: index)
-                    req.logger.info("timers: \(timers.count)")
-                }
-            }
-        }
-        timer.schedule(deadline: .now() + .milliseconds(500), repeating: .milliseconds(500))
-        timer.activate()
-        timers.append(wrapped)
-
         return promise.futureResult
     }
 
@@ -215,12 +185,6 @@ func routes(_ app: Application) throws {
 
         _ = ws.onClose.always { _ in
             timer.cancel()
-        }
-    }
-
-    app.webSocket("ws", "echo") { (req, ws) in
-        ws.onText { (ws, text) in
-            ws.send(text)
         }
     }
 
