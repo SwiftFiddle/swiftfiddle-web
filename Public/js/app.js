@@ -37,7 +37,7 @@ function run(editor) {
   clearMarkers(editor);
   showLoading();
 
-  const consoleBuffer = [];
+  let consoleBuffer = [];
   const cancelToken = showSpinner(terminal, "Running", () => {
     return consoleBuffer.filter(Boolean);
   });
@@ -61,9 +61,9 @@ function run(editor) {
     const stderr = data.errors;
     const stdout = data.output;
 
-    consoleBuffer.length = 0;
+    const newBuffer = [];
     if (version) {
-      consoleBuffer.push(
+      newBuffer.push(
         ...version
           .split("\n")
           .filter(Boolean)
@@ -73,7 +73,7 @@ function run(editor) {
       );
     }
     if (stderr) {
-      consoleBuffer.push(
+      newBuffer.push(
         ...stderr
           .split("\n")
           .filter(Boolean)
@@ -83,7 +83,7 @@ function run(editor) {
       );
     }
     if (stdout) {
-      consoleBuffer.push(
+      newBuffer.push(
         ...stdout
           .split("\n")
           .filter(Boolean)
@@ -92,6 +92,7 @@ function run(editor) {
           })
       );
     }
+    consoleBuffer = newBuffer;
   };
 
   const startTime = performance.now();
@@ -100,7 +101,7 @@ function run(editor) {
       const endTime = performance.now();
       const execTime = ` ${((endTime - startTime) / 1000).toFixed(0)}s`;
 
-      hideSpinner(terminal, cancelToken);
+      hideSpinner(cancelToken);
       clearPreviousLines(consoleBuffer.length);
 
       const now = new Date();
@@ -163,7 +164,7 @@ function run(editor) {
       updateAnnotations(editor, annotations);
     })
     .fail(function (response) {
-      hideSpinner(terminal, cancelToken);
+      hideSpinner(cancelToken);
       alert(`[Status: ${response.status}] Something went wrong`);
     })
     .always(function () {
@@ -261,7 +262,7 @@ function showSpinner(terminal, message, onProgress) {
   }, interval);
 }
 
-function hideSpinner(terminal, cancelToken) {
+function hideSpinner(cancelToken) {
   clearInterval(cancelToken);
   clearCurrentLine();
   clearPreviousLines(1);

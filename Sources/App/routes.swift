@@ -152,7 +152,6 @@ func routes(_ app: Application) throws {
         let logger = Logger(label: "dev.logger.my")
         let timer = DispatchSource.makeTimerSource()
         timer.setEventHandler {
-            logger.info("timer:")
             guard let path = WorkingDirectoryRegistry.shared.get(prefix: nonce) else { return }
 
             let completedPath = path.appendingPathComponent("completed")
