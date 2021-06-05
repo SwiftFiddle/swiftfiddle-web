@@ -21,7 +21,7 @@ jobs:
           VM_NAME=staging-swift-playground-$(date +%Y%m%d-%H%M%S)
           VM_ZONE=us-west1-b
           VM_MACHINE_TYPE=f1-micro
-          VM_DISK_SIZE=10
+          VM_DISK_SIZE=30
           VM_SWAP_SIZE=1G
 
           data=$(cat <<EOF

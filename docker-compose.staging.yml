@@ -6,13 +6,15 @@ services:
     container_name: swift-playground
     depends_on:
       - nginx-proxy
+      - acme-companion
+      - carbonara
     env_file:
       - .env
     environment:
       HOST_PWD: $PWD/
       LOG_LEVEL: ${LOG_LEVEL:-info}
       VIRTUAL_HOST: staging.swiftfiddle.com
-      VIRTUAL_PORT: 8080
+      VIRTUAL_PORT: "8080"
       LETSENCRYPT_HOST: staging.swiftfiddle.com
       LETSENCRYPT_EMAIL: kishikawakatsumi@mac.com
     ports:
@@ -30,7 +32,6 @@ services:
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
       - $PWD/Resources/Temp:/app/Resources/Temp
-    network_mode: bridge
     links:
       - carbonara
     restart: always
@@ -42,7 +43,6 @@ services:
       - 3000:3000
     cap_add:
       - SYS_ADMIN
-    network_mode: bridge
     restart: always
 
   nginx-proxy:

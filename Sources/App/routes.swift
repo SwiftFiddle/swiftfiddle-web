@@ -190,6 +190,12 @@ func routes(_ app: Application) throws {
         }
     }
 
+    app.webSocket("ws", "echo") { (req, ws) in
+        ws.onText { (ws, text) in
+            ws.send(text)
+        }
+    }
+
     app.on(.POST, "shared_link", body: .collect(maxSize: "10mb")) { (req) -> EventLoopFuture<[String: String]> in
         let parameter = try req.content.decode(SharedLinkRequestParameter.self)
         let code = parameter.code
