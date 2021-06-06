@@ -204,7 +204,7 @@ services:
     image: kishikawakatsumi/swift:3.0.1
     container_name: swift-3.0.1
   swift-3.0:
-    image: kishikawakatsumi/swift:3.0
+    image: kishikawakatsumi/swift:3.1
     container_name: swift-3.0
   swift-2.2.1:
     image: kishikawakatsumi/swift:2.2.1
