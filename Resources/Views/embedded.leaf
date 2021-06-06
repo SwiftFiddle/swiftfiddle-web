@@ -104,23 +104,23 @@
     crossorigin="anonymous">
   </script>
 
-  <script src="https://cdn.jsdelivr.net/npm/xterm@4.9.0/lib/xterm.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/xterm-addon-fit@0.4.0/lib/xterm-addon-fit.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/xterm@4.12.0/lib/xterm.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/xterm-addon-fit@0.5.0/lib/xterm-addon-fit.min.js"></script>
 
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/highlight.min.js"
-    integrity="sha512-9GIHU4rPKUMvNOHFOer5Zm2zHnZOjayOO3lZpokhhCtgt8FNlNiW/bb7kl0R5ZXfCDVPcQ8S4oBdNs92p5Nm2w=="
-    crossorigin="anonymous">
-  </script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/languages/swift.min.js"
-    integrity="sha512-0wwxY+z1FqKkKTfOfJRNMfJ03WpLRzgVW6g2IKPYUkXJhK2wWRtN0TzXzkjV3+k1mXekUtvwsRvqwYPuHtmFBQ=="
-    crossorigin="anonymous">
-  </script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.7.2/highlight.min.js"
+    integrity="sha512-s+tOYYcC3Jybgr9mVsdAxsRYlGNq4mlAurOrfNuGMQ/SCofNPu92tjE7YRZCsdEtWL1yGkqk15fU/ark206YTg=="
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.7.2/languages/swift.min.js"
+    integrity="sha512-UuKNZ6Y0aB1PKMUh0GSidMu0Agz+uOi1IFvEvJR5Sd7G6TqYBoP5/daB2ujD9qa9Iqn83vyXdEaZxyJKQQsf3Q=="
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
   <script src="https://kit.fontawesome.com/108aa91541.js" crossorigin="anonymous"></script>
 
+  <script src="/js/embedded/editor.js"></script>
+  <script src="/js/terminal.js"></script>
   <script src="/js/console.js"></script>
   <script src="/js/app.js"></script>
-  <script src="/js/embedded.js"></script>
+  <script src="/js/embedded/app.js"></script>
 
   <!-- beautify ignore:start -->
   <script>
