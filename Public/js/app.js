@@ -119,15 +119,13 @@ function run(editor) {
               terminal.cols - line.length - timestamp.length - execTime.length;
             let _1 = "";
             if (padding < 0) {
-              _1 = `\x1b[0m\x1b[2m${timestamp}\x1b[0m${execTime}\n`;
+              _1 = `\x1b[0m${timestamp}${execTime}\n`;
             } else {
               _1 = "";
             }
             let _2 = "";
             if (padding >= 0) {
-              _2 = `${" ".repeat(
-                padding
-              )}\x1b[0m\x1b[2m${timestamp}\x1b[0m${execTime}`;
+              _2 = `${" ".repeat(padding)}\x1b[0m${timestamp}${execTime}`;
             } else {
               _2 = "";
             }
