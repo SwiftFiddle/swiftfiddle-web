@@ -38,7 +38,9 @@ editor.commands.addCommand({
   name: "run",
   bindKey: { win: "Ctrl-Enter", mac: "Command+Enter" },
   exec: (editor) => {
-    run(editor);
+    if ($("#run-button-spinner").is(":hidden")) {
+      run(editor);
+    }
   },
 });
 
