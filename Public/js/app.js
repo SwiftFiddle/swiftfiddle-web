@@ -33,7 +33,6 @@ $("#version-picker").on("change", function () {
   }
 });
 
-Terminal.cursorHide();
 editor.commands.addCommand({
   name: "run",
   bindKey: { win: "Ctrl-Enter", mac: "Command+Enter" },
@@ -49,6 +48,8 @@ editor.commands.addCommand({
   },
 });
 
+const normalBuffer = [];
+
 function run(editor) {
   if ($("#run-button-spinner").is(":visible")) {
     return;
@@ -56,12 +57,13 @@ function run(editor) {
   clearMarkers(editor);
   showLoading();
 
-  Terminal.cursorSavePosition();
+  Terminal.saveCursorPosition();
   Terminal.switchAlternateBuffer();
   Terminal.moveCursorTo(0, 0);
-  const consoleBuffer = [];
+  Terminal.hideCursor();
+  const altBuffer = [];
   const cancelToken = Terminal.showSpinner("Running", () => {
-    return consoleBuffer.filter(Boolean);
+    return altBuffer.filter(Boolean);
   });
 
   const nonce = uuidv4();
@@ -78,8 +80,8 @@ function run(editor) {
     `${location.protocol === "https:" ? "wss:" : "ws:"}//${location.host}/ws/${nonce}/run`
   );
   connection.onmessage = (e) => {
-    consoleBuffer.length = 0;
-    consoleBuffer.push(...parseMessage(e.data));
+    altBuffer.length = 0;
+    altBuffer.push(...parseMessage(e.data));
   };
 
   const startTime = performance.now();
@@ -87,7 +89,15 @@ function run(editor) {
     .done(function (data) {
       Terminal.hideSpinner(cancelToken);
       Terminal.switchNormalBuffer();
-      Terminal.cursorRestorePosition();
+      Terminal.showCursor();
+      Terminal.restoreCursorPosition();
+      terminal.reset();
+      normalBuffer.forEach((line) => {
+        const regex =
+          /[\u001b\u009b][[()#;?]*(?:[0-9]{1,4}(?:;[0-9]{0,4})*)?[0-9A-ORZcf-nqry=><]/g;
+        const plainText = line.replace(regex, "");
+        terminal.write(`\x1b[2m${plainText}`);
+      });
 
       const endTime = performance.now();
       const execTime = ` ${((endTime - startTime) / 1000).toFixed(0)}s`;
@@ -100,7 +110,8 @@ function run(editor) {
         hour12: false,
       });
 
-      terminal.write(
+      const buffer = [];
+      buffer.push(
         `\x1b[38;5;72m${data.version
           .split("\n")
           .map((line, i) => {
@@ -121,9 +132,9 @@ function run(editor) {
               _2 = "";
             }
             if (i == 0) {
-              return `${_1}\x1b[38;5;72m\x1b[2m${line}\x1b[0m${_2}`;
+              return `${_1}\x1b[38;5;156m\x1b[2m${line}\x1b[0m${_2}`;
             } else {
-              return `\x1b[38;5;72m\x1b[2m${line}\x1b[0m`;
+              return `\x1b[38;5;156m\x1b[2m${line}\x1b[0m`;
             }
           })
           .join("\n")}\x1b[0m`
@@ -133,26 +144,31 @@ function run(editor) {
         /Maximum execution time of \d+ seconds exceeded\./
       );
       if (match) {
-        terminal.write(`${data.errors.replace(match[0], "")}\x1b[0m`);
+        buffer.push(`${data.errors.replace(match[0], "")}\x1b[0m`);
       } else {
-        terminal.write(`${data.errors}\x1b[0m`);
+        buffer.push(`${data.errors}\x1b[0m`);
       }
 
       if (data.output) {
-        terminal.write(`\x1b[37m${data.output}\x1b[0m`);
+        buffer.push(`\x1b[37m${data.output}\x1b[0m`);
       } else {
-        terminal.write(`\x1b[0m\x1b[1m*** No output. ***\x1b[0m\n`);
+        buffer.push(`\x1b[0m\x1b[1m*** No output. ***\x1b[0m\n`);
       }
 
       if (match) {
-        terminal.write(`\x1b[31;1m${match[0]}\n`); // Timeout error
+        buffer.push(`\x1b[31;1m${match[0]}\n`); // Timeout error
       }
+
+      buffer.forEach((line) => {
+        terminal.write(line);
+      });
+      normalBuffer.push(...buffer);
 
       const annotations = parceErrorMessage(data.errors);
       updateAnnotations(editor, annotations);
     })
     .fail(function (response) {
-      hideSpinner(cancelToken);
+      Terminal.hideSpinner(cancelToken);
       alert(`[Status: ${response.status}] Something went wrong`);
     })
     .always(function () {
@@ -221,7 +237,7 @@ function parseMessage(message) {
         .filter(Boolean)
         .map((line) => {
           return {
-            text: `\x1b[38;5;72m\x1b[2m${line}\x1b[0m`,
+            text: `\x1b[38;5;156m\x1b[2m${line}\x1b[0m`,
             numberOfLines: Math.ceil(line.length / terminal.cols),
           };
         })

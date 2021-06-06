@@ -26,8 +26,8 @@ const terminal = new Terminal({
   fontSize: 16,
   lineHeight: 1.2,
   convertEol: true,
-  cursorStyle: "underline",
-  cursorBlink: false,
+  cursorStyle: "block",
+  cursorBlink: true,
   scrollback: 100000,
 });
 

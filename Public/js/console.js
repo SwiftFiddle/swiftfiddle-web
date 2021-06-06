@@ -29,19 +29,19 @@ class Terminal {
     terminal.write(ESC + count + "D");
   }
 
-  static cursorSavePosition() {
+  static saveCursorPosition() {
     terminal.write(ESC + "s");
   }
 
-  static cursorRestorePosition() {
+  static restoreCursorPosition() {
     terminal.write(ESC + "u");
   }
 
-  static cursorHide() {
+  static hideCursor() {
     terminal.write(ESC + "?25l");
   }
 
-  static cursorShow() {
+  static showCursor() {
     terminal.write(ESC + "?25h");
   }
 
