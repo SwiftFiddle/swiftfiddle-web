@@ -23,7 +23,7 @@ $("#clear-button").on("click", function (e) {
   terminal.clear();
 });
 
-$("#versionPicker").on("change", function () {
+$("#version-picker").on("change", function () {
   if (this.value < "5.3") {
     $(".package-available").hide();
     $(".package-unavailable").show();
@@ -38,13 +38,21 @@ editor.commands.addCommand({
   name: "run",
   bindKey: { win: "Ctrl-Enter", mac: "Command+Enter" },
   exec: (editor) => {
-    if ($("#run-button-spinner").is(":hidden")) {
-      run(editor);
-    }
+    run(editor);
+  },
+});
+editor.commands.addCommand({
+  name: "save",
+  bindKey: { win: "Ctrl-S", mac: "Command+S" },
+  exec: (editor) => {
+    showShareSheet();
   },
 });
 
 function run(editor) {
+  if ($("#run-button-spinner").is(":visible")) {
+    return;
+  }
   clearMarkers(editor);
   showLoading();
 
@@ -58,7 +66,7 @@ function run(editor) {
 
   const nonce = uuidv4();
   const params = {
-    toolchain_version: $("#versionPicker").val(),
+    toolchain_version: $("#version-picker").val(),
     code: editor.getValue(),
     _color: true,
     _nonce: nonce,

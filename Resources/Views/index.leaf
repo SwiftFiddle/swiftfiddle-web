@@ -93,7 +93,7 @@
         <div class="col">
           <div class="btn-group my-1" role="group">
             <div class="btn-group" style="width: 45%;" role="group">
-              <select id="versionPicker" class="selectpicker show-tick dropdown" data-style="btn btn-secondary"
+              <select id="version-picker" class="selectpicker show-tick dropdown" data-style="btn btn-secondary"
                 data-tickIcon="fa-check" aria-label="Swift Version">
                 <!-- beautify ignore:start -->
                 #for(versionGroup in versions):
@@ -160,7 +160,7 @@
     </div>
   </div>
 
-  <div class="modal fade" id="shareSheet" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal fade" id="share-sheet" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
       <div class="modal-content col-12">
         <div class="modal-header">

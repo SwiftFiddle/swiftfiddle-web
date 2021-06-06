@@ -58,7 +58,7 @@
       <div class="col-sm3 mx-auto" style="margin-top: 15px; margin-bottom: 20px;">
         <div class="btn-group" role="group">
           <div class="btn-group" style="width: 45%;" role="group">
-            <select id="versionPicker" class="selectpicker show-tick dropdown" data-style="btn btn-secondary"
+            <select id="version-picker" class="selectpicker show-tick dropdown" data-style="btn btn-secondary"
               data-tickIcon="fa-check" aria-label="Swift Version">
               <!-- beautify ignore:start -->
               #for(versionGroup in versions):

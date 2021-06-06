@@ -1,12 +1,15 @@
 "use strict";
 
 function showShareSheet() {
+  if ($("#share-sheet").is(":visible")) {
+    return;
+  }
   reset();
   loading();
 
   const code = editor.getValue();
   const params = {
-    toolchain_version: $("#versionPicker").val().replace("/", "_"),
+    toolchain_version: $("#version-picker").val().replace("/", "_"),
     code: code,
   };
   $.post("/shared_link", params, (data, error, xhr) => {
@@ -40,7 +43,7 @@ function showShareSheet() {
   }).fail(function () {
     failed();
   });
-  $("#shareSheet").modal();
+  $("#share-sheet").modal();
 }
 
 function reset() {
