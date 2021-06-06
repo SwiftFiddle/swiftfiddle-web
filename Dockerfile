@@ -21,7 +21,7 @@ RUN [ -d /build/Resources ] && { mv /build/Resources ./Resources && chmod -R a-w
 
 FROM swift:5.4-focal-slim
 
-ARG HOST_DOCKER_GROUP_ID
+ARG HOST_DOCKER_GROUP_ID=1000
 
 RUN useradd --user-group --create-home --system --skel /dev/null --home-dir /app vapor \
     && groupadd docker -g ${HOST_DOCKER_GROUP_ID} && \

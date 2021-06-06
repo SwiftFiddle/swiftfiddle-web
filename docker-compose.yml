@@ -4,8 +4,6 @@ services:
   app:
     build:
       context: .
-      args:
-        - HOST_DOCKER_GROUP_ID=1000
     container_name: swift-playground
     depends_on:
       - nginx-proxy
