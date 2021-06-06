@@ -50,7 +50,7 @@ jobs:
 
           docker_compose='docker run --rm -v /var/run/docker.sock:/var/run/docker.sock -v "\$PWD:\$PWD" -w="\$PWD" docker/compose:latest'
           eval \$docker_compose pull
-          eval \$docker_compose up --detach app carbonara nginx-proxy acme-companion
+          eval \$docker_compose --file docker-compose.production.yml up --detach app carbonara nginx-proxy acme-companion
 
           docker image prune --force
 

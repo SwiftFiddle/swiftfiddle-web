@@ -33,12 +33,24 @@ $("#versionPicker").on("change", function () {
   }
 });
 
+Terminal.cursorHide();
+editor.commands.addCommand({
+  name: "run",
+  bindKey: { win: "Ctrl-Enter", mac: "Command+Enter" },
+  exec: (editor) => {
+    run(editor);
+  },
+});
+
 function run(editor) {
   clearMarkers(editor);
   showLoading();
 
-  let consoleBuffer = [];
-  const cancelToken = showSpinner(terminal, "Running", () => {
+  Terminal.cursorSavePosition();
+  Terminal.switchAlternateBuffer();
+  Terminal.moveCursorTo(0, 0);
+  const consoleBuffer = [];
+  const cancelToken = Terminal.showSpinner("Running", () => {
     return consoleBuffer.filter(Boolean);
   });
 
@@ -56,53 +68,19 @@ function run(editor) {
     `${location.protocol === "https:" ? "wss:" : "ws:"}//${location.host}${location.pathname}ws/${nonce}/run`
   );
   connection.onmessage = (e) => {
-    const data = JSON.parse(e.data);
-    const version = data.version;
-    const stderr = data.errors;
-    const stdout = data.output;
-
-    const newBuffer = [];
-    if (version) {
-      newBuffer.push(
-        ...version
-          .split("\n")
-          .filter(Boolean)
-          .map((line) => {
-            return `\x1b[38;5;72m\x1b[2m${line}\x1b[0m`;
-          })
-      );
-    }
-    if (stderr) {
-      newBuffer.push(
-        ...stderr
-          .split("\n")
-          .filter(Boolean)
-          .map((line) => {
-            return `${line}\x1b[0m`;
-          })
-      );
-    }
-    if (stdout) {
-      newBuffer.push(
-        ...stdout
-          .split("\n")
-          .filter(Boolean)
-          .map((line) => {
-            return `\x1b[37m${line}\x1b[0m`;
-          })
-      );
-    }
-    consoleBuffer = newBuffer;
+    consoleBuffer.length = 0;
+    consoleBuffer.push(...parseMessage(e.data));
   };
 
   const startTime = performance.now();
   $.post("/run", params)
     .done(function (data) {
+      Terminal.hideSpinner(cancelToken);
+      Terminal.switchNormalBuffer();
+      Terminal.cursorRestorePosition();
+
       const endTime = performance.now();
       const execTime = ` ${((endTime - startTime) / 1000).toFixed(0)}s`;
-
-      hideSpinner(cancelToken);
-      clearPreviousLines(consoleBuffer.length);
 
       const now = new Date();
       const timestamp = now.toLocaleString("en-US", {
@@ -218,6 +196,57 @@ function updateAnnotations(editor, annotations) {
   });
 }
 
+function parseMessage(message) {
+  const lines = [];
+
+  const data = JSON.parse(message);
+  const version = data.version;
+  const stderr = data.errors;
+  const stdout = data.output;
+
+  if (version) {
+    lines.push(
+      ...version
+        .split("\n")
+        .filter(Boolean)
+        .map((line) => {
+          return {
+            text: `\x1b[38;5;72m\x1b[2m${line}\x1b[0m`,
+            numberOfLines: Math.ceil(line.length / terminal.cols),
+          };
+        })
+    );
+  }
+  if (stderr) {
+    lines.push(
+      ...stderr
+        .split("\n")
+        .filter(Boolean)
+        .map((line) => {
+          return {
+            text: `${line}\x1b[0m`,
+            numberOfLines: Math.ceil(line.length / terminal.cols),
+          };
+        })
+    );
+  }
+  if (stdout) {
+    lines.push(
+      ...stdout
+        .split("\n")
+        .filter(Boolean)
+        .map((line) => {
+          return {
+            text: `\x1b[37m${line}\x1b[0m`,
+            numberOfLines: Math.ceil(line.length / terminal.cols),
+          };
+        })
+    );
+  }
+
+  return lines;
+}
+
 function showLoading() {
   $("#run-button").addClass("disabled");
   $("#run-button-text").hide();
@@ -230,53 +259,6 @@ function hideLoading() {
   $("#run-button-text").show();
   $("#run-button-icon").show();
   $("#run-button-spinner").hide();
-}
-
-function showSpinner(terminal, message, onProgress) {
-  const interval = 200;
-  const SPINNER = ["⠋", "⠙", "⠹", "⠸", "⠼", "⠴", "⠦", "⠧", "⠇", "⠏"];
-  let spins = 0;
-  function updateSpinner(terminal, message) {
-    const progressText = `${SPINNER[spins % SPINNER.length]} ${message}`;
-    const dotCount = Math.floor((spins * 2) / 4) % 4;
-    const animationText = `${progressText} ${".".repeat(dotCount)}`;
-    const seconds = `${Math.floor(spins / 5)}s`;
-    const speces = " ".repeat(
-      terminal.cols - animationText.length - seconds.length
-    );
-    terminal.writeln(`\x1b[37m${animationText}\x1b[0m${speces}${seconds}`);
-    spins++;
-  }
-
-  updateSpinner(terminal, message);
-  let writtenLines = 1;
-  return setInterval(() => {
-    clearCurrentLine();
-    clearPreviousLines(writtenLines);
-    const buffer = onProgress();
-    buffer.forEach((line) => {
-      terminal.writeln(line);
-    });
-    updateSpinner(terminal, message);
-    writtenLines = buffer.length + 1;
-  }, interval);
-}
-
-function hideSpinner(cancelToken) {
-  clearInterval(cancelToken);
-  clearCurrentLine();
-  clearPreviousLines(1);
-}
-
-function clearCurrentLine() {
-  terminal.write("\x1b[2K\r");
-}
-
-function clearPreviousLines(n) {
-  for (let i = 0; i < n; i++) {
-    terminal.write(`\x1b[1F`);
-    terminal.write("\x1b[2K\r");
-  }
 }
 
 function uuidv4() {

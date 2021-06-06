@@ -305,6 +305,7 @@
   <script src="/js/editor.js"></script>
   <script src="/js/terminal.js"></script>
   <script src="/js/share_sheet.js"></script>
+  <script src="/js/console.js"></script>
   <script src="/js/app.js"></script>
 </body>
 

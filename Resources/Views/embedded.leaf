@@ -119,6 +119,7 @@
   <script src="https://kit.fontawesome.com/108aa91541.js" crossorigin="anonymous"></script>
 
   <script src="/js/app.js"></script>
+  <script src="/js/console.js"></script>
   <script src="/js/embedded.js"></script>
 
   <!-- beautify ignore:start -->

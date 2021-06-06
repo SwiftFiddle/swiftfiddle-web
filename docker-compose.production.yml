@@ -1,0 +1,221 @@
+version: "3.7"
+
+services:
+  app:
+    image: kishikawakatsumi/swift-playground:latest
+    container_name: swift-playground
+    depends_on:
+      - nginx-proxy
+      - carbonara
+    env_file:
+      - .env
+    environment:
+      HOST_PWD: $PWD/
+      LOG_LEVEL: ${LOG_LEVEL:-info}
+      VIRTUAL_HOST: swiftfiddle.com
+      VIRTUAL_PORT: "8080"
+      LETSENCRYPT_HOST: swiftfiddle.com
+      LETSENCRYPT_EMAIL: kishikawakatsumi@mac.com
+    ports:
+      - 8080:8080
+    command:
+      [
+        "serve",
+        "--env",
+        "production",
+        "--hostname",
+        "0.0.0.0",
+        "--port",
+        "8080",
+      ]
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - $PWD/Resources/Temp:/app/Resources/Temp
+    links:
+      - carbonara
+    restart: always
+
+  carbonara:
+    image: petersolopov/carbonara
+    container_name: carbonara
+    ports:
+      - 3000:3000
+    cap_add:
+      - SYS_ADMIN
+    restart: always
+
+  nginx-proxy:
+    image: nginxproxy/nginx-proxy
+    container_name: nginx-proxy
+    environment:
+      DEFAULT_EMAIL: kishikawakatsumi@mac.com
+    ports:
+      - 80:80
+      - 443:443
+    volumes:
+      - ./nginx-proxy/conf.d:/etc/nginx/conf.d
+      - vhost:/etc/nginx/vhost.d
+      - html:/usr/share/nginx/html
+      - dhparam:/etc/nginx/dhparam
+      - certs:/etc/nginx/certs:ro
+      - /var/run/docker.sock:/tmp/docker.sock:ro
+    restart: always
+
+  acme-companion:
+    image: nginxproxy/acme-companion
+    container_name: nginx-proxy-acme
+    depends_on:
+      - nginx-proxy
+    volumes:
+      - vhost:/etc/nginx/vhost.d
+      - html:/usr/share/nginx/html
+      - dhparam:/etc/nginx/dhparam:ro
+      - certs:/etc/nginx/certs
+      - acme:/etc/acme.sh
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    environment:
+      - NGINX_PROXY_CONTAINER=nginx-proxy
+    restart: always
+
+  swift-nightly-main:
+    image: swiftlang/swift:nightly-main
+    container_name: swift-nightly-main
+  swift-nightly-5.5:
+    image: swiftlang/swift:nightly-5.5
+    container_name: swift-nightly-5.5
+  swift-nightly-5.4:
+    image: swiftlang/swift:nightly-5.4
+    container_name: swift-nightly-5.4
+  swift-nightly-5.3:
+    image: swiftlang/swift:nightly-5.3
+    container_name: swift-nightly-5.3
+  swift-5.4.1:
+    image: kishikawakatsumi/swift:5.4.1
+    container_name: swift-5.4.1
+  swift-5.4:
+    image: kishikawakatsumi/swift:5.4
+    container_name: swift-5.4
+  swift-5.3.3:
+    image: kishikawakatsumi/swift:5.3.3
+    container_name: swift-5.3.3
+  swift-5.3.2:
+    image: kishikawakatsumi/swift:5.3.2
+    container_name: swift-5.3.2
+  swift-5.3.1:
+    image: kishikawakatsumi/swift:5.3.1
+    container_name: swift-5.3.1
+  swift-5.3:
+    image: kishikawakatsumi/swift:5.3
+    container_name: swift-5.3
+  swift-5.2.5:
+    image: swift:5.2.5-focal
+    container_name: swift-5.2.5
+  swift-5.2.4:
+    image: swift:5.2.4
+    container_name: swift-5.2.4
+  swift-5.2.3:
+    image: swift:5.2.3
+    container_name: swift-5.2.3
+  swift-5.2.2:
+    image: swift:5.2.2
+    container_name: swift-5.2.2
+  swift-5.2.1:
+    image: swift:5.2.1
+    container_name: swift-5.2.1
+  swift-5.2:
+    image: kishikawakatsumi/swift:5.2
+    container_name: swift-5.2
+  swift-5.1.5:
+    image: swift:5.1.5-bionic
+    container_name: swift-5.1.5
+  swift-5.1.4:
+    image: swift:5.1.4
+    container_name: swift-5.1.4
+  swift-5.1.3:
+    image: swift:5.1.3
+    container_name: swift-5.1.3
+  swift-5.1.2:
+    image: swift:5.1.2
+    container_name: swift-5.1.2
+  swift-5.1.1:
+    image: swift:5.1.1
+    container_name: swift-5.1.1
+  swift-5.1:
+    image: kishikawakatsumi/swift:5.1
+    container_name: swift-5.1
+  swift-5.0.3:
+    image: swift:5.0.3-bionic
+    container_name: swift-5.0.3
+  swift-5.0.2:
+    image: swift:5.0.2
+    container_name: swift-5.0.2
+  swift-5.0.1:
+    image: swift:5.0.1
+    container_name: swift-5.0.1
+  swift-5.0:
+    image: kishikawakatsumi/swift:5.0
+    container_name: swift-5.0
+  swift-4.2.4:
+    image: swift:4.2.4
+    container_name: swift-4.2.4
+  swift-4.2.3:
+    image: swift:4.2.3
+    container_name: swift-4.2.3
+  swift-4.2.2:
+    image: swift:4.2.2
+    container_name: swift-4.2.2
+  swift-4.2.1:
+    image: swift:4.2.1
+    container_name: swift-4.2.1
+  swift-4.2:
+    image: kishikawakatsumi/swift:4.2
+    container_name: swift-4.2
+  swift-4.1.3:
+    image: swift:4.1.3
+    container_name: swift-4.1.3
+  swift-4.1.2:
+    image: kishikawakatsumi/swift:4.1.2
+    container_name: swift-4.1.2
+  swift-4.1.1:
+    image: kishikawakatsumi/swift:4.1.1
+    container_name: swift-4.1.1
+  swift-4.1:
+    image: kishikawakatsumi/swift:4.1
+    container_name: swift-4.1
+  swift-4.0.3:
+    image: swift:4.0.3
+    container_name: swift-4.0.3
+  swift-4.0.2:
+    image: swift:4.0.2
+    container_name: swift-4.0.2
+  swift-4.0:
+    image: kishikawakatsumi/swift:4.0
+    container_name: swift-4.0
+  swift-3.1.1:
+    image: swift:3.1.1
+    container_name: swift-3.1.1
+  swift-3.1:
+    image: kishikawakatsumi/swift:3.1
+    container_name: swift-3.1
+  swift-3.0.2:
+    image: swift:3.0.2
+    container_name: swift-3.0.2
+  swift-3.0.1:
+    image: kishikawakatsumi/swift:3.0.1
+    container_name: swift-3.0.1
+  swift-3.0:
+    image: kishikawakatsumi/swift:3.0
+    container_name: swift-3.0
+  swift-2.2.1:
+    image: kishikawakatsumi/swift:2.2.1
+    container_name: swift-2.2.1
+  swift-2.2:
+    image: kishikawakatsumi/swift:2.2
+    container_name: swift-2.2
+
+volumes:
+  vhost:
+  html:
+  dhparam:
+  certs:
+  acme:
