@@ -67,7 +67,7 @@ function run(editor) {
   const location = window.location;
   const connection = new WebSocket(
     // prettier-ignore
-    `${location.protocol === "https:" ? "wss:" : "ws:"}//${location.host}${location.pathname}ws/${nonce}/run`
+    `${location.protocol === "https:" ? "wss:" : "ws:"}//${location.host}/ws/${nonce}/run`
   );
   connection.onmessage = (e) => {
     consoleBuffer.length = 0;
