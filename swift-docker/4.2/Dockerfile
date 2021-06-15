@@ -1,4 +1,4 @@
-FROM ubuntu:18.04
+FROM ubuntu:20.04
 LABEL Description="Docker Container for the Swift programming language"
 
 # Install related packages and set LLVM 3.9 as the compiler
