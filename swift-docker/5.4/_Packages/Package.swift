@@ -11,7 +11,7 @@ let package = Package(
         .package(url: "https://github.com/apple/swift-collections", from: "0.0.3"),
         .package(url: "https://github.com/apple/swift-crypto", from: "1.1.6"),
         .package(url: "https://github.com/apple/swift-system", from: "0.0.2"),
-        .package(url: "https://github.com/taketo1024/swm-core.git", from:"1.2.2"),
+        .package(url: "https://github.com/taketo1024/swm-core.git", from:"1.2.6"),
         .package(url: "https://github.com/taketo1024/swm-homology.git", from: "1.2.1"),
         .package(url: "https://github.com/taketo1024/swm-khovanov.git", from: "1.1.2"),
         .package(url: "https://github.com/taketo1024/swm-knots.git", from: "1.1.0"),
