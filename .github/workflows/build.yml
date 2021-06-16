@@ -32,10 +32,13 @@ jobs:
             (cd swift-docker/5.4 && docker build --rm --tag ${{ secrets.DOCKER_HUB_USERNAME }}/swift:5.4 . && docker push ${{ secrets.DOCKER_HUB_USERNAME }}/swift:5.4)
             (cd swift-docker/5.4.1 && docker build --rm --tag ${{ secrets.DOCKER_HUB_USERNAME }}/swift:5.4.1 . && docker push ${{ secrets.DOCKER_HUB_USERNAME }}/swift:5.4.1)
 
-            git config --local user.email ${{ secrets.GIT_USER_EMAIL }}
-            git config --local user.name ${{ secrets.GIT_USER_NAME }}
+            BRANCH="$(git rev-parse --abbrev-ref HEAD)"
+            if [[ "$BRANCH" == "master" ]]; then
+              git config --local user.email ${{ secrets.GIT_USER_EMAIL }}
+              git config --local user.name ${{ secrets.GIT_USER_NAME }}
 
-            git add Resources/Views/Package.json
-            git commit -m 'Update Package.json'
-            git push origin HEAD
+              git add Resources/Views/Package.json
+              git commit -m 'Update Package.json'
+              git push origin HEAD
+            fi
           fi
