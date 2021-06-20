@@ -38,4 +38,4 @@ Then access `127.0.0.0:8080` on your web browser.
 
 ### Related Projects
 
-- [SwiftFiddleEditor](https://github.com/kishikawakatsumi/SwiftFiddleEditor) (Provide Code Completion powered by [SourceKit-LSP](https://github.com/apple/sourcekit-lsp))
+- [SwiftFiddle LSP](https://github.com/kishikawakatsumi/swiftfiddle-lsp) (Provide Code Completion powered by [SourceKit-LSP](https://github.com/apple/sourcekit-lsp))

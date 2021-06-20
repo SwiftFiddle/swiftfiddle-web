@@ -11,7 +11,7 @@ WORKDIR /build
 COPY ./Package.* ./
 RUN swift package resolve
 COPY . .
-RUN swift build --enable-test-discovery -c release
+RUN swift build -c release
 
 WORKDIR /staging
 

@@ -1,13 +1,19 @@
 "use strict";
 
+import { showShareSheet } from "./share_sheet.js";
+
+let monacoEditor;
+
+export const presentShareSheet = () => {
+  showShareSheet(monacoEditor);
+};
+
+export const EditorContext = { doc: "" };
+export const EmbeddedEditorContext = {};
+
 $(".selectpicker").selectpicker({
   iconBase: "fas",
   tickIcon: "fa-check",
-});
-
-$("#run-button").click(function (e) {
-  e.preventDefault();
-  run(editor);
 });
 
 $("#terminal").mouseenter(function () {
@@ -33,28 +39,340 @@ $("#version-picker").on("change", function () {
   }
 });
 
-editor.commands.addCommand({
-  name: "run",
-  bindKey: { win: "Ctrl-Enter", mac: "Command+Enter" },
-  exec: (editor) => {
-    run(editor);
+$("#run-button").addClass("disabled");
+$("#run-button").click(function (e) {
+  e.preventDefault();
+  run(monacoEditor);
+});
+
+require.config({
+  paths: {
+    vs: "https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.25.1/min/vs",
   },
 });
-editor.commands.addCommand({
-  name: "save",
-  bindKey: { win: "Ctrl-S", mac: "Command+S" },
-  exec: (editor) => {
-    showShareSheet();
-  },
+window.MonacoEnvironment = {
+  getWorkerUrl: () => proxy,
+};
+const proxy = URL.createObjectURL(
+  new Blob(
+    [
+      `
+self.MonacoEnvironment = {
+    baseUrl: 'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.25.1/min'
+};
+importScripts('https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.25.1/min/vs/base/worker/workerMain.min.js');
+`,
+    ],
+    {
+      type: "text/javascript",
+    }
+  )
+);
+
+require(["vs/editor/editor.main"], function () {
+  const editor = monaco.editor.create(document.getElementById("editor"), {
+    value: EditorContext.doc,
+    fontSize: "15pt",
+    lineHeight: 20,
+    language: "swift",
+    wordWrap: "on",
+    wrappingIndent: "indent",
+    tabSize: 2,
+    minimap: {
+      enabled: false,
+    },
+    theme: "vs-light",
+    showFoldingControls: "mouseover",
+  });
+
+  editor.addAction({
+    id: "run",
+    label: "Run",
+    keybindings: [monaco.KeyMod.CtrlCmd | monaco.KeyCode.Enter],
+    run: () => {
+      run(editor);
+    },
+  });
+  editor.addAction({
+    id: "save",
+    label: "Share",
+    keybindings: [monaco.KeyMod.CtrlCmd | monaco.KeyCode.KEY_S],
+    run: () => {
+      showShareSheet(editor);
+    },
+  });
+
+  if (EmbeddedEditorContext.isEmbedded) {
+    $("#terminal").unbind("mouseenter");
+    $("#terminal").unbind("mouseleave");
+    $("#clear-button").unbind("click");
+
+    editor.updateOptions({
+      readOnly: true,
+      renderIndentGuides: false,
+      glyphMargin: false,
+      lineNumbersMinChars: 4,
+      lineDecorationsWidth: 6,
+    });
+  }
+  if (EmbeddedEditorContext.foldingRanges) {
+    editor.trigger("fold", "editor.foldAll");
+  }
+
+  editor.focus();
+  editor.setPosition({
+    column:
+      editor.getModel().getLineLength(editor.getModel().getLineCount()) + 1,
+    lineNumber: editor.getModel().getLineCount(),
+  });
+  editor.revealLine(editor.getModel().getLineCount());
+
+  const sessionId = uuidv4();
+  const promises = [];
+  let sequence = 0;
+
+  const connection = new WebSocket("wss://lsp.swiftfiddle.com/");
+  window.addEventListener("unload", () => {
+    const params = {
+      method: "didClose",
+      sessionId: sessionId,
+    };
+    connection.send(JSON.stringify(params));
+  });
+
+  connection.onopen = () => {
+    const version = $("#version-picker").val();
+    const code = editor.getValue();
+    if (code && version) {
+      const params = {
+        method: "didOpen",
+        version: version,
+        code: code,
+        sessionId: sessionId,
+      };
+      connection.send(JSON.stringify(params));
+    }
+    const stopPing = setInterval(() => {
+      if (connection.readyState !== 1) {
+        clearInterval(stopPing);
+        return;
+      }
+      connection.send("ping");
+    }, 30000);
+  };
+  connection.onclose = (e) => {
+    console.log(`CLOSED: ${e.code}`);
+  };
+
+  connection.onmessage = (e) => {
+    const response = JSON.parse(e.data);
+    const promise = promises[response.id];
+    if (!promise) {
+      return;
+    }
+    switch (response.method) {
+      case "hover":
+        if (response.value) {
+          const range = new monaco.Range(
+            response.position.line,
+            response.position.utf16index,
+            response.position.line,
+            response.position.utf16index
+          );
+          promise.fulfill({
+            range: range,
+            contents: [{ value: response.value.contents.value }],
+          });
+        } else {
+          promise.fulfill();
+        }
+        break;
+      case "completion":
+        if (response.value) {
+          const completions = {
+            suggestions: response.value.items.map((item) => {
+              const textEdit = item.textEdit;
+              const start = textEdit.range.start;
+              const end = textEdit.range.end;
+              const kind = (() => {
+                switch (item.kind) {
+                  case 1:
+                    return monaco.languages.CompletionItemKind.Text;
+                  case 2:
+                    return monaco.languages.CompletionItemKind.Method;
+                  case 3:
+                    return monaco.languages.CompletionItemKind.Function;
+                  case 4:
+                    return monaco.languages.CompletionItemKind.Constructor;
+                  case 5:
+                    return monaco.languages.CompletionItemKind.Field;
+                  case 6:
+                    return monaco.languages.CompletionItemKind.Variable;
+                  case 7:
+                    return monaco.languages.CompletionItemKind.Class;
+                  case 8:
+                    return monaco.languages.CompletionItemKind.Interface;
+                  case 9:
+                    return monaco.languages.CompletionItemKind.Module;
+                  case 10:
+                    return monaco.languages.CompletionItemKind.Property;
+                  case 11:
+                    return monaco.languages.CompletionItemKind.Unit;
+                  case 12:
+                    return monaco.languages.CompletionItemKind.Value;
+                  case 13:
+                    return monaco.languages.CompletionItemKind.Enum;
+                  case 14:
+                    return monaco.languages.CompletionItemKind.Keyword;
+                  case 15:
+                    return monaco.languages.CompletionItemKind.Snippet;
+                  case 16:
+                    return monaco.languages.CompletionItemKind.Color;
+                  case 17:
+                    return monaco.languages.CompletionItemKind.File;
+                  case 18:
+                    return monaco.languages.CompletionItemKind.Reference;
+                  case 19:
+                    return monaco.languages.CompletionItemKind.Folder;
+                  case 20:
+                    return monaco.languages.CompletionItemKind.EnumMember;
+                  case 21:
+                    return monaco.languages.CompletionItemKind.Constant;
+                  case 22:
+                    return monaco.languages.CompletionItemKind.Struct;
+                  case 23:
+                    return monaco.languages.CompletionItemKind.Event;
+                  case 24:
+                    return monaco.languages.CompletionItemKind.Operator;
+                  case 25:
+                    return monaco.languages.CompletionItemKind.TypeParameter;
+                  default:
+                    return item.kind;
+                }
+              })();
+              const range = new monaco.Range(
+                start.line + 1,
+                start.character + 1,
+                end.line + 1,
+                end.character + 1
+              );
+              return {
+                label: item.label,
+                kind: kind,
+                detail: item.detail,
+                filterText: item.filterText,
+                insertText: textEdit.newText,
+                range: range,
+              };
+            }),
+          };
+          promise.fulfill(completions);
+        } else {
+          promise.fulfill();
+        }
+      default:
+        break;
+    }
+  };
+
+  editor.onDidChangeModelContent(function () {
+    const version = $("#version-picker").val();
+    const code = editor.getValue();
+    if (code && version) {
+      const params = {
+        method: "didChange",
+        version: version,
+        code: code,
+        sessionId: sessionId,
+      };
+      connection.send(JSON.stringify(params));
+    }
+
+    if (!code) {
+      $("#run-button").prop("disabled", true);
+      $("#share-button").prop("disabled", true);
+    } else {
+      $("#run-button").prop("disabled", false);
+      $("#share-button").prop("disabled", false);
+    }
+  });
+
+  monaco.languages.registerHoverProvider("swift", {
+    provideHover: function (model, position) {
+      if (connection.readyState !== 1) {
+        return;
+      }
+
+      sequence++;
+      const row = position.lineNumber - 1;
+      const column = position.column - 1;
+      const params = {
+        method: "hover",
+        id: sequence,
+        row: row,
+        column: column,
+        sessionId: sessionId,
+      };
+      connection.send(JSON.stringify(params));
+
+      const promise = new Promise((fulfill, reject) => {
+        promises[sequence] = { fulfill: fulfill, reject: reject };
+      });
+      return promise;
+    },
+  });
+
+  monaco.languages.registerCompletionItemProvider("swift", {
+    triggerCharacters: ["."],
+    provideCompletionItems: function (model, position) {
+      if (connection.readyState !== 1) {
+        return;
+      }
+
+      sequence++;
+      const row = position.lineNumber - 1;
+      const column = position.column - 1;
+      const params = {
+        method: "completion",
+        id: sequence,
+        row: row,
+        column: column,
+        sessionId: sessionId,
+      };
+      connection.send(JSON.stringify(params));
+
+      var word = model.getWordUntilPosition(position);
+      var range = {
+        startLineNumber: position.lineNumber,
+        endLineNumber: position.lineNumber,
+        startColumn: word.startColumn,
+        endColumn: word.endColumn,
+      };
+
+      const promise = new Promise((fulfill, reject) => {
+        promises[sequence] = { fulfill: fulfill, reject: reject };
+      });
+      return promise;
+    },
+  });
+
+  monaco.languages.registerFoldingRangeProvider("swift", {
+    provideFoldingRanges: function (model, context, token) {
+      return EmbeddedEditorContext.foldingRanges;
+    },
+  });
+
+  monacoEditor = editor;
+  $("#run-button").removeClass("disabled");
 });
 
 const normalBuffer = [];
 
 function run(editor) {
-  if ($("#run-button-spinner").is(":visible")) {
+  if (!monacoEditor || $("#run-button-spinner").is(":visible")) {
     return;
   }
-  clearMarkers(editor);
+  clearMarkers();
   showLoading();
 
   Terminal.saveCursorPosition();
@@ -74,11 +392,7 @@ function run(editor) {
     _nonce: nonce,
   };
 
-  const location = window.location;
-  const connection = new WebSocket(
-    // prettier-ignore
-    `${location.protocol === "https:" ? "wss:" : "ws:"}//${location.host}/ws/${nonce}/run`
-  );
+  const connection = new WebSocket(webSocketEndpoint(`${nonce}/run`));
   connection.onmessage = (e) => {
     altBuffer.length = 0;
     altBuffer.push(...parseMessage(e.data));
@@ -138,11 +452,11 @@ function run(editor) {
           .join("\n")}\x1b[0m`
       );
 
-      const match = data.errors.match(
+      const matchTimeout = data.errors.match(
         /Maximum execution time of \d+ seconds exceeded\./
       );
-      if (match) {
-        buffer.push(`${data.errors.replace(match[0], "")}\x1b[0m`);
+      if (matchTimeout) {
+        buffer.push(`${data.errors.replace(matchTimeout[0], "")}\x1b[0m`);
       } else {
         buffer.push(`${data.errors}\x1b[0m`);
       }
@@ -153,8 +467,8 @@ function run(editor) {
         buffer.push(`\x1b[0m\x1b[1m*** No output. ***\x1b[0m\n`);
       }
 
-      if (match) {
-        buffer.push(`\x1b[31;1m${match[0]}\n`); // Timeout error
+      if (matchTimeout) {
+        buffer.push(`\x1b[31;1m${matchTimeout[0]}\n`); // Timeout error message
       }
 
       buffer.forEach((line) => {
@@ -162,8 +476,8 @@ function run(editor) {
       });
       normalBuffer.push(...buffer);
 
-      const annotations = parceErrorMessage(data.errors);
-      updateAnnotations(editor, annotations);
+      const markers = parseErrorMessage(data.errors);
+      updateMarkers(markers);
     })
     .fail(function (response) {
       Terminal.hideSpinner(cancelToken);
@@ -176,15 +490,16 @@ function run(editor) {
     });
 }
 
-function clearMarkers(editor) {
-  Object.entries(editor.session.getMarkers()).forEach(([key, value]) => {
-    editor.session.removeMarker(value.id);
-  });
+function clearMarkers() {
+  monaco.editor.setModelMarkers(monacoEditor.getModel(), "swift", []);
 }
 
-function parceErrorMessage(message) {
+function parseErrorMessage(message) {
   const matches = message
     .replace(
+      // Remove all ANSI colors/styles from strings
+      // https://stackoverflow.com/a/29497680/1733883
+      // https://github.com/chalk/ansi-regex/blob/main/index.js#L3
       /[\u001b\u009b][[()#;?]*(?:[0-9]{1,4}(?:;[0-9]{0,4})*)?[0-9A-ORZcf-nqry=><]/g,
       ""
     )
@@ -192,32 +507,53 @@ function parceErrorMessage(message) {
       /\/\[REDACTED\]\/main\.swift:(\d+):(\d+): (error|warning|note): ([\s\S]*?)\n*(?=(?:\/|$))/gi
     );
   return [...matches].map((match) => {
+    const row = +match[1] - 4; // 4 lines of code inserted by default
+    let column = +match[2];
+    const text = match[4];
+    const type = match[3];
+    let severity;
+    switch (type) {
+      case "warning":
+        severity = monaco.MarkerSeverity.Warning;
+        break;
+      case "error":
+        severity = monaco.MarkerSeverity.Error;
+        break;
+      default:
+        severity = monaco.MarkerSeverity.Info;
+        break;
+    }
+
+    let length;
+    if (text.match(/~+\^~+/)) {
+      // ~~~^~~~
+      length = text.match(/~+\^~+/)[0].length;
+      column -= text.match(/~+\^/)[0].length - 1;
+    } else if (text.match(/\^~+/)) {
+      // ^~~~
+      length = text.match(/\^~+/)[0].length;
+    } else if (text.match(/~+\^/)) {
+      // ~~~^
+      length = text.match(/~+\^/)[0].length;
+      column -= length - 1;
+    } else if (text.match(/\^/)) {
+      // ^
+      length = 1;
+    }
+
     return {
-      row: match[1] - 1 - 4, // 4 lines of code inserted by default
-      column: match[2] - 1,
-      text: match[4],
-      type: match[3].replace("note", "info"),
-      full: match[0],
+      startLineNumber: row,
+      startColumn: column,
+      endLineNumber: row,
+      endColumn: column + length,
+      message: text,
+      severity: severity,
     };
   });
 }
 
-function updateAnnotations(editor, annotations) {
-  editor.session.setAnnotations(annotations);
-
-  annotations.forEach((annotation) => {
-    const marker = annotation.text.match(/\^\~*/i);
-    editor.session.addMarker(
-      new Range(
-        annotation.row,
-        annotation.column,
-        annotation.row,
-        annotation.column + (marker ? marker[0].length : 1)
-      ),
-      `editor-marker-${annotation.type}`,
-      "text"
-    );
-  });
+function updateMarkers(markers) {
+  monaco.editor.setModelMarkers(monacoEditor.getModel(), "swift", markers);
 }
 
 function parseMessage(message) {
@@ -272,17 +608,21 @@ function parseMessage(message) {
 }
 
 function showLoading() {
+  if (!EmbeddedEditorContext.isEmbedded) {
+    $("#run-button-text").hide();
+  }
   $("#run-button").addClass("disabled");
-  $("#run-button-text").hide();
   $("#run-button-icon").hide();
   $("#run-button-spinner").show();
 }
 
 function hideLoading() {
   $("#run-button").removeClass("disabled");
-  $("#run-button-text").show();
   $("#run-button-icon").show();
   $("#run-button-spinner").hide();
+  if (!EmbeddedEditorContext.isEmbedded) {
+    $("#run-button-text").show();
+  }
 }
 
 function uuidv4() {
@@ -293,3 +633,32 @@ function uuidv4() {
     ).toString(16)
   );
 }
+
+function webSocketEndpoint(path) {
+  const location = window.location;
+  // prettier-ignore
+  return `${location.protocol === "https:" ? "wss:" : "ws:"}//${location.host}/ws/${path}`
+}
+
+function handleFileSelect(event) {
+  event.stopPropagation();
+  event.preventDefault();
+
+  const files = event.dataTransfer.files;
+  const reader = new FileReader();
+  reader.onload = (event) => {
+    monacoEditor.setValue(event.target.result);
+    monacoEditor.setSelection(new monaco.Selection(0, 0, 0, 0));
+  };
+  reader.readAsText(files[0], "UTF-8");
+}
+
+function handleDragOver(event) {
+  event.stopPropagation();
+  event.preventDefault();
+  event.dataTransfer.dropEffect = "copy";
+}
+
+const dropZone = document.getElementById("editor");
+dropZone.addEventListener("dragover", handleDragOver, false);
+dropZone.addEventListener("drop", handleFileSelect, false);

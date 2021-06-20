@@ -9,7 +9,7 @@ body {
   padding: 0;
 }
 
-.ace_editor {
+#editor {
   height: calc(100vh - 2px);
 }
 
@@ -22,7 +22,7 @@ body {
 }
 
 @media screen and (max-width: 480px) {
-  .ace_editor {
+  #editor {
     height: calc(50vh - 1px);
   }
 
@@ -33,10 +33,6 @@ body {
   .terminal.xterm {
     height: calc(50vh - 1px);
   }
-}
-
-.ace_editor .ace_marker-layer .ace_bracket {
-  display: none;
 }
 
 div.run-button-background {

@@ -1,6 +1,6 @@
 import Foundation
 
-class WorkingDirectoryRegistry {
+final class WorkingDirectoryRegistry {
     static let shared = WorkingDirectoryRegistry()
 
     private var directories = [String: URL]()
