@@ -7,7 +7,7 @@
   border-radius: 50%;
 }
 
-.btn-circle i {
+.btn-circle span {
   position: relative;
   top: -1px;
 }

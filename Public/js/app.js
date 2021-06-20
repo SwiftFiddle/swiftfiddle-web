@@ -72,8 +72,8 @@ importScripts('https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.25.1/min/v
 require(["vs/editor/editor.main"], function () {
   const editor = monaco.editor.create(document.getElementById("editor"), {
     value: EditorContext.doc,
-    fontSize: "14pt",
-    lineHeight: 21,
+    fontSize: "15pt",
+    lineHeight: 20,
     language: "swift",
     wordWrap: "on",
     wrappingIndent: "indent",
