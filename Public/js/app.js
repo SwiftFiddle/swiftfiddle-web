@@ -73,6 +73,7 @@ require(["vs/editor/editor.main"], function () {
   const editor = monaco.editor.create(document.getElementById("editor"), {
     value: EditorContext.doc,
     fontSize: "14pt",
+    lineHeight: 21,
     language: "swift",
     wordWrap: "on",
     wrappingIndent: "indent",
@@ -476,7 +477,7 @@ function run(editor) {
       normalBuffer.push(...buffer);
 
       const markers = parseErrorMessage(data.errors);
-      updateMarkers(editor, markers);
+      updateMarkers(markers);
     })
     .fail(function (response) {
       Terminal.hideSpinner(cancelToken);
@@ -551,23 +552,8 @@ function parseErrorMessage(message) {
   });
 }
 
-function updateMarkers(editor, markers) {
+function updateMarkers(markers) {
   monaco.editor.setModelMarkers(monacoEditor.getModel(), "swift", markers);
-  // editor.session.setAnnotations(markers);
-
-  // markers.forEach((annotation) => {
-  //   const marker = annotation.text.match(/\^\~*/i);
-  //   editor.session.addMarker(
-  //     new Range(
-  //       annotation.row,
-  //       annotation.column,
-  //       annotation.row,
-  //       annotation.column + (marker ? marker[0].length : 1)
-  //     ),
-  //     `editor-marker-${annotation.type}`,
-  //     "text"
-  //   );
-  // });
 }
 
 function parseMessage(message) {
