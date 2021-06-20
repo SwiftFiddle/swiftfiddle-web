@@ -20,7 +20,7 @@ jobs:
 
           (cd swift-docker/5.3 && docker build --rm --tag kishikawakatsumi/swift:5.3 . && docker push kishikawakatsumi/swift:5.3)
           (cd swift-docker/5.3.1 && docker build --rm --tag kishikawakatsumi/swift:5.3.1 . && docker push kishikawakatsumi/swift:5.3.1)
-          (cd swift-docker/5.3.2 && docker build --rm --tag kishikawakatsumi/swift:5.3.2 . && docker pushkishikawakatsumi/swift:5.3.2)
+          (cd swift-docker/5.3.2 && docker build --rm --tag kishikawakatsumi/swift:5.3.2 . && docker push kishikawakatsumi/swift:5.3.2)
           (cd swift-docker/5.3.3 && docker build --rm --tag kishikawakatsumi/swift:5.3.3 . && docker push kishikawakatsumi/swift:5.3.3)
 
           (cd swift-docker/5.4 && docker build --rm --tag kishikawakatsumi/swift:5.4 . && docker push kishikawakatsumi/swift:5.4)
