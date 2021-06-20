@@ -7,14 +7,12 @@ RUN export DEBIAN_FRONTEND=noninteractive DEBCONF_NONINTERACTIVE_SEEN=true \
     && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /build
-
 COPY ./Package.* ./
 RUN swift package resolve
 COPY . .
-RUN swift build --enable-test-discovery -c release
+RUN swift build -c release
 
 WORKDIR /staging
-
 RUN cp "$(swift build --package-path /build -c release --show-bin-path)/Run" ./
 RUN [ -d /build/Public ] && { mv /build/Public ./Public && chmod -R a-w ./Public; } || true
 RUN [ -d /build/Resources ] && { mv /build/Resources ./Resources && chmod -R a-w ./Resources && chmod g+w ./Resources/Temp; } || true
