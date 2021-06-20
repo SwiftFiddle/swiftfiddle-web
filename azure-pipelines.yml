@@ -20,6 +20,10 @@ stages:
     pool:
       vmImage: ubuntu-latest
     steps:
+    - task: CmdLine@2
+      inputs:
+        script: |
+          cd swift-docker/5.4.1
     - task: Docker@2
       inputs:
         command: 'buildAndPush'
@@ -28,6 +32,10 @@ stages:
         tags: 5.4.1
         buildContext: swift-docker/5.4.1
         Dockerfile: '**/Dockerfile'
+    - task: CmdLine@2
+      inputs:
+        script: |
+          cd swift-docker/5.4
     - task: Docker@2
       inputs:
         command: 'buildAndPush'
