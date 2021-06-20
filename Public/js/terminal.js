@@ -3,7 +3,7 @@
 const terminal = new Terminal({
   theme: {
     // https://ethanschoonover.com/solarized/
-    brightBlack: "#002b36", // base03
+    brightBlack: "#93a1a1", // base03
     black: "#073642", // base02
     brightGreen: "#586e75", // base01
     brightYellow: "#657b83", // base00
