@@ -5,7 +5,8 @@ private let cache = Cache<String, ByteBuffer>()
 func routes(_ app: Application) throws {
     app.get { (req) in try index(req) }
     app.get("index.html") { (req) in try index(req) }
-    func index(_ req: Request) throws -> EventLoopFuture<View> {
+
+    func index(_ req: Vapor.Request) throws -> EventLoopFuture<View> {
         return req.view.render(
             "index", InitialPageResponse(
                 title: "Swift Playground",
@@ -216,7 +217,7 @@ func routes(_ app: Application) throws {
     app.get("versions") { (req) in try availableVersions() }
 }
 
-private func handleImportContent(_ req: Request, _ promise: EventLoopPromise<Response>,
+private func handleImportContent(_ req: Vapor.Request, _ promise: EventLoopPromise<Response>,
                                  _ id: String, _ code: String, _ swiftVersion: String?) throws {
     let path = req.url.path
     if path.hasSuffix(".png") {
@@ -246,7 +247,7 @@ private func handleImportContent(_ req: Request, _ promise: EventLoopPromise<Res
     }
 }
 
-private func handleEmbeddedContent(_ req: Request, _ promise: EventLoopPromise<Response>,
+private func handleEmbeddedContent(_ req: Vapor.Request, _ promise: EventLoopPromise<Response>,
                                    _ id: String, _ code: String, _ swiftVersion: String?,
                                    _ foldRanges: [FoldRange]) throws {
     req.view.render(

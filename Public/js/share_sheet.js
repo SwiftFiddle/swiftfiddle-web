@@ -1,6 +1,6 @@
 "use strict";
 
-function showShareSheet() {
+export const showShareSheet = (editor) => {
   if ($("#share-sheet").is(":visible")) {
     return;
   }
@@ -44,7 +44,27 @@ function showShareSheet() {
     failed();
   });
   $("#share-sheet").modal();
-}
+};
+
+export const copySharedLink = () => {
+  if (navigator.clipboard) {
+    navigator.clipboard.writeText($("#shared-link").val());
+  }
+  const message = $("#shared-link-copy-message");
+  message.hide();
+  message.text("link copied!");
+  message.fadeIn(500).delay(1000).fadeOut(500);
+};
+
+export const copyEmbedSnippet = () => {
+  if (navigator.clipboard) {
+    navigator.clipboard.writeText($("#embed-snippet").val());
+  }
+  const message = $("#embed-snippet-copy-message");
+  message.hide();
+  message.text("snippet copied!");
+  message.fadeIn(500).delay(1000).fadeOut(500);
+};
 
 function reset() {
   $("#shared-link").val("");
@@ -74,24 +94,4 @@ function failed() {
   $(".shared-link-copy-button-icon").hide();
   $(".shared-link-copy-button").prop("disabled", true);
   $(".shared-link-failure").show();
-}
-
-function copySharedLink() {
-  if (navigator.clipboard) {
-    navigator.clipboard.writeText($("#shared-link").val());
-  }
-  const message = $("#shared-link-copy-message");
-  message.hide();
-  message.text("link copied!");
-  message.fadeIn(500).delay(1000).fadeOut(500);
-}
-
-function copyEmbedSnippet() {
-  if (navigator.clipboard) {
-    navigator.clipboard.writeText($("#embed-snippet").val());
-  }
-  const message = $("#embed-snippet-copy-message");
-  message.hide();
-  message.text("snippet copied!");
-  message.fadeIn(500).delay(1000).fadeOut(500);
 }

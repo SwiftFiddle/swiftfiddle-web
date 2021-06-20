@@ -22,15 +22,13 @@
     integrity="sha512-ARJR74swou2y0Q2V9k0GbzQ/5vJ2RBSoCWokg4zkfM29Fb3vZEQyv0iWBMW/yvKgyHSR/7D64pFMmU8nYmbRkg=="
     crossorigin="anonymous" />
 
+  <link rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.25.1/min/vs/editor/editor.main.min.css"
+    integrity="sha512-WPobWFyITzoqT5htKutcqZ5EdjusQccR2Nrx/jzLtQsAO0H7wUYTkHr66woHsxH5kGIRGYl6wU1Gz1OEGoPpAg=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
+
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/xterm/3.14.5/xterm.min.css"
     integrity="sha512-iLYuqv+v/P4u9erpk+KM83Ioe/l7SEmr7wB6g+Kg1qmEit8EShDKnKtLHlv2QXUp7GGJhmqDI+1PhJYLTsfb8w=="
-    crossorigin="anonymous" />
-
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/styles/default.min.css"
-    integrity="sha512-kZqGbhf9JTB4bVJ0G8HCkqmaPcRgo88F0dneK30yku5Y/dep7CZfCnNml2Je/sY4lBoqoksXz4PtVXS4GHSUzQ=="
-    crossorigin="anonymous" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/styles/xcode.min.css"
-    integrity="sha512-ybdAWCxicaDEY4FipBITKDwSRqSDUcV1pPngUvjnCliYYU42rmMvt5obpvCZp7xCEpNU0OKIh6M60VGCVH1Z/w=="
     crossorigin="anonymous" />
 
   <link rel="stylesheet" href="/css/editor.css">
@@ -73,7 +71,7 @@
   <div class="container-fluid" style="padding: 0 0 4px 0;">
     <div class="row no-gutters">
       <div class="col-md-6">
-        <pre id="editor"><xmp>#(codeSnippet)</xmp></pre>
+        <div id="editor"></div>
       </div>
       <div class="col-md-6">
         <div id="terminal" style="position: relative;">
@@ -119,7 +117,7 @@
             </button>
           </div>
           <button type="button" id="share-button" class="btn btn-info btn-circle btn-circle-sm"
-            onclick="showShareSheet();" aria-label="Share" style="margin-left: 8px;">
+            onclick="presentShareSheet();" aria-label="Share" style="margin-left: 8px;">
             <span class="fa fa-share-alt"></span>
           </button>
           <button type="button" class="btn btn-secondary btn-circle btn-circle-sm" data-toggle="modal"
@@ -271,40 +269,28 @@
     crossorigin="anonymous">
   </script>
 
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.12/ace.min.js"
-    integrity="sha512-GoORoNnxst42zE3rYPj4bNBm0Q6ZRXKNH2D9nEmNvVF/z24ywVnijAWVi/09iBiVDQVf3UlZHpzhAJIdd9BXqw=="
-    crossorigin="anonymous">
-  </script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.12/ext-language_tools.min.js"
-    integrity="sha512-8qx1DL/2Wsrrij2TWX5UzvEaYOFVndR7BogdpOyF4ocMfnfkw28qt8ULkXD9Tef0bLvh3TpnSAljDC7uyniEuQ=="
-    crossorigin="anonymous">
-  </script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.12/theme-xcode.min.js"
-    integrity="sha512-S3wipD42Bs0Dthj5mI3YkgHBB60mCkmID1qcxv4GZXV/bVivb9PIvEEBwTeIQTcZXUHo4aj7CktRhA/c2k7ftQ=="
-    crossorigin="anonymous">
-  </script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.12/mode-swift.min.js"
-    integrity="sha512-5NanghFVFTJf0tjHV2hWFuF/r9LuNKq9c0Pcs+TF7vWuD0AavR6az6X/vLW1AvLCo/AZg6EIBtm2WzLKNleDAQ=="
-    crossorigin="anonymous">
-  </script>
-
   <script src="https://cdn.jsdelivr.net/npm/xterm@4.12.0/lib/xterm.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/xterm-addon-fit@0.5.0/lib/xterm-addon-fit.min.js"></script>
 
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.7.2/highlight.min.js"
-    integrity="sha512-s+tOYYcC3Jybgr9mVsdAxsRYlGNq4mlAurOrfNuGMQ/SCofNPu92tjE7YRZCsdEtWL1yGkqk15fU/ark206YTg=="
-    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.7.2/languages/swift.min.js"
-    integrity="sha512-UuKNZ6Y0aB1PKMUh0GSidMu0Agz+uOi1IFvEvJR5Sd7G6TqYBoP5/daB2ujD9qa9Iqn83vyXdEaZxyJKQQsf3Q=="
-    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-
   <script src="https://kit.fontawesome.com/108aa91541.js" crossorigin="anonymous"></script>
 
-  <script src="/js/editor.js"></script>
   <script src="/js/terminal.js"></script>
-  <script src="/js/share_sheet.js"></script>
   <script src="/js/console.js"></script>
-  <script src="/js/app.js"></script>
+
+  <script type="module">
+    import { copySharedLink, copyEmbedSnippet } from "/js/share_sheet.js";
+    window.copySharedLink = copySharedLink;
+    window.copyEmbedSnippet = copyEmbedSnippet;
+  </script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.25.1/min/vs/loader.min.js"
+    integrity="sha512-SExj71Cw3B9C9EE8BC/ad3AKia5zQXDj/2SM4THgkeKh5GIFZhKM/R3uclUG8YZwJrjcVhydAlIHmfNvsBCKZA=="
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script type="module">
+    import { EditorContext, presentShareSheet } from "/js/app.js";
+    EditorContext.doc = `#(codeSnippet)`;
+    window.presentShareSheet = presentShareSheet;
+  </script>
 </body>
 
 </html>
