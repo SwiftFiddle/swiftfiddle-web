@@ -1,5 +1,6 @@
 "use strict";
 
+import { LanguageServer } from "./language_server.js";
 import { showShareSheet } from "./share_sheet.js";
 
 let monacoEditor;
@@ -78,6 +79,9 @@ require(["vs/editor/editor.main"], function () {
     wordWrap: "on",
     wrappingIndent: "indent",
     tabSize: 2,
+    lightbulb: {
+      enabled: true,
+    },
     minimap: {
       enabled: false,
     },
@@ -131,184 +135,117 @@ require(["vs/editor/editor.main"], function () {
   const promises = [];
   let sequence = 0;
 
-  let connection;
-  function connect() {
-    const ws = new WebSocket("wss://lsp.swiftfiddle.com/");
+  const languageServer = new LanguageServer(
+    "wss://lsp.swiftfiddle.com/",
+    sessionId
+  );
 
-    window.addEventListener("unload", () => {
-      const params = {
-        method: "didClose",
-        sessionId: sessionId,
-      };
-      ws.send(JSON.stringify(params));
-    });
+  languageServer.onconnect = () => {
+    const code = editor.getValue();
+    languageServer.openDocument(code, sessionId);
+  };
 
-    ws.onopen = () => {
-      const version = $("#version-picker").val();
-      const code = editor.getValue();
-      if (code && version) {
-        const params = {
-          method: "didOpen",
-          version: version,
-          code: code,
-          sessionId: sessionId,
-        };
-        ws.send(JSON.stringify(params));
-      }
-      const stopPing = setInterval(() => {
-        if (ws.readyState !== 1) {
-          clearInterval(stopPing);
+  languageServer.onresponse = (response) => {
+    const promise = promises[response.id];
+    switch (response.method) {
+      case "hover":
+        if (!promise) {
           return;
         }
-        ws.send("ping");
-      }, 10000);
-    };
-    ws.onclose = (e) => {
-      console.log(
-        `Socket is closed (${e.code}). Reconnect will be attempted in 1 second.`,
-        e.reason
-      );
-      setTimeout(function () {
-        connection = connect();
-      }, 1000);
-    };
+        if (response.value) {
+          const range = new monaco.Range(
+            response.position.line,
+            response.position.utf16index,
+            response.position.line,
+            response.position.utf16index
+          );
+          promise.fulfill({
+            range: range,
+            contents: [{ value: response.value.contents.value }],
+          });
+        } else {
+          promise.fulfill();
+        }
+        break;
+      case "completion":
+        if (!promise) {
+          return;
+        }
+        if (response.value) {
+          const completions = {
+            suggestions: response.value.items.map((item) => {
+              const textEdit = item.textEdit;
+              const start = textEdit.range.start;
+              const end = textEdit.range.end;
+              const kind = languageServer.convertCompletionItemKind(item.kind);
+              const range = new monaco.Range(
+                start.line + 1,
+                start.character + 1,
+                end.line + 1,
+                end.character + 1
+              );
+              return {
+                label: item.label,
+                kind: kind,
+                detail: item.detail,
+                filterText: item.filterText,
+                insertText: textEdit.newText,
+                range: range,
+              };
+            }),
+          };
+          promise.fulfill(completions);
+        } else {
+          promise.fulfill();
+        }
+      case "diagnostics":
+        clearMarkers();
 
-    ws.onerror = function (err) {
-      console.error(
-        "Socket encountered error: ",
-        err.message,
-        "Closing socket"
-      );
-      ws.close();
-    };
+        if (!response.value) {
+          return;
+        }
+        const diagnostics = response.value.diagnostics;
+        if (!diagnostics || !diagnostics.length) {
+          return;
+        }
 
-    ws.onmessage = (e) => {
-      const response = JSON.parse(e.data);
-      const promise = promises[response.id];
-      if (!promise) {
-        return;
-      }
-      switch (response.method) {
-        case "hover":
-          if (response.value) {
-            const range = new monaco.Range(
-              response.position.line,
-              response.position.utf16index,
-              response.position.line,
-              response.position.utf16index
-            );
-            promise.fulfill({
-              range: range,
-              contents: [{ value: response.value.contents.value }],
-            });
-          } else {
-            promise.fulfill();
-          }
-          break;
-        case "completion":
-          if (response.value) {
-            const completions = {
-              suggestions: response.value.items.map((item) => {
-                const textEdit = item.textEdit;
-                const start = textEdit.range.start;
-                const end = textEdit.range.end;
-                const kind = (() => {
-                  switch (item.kind) {
-                    case 1:
-                      return monaco.languages.CompletionItemKind.Text;
-                    case 2:
-                      return monaco.languages.CompletionItemKind.Method;
-                    case 3:
-                      return monaco.languages.CompletionItemKind.Function;
-                    case 4:
-                      return monaco.languages.CompletionItemKind.Constructor;
-                    case 5:
-                      return monaco.languages.CompletionItemKind.Field;
-                    case 6:
-                      return monaco.languages.CompletionItemKind.Variable;
-                    case 7:
-                      return monaco.languages.CompletionItemKind.Class;
-                    case 8:
-                      return monaco.languages.CompletionItemKind.Interface;
-                    case 9:
-                      return monaco.languages.CompletionItemKind.Module;
-                    case 10:
-                      return monaco.languages.CompletionItemKind.Property;
-                    case 11:
-                      return monaco.languages.CompletionItemKind.Unit;
-                    case 12:
-                      return monaco.languages.CompletionItemKind.Value;
-                    case 13:
-                      return monaco.languages.CompletionItemKind.Enum;
-                    case 14:
-                      return monaco.languages.CompletionItemKind.Keyword;
-                    case 15:
-                      return monaco.languages.CompletionItemKind.Snippet;
-                    case 16:
-                      return monaco.languages.CompletionItemKind.Color;
-                    case 17:
-                      return monaco.languages.CompletionItemKind.File;
-                    case 18:
-                      return monaco.languages.CompletionItemKind.Reference;
-                    case 19:
-                      return monaco.languages.CompletionItemKind.Folder;
-                    case 20:
-                      return monaco.languages.CompletionItemKind.EnumMember;
-                    case 21:
-                      return monaco.languages.CompletionItemKind.Constant;
-                    case 22:
-                      return monaco.languages.CompletionItemKind.Struct;
-                    case 23:
-                      return monaco.languages.CompletionItemKind.Event;
-                    case 24:
-                      return monaco.languages.CompletionItemKind.Operator;
-                    case 25:
-                      return monaco.languages.CompletionItemKind.TypeParameter;
-                    default:
-                      return item.kind;
-                  }
-                })();
-                const range = new monaco.Range(
-                  start.line + 1,
-                  start.character + 1,
-                  end.line + 1,
-                  end.character + 1
-                );
-                return {
-                  label: item.label,
-                  kind: kind,
-                  detail: item.detail,
-                  filterText: item.filterText,
-                  insertText: textEdit.newText,
-                  range: range,
-                };
-              }),
-            };
-            promise.fulfill(completions);
-          } else {
-            promise.fulfill();
-          }
-        default:
-          break;
-      }
-    };
+        const markers = diagnostics.map((diagnostic) => {
+          const start = diagnostic.range.start;
+          const end = diagnostic.range.end;
+          const startLineNumber = start.line + 1;
+          const startColumn = start.character + 1;
+          const endLineNumber = end.line + 1;
+          const endColumn = start.character + 1;
 
-    return ws;
-  }
-  connection = connect();
+          let severity = languageServer.convertDiagnosticSeverity(
+            diagnostic.severity
+          );
+
+          return {
+            startLineNumber: startLineNumber,
+            startColumn: startColumn,
+            endLineNumber: endLineNumber,
+            endColumn: endColumn,
+            message: diagnostic.message,
+            severity: severity,
+            source: diagnostic.source,
+          };
+        });
+
+        updateMarkers(markers);
+        break;
+      default:
+        break;
+    }
+  };
+
+  window.addEventListener("unload", () => {
+    languageServer.close();
+  });
 
   editor.onDidChangeModelContent(function () {
-    const version = $("#version-picker").val();
     const code = editor.getValue();
-    if (code && version) {
-      const params = {
-        method: "didChange",
-        version: version,
-        code: code,
-        sessionId: sessionId,
-      };
-      connection.send(JSON.stringify(params));
-    }
+    languageServer.syncDocument(code, sessionId);
 
     if (!code || !code.trim()) {
       $("#run-button").prop("disabled", true);
@@ -321,21 +258,14 @@ require(["vs/editor/editor.main"], function () {
 
   monaco.languages.registerHoverProvider("swift", {
     provideHover: function (model, position) {
-      if (connection.readyState !== 1) {
+      if (!languageServer.isReady) {
         return;
       }
 
       sequence++;
       const row = position.lineNumber - 1;
       const column = position.column - 1;
-      const params = {
-        method: "hover",
-        id: sequence,
-        row: row,
-        column: column,
-        sessionId: sessionId,
-      };
-      connection.send(JSON.stringify(params));
+      languageServer.requestHover(sequence, row, column, sessionId);
 
       const promise = new Promise((fulfill, reject) => {
         promises[sequence] = { fulfill: fulfill, reject: reject };
@@ -347,29 +277,14 @@ require(["vs/editor/editor.main"], function () {
   monaco.languages.registerCompletionItemProvider("swift", {
     triggerCharacters: ["."],
     provideCompletionItems: function (model, position) {
-      if (connection.readyState !== 1) {
+      if (!languageServer.isReady) {
         return;
       }
 
       sequence++;
       const row = position.lineNumber - 1;
       const column = position.column - 1;
-      const params = {
-        method: "completion",
-        id: sequence,
-        row: row,
-        column: column,
-        sessionId: sessionId,
-      };
-      connection.send(JSON.stringify(params));
-
-      var word = model.getWordUntilPosition(position);
-      var range = {
-        startLineNumber: position.lineNumber,
-        endLineNumber: position.lineNumber,
-        startColumn: word.startColumn,
-        endColumn: word.endColumn,
-      };
+      languageServer.requestCompletion(sequence, row, column, sessionId);
 
       const promise = new Promise((fulfill, reject) => {
         promises[sequence] = { fulfill: fulfill, reject: reject };
