@@ -154,12 +154,12 @@ export class LanguageServer {
       if (event.code !== 1006) {
         return;
       }
-      setTimeout(function () {
+      setTimeout(() => {
         connection = this.createConnection(connection.url);
       }, 1000);
     };
 
-    connection.onerror = function (event) {
+    connection.onerror = (event) => {
       console.error(`Socket encountered error: ${event.message}`);
       connection.close();
     };

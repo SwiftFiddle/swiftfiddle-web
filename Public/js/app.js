@@ -26,8 +26,7 @@ export class App {
       let sequence = 0;
 
       const languageServer = new LanguageServer(
-        // "wss://lsp.swiftfiddle.com/",
-        "ws://localhost:9000/",
+        "wss://lsp.swiftfiddle.com/",
         uuidv4()
       );
 
@@ -91,6 +90,8 @@ export class App {
               promise.fulfill();
             }
           case "diagnostics":
+            this.editor.clearMarkers();
+
             if (!response.value) {
               return;
             }
