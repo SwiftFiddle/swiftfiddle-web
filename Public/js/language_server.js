@@ -2,7 +2,7 @@
 
 export class LanguageServer {
   constructor(endpoint, sessionId) {
-    const connection = new WebSocket(endpoint);
+    const connection = this.createConnection(endpoint);
     this.connection = connection;
     this.sessionId = sessionId;
 
@@ -15,42 +15,42 @@ export class LanguageServer {
     return this._connection.readyState === 1;
   }
 
-  openDocument(code, sessionId) {
+  openDocument(code) {
     const params = {
       method: "didOpen",
       code: code || "",
-      sessionId: sessionId,
+      sessionId: this.sessionId,
     };
     this.connection.send(JSON.stringify(params));
   }
 
-  syncDocument(code, sessionId) {
+  syncDocument(code) {
     const params = {
       method: "didChange",
       code: code,
-      sessionId: sessionId,
+      sessionId: this.sessionId,
     };
     this.connection.send(JSON.stringify(params));
   }
 
-  requestHover(sequence, row, column, sessionId) {
+  requestHover(sequence, row, column) {
     const params = {
       method: "hover",
       id: sequence,
       row: row,
       column: column,
-      sessionId: sessionId,
+      sessionId: this.sessionId,
     };
     this.connection.send(JSON.stringify(params));
   }
 
-  requestCompletion(sequence, row, column, sessionId) {
+  requestCompletion(sequence, row, column) {
     const params = {
       method: "completion",
       id: sequence,
       row: row,
       column: column,
-      sessionId: sessionId,
+      sessionId: this.sessionId,
     };
     this.connection.send(JSON.stringify(params));
   }
@@ -127,6 +127,10 @@ export class LanguageServer {
     }
   }
 
+  createConnection(endpoint) {
+    return new WebSocket(endpoint);
+  }
+
   get connection() {
     return this._connection;
   }
@@ -151,7 +155,7 @@ export class LanguageServer {
         return;
       }
       setTimeout(function () {
-        connection = connect();
+        connection = this.createConnection(connection.url);
       }, 1000);
     };
 

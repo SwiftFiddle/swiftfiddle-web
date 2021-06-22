@@ -2,69 +2,110 @@
 
 const ESC = "\u001B[";
 
-class Terminal {
-  static moveCursorTo(x, y) {
+export class Console {
+  constructor(container) {
+    this.terminal = new Terminal({
+      theme: {
+        // https://ethanschoonover.com/solarized/
+        brightBlack: "#93a1a1", // base03
+        black: "#073642", // base02
+        brightGreen: "#586e75", // base01
+        brightYellow: "#657b83", // base00
+        brightBlue: "#839496", // base0
+        brightCyan: "#93a1a1", // base1
+        white: "#eee8d5", // base2
+        brightWhite: "#fdf6e3", // base3
+        yellow: "#b58900", // yellow
+        brightRed: "#cb4b16", // orange
+        red: "#dc322f", // red
+        magenta: "#d33682", // magenta
+        brightMagenta: "#6c71c4", // violet
+        blue: "#268bd2", // blue
+        cyan: "#2aa198", // cyan
+        green: "#859900", // green
+        background: "#002b36",
+        foreground: "#93a1a1",
+      },
+      fontFamily: "Menlo,Consolas,sans-serif,monospace",
+      fontSize: 15,
+      lineHeight: 1.1,
+      convertEol: true,
+      cursorStyle: "block",
+      cursorBlink: true,
+      scrollback: 100000,
+    });
+
+    const fitAddon = new FitAddon.FitAddon();
+    this.terminal.loadAddon(fitAddon);
+    this.terminal.open(container);
+    fitAddon.fit();
+
+    this.terminal.write(`\x1b[37mWelcome to SwiftFiddle.\x1b[0m\n`);
+  }
+
+  moveCursorTo(x, y) {
     if (typeof x !== "number") {
       throw new TypeError("The `x` argument is required");
     }
     if (typeof y !== "number") {
-      terminal.write(ESC + (x + 1) + "G");
+      this.terminal.write(ESC + (x + 1) + "G");
     }
-    terminal.write(ESC + (y + 1) + ";" + (x + 1) + "H");
+    this.terminal.write(ESC + (y + 1) + ";" + (x + 1) + "H");
   }
 
-  static cursorUp(count = 1) {
-    terminal.write(ESC + count + "A");
+  cursorUp(count = 1) {
+    this.terminal.write(ESC + count + "A");
   }
 
-  static cursorDown(count = 1) {
-    terminal.write(ESC + count + "B");
+  cursorDown(count = 1) {
+    this.terminal.write(ESC + count + "B");
   }
 
-  static cursorForward(count = 1) {
-    terminal.write(ESC + count + "C");
+  cursorForward(count = 1) {
+    this.terminal.write(ESC + count + "C");
   }
 
-  static cursorBackward(count = 1) {
-    terminal.write(ESC + count + "D");
+  cursorBackward(count = 1) {
+    this.terminal.write(ESC + count + "D");
   }
 
-  static saveCursorPosition() {
-    terminal.write(ESC + "s");
+  saveCursorPosition() {
+    this.terminal.write(ESC + "s");
   }
 
-  static restoreCursorPosition() {
-    terminal.write(ESC + "u");
+  restoreCursorPosition() {
+    this.terminal.write(ESC + "u");
   }
 
-  static hideCursor() {
-    terminal.write(ESC + "?25l");
+  hideCursor() {
+    this.terminal.write(ESC + "?25l");
   }
 
-  static showCursor() {
-    terminal.write(ESC + "?25h");
+  showCursor() {
+    this.terminal.write(ESC + "?25h");
   }
 
-  static eraseLine() {
-    terminal.write("\x1b[2K\r");
+  eraseLine() {
+    this.terminal.write("\x1b[2K\r");
   }
 
-  static eraseLines(count) {
+  eraseLines(count) {
     for (let i = 0; i < count; i++) {
-      terminal.write(`\x1b[1F`);
-      terminal.write("\x1b[2K\r");
+      this.terminal.write(`\x1b[1F`);
+      this.terminal.write("\x1b[2K\r");
     }
   }
 
-  static switchNormalBuffer() {
-    terminal.write("\x9B?47l");
+  switchNormalBuffer() {
+    this.terminal.write("\x9B?47l");
   }
 
-  static switchAlternateBuffer() {
-    terminal.write("\x9B?47h");
+  switchAlternateBuffer() {
+    this.terminal.write("\x9B?47h");
   }
 
-  static showSpinner(message, progress) {
+  showSpinner(message, progress) {
+    const self = this;
     const interval = 200;
     const SPINNER = ["⠋", "⠙", "⠹", "⠸", "⠼", "⠴", "⠦", "⠧", "⠇", "⠏"];
     let spins = 0;
@@ -74,9 +115,9 @@ class Terminal {
       const animationText = `${progressText} ${".".repeat(dotCount)}`;
       const seconds = `${Math.floor(spins / 5)}s`;
       const speces = " ".repeat(
-        terminal.cols - animationText.length - seconds.length
+        self.terminal.cols - animationText.length - seconds.length
       );
-      terminal.write(
+      self.terminal.write(
         // https://gist.github.com/fnky/458719343aabd01cfb17a3a4f7296797#256-colors
         `\x1b[1m\x1b[38;5;111m${animationText}\x1b[0m${speces}${seconds}`
       );
@@ -88,18 +129,30 @@ class Terminal {
     return setInterval(() => {
       this.eraseLine();
       const lines = progress();
-      Terminal.eraseLines(numberOfLines);
+      this.eraseLines(numberOfLines);
       numberOfLines = 0;
       lines.forEach((line) => {
         numberOfLines += line.numberOfLines;
-        terminal.writeln(line.text);
+        this.terminal.writeln(line.text);
       });
       updateSpinner(message);
     }, interval);
   }
 
-  static hideSpinner(cancelToken) {
+  hideSpinner(cancelToken) {
     clearInterval(cancelToken);
     this.eraseLine();
+  }
+
+  write(text) {
+    this.terminal.write(text);
+  }
+
+  clear() {
+    this.terminal.clear();
+  }
+
+  reset() {
+    this.terminal.reset();
   }
 }

@@ -1,16 +1,15 @@
 "use strict";
 
-export const showShareSheet = (editor) => {
+export const showShareSheet = (value) => {
   if ($("#share-sheet").is(":visible")) {
     return;
   }
   reset();
   loading();
 
-  const code = editor.getValue();
   const params = {
     toolchain_version: $("#version-picker").val().replace("/", "_"),
-    code: code,
+    code: value,
   };
   $.post("/shared_link", params, (data, error, xhr) => {
     if (data) {

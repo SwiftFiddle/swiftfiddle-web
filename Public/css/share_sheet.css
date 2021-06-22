@@ -45,6 +45,14 @@ button:focus {
   box-shadow: none !important;
 }
 
+#shared-link {
+  font-family: Menlo, Consolas, sans-serif, monospace;
+}
+
+#embed-snippet {
+  font-family: Menlo, Consolas, sans-serif, monospace;
+}
+
 #shared-link-copy-message {
   font-size: 12px;
   color: #ee5535;
