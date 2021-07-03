@@ -255,7 +255,7 @@ private func handleEmbeddedContent(_ req: Request, _ promise: EventLoopPromise<R
             versions: try VersionGroup.grouped(versions: availableVersions()),
             stableVersion: swiftVersion ?? stableVersion(),
             latestVersion: try latestVersion(),
-            codeSnippet: code,
+            codeSnippet: code.replacingOccurrences(of: #"\"#, with: #"\\"#),
             url: "https://swiftfiddle.com/\(id)",
             foldRanges: foldRanges
         )
