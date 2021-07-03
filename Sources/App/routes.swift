@@ -236,7 +236,7 @@ private func handleImportContent(_ req: Request, _ promise: EventLoopPromise<Res
                 versions: try VersionGroup.grouped(versions: availableVersions()),
                 stableVersion: swiftVersion ?? stableVersion(),
                 latestVersion: try latestVersion(),
-                codeSnippet: code,
+                codeSnippet: code.replacingOccurrences(of: #"\"#, with: #"\\"#),
                 ogpImageUrl: "https://swiftfiddle.com/\(id).png",
                 packageInfo: swiftPackageInfo(req.application)
             )
