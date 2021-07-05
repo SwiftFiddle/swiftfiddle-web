@@ -25,9 +25,7 @@ export class App {
       const promises = [];
       let sequence = 0;
 
-      const languageServer = new LanguageServer(
-        "wss://swiftfiddle-lsp-xcu223fh3a-uc.a.run.app/"
-      );
+      const languageServer = new LanguageServer("wss://lsp.swiftfiddle.com/");
 
       languageServer.onconnect = () => {
         languageServer.openDocument(this.editor.getValue());
