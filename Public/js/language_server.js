@@ -128,6 +128,7 @@ export class LanguageServer {
   }
 
   createConnection(endpoint) {
+    console.log(`Connecting to ${endpoint}`);
     this.sessionId = uuidv4();
     const connection = new WebSocket(endpoint);
 
