@@ -128,6 +128,13 @@ export class LanguageServer {
   }
 
   createConnection(endpoint) {
+    if (
+      this.connection &&
+      (this.connection.readyState === 0 || this.connection.readyState === 1)
+    ) {
+      return this.connection;
+    }
+
     console.log(`Connecting to ${endpoint}`);
     this.sessionId = uuidv4();
     const connection = new WebSocket(endpoint);
@@ -148,9 +155,7 @@ export class LanguageServer {
           case "hidden":
             break;
           case "visible":
-            if (connection.readyState === 2 || connection.readyState === 3) {
-              this.connection = this.createConnection(connection.url);
-            }
+            this.connection = this.createConnection(connection.url);
             break;
         }
       });
@@ -164,9 +169,7 @@ export class LanguageServer {
         return;
       }
       setTimeout(() => {
-        if (connection.readyState === 2 || connection.readyState === 3) {
-          this.connection = this.createConnection(connection.url);
-        }
+        this.connection = this.createConnection(connection.url);
       }, 1000);
     };
 
