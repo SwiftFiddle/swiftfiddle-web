@@ -26,8 +26,7 @@ export class App {
       let sequence = 0;
 
       const languageServer = new LanguageServer(
-        "wss://lsp.swiftfiddle.com/",
-        uuidv4()
+        "wss://swiftfiddle-lsp-xcu223fh3a-uc.a.run.app/"
       );
 
       languageServer.onconnect = () => {

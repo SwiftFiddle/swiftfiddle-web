@@ -12,7 +12,7 @@ func routes(_ app: Application) throws {
                 versions: try VersionGroup.grouped(versions: availableVersions()),
                 stableVersion: stableVersion(),
                 latestVersion: try latestVersion(),
-                codeSnippet: defaultCodeSnippet,
+                codeSnippet: defaultCodeSnippet.replacingOccurrences(of: #"\"#, with: #"\\"#),
                 ogpImageUrl: "./default_ogp.jpeg",
                 packageInfo: swiftPackageInfo(app)
             )

@@ -1,10 +1,10 @@
 "use strict";
 
+import { uuidv4 } from "./uuid.js";
+
 export class LanguageServer {
-  constructor(endpoint, sessionId) {
-    const connection = this.createConnection(endpoint);
-    this.connection = connection;
-    this.sessionId = sessionId;
+  constructor(endpoint) {
+    this.connection = this.createConnection(endpoint);
 
     this.onconnect = () => {};
     this.onready = () => {};
@@ -12,7 +12,7 @@ export class LanguageServer {
   }
 
   get isReady() {
-    return this._connection.readyState === 1;
+    return this.connection.readyState === 1;
   }
 
   openDocument(code) {
@@ -128,17 +128,11 @@ export class LanguageServer {
   }
 
   createConnection(endpoint) {
-    return new WebSocket(endpoint);
-  }
-
-  get connection() {
-    return this._connection;
-  }
-
-  set connection(connection) {
-    this._connection = connection;
+    this.sessionId = uuidv4();
+    const connection = new WebSocket(endpoint);
 
     connection.onopen = () => {
+      console.log(`Language Server connected (${connection.readyState}).`);
       this.onconnect();
       const cancelToken = setInterval(() => {
         if (connection.readyState !== 1) {
@@ -147,20 +141,36 @@ export class LanguageServer {
         }
         connection.send("ping");
       }, 10000);
+
+      document.addEventListener("visibilitychange", () => {
+        switch (document.visibilityState) {
+          case "hidden":
+            break;
+          case "visible":
+            if (connection.readyState === 2 || connection.readyState === 3) {
+              this.connection = this.createConnection(connection.url);
+            }
+            break;
+        }
+      });
     };
 
     connection.onclose = (event) => {
-      console.log(`Socket is closed (${event.code}). ${event.reason}`);
+      console.log(
+        `Language Server disconnected (${event.code}). ${event.reason}`
+      );
       if (event.code !== 1006) {
         return;
       }
       setTimeout(() => {
-        connection = this.createConnection(connection.url);
+        if (connection.readyState === 2 || connection.readyState === 3) {
+          this.connection = this.createConnection(connection.url);
+        }
       }, 1000);
     };
 
     connection.onerror = (event) => {
-      console.error(`Socket encountered error: ${event.message}`);
+      console.error(`Language Server error: ${event.message}`);
       connection.close();
     };
 
@@ -168,6 +178,7 @@ export class LanguageServer {
       const response = JSON.parse(event.data);
       this.onresponse(response);
     };
+    return connection;
   }
 
   close() {
