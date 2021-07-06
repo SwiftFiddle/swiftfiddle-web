@@ -17,7 +17,7 @@ let package = Package(
         .package(url: "https://github.com/taketo1024/swm-homology", from: "1.3.0"),
         .package(url: "https://github.com/taketo1024/swm-khovanov", from: "1.1.5"),
         .package(url: "https://github.com/taketo1024/swm-knots", from: "1.1.0"),
-        .package(url: "https://github.com/taketo1024/swm-kr", from: "0.3.3"),
+        .package(url: "https://github.com/taketo1024/swm-kr", from: "0.4.3"),
         .package(url: "https://github.com/taketo1024/swm-matrix-tools", from: "1.3.0"),
     ],
     targets: [
