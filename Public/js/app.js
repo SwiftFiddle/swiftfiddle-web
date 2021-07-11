@@ -303,9 +303,9 @@ export class App {
     };
 
     const runner = new Runner();
-    runner.onmessage = () => {
+    runner.onmessage = (message) => {
       altBuffer.length = 0;
-      altBuffer.push(...this.parseMessage(e.data));
+      altBuffer.push(...this.parseMessage(message));
     };
 
     runner.run(params, (buffer, stderr) => {

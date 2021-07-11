@@ -6,9 +6,9 @@ export class Runner {
   }
 
   run(params, completion) {
-    const connection = new WebSocket(webSocketEndpoint(`${params.nonce}/run`));
-    connection.onmessage = (e) => {
-      this.onmessage();
+    const connection = new WebSocket(webSocketEndpoint(`${params._nonce}/run`));
+    connection.onmessage = (event) => {
+      this.onmessage(event.data);
     };
 
     const startTime = performance.now();

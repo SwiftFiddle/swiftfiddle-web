@@ -132,7 +132,7 @@ export class Console {
       this.eraseLines(numberOfLines);
       numberOfLines = 0;
       lines.forEach((line) => {
-        numberOfLines += line.numberOfLines;
+        numberOfLines += 1;
         this.terminal.writeln(line.text);
       });
       updateSpinner(message);
