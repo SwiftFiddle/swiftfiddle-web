@@ -13,12 +13,6 @@ let package = Package(
         .package(url: "https://github.com/apple/swift-crypto", from: "1.1.6"),
         .package(url: "https://github.com/apple/swift-numerics", from: "0.1.0"),
         .package(url: "https://github.com/apple/swift-system", from: "0.0.2"),
-        .package(url: "https://github.com/taketo1024/swm-core", from:"1.2.6"),
-        .package(url: "https://github.com/taketo1024/swm-homology", from: "1.3.0"),
-        .package(url: "https://github.com/taketo1024/swm-khovanov", from: "1.1.5"),
-        .package(url: "https://github.com/taketo1024/swm-knots", from: "1.1.0"),
-        .package(url: "https://github.com/taketo1024/swm-kr", from: "0.3.3"),
-        .package(url: "https://github.com/taketo1024/swm-matrix-tools", from: "1.3.0"),
     ],
     targets: [
         .target(
@@ -30,12 +24,6 @@ let package = Package(
                 .product(name: "Crypto", package: "swift-crypto"),
                 .product(name: "Numerics", package: "swift-numerics"),
                 .product(name: "SystemPackage", package: "swift-system"),
-                .product(name: "SwmCore", package: "swm-core"),
-                .product(name: "SwmHomology", package: "swm-homology"),
-                .product(name: "SwmKhovanov", package: "swm-khovanov"),
-                .product(name: "SwmKnots", package: "swm-knots"),
-                .product(name: "SwmKR", package: "swm-kr"),
-                .product(name: "SwmMatrixTools", package: "swm-matrix-tools"),
             ],
             swiftSettings: [
                 .unsafeFlags(["-cross-module-optimization"], .when(configuration: .release)),

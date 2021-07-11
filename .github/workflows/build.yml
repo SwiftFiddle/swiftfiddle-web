@@ -22,6 +22,7 @@ jobs:
 
           (cd swift-docker/5.4 && docker build --rm --tag kishikawakatsumi/swift:5.4 . && docker push kishikawakatsumi/swift:5.4)
           (cd swift-docker/5.4.1 && docker build --rm --tag kishikawakatsumi/swift:5.4.1 . && docker push kishikawakatsumi/swift:5.4.1)
+          (cd swift-docker/5.4.2 && docker build --rm --tag kishikawakatsumi/swift:5.4.2 . && docker push kishikawakatsumi/swift:5.4.2)
 
           sh scripts/update_installed_swift_packages.sh
 
