@@ -114,6 +114,7 @@ export class Console {
 
   showSpinner(message, progress) {
     const self = this;
+    const start = +new Date();
     const interval = 200;
     const SPINNER = ["⠋", "⠙", "⠹", "⠸", "⠼", "⠴", "⠦", "⠧", "⠇", "⠏"];
     let spins = 0;
@@ -121,7 +122,8 @@ export class Console {
       const progressText = `${SPINNER[spins % SPINNER.length]} ${message}`;
       const dotCount = Math.floor((spins * 2) / 4) % 4;
       const animationText = `${progressText} ${".".repeat(dotCount)}`;
-      const seconds = `${Math.floor(spins / 5)}s`;
+      const end = +new Date();
+      const seconds = `${Math.floor((end - start) / 1000)}s`;
       const speces = " ".repeat(
         self.terminal.cols - animationText.length - seconds.length
       );

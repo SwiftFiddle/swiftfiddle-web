@@ -162,9 +162,7 @@ export class LanguageServer {
     };
 
     connection.onclose = (event) => {
-      console.log(
-        `Language Server disconnected (${event.code}). ${event.reason}`
-      );
+      console.log(`Language Server disconnected (${event.code}).`);
       if (event.code !== 1006) {
         return;
       }

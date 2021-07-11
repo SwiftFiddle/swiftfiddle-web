@@ -6,10 +6,9 @@ export class Runner {
   }
 
   run(params, completion) {
-    const connection = new WebSocket(webSocketEndpoint(`${params._nonce}/run`));
-    connection.onmessage = (event) => {
-      this.onmessage(event.data);
-    };
+    this.connection = this.createConnection(
+      webSocketEndpoint(`${params._nonce}/run`)
+    );
 
     const startTime = performance.now();
     $.post("/run", params)
@@ -74,13 +73,63 @@ export class Runner {
 
         completion(buffer, data.errors);
       })
-      .fail(function (response) {
+      .fail((response) => {
         completion([]);
         alert(`[Status: ${response.status}] Something went wrong`);
       })
-      .always(function () {
-        connection.close();
+      .always(() => {
+        this.connection.close();
+        this.connection = null;
       });
+  }
+
+  createConnection(endpoint) {
+    if (
+      this.connection &&
+      (this.connection.readyState === 0 || this.connection.readyState === 1)
+    ) {
+      return this.connection;
+    }
+
+    console.log(`Connecting to ${endpoint}`);
+    const connection = new WebSocket(endpoint);
+
+    connection.onopen = () => {
+      console.log(`WebSocket connection opened (${connection.readyState}).`);
+
+      document.addEventListener("visibilitychange", () => {
+        switch (document.visibilityState) {
+          case "hidden":
+            break;
+          case "visible":
+            if (this.connection) {
+              this.connection = this.createConnection(connection.url);
+            }
+            break;
+        }
+      });
+    };
+
+    connection.onclose = (event) => {
+      console.log(`WebSocket connection closed (${event.code}).`);
+      if (event.code !== 1006) {
+        return;
+      }
+      setTimeout(() => {
+        this.connection = this.createConnection(connection.url);
+      }, 1000);
+    };
+
+    connection.onerror = (event) => {
+      console.error(`WebSocket connection error (${event.message}).`);
+      connection.close();
+    };
+
+    connection.onmessage = (event) => {
+      this.onmessage(event.data);
+    };
+
+    return connection;
   }
 }
 
