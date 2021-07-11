@@ -61,9 +61,9 @@ services:
       - /var/run/docker.sock:/tmp/docker.sock:ro
     restart: always
 
-  swift-5.4.1:
-    image: kishikawakatsumi/swift:5.4.1
-    container_name: swift-5.4.1
+  swift-5.4.2:
+    image: kishikawakatsumi/swift:5.4.2
+    container_name: swift-5.4.2
 
 volumes:
   vhost:
