@@ -302,7 +302,7 @@ export class App {
       _nonce: uuidv4(),
     };
 
-    const runner = new Runner();
+    const runner = new Runner(this.console);
     runner.onmessage = (message) => {
       altBuffer.length = 0;
       altBuffer.push(...this.parseMessage(message));

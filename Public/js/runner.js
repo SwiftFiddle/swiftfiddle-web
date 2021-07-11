@@ -1,7 +1,8 @@
 "use strict";
 
 export class Runner {
-  constructor() {
+  constructor(console) {
+    this.console = console;
     this.onmessage = () => {};
   }
 
@@ -12,7 +13,7 @@ export class Runner {
 
     const startTime = performance.now();
     $.post("/run", params)
-      .done(function (data) {
+      .done((data) => {
         const endTime = performance.now();
         const execTime = ` ${((endTime - startTime) / 1000).toFixed(0)}s`;
 
@@ -30,7 +31,7 @@ export class Runner {
             .split("\n")
             .map((line, i) => {
               // prettier-ignore
-              const padding = terminal.cols - line.length - timestamp.length - execTime.length;
+              const padding = this.console.cols - line.length - timestamp.length - execTime.length;
               let _1 = "";
               if (padding < 0) {
                 _1 = `\x1b[0m${timestamp}${execTime}\n`;
