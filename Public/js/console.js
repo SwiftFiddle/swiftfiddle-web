@@ -43,6 +43,14 @@ export class Console {
     this.terminal.write(`\x1b[37mWelcome to SwiftFiddle.\x1b[0m\n`);
   }
 
+  get rows() {
+    return this.terminal.rows;
+  }
+
+  get cols() {
+    return this.terminal.cols;
+  }
+
   moveCursorTo(x, y) {
     if (typeof x !== "number") {
       throw new TypeError("The `x` argument is required");
@@ -131,9 +139,9 @@ export class Console {
       const lines = progress();
       this.eraseLines(numberOfLines);
       numberOfLines = 0;
-      lines.forEach((line) => {
-        numberOfLines += 1;
-        this.terminal.writeln(line.text);
+      lines.forEach((buffer) => {
+        numberOfLines += buffer.numberOfLines;
+        this.terminal.writeln(buffer.text);
       });
       updateSpinner(message);
     }, interval);
