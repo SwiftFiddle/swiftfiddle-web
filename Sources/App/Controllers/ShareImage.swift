@@ -1,7 +1,7 @@
 import Vapor
 
 struct ShareImage {
-    static func image(client: Client, from code: String) throws -> EventLoopFuture<ByteBuffer?> {
+    static func generate(client: Client, from code: String) throws -> EventLoopFuture<ByteBuffer?> {
         return client.post("https://carbon.now.sh/api/image", headers: ["Origin": "https://swiftfiddle.com"]) {
             let code = code
                 .replacingOccurrences(of: #"\"#, with: #"\\"#)
@@ -49,7 +49,8 @@ struct ShareImage {
         .map {$0.body }
         .optionalFlatMapThrowing {
             guard let response = $0.getString(at: 0, length: $0.readableBytes, encoding: .utf8) else { return nil }
-            guard let data = Data(base64Encoded: response.replacingOccurrences( of: "data:image/png;base64,", with: "")) else { return nil }
+            let base64Encoded = response.replacingOccurrences( of: "data:image/png;base64,", with: "")
+            guard let data = Data(base64Encoded: base64Encoded, options: []) else { return nil }
             return ByteBuffer(data: data)
         }
     }

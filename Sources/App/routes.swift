@@ -10,7 +10,7 @@ func routes(_ app: Application) throws {
                 versions: try VersionGroup.grouped(versions: availableVersions()),
                 stableVersion: stableVersion(),
                 latestVersion: try latestVersion(),
-                codeSnippet: defaultCodeSnippet.replacingOccurrences(of: #"\"#, with: #"\\"#),
+                codeSnippet: escape(defaultCodeSnippet),
                 ogpImageUrl: "./default_ogp.jpeg",
                 packageInfo: swiftPackageInfo(app)
             )
@@ -213,7 +213,7 @@ private func handleImportContent(_ req: Request, _ promise: EventLoopPromise<Res
                                  _ id: String, _ code: String, _ swiftVersion: String?) throws {
     let path = req.url.path
     if path.hasSuffix(".png") {
-        return try ShareImage.image(client: req.client, from: code)
+        return try ShareImage.generate(client: req.client, from: code)
             .flatMapThrowing {
                 guard let buffer = $0 else { throw Abort(.notFound) }
                 return Response(status: .ok, headers: ["Content-Type": "image/png"], body: Response.Body(buffer: buffer))
@@ -226,7 +226,7 @@ private func handleImportContent(_ req: Request, _ promise: EventLoopPromise<Res
                 versions: try VersionGroup.grouped(versions: availableVersions()),
                 stableVersion: swiftVersion ?? stableVersion(),
                 latestVersion: try latestVersion(),
-                codeSnippet: code.replacingOccurrences(of: #"\"#, with: #"\\"#),
+                codeSnippet: escape(code),
                 ogpImageUrl: "https://swiftfiddle.com/\(id).png",
                 packageInfo: swiftPackageInfo(req.application)
             )
@@ -245,7 +245,7 @@ private func handleEmbeddedContent(_ req: Request, _ promise: EventLoopPromise<R
             versions: try VersionGroup.grouped(versions: availableVersions()),
             stableVersion: swiftVersion ?? stableVersion(),
             latestVersion: try latestVersion(),
-            codeSnippet: code.replacingOccurrences(of: #"\"#, with: #"\\"#),
+            codeSnippet: escape(code),
             url: "https://swiftfiddle.com/\(id)",
             foldRanges: foldRanges
         )
@@ -291,3 +291,8 @@ print(greet("World"))
 print(greet("Swift"))
 
 """#
+
+private func escape(_ s: String) -> String {
+    s.replacingOccurrences(of: #"\"#, with: #"\\"#)
+        .replacingOccurrences(of: #"`"#, with: #"\`"#)
+}
