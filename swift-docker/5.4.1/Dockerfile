@@ -55,4 +55,4 @@ RUN set -e; \
     && apt-get purge --auto-remove -y curl
 
 COPY ./_Packages/ ./swiftfiddle.com/_Packages/
-RUN cd ./swiftfiddle.com/_Packages/ && swift build -c release -j 1
+RUN cd ./swiftfiddle.com/_Packages/ && swift build -c release

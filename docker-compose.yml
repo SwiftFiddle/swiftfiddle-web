@@ -7,7 +7,6 @@ services:
     container_name: swift-playground
     depends_on:
       - nginx-proxy
-      - carbonara
     env_file:
       - .env
     environment:
@@ -31,17 +30,6 @@ services:
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
       - $PWD/Resources/Temp:/app/Resources/Temp
-    links:
-      - carbonara
-    restart: always
-
-  carbonara:
-    image: petersolopov/carbonara
-    container_name: carbonara
-    ports:
-      - 3000:3000
-    cap_add:
-      - SYS_ADMIN
     restart: always
 
   nginx-proxy:
