@@ -168,10 +168,10 @@ services:
     image: kishikawakatsumi/swift:4.1.2
     container_name: swift-4.1.2
   swift-4.1.1:
-    image: kishikawakatsumi/swift:4.1.1
+    image: kishikawakatsumi/swift:4.1.2
     container_name: swift-4.1.1
   swift-4.1:
-    image: kishikawakatsumi/swift:4.1
+    image: kishikawakatsumi/swift:4.2
     container_name: swift-4.1
   swift-4.0.3:
     image: swift:4.0.3
@@ -180,7 +180,7 @@ services:
     image: swift:4.0.2
     container_name: swift-4.0.2
   swift-4.0:
-    image: kishikawakatsumi/swift:4.0
+    image: kishikawakatsumi/swift:4.2
     container_name: swift-4.0
   swift-3.1.1:
     image: swift:3.1.1
