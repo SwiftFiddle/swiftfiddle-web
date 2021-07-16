@@ -9,7 +9,7 @@
     integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
 
   <link rel="stylesheet"
-    href="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.26.0/min/vs/editor/editor.main.min.css"
+    href="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.26.1/min/vs/editor/editor.main.min.css"
     integrity="sha512-6QJjjmSuXLrx2GcvQVqsRtxCT/GSs5fxWjjy8SoNjYoK7IA8PaTCMlHuny9djmpBeUf7+6VCRNf9pn6kWCwzog=="
     crossorigin="anonymous" referrerpolicy="no-referrer" />
 
@@ -94,7 +94,7 @@
   <script src="https://cdn.jsdelivr.net/npm/xterm@4.12.0/lib/xterm.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/xterm-addon-fit@0.5.0/lib/xterm-addon-fit.min.js"></script>
 
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.26.0/min/vs/loader.min.js"
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.26.1/min/vs/loader.min.js"
     integrity="sha512-SExj71Cw3B9C9EE8BC/ad3AKia5zQXDj/2SM4THgkeKh5GIFZhKM/R3uclUG8YZwJrjcVhydAlIHmfNvsBCKZA=="
     crossorigin="anonymous" referrerpolicy="no-referrer"></script>
   <script type="module">
