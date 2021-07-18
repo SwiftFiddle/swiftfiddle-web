@@ -123,62 +123,6 @@ func routes(_ app: Application) throws {
         }
     }
 
-    app.on(.POST, "run", body: .collect(maxSize: "10mb")) { (req) -> EventLoopFuture<ExecutionResponse> in
-        let parameter = try req.content.decode(ExecutionRequestParameter.self)
-        let runner = try Runner(parameter: parameter)
-
-        let promise = req.eventLoop.makePromise(of: ExecutionResponse.self)
-        try runner.run(
-            application: app,
-            onComplete: { (response) in
-                promise.succeed(response)
-            },
-            onTimeout: { (response) in
-                promise.succeed(response)
-            }
-        )
-
-        return promise.futureResult
-    }
-
-    app.webSocket("ws", ":nonce", "run") { (req, ws) in
-        guard let nonce = req.parameters.get("nonce") else {
-            _ = ws.close()
-            return
-        }
-
-        let timer = DispatchSource.makeTimerSource()
-        timer.setEventHandler {
-            guard let path = WorkingDirectoryRegistry.shared.get(prefix: nonce) else { return }
-
-            let completedPath = path.appendingPathComponent("completed")
-            let stdoutPath = path.appendingPathComponent("stdout")
-            let stderrPath = path.appendingPathComponent("stderr")
-            let versionPath = path.appendingPathComponent("version")
-
-            guard let version = (try? String(contentsOf: versionPath)) else { return }
-
-            let stdout = (try? String(contentsOf: stdoutPath)) ?? ""
-            let stderr = (try? String(contentsOf: stderrPath)) ?? ""
-
-            let encoder = JSONEncoder()
-            if let response = try? String(data: encoder.encode(ExecutionResponse(output: stdout, errors: stderr, version: version)), encoding: .utf8) {
-                ws.send(response)
-            }
-
-            if let _ = (try? String(contentsOf: completedPath)) {
-                timer.cancel()
-                _ = ws.close()
-            }
-        }
-        timer.schedule(deadline: .now() + .milliseconds(200), repeating: .milliseconds(200))
-        timer.resume()
-
-        _ = ws.onClose.always { _ in
-            timer.cancel()
-        }
-    }
-
     app.on(.POST, "shared_link", body: .collect(maxSize: "10mb")) { (req) -> EventLoopFuture<[String: String]> in
         let parameter = try req.content.decode(SharedLinkRequestParameter.self)
         let code = parameter.code

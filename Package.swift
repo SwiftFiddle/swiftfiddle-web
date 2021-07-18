@@ -9,7 +9,6 @@ let package = Package(
     dependencies: [
         .package(url: "https://github.com/vapor/vapor.git", from: "4.48.2"),
         .package(url: "https://github.com/vapor/leaf.git", from: "4.1.2"),
-        .package(url: "https://github.com/apple/swift-tools-support-core.git", from: "0.2.3"),
     ],
     targets: [
         .target(
@@ -17,7 +16,6 @@ let package = Package(
             dependencies: [
                 .product(name: "Vapor", package: "vapor"),
                 .product(name: "Leaf", package: "leaf"),
-                .product(name: "SwiftToolsSupport-auto", package: "swift-tools-support-core"),
             ],
             swiftSettings: [
                 .unsafeFlags(["-cross-module-optimization"], .when(configuration: .release)),

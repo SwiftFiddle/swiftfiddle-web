@@ -8,11 +8,13 @@ export class Runner {
 
   run(params, completion) {
     this.connection = this.createConnection(
-      webSocketEndpoint(`${params._nonce}/run`)
+      webSocketEndpoint(
+        `runner/${params.toolchain_version}/logs/${params._nonce}`
+      )
     );
 
     const startTime = performance.now();
-    $.post("/run", params)
+    $.post(`/runner/${params.toolchain_version}/run`, params)
       .done((data) => {
         const endTime = performance.now();
         const execTime = ` ${((endTime - startTime) / 1000).toFixed(0)}s`;
@@ -137,5 +139,5 @@ export class Runner {
 function webSocketEndpoint(path) {
   const location = window.location;
   // prettier-ignore
-  return `${location.protocol === "https:" ? "wss:" : "ws:"}//${location.host}/ws/${path}`
+  return `${location.protocol === "https:" ? "wss:" : "ws:"}//${location.host}/${path}`
 }

@@ -1,29 +1,33 @@
 import Foundation
-import TSCBasic
 
 func latestVersion() throws -> String { try availableVersions()[0] }
 func stableVersion() -> String { "5.4.2" }
 
 func availableVersions() throws -> [String] {
-    let process = Process(args: "docker", "images", "--filter=reference=swift", "--filter=reference=*/swift", "--format", "{{.Tag}}")
-    try process.launch()
-    let output = try process.waitUntilExit().utf8Output()
-    guard !output.isEmpty else  { return [stableVersion()] }
-
-    let versions = Set(output.split(separator: "\n").map { $0.replacingOccurrences(of: "-bionic", with: "").replacingOccurrences(of: "-focal", with: "").replacingOccurrences(of: "-slim", with: "").replacingOccurrences(of: "snapshot-", with: "") }).sorted(by: >)
-    return versions.isEmpty ? [stableVersion()] : versions
-}
-
-func imageTag(for prefix: String) throws -> String? {
-    let process = Process(args: "docker", "images", "--filter=reference=swift", "--filter=reference=*/swift", "--format", "{{.Tag}} {{.Repository}}:{{.Tag}}")
-    try process.launch()
-    let output = try process.waitUntilExit().utf8Output()
-    guard !output.isEmpty else  { return nil }
-
-    return output
-        .split(separator: "\n")
-        .sorted()
-        .filter { $0.replacingOccurrences(of: "snapshot-", with: "").starts(with: prefix) }
-        .map { String($0.split(separator: " ")[1]) }
-        .first
+    [
+        "5.4.2",
+        "5.4.1",
+        "5.4",
+        "5.3.3",
+        "5.3.2",
+        "5.3.1",
+        "5.3",
+        "5.2",
+        "5.1",
+        "5.0",
+        "4.2",
+        "4.1.2",
+        "4.1.1",
+        "4.1",
+        "4.0",
+        "3.1",
+        "3.0.1",
+        "3.0",
+        "2.2.1",
+        "2.2",
+        "nightly-main",
+        "nightly-5.5",
+        "nightly-5.4",
+        "nightly-5.3",
+    ]
 }
