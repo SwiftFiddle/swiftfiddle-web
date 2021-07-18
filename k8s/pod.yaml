@@ -26,9 +26,32 @@ spec:
     metadata:
       labels:
         app.kubernetes.io/name: web-frontend
+      annotations:
+        commit_sha: 8b6b9ef0eb4d4f4493774713cbcbcbec0d65b7c5
     spec:
       containers:
         - image: swiftfiddle/web-frontend:latest
           name: web-frontend
+          imagePullPolicy: Always
           ports:
             - containerPort: 8080
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 8080
+          env:
+            - name: FIREBASE_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: credentials
+                  key: FIREBASE_API_KEY
+            - name: FIREBASE_REFRESH_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: credentials
+                  key: FIREBASE_REFRESH_TOKEN
+            - name: GOOGLE_CLOUD_PLATFORM_PROJECT_ID
+              valueFrom:
+                secretKeyRef:
+                  name: credentials
+                  key: GOOGLE_CLOUD_PLATFORM_PROJECT_ID
