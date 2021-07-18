@@ -1,4 +1,3 @@
 .build/
 .swiftpm/
 swift-docker
-gce
