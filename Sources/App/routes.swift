@@ -1,6 +1,8 @@
 import Vapor
 
 func routes(_ app: Application) throws {
+    app.get("health") { _ in ["status": "pass"] }
+
     app.get { (req) in try index(req) }
     app.get("index.html") { (req) in try index(req) }
     func index(_ req: Request) throws -> EventLoopFuture<View> {
