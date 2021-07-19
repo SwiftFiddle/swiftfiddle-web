@@ -153,6 +153,11 @@ func routes(_ app: Application) throws {
     }
 
     app.get("versions") { (req) in try availableVersions() }
+
+    app.on(.POST, "run", body: .collect(maxSize: "10mb")) { (req) -> Response in
+        let parameter = try req.content.decode(ExecutionRequestParameter.self)
+        return req.redirect(to: "/runner/\(parameter.toolchain_version ?? stableVersion())/run", type: .temporary)
+    }
 }
 
 private func handleImportContent(_ req: Request, _ promise: EventLoopPromise<Response>,
