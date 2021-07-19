@@ -5,6 +5,10 @@ func stableVersion() -> String { "5.4.2" }
 
 func availableVersions() throws -> [String] {
     [
+        "nightly-main",
+        "nightly-5.5",
+        "nightly-5.4",
+        "nightly-5.3",
         "5.4.2",
         "5.4.1",
         "5.4",
@@ -25,9 +29,5 @@ func availableVersions() throws -> [String] {
         "3.0",
         "2.2.1",
         "2.2",
-        "nightly-main",
-        "nightly-5.5",
-        "nightly-5.4",
-        "nightly-5.3",
     ]
 }
