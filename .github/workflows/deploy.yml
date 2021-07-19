@@ -73,7 +73,7 @@ jobs:
           set -ex
 
           commit_sha=$(git rev-parse HEAD)
-          sed -i "s/%COMMIT_SHA%/$commit_sha/g;" "k8s/pod.yaml"
+          sed "s/%COMMIT_SHA%/$commit_sha/g;" "k8s/pod_template.yaml" > "k8s/pod.yaml"
 
           kubectl apply -f k8s/pod.yaml
 
