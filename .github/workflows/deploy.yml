@@ -2,67 +2,99 @@ name: Deploy
 on:
   push:
     branches: [master]
-  schedule:
-    - cron: "0 15 * * *"
   workflow_dispatch:
 
+env:
+  PROJECT_ID: ${{ secrets.GCP_PROJECT }}
+  GCP_SA_KEY: ${{ secrets.GCP_SA_KEY }}
+  GKE_CLUSTER: swiftfiddle-cluster
+  GKE_ZONE: us-central1-c
+  DOCKER_HUB_USERNAME: ${{ secrets.DOCKER_HUB_USERNAME }}
+  DOCKER_HUB_ACCESS_TOKEN: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
+  CLOUDFLARE_EMAIL: ${{ secrets.CLOUDFLARE_EMAIL }}
+  CLOUDFLARE_API_KEY: ${{ secrets.CLOUDFLARE_API_KEY }}
+  CLOUDFLARE_ZONE_ID: ${{ secrets.CLOUDFLARE_ZONE_ID }}
+
 jobs:
-  deploy:
+  build:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+
+      - name: Update Package.json
+        run: |
+          set -ex
+
+          tempdir=$(mktemp -d)
+          curl -sfL -o "$tempdir/Package.swift" https://raw.github.com/kishikawakatsumi/swiftfiddle-lsp/main/Resources/ProjectTemplate/Package.swift
+          swift package --package-path "$tempdir" dump-package > Resources/Views/Package.json
+
+          git config --global user.name "${GITHUB_ACTOR}"
+          git config --global user.email "${GITHUB_ACTOR}@users.noreply.github.com"
+
+          git add Resources/Views/Package.json
+          git commit -m 'Update Package.json'
+          git push origin main
+
+      - name: Login to DockerHub
+        uses: docker/login-action@v1
+        with:
+          username: ${{ env.DOCKER_HUB_USERNAME }}
+          password: ${{ env.DOCKER_HUB_ACCESS_TOKEN }}
+
+      - name: Build and Push Docker Images
+        run: |
+          set -ex
+
+          docker build --rm --tag swiftfiddle/web-frontend:latest .
+          docker push swiftfiddle/web-frontend:latest
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Setup Cloud SDK
+        uses: google-github-actions/setup-gcloud@v0.2.1
+        with:
+          project_id: ${{ env.PROJECT_ID }}
+          service_account_key: ${{ env.GCP_SA_KEY }}
+          export_default_credentials: true
+
+      - uses: google-github-actions/get-gke-credentials@v0.2.1
+        with:
+          cluster_name: ${{ env.GKE_CLUSTER }}
+          location: ${{ env.GKE_ZONE }}
+          credentials: ${{ env.GCP_SA_KEY }}
+
       - name: Deploy
         run: |
           set -ex
 
-          mkdir -p ~/.ssh
-          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
-          chmod 600 ~/.ssh/id_rsa
+          commit_sha=$(git rev-parse HEAD)
+          sed "s/%COMMIT_SHA%/$commit_sha/g;" "k8s/pod.yaml" > "k8s/pod.yaml"
+          kubectl apply -f k8s/pod.yaml
 
-          export TERM=xterm
+          kubectl rollout status deployment/web-frontend
+          kubectl get services -o wide
 
-          ssh -t -t -o 'StrictHostKeyChecking no' "${{ secrets.SSH_LOGIN_USER }}@${{ secrets.SSH_HOST }}" \
-            "grep "^docker:" /etc/group | sed -e 's/^[^:]\+:[^:]\+:\([^:]\+\):[^:]\+$/\1/g'" > gid
+          git config --global user.name "${GITHUB_ACTOR}"
+          git config --global user.email "${GITHUB_ACTOR}@users.noreply.github.com"
 
-          REMOTE_DOCKER_GID=$(echo $(tail -n 1 gid) | sed -e 's/\r//g')
+          git add k8s/pod.yaml
+          git commit -m "Update k8s/pod.yaml"
+          git push origin main
 
-          docker login --username ${{ secrets.DOCKER_HUB_USERNAME }} --password ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
-          docker build \
-            --build-arg \
-              HOST_DOCKER_GROUP_ID=$REMOTE_DOCKER_GID \
-            --rm --no-cache --tag kishikawakatsumi/swift-playground .
-          docker push kishikawakatsumi/swift-playground
-
-          ssh -t -t -o 'StrictHostKeyChecking no' "${{ secrets.SSH_LOGIN_USER }}@${{ secrets.SSH_HOST }}" <<EOF
-          set -ex
-
-          [ -d app ] || git clone https://github.com/kishikawakatsumi/swift-playground.git app
-
-          cd app
-          git pull --rebase origin master
-
-          sudo chmod 666 /var/run/docker.sock
-          chmod 773 Resources/Temp
-
-          echo GOOGLE_CLOUD_PLATFORM_PROJECT_ID=${{ secrets.GOOGLE_CLOUD_PLATFORM_PROJECT_ID }} > .env
-          echo FIREBASE_API_KEY=${{ secrets.FIREBASE_API_KEY }} >> .env
-          echo FIREBASE_REFRESH_TOKEN=${{ secrets.FIREBASE_REFRESH_TOKEN }} >> .env
-
-          docker_compose='docker run --rm -v /var/run/docker.sock:/var/run/docker.sock -v "\$PWD:\$PWD" -w="\$PWD" docker/compose:latest'
-          eval \$docker_compose --file docker-compose.production.yml pull
-          eval \$docker_compose --file docker-compose.production.yml up --detach app nginx-proxy acme-companion
-
-          docker image prune --force
-
-          exit 0
-          EOF
-
+  purge_cache:
+    runs-on: ubuntu-latest
+    needs: deploy
+    steps:
       - name: Purge Cache
         run: |
-          set -ex
-          curl -X POST "https://api.cloudflare.com/client/v4/zones/${{ secrets.CLOUDFLARE_ZONE_ID }}/purge_cache" \
-            -H "X-Auth-Email: ${{ secrets.CLOUDFLARE_EMAIL }}" \
-            -H "X-Auth-Key: ${{ secrets.CLOUDFLARE_API_KEY }}" \
+          curl -X POST "https://api.cloudflare.com/client/v4/zones/${{ env.CLOUDFLARE_ZONE_ID }}/purge_cache" \
+            -H "X-Auth-Email: ${{ env.CLOUDFLARE_EMAIL }}" \
+            -H "X-Auth-Key: ${{ env.CLOUDFLARE_API_KEY }}" \
             -H "Content-Type:application/json" \
             --data '{"purge_everything":true}'
 

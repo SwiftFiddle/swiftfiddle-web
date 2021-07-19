@@ -1,6 +1,6 @@
 import Vapor
 
-private let projectId = Environment.get("GOOGLE_CLOUD_PLATFORM_PROJECT_ID")!
+private let projectId = Environment.get("GCP_PROJECT")!
 private let apiKey = Environment.get("FIREBASE_API_KEY")!
 private let refreshToken = Environment.get("FIREBASE_REFRESH_TOKEN")!
 

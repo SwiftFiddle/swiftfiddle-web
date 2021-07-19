@@ -81,22 +81,26 @@
       "url" : "https://github.com/apple/swift-system"
     }
   ],
-  "name" : "_Packages",
+  "name" : "App",
   "packageKind" : "root",
   "pkgConfig" : null,
   "platforms" : [
+    {
+      "options" : [
 
+      ],
+      "platformName" : "macos",
+      "version" : "10.15"
+    }
   ],
   "products" : [
     {
-      "name" : "_Packages",
+      "name" : "App",
       "targets" : [
-        "_Packages"
+        "App"
       ],
       "type" : {
-        "library" : [
-          "dynamic"
-        ]
+        "executable" : null
       }
     }
   ],
@@ -151,29 +155,17 @@
       "exclude" : [
 
       ],
-      "name" : "_Packages",
+      "name" : "App",
       "resources" : [
 
       ],
       "settings" : [
-        {
-          "condition" : {
-            "config" : "release",
-            "platformNames" : [
 
-            ]
-          },
-          "name" : "unsafeFlags",
-          "tool" : "swift",
-          "value" : [
-            "-cross-module-optimization"
-          ]
-        }
       ],
-      "type" : "regular"
+      "type" : "executable"
     }
   ],
   "toolsVersion" : {
-    "_version" : "5.3.0"
+    "_version" : "5.4.0"
   }
 }

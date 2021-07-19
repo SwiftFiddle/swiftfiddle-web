@@ -27,7 +27,7 @@ spec:
       labels:
         app.kubernetes.io/name: web-frontend
       annotations:
-        commit_sha: 56d9dc069db3804fd170ea2efbdc331c49ad03d2
+        commit_sha: %COMMIT_SHA%
     spec:
       containers:
         - image: swiftfiddle/web-frontend:latest
@@ -50,8 +50,8 @@ spec:
                 secretKeyRef:
                   name: credentials
                   key: FIREBASE_REFRESH_TOKEN
-            - name: GOOGLE_CLOUD_PLATFORM_PROJECT_ID
+            - name: GCP_PROJECT
               valueFrom:
                 secretKeyRef:
                   name: credentials
-                  key: GOOGLE_CLOUD_PLATFORM_PROJECT_ID
+                  key: GCP_PROJECT
