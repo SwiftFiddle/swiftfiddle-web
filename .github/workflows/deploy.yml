@@ -85,7 +85,7 @@ jobs:
 
           git add k8s/pod.yaml
           git commit -m "Update k8s/pod.yaml"
-          git push origin main
+          git push origin master
 
   purge_cache:
     runs-on: ubuntu-latest
