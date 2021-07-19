@@ -73,7 +73,7 @@ jobs:
           set -ex
 
           commit_sha=$(git rev-parse HEAD)
-          sed -i.bak "s/%COMMIT_SHA%/$commit_sha/g;" "k8s/pod.yaml"
+          sed -i "s/%COMMIT_SHA%/$commit_sha/g;" "k8s/pod.yaml"
 
           kubectl apply -f k8s/pod.yaml
 
@@ -84,7 +84,7 @@ jobs:
           git config --global user.email "${GITHUB_ACTOR}@users.noreply.github.com"
 
           git add k8s/pod.yaml
-          git commit -m "Update k8s/pod.yaml"
+          git diff-index --quiet HEAD || git commit -m "Update k8s/pod.yaml"
           git push origin master
 
   purge_cache:
