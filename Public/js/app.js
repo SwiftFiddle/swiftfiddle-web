@@ -8,7 +8,7 @@ import {
   showShareSheet,
   copySharedLink,
   copyEmbedSnippet,
-} from "./share_sheet.js";
+} from "./share_sheet-5487e13e1df.js";
 import { uuidv4 } from "./uuid.js";
 
 export class App {

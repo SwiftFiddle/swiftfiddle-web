@@ -98,7 +98,7 @@
     integrity="sha512-SExj71Cw3B9C9EE8BC/ad3AKia5zQXDj/2SM4THgkeKh5GIFZhKM/R3uclUG8YZwJrjcVhydAlIHmfNvsBCKZA=="
     crossorigin="anonymous" referrerpolicy="no-referrer"></script>
   <script type="module">
-    import { App } from "/js/app-098d4913904.js";
+    import { App } from "/js/app-c01aaf829aa.js";
 
     const foldingRanges = [];
     #for(range in foldRanges):

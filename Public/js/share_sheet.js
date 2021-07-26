@@ -33,7 +33,7 @@ export const showShareSheet = (value) => {
 
       $("#embed-snippet").val(
         `<iframe width="100%" height="300" frameborder="0"
- src="${url}url/embedded/">
+ src="${url}/embedded/">
 </iframe>`
       );
     } else {
