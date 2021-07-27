@@ -154,9 +154,30 @@ func routes(_ app: Application) throws {
 
     app.get("versions") { (req) in try availableVersions() }
 
-    app.on(.POST, "run", body: .collect(maxSize: "10mb")) { (req) -> Response in
-        let parameter = try req.content.decode(ExecutionRequestParameter.self)
-        return req.redirect(to: "/runner/\(parameter.toolchain_version ?? stableVersion())/run", type: .temporary)
+    app.on(.POST, "run", body: .collect(maxSize: "10mb")) { (req) -> EventLoopFuture<ClientResponse> in
+        guard let data = req.body.data else { throw Abort(.badRequest) }
+        guard let parameter = try? req.content.decode(ExecutionRequestParameter.self) else {
+            throw Abort(.badRequest)
+        }
+        let version = parameter.toolchain_version ?? stableVersion()
+        let clientRequest = ClientRequest(
+            method: .POST,
+            url: URI(scheme: .https, host: "swiftfiddle.com", path: "/runner/\(version)/run"),
+            headers: HTTPHeaders([("Content-type", "application/json")]),
+            body: data
+        )
+        return req.client.send(clientRequest)
+    }
+
+    app.on(.POST, "runner", "*", "run", body: .collect(maxSize: "10mb")) { (req) -> EventLoopFuture<ClientResponse> in
+        guard let data = req.body.data else { throw Abort(.badRequest) }
+        let clientRequest = ClientRequest(
+            method: .POST,
+            url: URI(scheme: .https, host: "swiftfiddle.com", path: req.url.path),
+            headers: HTTPHeaders([("Content-type", "application/json")]),
+            body: data
+        )
+        return req.client.send(clientRequest)
     }
 }
 
