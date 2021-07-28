@@ -1,6 +1,6 @@
 FROM node:lts-slim as node
 WORKDIR /build
-COPY package*.json ./
+COPY package.json ./
 RUN npm install
 COPY webpack.*.js ./
 COPY Public ./Public/
