@@ -18,7 +18,7 @@
     "sass": "1.36.0",
     "sass-loader": "12.1.0",
     "style-loader": "3.2.1",
-    "webpack": "5.46.0",
+    "webpack": "5.47.0",
     "webpack-bundle-analyzer": "4.4.2",
     "webpack-cli": "4.7.2",
     "webpack-merge": "5.8.0"
