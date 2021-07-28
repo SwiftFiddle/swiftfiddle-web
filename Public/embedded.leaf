@@ -37,7 +37,7 @@
           <button class="btn btn-outline-primary btn-sm rounded-pill dropdown-toggle w-100" type="button"
             data-bs-toggle="dropdown" aria-expanded="false" id="version-selector">
             <span class="fas fa-code-branch mx-2" style="width: 1em; height: 1em;"></span>
-            <span id="version-value" class="fw-bolder">5.4.2</span>
+            <span id="version-value" class="fw-bolder">#(stableVersion)</span>
           </button>
           <!-- beautify ignore:start -->
           <ul id="version-picker" class="dropdown-menu">
