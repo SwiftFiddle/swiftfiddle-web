@@ -82,16 +82,18 @@
         <button type="button" id="share-button" class="btn btn-outline-primary btn-sm rounded-pill disabled">
           <span class="fas fa-share-alt fa-fw ms-2"></span><span class="mx-2">Share</span>
         </button>
-        <button type="button" id="settings-button" class="btn btn-outline-primary btn-sm rounded-circle p-0 ms-1"
-          data-bs-toggle="modal" data-bs-target="#settings-modal" data-bs-toggle="tooltip" data-bs-placement="bottom"
-          title="Settings">
-          <span class="fas fa-cog fa-fw"></span>
-        </button>
-        <button type="button" id="help-button" class="btn btn-outline-primary btn-sm rounded-circle p-0 ms-1"
-          data-bs-toggle="modal" data-bs-target="#help-modal" data-bs-toggle="tooltip" data-bs-placement="bottom"
-          title="Help">
-          <span class="fas fa-question fa-fw"></span>
-        </button>
+        <span data-bs-toggle="tooltip" data-bs-placement="bottom" title="Settings">
+          <button type="button" id="settings-button" class="btn btn-outline-primary btn-sm rounded-circle p-0 ms-1"
+            data-bs-toggle="modal" data-bs-target="#settings-modal">
+            <span class="fas fa-cog fa-fw"></span>
+          </button>
+        </span>
+        <span data-bs-toggle="tooltip" data-bs-placement="bottom" title="Help">
+          <button type="button" id="help-button" class="btn btn-outline-primary btn-sm rounded-circle p-0 ms-1"
+            data-bs-toggle="modal" data-bs-target="#help-modal">
+            <span class="fas fa-question fa-fw"></span>
+          </button>
+        </span>
       </div>
     </div>
     <div class="row bg-light flex-fill fill d-flex g-0">
