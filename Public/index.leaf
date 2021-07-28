@@ -280,7 +280,7 @@
     <div id="snackbar-info" class="toast align-items-center d-none" role="alert" aria-live="assertive"
       aria-atomic="true">
       <div class="d-flex">
-        <div id="snackbar-body" class="toast-body fw-bolder">
+        <div class="toast-body fw-bolder">
           <span class="far fa-check-circle fa-lg text-success me-2">
           </span><span id="snackbar-info-message" class="text-dark"></span>
         </div>
@@ -292,7 +292,7 @@
     <div id="snackbar-alert" class="toast align-items-center d-none" role="alert" aria-live="assertive"
       aria-atomic="true">
       <div class="d-flex">
-        <div id="snackbar-body" class="toast-body fw-bolder">
+        <div class="toast-body fw-bolder">
           <span class="fas fa-exclamation-triangle text-danger me-2"></span>
           <span id="snackbar-alert-message" class="text-danger"></span>
         </div>
