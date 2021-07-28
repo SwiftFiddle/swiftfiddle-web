@@ -97,10 +97,10 @@
       </div>
     </div>
     <div class="row bg-light flex-fill fill d-flex g-0">
-      <div class="col-md">
+      <div class="col-md-6">
         <div id="editor-container" class="h-100"></div>
       </div>
-      <div class="col-md">
+      <div class="col-md-6">
         <div id="terminal-container" class="h-100"></div>
       </div>
     </div>
