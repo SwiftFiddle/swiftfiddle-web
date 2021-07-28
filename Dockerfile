@@ -7,13 +7,14 @@ COPY Public ./Public/
 RUN npx webpack --config webpack.prod.js
 
 FROM swift:5.4-focal as swift
-
 RUN export DEBIAN_FRONTEND=noninteractive DEBCONF_NONINTERACTIVE_SEEN=true \
     && apt-get -q update && apt-get -q dist-upgrade -y \
     && apt-get install -y --no-install-recommends libsqlite3-dev \
     && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /build
+COPY --from=node /build /build
+
 COPY ./Package.* ./
 RUN swift package resolve
 COPY . .
