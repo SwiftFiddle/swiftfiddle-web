@@ -1,11 +1,20 @@
-FROM swift:5.4-focal as build
+FROM node:lts-slim as node
+WORKDIR /build
+COPY package.json ./
+RUN npm install
+COPY webpack.*.js ./
+COPY Public ./Public/
+RUN npx webpack --config webpack.prod.js
 
+FROM swift:5.4-focal as swift
 RUN export DEBIAN_FRONTEND=noninteractive DEBCONF_NONINTERACTIVE_SEEN=true \
     && apt-get -q update && apt-get -q dist-upgrade -y \
     && apt-get install -y --no-install-recommends libsqlite3-dev \
     && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /build
+COPY --from=node /build /build
+
 COPY ./Package.* ./
 RUN swift package resolve
 COPY . .
@@ -23,7 +32,7 @@ RUN export DEBIAN_FRONTEND=noninteractive DEBCONF_NONINTERACTIVE_SEEN=true \
     && useradd --user-group --create-home --system --skel /dev/null --home-dir /app vapor
 
 WORKDIR /app
-COPY --from=build --chown=vapor:vapor /staging /app
+COPY --from=swift --chown=vapor:vapor /staging /app
 
 USER vapor:vapor
 EXPOSE 8080

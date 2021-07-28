@@ -1,21 +1,30 @@
 "use strict";
 
+const axios = require("axios").default;
+import { Snackbar } from "./snackbar.js";
+
 export class Runner {
   constructor(console) {
+    const CancelToken = axios.CancelToken;
+    this.source = CancelToken.source();
+
     this.console = console;
     this.onmessage = () => {};
   }
 
   run(params, completion) {
     this.connection = this.createConnection(
-      webSocketEndpoint(
-        `runner/${params.toolchain_version}/logs/${params._nonce}`
-      )
+      `wss://swiftfiddle.com/runner/${params.toolchain_version}/logs/${params._nonce}`
     );
 
     const startTime = performance.now();
-    $.post(`/runner/${params.toolchain_version}/run`, params)
-      .done((data) => {
+    axios
+      .post(`/runner/${params.toolchain_version}/run`, params, {
+        cancelToken: this.source.token,
+      })
+      .then((response) => {
+        const data = response.data;
+
         const endTime = performance.now();
         const execTime = ` ${((endTime - startTime) / 1000).toFixed(0)}s`;
 
@@ -74,16 +83,23 @@ export class Runner {
           buffer.push(`\x1b[31;1m${matchTimeout[0]}\n`); // Timeout error message
         }
 
-        completion(buffer, data.errors);
+        completion(buffer, data.errors, null);
       })
-      .fail((response) => {
-        completion([]);
-        alert(`[Status: ${response.status}] Something went wrong`);
+      .catch((error) => {
+        completion([], "", error, axios.isCancel(error));
+        if (error.response) {
+          console.error(error.response.statusText);
+          Snackbar.alert(error.response.statusText);
+        }
       })
-      .always(() => {
+      .finally(() => {
         this.connection.close();
         this.connection = null;
       });
+  }
+
+  stop() {
+    this.source.cancel();
   }
 
   createConnection(endpoint) {
@@ -134,10 +150,4 @@ export class Runner {
 
     return connection;
   }
-}
-
-function webSocketEndpoint(path) {
-  const location = window.location;
-  // prettier-ignore
-  return `${location.protocol === "https:" ? "wss:" : "ws:"}//${location.host}/${path}`
 }

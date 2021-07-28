@@ -1,46 +1,19 @@
 body {
-  margin-bottom: 0;
   background-color: transparent;
 }
 
-.embedded {
-  background-color: #F5F5F5;
-  border: 1px solid #DDDDDD;
-  padding: 0;
-}
-
-#editor {
-  height: calc(100vh - 2px);
-}
-
-#terminal {
-  height: calc(100vh - 2px);
-}
-
-.terminal.xterm {
-  height: calc(100vh - 2px);
-}
-
-@media screen and (max-width: 480px) {
-  #editor {
-    height: calc(50vh - 1px);
-  }
-
-  #terminal {
-    height: calc(50vh - 1px);
-  }
-
-  .terminal.xterm {
-    height: calc(50vh - 1px);
-  }
+.terminal {
+  height: 100%;
 }
 
 div.run-button-background {
   position: absolute;
   top: 0;
-  right: 42px;
+  right: calc(2.4em + 2px);
+  width: 2.4em;
+  height: 2.4em;
   color: white;
-  z-index: 9999;
+  z-index: 1081;
   background-color: rgba(100, 100, 100, 0.6);
 }
 
@@ -52,8 +25,10 @@ div.open-button-background {
   position: absolute;
   top: 0;
   right: 0;
+  width: 2.4em;
+  height: 2.4em;
   color: white;
-  z-index: 9999;
+  z-index: 1081;
   background-color: rgba(100, 100, 100, 0.6);
 }
 

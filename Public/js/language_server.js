@@ -1,5 +1,6 @@
 "use strict";
 
+import * as monaco from "monaco-editor/esm/vs/editor/editor.api";
 import { uuidv4 } from "./uuid.js";
 
 export class LanguageServer {
