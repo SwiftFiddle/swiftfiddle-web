@@ -3,7 +3,7 @@ WORKDIR /build
 COPY package*.json ./
 RUN npm install
 COPY webpack.*.js ./
-COPY Public ./
+COPY Public ./Public/
 RUN npx webpack --config webpack.prod.js
 
 FROM swift:5.4-focal as swift
