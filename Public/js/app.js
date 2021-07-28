@@ -312,8 +312,9 @@ export class App {
       altBuffer.push(...this.parseMessage(message));
     };
 
+    let stopRunner;
     if (stopButton) {
-      const stopRunner = () => {
+      stopRunner = () => {
         runner.stop();
         stopButton.removeEventListener("click", stopRunner);
       };
