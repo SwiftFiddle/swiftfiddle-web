@@ -2,7 +2,7 @@ FROM node:lts-slim as node
 WORKDIR /build
 COPY package*.json ./
 RUN npm install
-COPY webpack.prod.js ./
+COPY webpack.*.js ./
 RUN npx webpack --progress --config webpack.prod.js
 
 FROM swift:5.4-focal as swift
