@@ -218,10 +218,12 @@ export class App {
       event.preventDefault();
       this.run();
     });
-    stopButton.addEventListener("click", (event) => {
-      event.preventDefault();
-      this.run();
-    });
+    if (stopButton) {
+      stopButton.addEventListener("click", (event) => {
+        event.preventDefault();
+        this.run();
+      });
+    }
 
     clearConsoleButton.addEventListener("click", (event) => {
       event.preventDefault();
@@ -267,7 +269,9 @@ export class App {
     }
 
     runButton.classList.add("disabled");
-    stopButton.classList.remove("disabled");
+    if (stopButton) {
+      stopButton.classList.remove("disabled");
+    }
 
     document.getElementById("run-button-icon").classList.add("d-none");
     document.getElementById("run-button-spinner").classList.remove("d-none");
@@ -306,15 +310,19 @@ export class App {
       altBuffer.push(...this.parseMessage(message));
     };
 
-    const stopRunner = () => {
-      runner.stop();
-      stopButton.removeEventListener("click", stopRunner);
-    };
-    stopButton.addEventListener("click", stopRunner);
+    if (stopButton) {
+      const stopRunner = () => {
+        runner.stop();
+        stopButton.removeEventListener("click", stopRunner);
+      };
+      stopButton.addEventListener("click", stopRunner);
+    }
 
     runner.run(params, (buffer, stderr, error, isCancel) => {
       runButton.classList.remove("disabled");
-      stopButton.classList.add("disabled");
+      if (stopButton) {
+        stopButton.classList.add("disabled");
+      }
 
       document.getElementById("run-button-icon").classList.remove("d-none");
       document.getElementById("run-button-spinner").classList.add("d-none");
@@ -345,7 +353,9 @@ export class App {
       this.editor.updateMarkers(markers);
       this.editor.focus();
 
-      stopButton.removeEventListener("click", stopRunner);
+      if (stopButton) {
+        stopButton.removeEventListener("click", stopRunner);
+      }
     });
   }
 
