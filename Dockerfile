@@ -1,4 +1,10 @@
-FROM swift:5.4-focal as build
+FROM node:lts-slim as node
+WORKDIR /build
+COPY package*.json ./
+RUN npm install
+RUN npx webpack --progress --config webpack.prod.js
+
+FROM swift:5.4-focal as swift
 
 RUN export DEBIAN_FRONTEND=noninteractive DEBCONF_NONINTERACTIVE_SEEN=true \
     && apt-get -q update && apt-get -q dist-upgrade -y \
@@ -23,7 +29,7 @@ RUN export DEBIAN_FRONTEND=noninteractive DEBCONF_NONINTERACTIVE_SEEN=true \
     && useradd --user-group --create-home --system --skel /dev/null --home-dir /app vapor
 
 WORKDIR /app
-COPY --from=build --chown=vapor:vapor /staging /app
+COPY --from=swift --chown=vapor:vapor /staging /app
 
 USER vapor:vapor
 EXPOSE 8080

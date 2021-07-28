@@ -1,15 +1,20 @@
 "use strict";
 
+import * as monaco from "monaco-editor/esm/vs/editor/editor.api";
+
 import { Editor } from "./editor.js";
 import { Console } from "./console.js";
 import { LanguageServer } from "./language_server.js";
-import { Runner } from "./runner-50fa3971e25.js";
-import {
-  showShareSheet,
-  copySharedLink,
-  copyEmbedSnippet,
-} from "./share_sheet-5487e13e1df.js";
+import { SwiftFormat } from "./swift_format.js";
+import { Runner } from "./runner.js";
+import { VersionPicker } from "./version_picker.js";
 import { uuidv4 } from "./uuid.js";
+
+const runButton = document.getElementById("run-button");
+const stopButton = document.getElementById("stop-button");
+const clearConsoleButton = document.getElementById("clear-console-button");
+const formatButton = document.getElementById("format-button");
+const shareButton = document.getElementById("share-button");
 
 export class App {
   constructor(config) {
@@ -18,234 +23,213 @@ export class App {
     const foldingRanges = config.foldingRanges;
 
     this.editor = new Editor(initialText, this.isEmbedded);
-    this.console = new Console(document.getElementById("terminal"));
+    this.console = new Console(document.getElementById("terminal-container"));
     this.history = [];
 
-    this.editor.onready = () => {
-      const promises = [];
-      let sequence = 0;
+    const promises = [];
+    let sequence = 0;
 
-      const languageServer = new LanguageServer("wss://lsp.swiftfiddle.com/");
+    const languageServer = new LanguageServer("wss://lsp.swiftfiddle.com/");
 
-      languageServer.onconnect = () => {
-        languageServer.openDocument(this.editor.getValue());
-      };
+    languageServer.onconnect = () => {
+      languageServer.openDocument(this.editor.getValue());
+    };
 
-      languageServer.onresponse = (response) => {
-        const promise = promises[response.id];
-        switch (response.method) {
-          case "hover":
-            if (!promise) {
-              return;
-            }
-            if (response.value) {
-              const range = new monaco.Range(
-                response.position.line,
-                response.position.utf16index,
-                response.position.line,
-                response.position.utf16index
-              );
-              promise.fulfill({
-                range: range,
-                contents: [{ value: response.value.contents.value }],
-              });
-            } else {
-              promise.fulfill();
-            }
-            break;
-          case "completion":
-            if (!promise) {
-              return;
-            }
-            if (response.value) {
-              const completions = {
-                suggestions: response.value.items.map((item) => {
-                  const textEdit = item.textEdit;
-                  const start = textEdit.range.start;
-                  const end = textEdit.range.end;
-                  const kind = languageServer.convertCompletionItemKind(
-                    item.kind
-                  );
-                  const range = new monaco.Range(
-                    start.line + 1,
-                    start.character + 1,
-                    end.line + 1,
-                    end.character + 1
-                  );
-                  return {
-                    label: item.label,
-                    kind: kind,
-                    detail: item.detail,
-                    filterText: item.filterText,
-                    insertText: textEdit.newText,
-                    range: range,
-                  };
-                }),
-              };
-              promise.fulfill(completions);
-            } else {
-              promise.fulfill();
-            }
-          case "diagnostics":
-            this.editor.clearMarkers();
-
-            if (!response.value) {
-              return;
-            }
-            const diagnostics = response.value.diagnostics;
-            if (!diagnostics || !diagnostics.length) {
-              return;
-            }
-
-            const markers = diagnostics.map((diagnostic) => {
-              const start = diagnostic.range.start;
-              const end = diagnostic.range.end;
-              const startLineNumber = start.line + 1;
-              const startColumn = start.character + 1;
-              const endLineNumber = end.line + 1;
-              const endColumn = start.character + 1;
-
-              let severity = languageServer.convertDiagnosticSeverity(
-                diagnostic.severity
-              );
-
-              return {
-                startLineNumber: startLineNumber,
-                startColumn: startColumn,
-                endLineNumber: endLineNumber,
-                endColumn: endColumn,
-                message: diagnostic.message,
-                severity: severity,
-                source: diagnostic.source,
-              };
+    languageServer.onresponse = (response) => {
+      const promise = promises[response.id];
+      switch (response.method) {
+        case "hover":
+          if (!promise) {
+            return;
+          }
+          if (response.value) {
+            const range = new monaco.Range(
+              response.position.line,
+              response.position.utf16index,
+              response.position.line,
+              response.position.utf16index
+            );
+            promise.fulfill({
+              range: range,
+              contents: [{ value: response.value.contents.value }],
             });
+          } else {
+            promise.fulfill();
+          }
+          break;
+        case "completion":
+          if (!promise) {
+            return;
+          }
+          if (response.value) {
+            const completions = {
+              suggestions: response.value.items.map((item) => {
+                const textEdit = item.textEdit;
+                const start = textEdit.range.start;
+                const end = textEdit.range.end;
+                const kind = languageServer.convertCompletionItemKind(
+                  item.kind
+                );
+                const range = new monaco.Range(
+                  start.line + 1,
+                  start.character + 1,
+                  end.line + 1,
+                  end.character + 1
+                );
+                return {
+                  label: item.label,
+                  kind: kind,
+                  detail: item.detail,
+                  filterText: item.filterText,
+                  insertText: textEdit.newText,
+                  range: range,
+                };
+              }),
+            };
+            promise.fulfill(completions);
+          } else {
+            promise.fulfill();
+          }
+        case "diagnostics":
+          this.editor.clearMarkers();
 
-            this.editor.updateMarkers(markers);
-            break;
-          default:
-            break;
-        }
+          if (!response.value) {
+            return;
+          }
+          const diagnostics = response.value.diagnostics;
+          if (!diagnostics || !diagnostics.length) {
+            return;
+          }
+
+          const markers = diagnostics.map((diagnostic) => {
+            const start = diagnostic.range.start;
+            const end = diagnostic.range.end;
+            const startLineNumber = start.line + 1;
+            const startColumn = start.character + 1;
+            const endLineNumber = end.line + 1;
+            const endColumn = start.character + 1;
+
+            let severity = languageServer.convertDiagnosticSeverity(
+              diagnostic.severity
+            );
+
+            return {
+              startLineNumber: startLineNumber,
+              startColumn: startColumn,
+              endLineNumber: endLineNumber,
+              endColumn: endColumn,
+              message: diagnostic.message,
+              severity: severity,
+              source: diagnostic.source,
+            };
+          });
+
+          this.editor.updateMarkers(markers);
+          break;
+        default:
+          break;
+      }
+    };
+
+    if (formatButton) {
+      const formatterService = new SwiftFormat(
+        "wss://formatter.swiftfiddle.com"
+      );
+      formatterService.onresponse = (response) => {
+        this.editor.setValue(response);
       };
 
-      this.editor.onaction = (action) => {
-        switch (action) {
-          case "run":
-            run();
-            break;
-          case "share":
-            showShareSheet(this.editor.getValue());
-            break;
-          default:
-            break;
-        }
-      };
-
-      window.addEventListener("unload", () => {
-        languageServer.close();
+      formatButton.addEventListener("click", (event) => {
+        event.preventDefault();
+        formatterService.format(this.editor.getValue());
       });
+    }
 
-      this.editor.onchange = () => {
-        languageServer.syncDocument(this.editor.getValue());
-        updateButtonState(this.editor);
-      };
+    this.editor.onaction = (action) => {
+      switch (action) {
+        case "run":
+          this.run();
+          break;
+        case "share":
+          const shareButton = document.getElementById("share-button");
+          if (shareButton.classList.contains("disabled")) {
+            return;
+          }
+          shareButton.click();
+          break;
+        default:
+          break;
+      }
+    };
+
+    window.addEventListener("unload", () => {
+      languageServer.close();
+    });
+
+    this.editor.onchange = () => {
+      languageServer.syncDocument(this.editor.getValue());
       updateButtonState(this.editor);
+    };
+    updateButtonState(this.editor);
 
-      this.editor.onhover = (position) => {
-        if (!languageServer.isReady) {
-          return;
-        }
-
-        sequence++;
-        const row = position.lineNumber - 1;
-        const column = position.column - 1;
-        languageServer.requestHover(sequence, row, column);
-
-        return new Promise((fulfill, reject) => {
-          promises[sequence] = { fulfill: fulfill, reject: reject };
-        });
-      };
-
-      this.editor.oncompletion = (position) => {
-        if (!languageServer.isReady) {
-          return;
-        }
-
-        sequence++;
-        const row = position.lineNumber - 1;
-        const column = position.column - 1;
-        languageServer.requestCompletion(sequence, row, column);
-
-        const promise = new Promise((fulfill, reject) => {
-          promises[sequence] = { fulfill: fulfill, reject: reject };
-        });
-        return promise;
-      };
-
-      if (foldingRanges && foldingRanges.length) {
-        this.editor.fold(foldingRanges);
+    this.editor.onhover = (position) => {
+      if (!languageServer.isReady) {
+        return;
       }
 
-      this.editor.focus();
-      this.editor.scrollToBottm();
-      $("#run-button").removeClass("disabled");
+      sequence++;
+      const row = position.lineNumber - 1;
+      const column = position.column - 1;
+      languageServer.requestHover(sequence, row, column);
+
+      return new Promise((fulfill, reject) => {
+        promises[sequence] = { fulfill: fulfill, reject: reject };
+      });
     };
+
+    this.editor.oncompletion = (position) => {
+      if (!languageServer.isReady) {
+        return;
+      }
+
+      sequence++;
+      const row = position.lineNumber - 1;
+      const column = position.column - 1;
+      languageServer.requestCompletion(sequence, row, column);
+
+      const promise = new Promise((fulfill, reject) => {
+        promises[sequence] = { fulfill: fulfill, reject: reject };
+      });
+      return promise;
+    };
+
+    if (foldingRanges && foldingRanges.length) {
+      this.editor.fold(foldingRanges);
+    }
+
+    this.editor.focus();
+    this.editor.scrollToBottm();
 
     this.setupEventHandlers();
   }
 
   setupEventHandlers() {
-    $("#run-button").addClass("disabled");
-    $("#run-button").click((event) => {
+    runButton.addEventListener("click", (event) => {
+      event.preventDefault();
+      this.run();
+    });
+    stopButton.addEventListener("click", (event) => {
       event.preventDefault();
       this.run();
     });
 
-    $(".selectpicker").selectpicker({
-      iconBase: "fas",
-      tickIcon: "fa-check",
-    });
-
-    $("#terminal").mouseenter((event) => {
-      $("#terminal>div.toolbar").fadeTo("normal", 1);
-    });
-
-    $("#terminal").mouseleave((event) => {
-      $("#terminal>div.toolbar").fadeTo("normal", 0);
-    });
-
-    $("#clear-button").on("click", (event) => {
+    clearConsoleButton.addEventListener("click", (event) => {
       event.preventDefault();
       this.console.clear();
       this.history.length = 0;
     });
 
-    if (this.isEmbedded) {
-      $("#terminal").unbind("mouseenter");
-      $("#terminal").unbind("mouseleave");
-      $("#clear-button").unbind("click");
-    }
-
-    $("#version-picker").on("change", (event) => {
-      if (event.target.value < "5.3") {
-        $(".package-available").hide();
-        $(".package-unavailable").show();
-      } else {
-        $(".package-available").show();
-        $(".package-unavailable").hide();
-      }
-    });
-
-    $("#share-button").on("click", (event) => {
-      showShareSheet(this.editor.getValue());
-    });
-    $("#shared-link-copy-button").on("click", (event) => {
-      copySharedLink();
-    });
-    $("#embed-snippet-copy-button").on("click", (event) => {
-      copyEmbedSnippet();
-    });
-
-    const editorContainer = document.getElementById("editor");
+    const editorContainer = document.getElementById("editor-container");
     editorContainer.addEventListener(
       "dragover",
       this.handleDragOver.bind(this),
@@ -256,6 +240,12 @@ export class App {
       this.handleFileSelect.bind(this),
       false
     );
+  }
+
+  handleDragOver(event) {
+    event.stopPropagation();
+    event.preventDefault();
+    event.dataTransfer.dropEffect = "copy";
   }
 
   handleFileSelect(event) {
@@ -271,19 +261,18 @@ export class App {
     reader.readAsText(files[0], "UTF-8");
   }
 
-  handleDragOver(event) {
-    event.stopPropagation();
-    event.preventDefault();
-    event.dataTransfer.dropEffect = "copy";
-  }
-
   run() {
-    if ($("#run-button-spinner").is(":visible")) {
+    if (runButton.classList.contains("disabled")) {
       return;
     }
 
+    runButton.classList.add("disabled");
+    stopButton.classList.remove("disabled");
+
+    document.getElementById("run-button-icon").classList.add("d-none");
+    document.getElementById("run-button-spinner").classList.remove("d-none");
+
     this.editor.clearMarkers();
-    this.showLoading();
 
     this.console.saveCursorPosition();
     this.console.switchAlternateBuffer();
@@ -296,11 +285,20 @@ export class App {
     });
 
     const params = {
-      toolchain_version: $("#version-picker").val(),
+      toolchain_version: VersionPicker.current(),
       code: this.editor.getValue(),
       _color: true,
       _nonce: uuidv4(),
     };
+    if (window.appConfig.timeout) {
+      const integer = Number.parseInt(window.appConfig.timeout, 10);
+      if (integer && integer >= 30 && integer <= 600) {
+        params.timeout = Math.max(30, Math.min(600, integer));
+      }
+    }
+    if (window.appConfig.compilerOptions) {
+      params.options = window.appConfig.compilerOptions;
+    }
 
     const runner = new Runner(this.console);
     runner.onmessage = (message) => {
@@ -308,12 +306,28 @@ export class App {
       altBuffer.push(...this.parseMessage(message));
     };
 
-    runner.run(params, (buffer, stderr) => {
+    const stopRunner = () => {
+      runner.stop();
+      stopButton.removeEventListener("click", stopRunner);
+    };
+    stopButton.addEventListener("click", stopRunner);
+
+    runner.run(params, (buffer, stderr, error, isCancel) => {
+      runButton.classList.remove("disabled");
+      stopButton.classList.add("disabled");
+
+      document.getElementById("run-button-icon").classList.remove("d-none");
+      document.getElementById("run-button-spinner").classList.add("d-none");
+
       this.console.hideSpinner(cancelToken);
       this.console.switchNormalBuffer();
       this.console.showCursor();
       this.console.restoreCursorPosition();
       this.console.reset();
+
+      if (isCancel) {
+        buffer = altBuffer.map((b) => `${b.text}\n`);
+      }
 
       this.history.forEach((line) => {
         const regex =
@@ -329,28 +343,10 @@ export class App {
 
       const markers = this.parseErrorMessage(stderr);
       this.editor.updateMarkers(markers);
-
-      this.hideLoading();
       this.editor.focus();
+
+      stopButton.removeEventListener("click", stopRunner);
     });
-  }
-
-  showLoading() {
-    if (!this.isEmbedded) {
-      $("#run-button-text").hide();
-    }
-    $("#run-button").addClass("disabled");
-    $("#run-button-icon").hide();
-    $("#run-button-spinner").show();
-  }
-
-  hideLoading() {
-    $("#run-button").removeClass("disabled");
-    $("#run-button-icon").show();
-    $("#run-button-spinner").hide();
-    if (!this.isEmbedded) {
-      $("#run-button-text").show();
-    }
   }
 
   parseMessage(message) {
@@ -466,10 +462,14 @@ export class App {
 function updateButtonState(editor) {
   const value = editor.getValue();
   if (!value || !value.trim()) {
-    $("#run-button").prop("disabled", true);
-    $("#share-button").prop("disabled", true);
+    runButton.classList.add("disabled");
+    if (shareButton) {
+      shareButton.classList.add("disabled");
+    }
   } else {
-    $("#run-button").prop("disabled", false);
-    $("#share-button").prop("disabled", false);
+    runButton.classList.remove("disabled");
+    if (shareButton) {
+      shareButton.classList.remove("disabled");
+    }
   }
 }

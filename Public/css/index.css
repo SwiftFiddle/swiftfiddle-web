@@ -1,0 +1,8 @@
+.terminal {
+  height: 100%;
+}
+
+.btn.rounded-circle {
+  width: 2rem;
+  height: 2rem;
+}
