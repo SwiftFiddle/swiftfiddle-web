@@ -1,0 +1,18 @@
+#version-picker {
+  max-height: 80vh;
+  overflow-y: auto;
+  line-height: 1.2;
+}
+
+.version-picker-item.active-tick a::after {
+  font-family: "Font Awesome 5 Pro";
+  content: "\f00c";
+  color: #0d6efd;
+  float: right;
+  display: none;
+}
+
+.version-picker-item.active-tick svg {
+  color: #0d6efd;
+  float: right;
+}

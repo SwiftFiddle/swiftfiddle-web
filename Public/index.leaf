@@ -1,0 +1,319 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta property="twitter:image" content="#(ogpImageUrl)" />
+  <meta property="og:image" content="#(ogpImageUrl)" />
+  <meta property="og:title" content="Swift Online Playground">
+  <meta property="og:description"
+    content="SwiftFiddle is an online playground for creating, sharing and embedding Swift fiddles (little Swift programs that run directly in your browser)." />
+  <meta name="description"
+    content="SwiftFiddle is an online playground for creating, sharing and embedding Swift fiddles (little Swift programs that run directly in your browser)." />
+  <meta property="og:site_name" content="SwiftFiddle - Swift Online Playground" />
+
+  <meta name="msapplication-TileColor" content="\#da532c">
+  <meta name="msapplication-config" content="/favicons/browserconfig.xml">
+  <meta name="theme-color" content="\#ffffff">
+  <link rel="apple-touch-icon" sizes="180x180" href="/favicons/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicons/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicons/favicon-16x16.png">
+  <link rel="manifest" href="/favicons/site.webmanifest">
+  <link rel="mask-icon" href="/favicons/safari-pinned-tab.svg" color="\#5bbad5">
+  <link rel="shortcut icon" href="/favicons/favicon.ico">
+
+  <title>SwiftFiddle - Swift Online Playground</title>
+</head>
+
+
+<body>
+  <div class="container-fluid g-0 d-flex flex-column min-vh-100">
+    <div class="row m-0 g-0 justify-content-start bg-light">
+      <div class="col-md-auto m-2">
+        <span class="fab fa-swift fa-2x fa-fw text-primary"></span>
+        <span class="h4 text-dark align-top ms-1">Swift Playground</span>
+      </div>
+      <div class="col-md-auto p-2" style="min-width: 175px">
+        <span class="dropdown">
+          <button class="btn btn-outline-primary btn-sm rounded-pill dropdown-toggle w-100" type="button"
+            data-bs-toggle="dropdown" aria-expanded="false" id="version-selector">
+            <span class="fas fa-code-branch fa-fw mx-2"></span>
+            <span id="version-value" class="fw-bolder">5.4.2</span>
+          </button>
+          <!-- beautify ignore:start -->
+          <ul id="version-picker" class="dropdown-menu">
+            #for(versionGroup in versions):
+              <li><h6 class="dropdown-header">#(versionGroup.majorVersion)</h6></li>
+              #for(version in versionGroup.versions):
+                #if(version == stableVersion):
+                  <li class="version-picker-item ms-2 active-tick"><a class="dropdown-item" data-target="\#">#(version)</a></li>
+                #else:
+                  <li class="version-picker-item ms-2"><a class="dropdown-item" data-target="\#">#(version)</a></li>
+                #endif
+              #endfor
+            #endfor
+          </ul>
+          <!-- beautify ignore:end -->
+        </span>
+      </div>
+      <div class="col-md-auto m-2">
+        <button type="button" id="run-button" class="btn btn-primary btn-sm rounded-pill disabled">
+          <span id="run-button-icon" class="fas fa-play fa-fw ms-2"></span>
+          <span id="run-button-spinner" class="fas fa-circle-notch fa-spin fa-fw ms-2 d-none"></span>
+          <span class="mx-2">Run</span>
+        </button>
+        <button type="button" id="stop-button" class="btn btn-primary btn-sm rounded-pill ms-1 disabled">
+          <span class="fas fa-stop fa-fw ms-2"></span><span class="mx-2">Stop</span>
+        </button>
+        <button type="button" id="clear-console-button"
+          class="btn btn-outline-primary btn-sm rounded-circle p-0 ms-1 disabled" data-bs-toggle="tooltip"
+          data-bs-placement="bottom" title="Clear Console">
+          <span class="fas fa-eraser fa-fw"></span>
+        </button>
+        <button type="button" id="format-button" class="btn btn-outline-primary btn-sm rounded-circle p-0 ms-1 disabled"
+          data-bs-toggle="tooltip" data-bs-placement="bottom" title="Format">
+          <span class="fas fa-align-left fa-fw"></span>
+        </button>
+      </div>
+      <div class="col-md-auto m-2">
+        <button type="button" id="share-button" class="btn btn-outline-primary btn-sm rounded-pill disabled">
+          <span class="fas fa-share-alt fa-fw ms-2"></span><span class="mx-2">Share</span>
+        </button>
+        <button type="button" id="settings-button" class="btn btn-outline-primary btn-sm rounded-circle p-0 ms-1"
+          data-bs-toggle="modal" data-bs-target="#settings-modal" data-bs-toggle="tooltip" data-bs-placement="bottom"
+          title="Settings">
+          <span class="fas fa-cog fa-fw"></span>
+        </button>
+        <button type="button" id="help-button" class="btn btn-outline-primary btn-sm rounded-circle p-0 ms-1"
+          data-bs-toggle="modal" data-bs-target="#help-modal" data-bs-toggle="tooltip" data-bs-placement="bottom"
+          title="Help">
+          <span class="fas fa-question fa-fw"></span>
+        </button>
+      </div>
+    </div>
+    <div class="row bg-light flex-fill fill d-flex g-0">
+      <div class="col-md">
+        <div id="editor-container" class="h-100"></div>
+      </div>
+      <div class="col-md">
+        <div id="terminal-container" class="h-100"></div>
+      </div>
+    </div>
+    <div class="row p-1 justify-content-center bg-light">
+      <div class="col-md-auto m-1 text-dark">
+        <span class="text-muted">created by </span><a class="text-reset" href="https://twitter.com/k_katsumi">kishikawa
+          katsumi</a><a class="text-reset ms-2" href="https://github.com/kishikawakatsumi/swift-playground"><span
+            class="fab fa-github"></span></a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Share Sheet Popover -->
+  <div id="share-sheet" class="d-none">
+    <div class="row">
+      <div class="col">
+        <label id="share-sheet-link-label" class="grow-textfield m-1 w-100" data-value="">
+          <span class="h6">Share</span>
+        </label>
+        <div class="input-group mb-3">
+          <input id="share-sheet-link-field" class="form-control" type="url" value="" onfocus="this.select();"
+            readonly />
+          <button id="share-sheet-link-copy-button" class="btn btn-outline-primary" type="button"
+            data-bs-toggle="tooltip" title="Copy to Clipboard">
+            <span id="share-sheet-link-copy-button-icon" class="far fa-clipboard fa-fw"></span>
+            <span id="share-sheet-link-copy-button-spinner" class="fas fa-circle-notch fa-spin fa-fw d-none">
+            </span>
+          </button>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col">
+        <label id="share-sheet-embed-label" class="grow-textfield stacked m-1" for="share-sheet-embed-field"
+          data-value="">
+          <span class="h6">Embed</span>
+        </label>
+        <div class="input-group">
+          <textarea id="share-sheet-embed-field" class="form-control share-sheet-textarea"
+            style="font-family: monospace; font-size: 0.96em;" oninput="this.parentNode.dataset.value = this.value"
+            rows="3" onfocus="this.select();" readonly>
+          </textarea>
+          <button id="share-sheet-embed-copy-button" class="btn btn-outline-primary" type="button"
+            data-bs-toggle="tooltip" title="Copy to Clipboard">
+            <span id="share-sheet-embed-copy-button-icon" class="far fa-clipboard fa-fw"></span>
+            <span id="share-sheet-embed-copy-button-spinner" class="fas fa-circle-notch fa-spin fa-fw d-none">
+            </span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Settings Mocdal -->
+  <div id="settings-modal" class="modal fade" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="settings-modal-label" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="settings-modal-label">Settings</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+
+          <form>
+            <div class="form-row">
+              <div class="form-group col-md-6">
+                <label for="settings-timeout" class="h6"><span class="h6">Timeout</span>(30-600 secs)</label>
+                <input type="number" class="form-control" id="settings-timeout" placeholder="60" min="30" max="600">
+              </div>
+            </div>
+            <div class="form-group pt-4">
+              <label for="settings-compiler-options" class="h6">Compiler Options</label>
+              <input type="text" class="form-control" id="settings-compiler-options" placeholder="-D DEBUG">
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+          <button type="button" id="settings-save-button" class="btn btn-primary" data-bs-dismiss="modal">Save</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Help Mocdal -->
+  <div id="help-modal" class="modal fade" tabindex="-1" aria-labelledby="help-modal-label" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="help-modal-label">Help</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <dl>
+            <dt class="bg-light rounded"><span class="far fa-file-import fa-fw me-1"></span>Import</dt>
+            <dd>There are a few different ways to import code into Playground:</dd>
+          </dl>
+          <ul>
+            <li>Drop a file onto the editor</li>
+            <li>Append a GitHub gist ID to the URL<br>(e.g. <code>swiftfiddle.com/<code
+                  style="background-color: #F0F0F0; padding: 2px;">&lt;gist_id_goes_here&gt;</code></code>)</li>
+            <li>Or just start typing!</li>
+          </ul>
+
+          <dl>
+            <dt class="bg-light rounded pt-2"><span class="far fa-keyboard fa-fw me-1"></span>Keyboard Shortcuts</dt>
+            <dd>
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th scope="col">Mac</th>
+                    <th scope="col">Windows/Linux</th>
+                    <th scope="col">Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><kbd>Cmd</kbd> + <kbd>Enter</kbd></td>
+                    <td><kbd>Ctrl</kbd> + <kbd>Enter</kbd></td>
+                    <td>Run code</td>
+                  </tr>
+                  <tr>
+                    <td><kbd>Cmd</kbd> + <kbd>S</kbd></td>
+                    <td><kbd>Ctrl</kbd> + <kbd>S</kbd></td>
+                    <td>Share code</td>
+                  </tr>
+                </tbody>
+              </table>
+            </dd>
+          </dl>
+
+          <dl>
+            <dt class="bg-light rounded pt-2"><span class="far fa-toolbox fa-fw me-1"></span>Installed Libraries</dt>
+            <dd>
+              <table class="table table-sm table-borderless">
+                <thead>
+                  <tr>
+                    <th scope="col">Repository</th>
+                    <th scope="col">Package</th>
+                    <th scope="col">Version</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <!-- beautify ignore:start -->
+                  #for(package in packageInfo):
+                  <tr>
+                    <td style="width: 40%;">
+                      <a href="#(package.url)" target="_blank" rel="noopener">#(package.name)</a>
+                    </td>
+                    <td style="width: 40%;"><code>import #(package.productName)</code></td>
+                    <td class="package-version" style="width: 20%;">#(package.version)</td>
+                  </tr>
+                  #endfor
+                  <!-- beautify ignore:end -->
+                </tbody>
+              </table>
+            </dd>
+          </dl>
+
+          <dl>
+            <dt class="bg-light rounded pt-2"><span class="far fa-comment-alt-smile fa-fw me-1"></span>Feedback / Bug
+              Report
+            </dt>
+            <dd>
+              <a href="https://github.com/kishikawakatsumi/swift-playground/issues/new">github.com/kishikawakatsumi/swift-playground
+              </a>
+            </dd>
+          </dl>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toasts -->
+  <div class="position-absolute top-0 start-50 translate-middle-x p-3" style="z-index: 1081;">
+    <div id="snackbar-info" class="toast align-items-center d-none" role="alert" aria-live="assertive"
+      aria-atomic="true">
+      <div class="d-flex">
+        <div id="snackbar-body" class="toast-body fw-bolder">
+          <span class="far fa-check-circle fa-lg text-success me-2">
+          </span><span id="snackbar-info-message" class="text-dark"></span>
+        </div>
+        <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+      </div>
+    </div>
+  </div>
+  <div class="position-absolute top-0 start-50 translate-middle-x p-3" style="z-index: 1081;">
+    <div id="snackbar-alert" class="toast align-items-center d-none" role="alert" aria-live="assertive"
+      aria-atomic="true">
+      <div class="d-flex">
+        <div id="snackbar-body" class="toast-body fw-bolder">
+          <span class="fas fa-exclamation-triangle text-danger me-2"></span>
+          <span id="snackbar-alert-message" class="text-danger"></span>
+        </div>
+        <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    FontAwesomeConfig = {
+      searchPseudoElements: true
+    };
+  </script>
+  <script src="https://kit.fontawesome.com/7eb94bd1f2.js" crossorigin="anonymous"></script>
+  <script>
+    window.appConfig = {
+      initialText: `#(codeSnippet)`,
+      isEmbedded: false,
+      foldingRanges: [],
+      timeout: null,
+      compilerOptions: null,
+    }
+  </script>
+</body>
+
+</html>

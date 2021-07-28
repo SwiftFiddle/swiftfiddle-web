@@ -1,5 +1,9 @@
 "use strict";
 
+import "xterm/css/xterm.css";
+import { Terminal } from "xterm";
+import { FitAddon } from "xterm-addon-fit";
+
 const ESC = "\u001B[";
 
 export class Console {
@@ -34,10 +38,10 @@ export class Console {
       cursorBlink: true,
       scrollback: 100000,
     });
-
-    const fitAddon = new FitAddon.FitAddon();
-    this.terminal.loadAddon(fitAddon);
     this.terminal.open(container);
+
+    const fitAddon = new FitAddon();
+    this.terminal.loadAddon(fitAddon);
     fitAddon.fit();
 
     this.terminal.write(`\x1b[37mWelcome to SwiftFiddle.\x1b[0m\n`);
