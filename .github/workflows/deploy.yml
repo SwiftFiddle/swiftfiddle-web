@@ -27,7 +27,7 @@ jobs:
 
           tempdir=$(mktemp -d)
           curl -sfL -o "$tempdir/Package.swift" https://raw.github.com/kishikawakatsumi/swiftfiddle-lsp/main/Resources/ProjectTemplate/Package.swift
-          swift package --package-path "$tempdir" dump-package > Resources/Views/Package.json
+          swift package --package-path "$tempdir" dump-package > Resources/Package.json
 
           git config --global user.name "${GITHUB_ACTOR}"
           git config --global user.email "${GITHUB_ACTOR}@users.noreply.github.com"
