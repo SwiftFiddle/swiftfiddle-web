@@ -225,11 +225,13 @@ export class App {
       });
     }
 
-    clearConsoleButton.addEventListener("click", (event) => {
-      event.preventDefault();
-      this.console.clear();
-      this.history.length = 0;
-    });
+    if (clearConsoleButton) {
+      clearConsoleButton.addEventListener("click", (event) => {
+        event.preventDefault();
+        this.console.clear();
+        this.history.length = 0;
+      });
+    }
 
     const editorContainer = document.getElementById("editor-container");
     editorContainer.addEventListener(
