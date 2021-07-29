@@ -161,7 +161,6 @@ func routes(_ app: Application) throws {
         }
         let version = parameter.toolchain_version ?? stableVersion()
         let url = URI(scheme: .https, host: "swiftfiddle.com", path: "/runner/\(version)/run")
-        req.logger.notice("Redirecting... \(req.url) => \(url)")
         let clientRequest = ClientRequest(
             method: .POST,
             url: url,
