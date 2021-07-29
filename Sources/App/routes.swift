@@ -171,9 +171,19 @@ func routes(_ app: Application) throws {
 
     app.on(.POST, "runner", "*", "run", body: .collect(maxSize: "10mb")) { (req) -> EventLoopFuture<ClientResponse> in
         guard let data = req.body.data else { throw Abort(.badRequest) }
+        let latestVersion = (try? latestVersion()) ?? stableVersion()
+        let path: String
+        if req.url.path.contains("/runner/\(stableVersion())/run") {
+            path = ""
+        } else if req.url.path.contains("/runner/\(latestVersion)/run") {
+            path = ""
+        } else {
+            path = req.url.path
+        }
+
         let clientRequest = ClientRequest(
             method: .POST,
-            url: URI(scheme: .https, host: "swiftfiddle.com", path: req.url.path),
+            url: URI(scheme: .https, host: "swiftfiddle.com", path: path),
             headers: HTTPHeaders([("Content-type", "application/json")]),
             body: data
         )
