@@ -168,7 +168,7 @@
           <form>
             <div class="form-row">
               <div class="form-group col-md-6">
-                <label for="settings-timeout" class="h6"><span class="h6">Timeout</span>(30-600 secs)</label>
+                <label for="settings-timeout" class="h6">Timeout (30-600 secs)</label>
                 <input type="number" class="form-control" id="settings-timeout" placeholder="60" min="30" max="600">
               </div>
             </div>
