@@ -160,9 +160,11 @@ func routes(_ app: Application) throws {
             throw Abort(.badRequest)
         }
         let version = parameter.toolchain_version ?? stableVersion()
+        let url = URI(scheme: .https, host: "swiftfiddle.com", path: "/runner/\(version)/run")
+        req.logger.notice("Redirect to: \(url)")
         let clientRequest = ClientRequest(
             method: .POST,
-            url: URI(scheme: .https, host: "swiftfiddle.com", path: "/runner/\(version)/run"),
+            url: url,
             headers: HTTPHeaders([("Content-type", "application/json")]),
             body: data
         )
