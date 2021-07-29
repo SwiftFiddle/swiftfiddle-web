@@ -32,8 +32,9 @@ jobs:
           git config --global user.name "${GITHUB_ACTOR}"
           git config --global user.email "${GITHUB_ACTOR}@users.noreply.github.com"
 
+          git pull --rebase origin master
           git add Resources/Package.json
-          git diff-index --quiet HEAD || git commit -m 'Update Package.json'
+          git diff-index --quiet HEAD || git commit -m "Deploy to GKE $(git rev-parse --short HEAD)"
           git push origin master
 
       - name: Login to DockerHub
