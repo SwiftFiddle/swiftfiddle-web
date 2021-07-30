@@ -73,6 +73,11 @@ jobs:
         run: |
           set -ex
 
+          git config --global user.name "${GITHUB_ACTOR}"
+          git config --global user.email "${GITHUB_ACTOR}@users.noreply.github.com"
+
+          git pull --rebase origin master
+
           commit_sha=$(git rev-parse HEAD)
           sed "s/%COMMIT_SHA%/$commit_sha/g;" "k8s/pod_template.yaml" > "k8s/pod.yaml"
 
@@ -80,11 +85,6 @@ jobs:
 
           kubectl rollout status deployment/web-frontend
           kubectl get services -o wide
-
-          git config --global user.name "${GITHUB_ACTOR}"
-          git config --global user.email "${GITHUB_ACTOR}@users.noreply.github.com"
-
-          git pull --rebase origin master
 
           git add k8s/pod.yaml
           git diff-index --quiet HEAD || git commit -m "Deploy to GKE $(git rev-parse --short HEAD)"
