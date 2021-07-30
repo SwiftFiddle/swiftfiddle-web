@@ -154,12 +154,13 @@ func routes(_ app: Application) throws {
 
     app.get("versions") { (req) in try availableVersions() }
 
-    app.on(.POST, "run", body: .collect(maxSize: "10mb")) { (req) -> EventLoopFuture<Response> in
+    app.on(.POST, "run", body: .collect(maxSize: "10mb")) { (req) -> EventLoopFuture<ClientResponse> in
         guard let data = req.body.data else { throw Abort(.badRequest) }
         guard let parameter = try? req.content.decode(ExecutionRequestParameter.self) else {
             throw Abort(.badRequest)
         }
         let version = parameter.toolchain_version ?? stableVersion()
+
         let url = URI(scheme: .https, host: "swiftfiddle.com", path: "/runner/\(version)/run")
         let clientRequest = ClientRequest(
             method: .POST,
@@ -168,26 +169,13 @@ func routes(_ app: Application) throws {
             body: data
         )
 
-        let promise = req.eventLoop.makePromise(of: Response.self)
-
-        req.client.send(clientRequest)
-            .flatMapThrowing{ (response: ClientResponse) -> Response in
-                guard let body = response.body else { throw Abort(.internalServerError) }
-                guard let data = body.getData(at: 0, length: body.readableBytes) else { throw Abort(.internalServerError) }
-                if let text = String(data: data, encoding: .utf8) {
-                    req.logger.notice("\(text)")
-                }
-                let response = Response(status: .ok, headers: ["Content-Type": "image/png"], body: Response.Body(buffer: ByteBuffer(data: data)))
-                return response
-            }
-            .cascade(to: promise)
-
-        return promise.futureResult
+        return req.client.send(clientRequest)
 }
 
     app.on(.POST, "runner", "*", "run", body: .collect(maxSize: "10mb")) { (req) -> EventLoopFuture<ClientResponse> in
         guard let data = req.body.data else { throw Abort(.badRequest) }
         let latestVersion = (try? latestVersion()) ?? stableVersion()
+
         let path: String
         if req.url.path.contains("/stable/") {
             path = "/runner/\(stableVersion())/run"
