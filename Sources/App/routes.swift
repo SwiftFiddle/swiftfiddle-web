@@ -160,6 +160,7 @@ func routes(_ app: Application) throws {
             throw Abort(.badRequest)
         }
         let version = parameter.toolchain_version ?? stableVersion()
+
         let url = URI(scheme: .https, host: "swiftfiddle.com", path: "/runner/\(version)/run")
         let clientRequest = ClientRequest(
             method: .POST,
@@ -167,17 +168,19 @@ func routes(_ app: Application) throws {
             headers: HTTPHeaders([("Content-type", "application/json")]),
             body: data
         )
+
         return req.client.send(clientRequest)
-    }
+}
 
     app.on(.POST, "runner", "*", "run", body: .collect(maxSize: "10mb")) { (req) -> EventLoopFuture<ClientResponse> in
         guard let data = req.body.data else { throw Abort(.badRequest) }
         let latestVersion = (try? latestVersion()) ?? stableVersion()
+
         let path: String
-        if req.url.path.contains("/runner/\(stableVersion())/run") {
-            path = ""
-        } else if req.url.path.contains("/runner/\(latestVersion)/run") {
-            path = ""
+        if req.url.path.contains("/stable/") {
+            path = "/runner/\(stableVersion())/run"
+        } else if req.url.path.contains("/latest/") {
+            path = "/runner/\(latestVersion)/run"
         } else {
             path = req.url.path
         }
