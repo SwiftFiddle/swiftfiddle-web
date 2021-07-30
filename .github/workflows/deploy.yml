@@ -84,6 +84,8 @@ jobs:
           git config --global user.name "${GITHUB_ACTOR}"
           git config --global user.email "${GITHUB_ACTOR}@users.noreply.github.com"
 
+          git pull --rebase origin master
+
           git add k8s/pod.yaml
           git diff-index --quiet HEAD || git commit -m "Deploy to GKE $(git rev-parse --short HEAD)"
           git push origin master
