@@ -30,8 +30,9 @@
 
 
 <body>
+  <!-- Main Content -->
   <div class="container-fluid g-0 d-flex flex-column min-vh-100">
-    <div class="row m-0 g-0 justify-content-start bg-light">
+    <header class="row m-0 g-0 justify-content-start bg-light">
       <div class="col-md-auto m-2">
         <span class="fab fa-swift fa-2x fa-fw text-primary"></span>
         <span class="h4 text-dark align-top ms-1">Swift Playground</span>
@@ -95,22 +96,26 @@
           </button>
         </span>
       </div>
-    </div>
-    <div class="row bg-light flex-fill fill d-flex g-0">
+    </header>
+
+    <main class="row bg-light flex-fill fill d-flex g-0">
       <div class="col-md-6">
         <div id="editor-container" class="h-100"></div>
       </div>
       <div class="col-md-6">
         <div id="terminal-container" class="h-100"></div>
       </div>
-    </div>
-    <div class="row p-1 justify-content-center bg-light">
-      <div class="col-md-auto m-1 text-dark">
-        <span class="text-muted">created by </span><a class="text-reset" href="https://twitter.com/k_katsumi">kishikawa
-          katsumi</a><a class="text-reset ms-2" href="https://github.com/kishikawakatsumi/swift-playground"><span
-            class="fab fa-github"></span></a>
+    </main>
+
+    <footer class="row p-1 bg-light">
+      <div class="col-md-12 m-1 text-center text-dark">
+        <span class="text-muted">created by </span>
+        <a class="text-reset" href="https://twitter.com/k_katsumi">kishikawa katsumi</a>
+        <a class="text-reset ms-2" href="https://github.com/kishikawakatsumi/swift-playground">
+          <span class="fab fa-github"></span>
+        </a>
       </div>
-    </div>
+    </footer>
   </div>
 
   <!-- Share Sheet Popover -->
@@ -138,7 +143,7 @@
           data-value="">
           <span class="h6">Embed</span>
         </label>
-        <div class="input-group">
+        <div class="input-group mb-3">
           <textarea id="share-sheet-embed-field" class="form-control share-sheet-textarea"
             style="font-family: monospace; white-space: pre;" oninput="this.parentNode.dataset.value = this.value"
             rows="3" onfocus="this.select();" readonly>
@@ -150,6 +155,21 @@
             </span>
           </button>
         </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col">
+        <a type="button" id="share-twitter-button" class="btn btn-outline-primary btn-sm rounded-circle p-0 ms-1"
+          href="\#" target="_blank" rel="nofollow noopener noreferrer" data-bs-toggle="tooltip"
+          data-bs-placement="bottom" title="Twitter">
+          <span class="fab fa-twitter fa-fw" style="width: 1rem; height: 100%;"></span>
+        </a>
+
+        <a type="button" id="share-facebook-button" class="btn btn-outline-primary btn-sm rounded-circle p-0 ms-1"
+          href="\#" target="_blank" rel="nofollow noopener noreferrer" data-bs-toggle="tooltip"
+          data-bs-placement="bottom" title="Facebook">
+          <span class="fab fa-facebook-f fa-fw" style="width: 1em; height: 100%"></span>
+        </a>
       </div>
     </div>
   </div>

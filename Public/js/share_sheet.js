@@ -77,6 +77,16 @@ if (popoverContent) {
   src="${url}/embedded/">
 </iframe>`;
           embedCopyButton.classList.remove("disabled");
+
+          const shareTwitterButton = document.getElementById(
+            "share-twitter-button"
+          );
+          shareTwitterButton.href = `https://twitter.com/intent/tweet?text=&url=${url}`;
+
+          const shareFacebookButton = document.getElementById(
+            "share-facebook-button"
+          );
+          shareFacebookButton.href = `https://www.facebook.com/sharer/sharer.php?u=${url}`;
         } else {
           console.error(response.statusText);
           Snackbar.alert(response.statusText);
