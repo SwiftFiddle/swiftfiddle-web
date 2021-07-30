@@ -140,7 +140,7 @@
         </label>
         <div class="input-group">
           <textarea id="share-sheet-embed-field" class="form-control share-sheet-textarea"
-            style="font-family: monospace; font-size: 0.96em;" oninput="this.parentNode.dataset.value = this.value"
+            style="font-family: monospace; white-space: pre;" oninput="this.parentNode.dataset.value = this.value"
             rows="3" onfocus="this.select();" readonly>
           </textarea>
           <button id="share-sheet-embed-copy-button" class="btn btn-outline-primary" type="button"

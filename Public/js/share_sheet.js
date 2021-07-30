@@ -10,7 +10,7 @@ const popoverContent = document.getElementById("share-sheet");
 
 if (popoverContent) {
   const placeholderData =
-    "000000000000000000000000000000000000000000000000000000000000000000";
+    "0000000000000000000000000000000000000000000000000000000000000000000000000000";
 
   const popover = new Popover(shareButton, {
     title: "",
@@ -74,7 +74,7 @@ if (popoverContent) {
 
           embed.dataset.value = placeholderData;
           embedField.value = `<iframe width="100%" height="300" frameborder="0"
-src="${url}/embedded/">
+  src="${url}/embedded/">
 </iframe>`;
           embedCopyButton.classList.remove("disabled");
         } else {
