@@ -1,8 +1,8 @@
 {
   "dependencies": {
     "@popperjs/core": "2.9.2",
-    "@sentry/browser": "^6.10.0",
-    "@sentry/tracing": "^6.10.0",
+    "@sentry/browser": "6.10.0",
+    "@sentry/tracing": "6.10.0",
     "axios": "0.21.1",
     "bootstrap": "5.0.2",
     "monaco-editor": "0.26.1",
