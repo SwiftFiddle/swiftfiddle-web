@@ -4,10 +4,9 @@ import "./css/version_picker.css";
 import "./css/share_sheet.css";
 import "./js/share_sheet.js";
 
-import { Tooltip } from "bootstrap";
-
-import { App } from "./js/app";
-new App(window.appConfig);
+import("./js/app.js").then((module) => {
+  new module.App(window.appConfig);
+});
 
 document.getElementById("run-button").classList.remove("disabled");
 document.getElementById("clear-console-button").classList.remove("disabled");
@@ -45,9 +44,11 @@ settingsSaveButton.addEventListener("click", function (event) {
   window.appConfig.compilerOptions = compilerOptions;
 });
 
-const tooltipTriggers = [].slice.call(
-  document.querySelectorAll('[data-bs-toggle="tooltip"]')
-);
-tooltipTriggers.map((trigger) => {
-  return new Tooltip(trigger);
+import("bootstrap").then((module) => {
+  const tooltipTriggers = [].slice.call(
+    document.querySelectorAll('[data-bs-toggle="tooltip"]')
+  );
+  tooltipTriggers.map((trigger) => {
+    return new module.Tooltip(trigger);
+  });
 });
