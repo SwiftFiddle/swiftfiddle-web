@@ -159,16 +159,15 @@
     </div>
     <div class="row">
       <div class="col">
-        <a type="button" id="share-twitter-button" class="btn btn-outline-primary btn-sm rounded-circle p-0 ms-1"
-          href="\#" target="_blank" rel="nofollow noopener noreferrer" data-bs-toggle="tooltip"
-          data-bs-placement="bottom" title="Twitter">
+        <a id="share-twitter-button" class="btn btn-outline-primary btn-sm rounded-circle p-0 ms-1" href="\#"
+          target="_blank" rel="nofollow noopener noreferrer" data-bs-toggle="tooltip" data-bs-placement="bottom"
+          title="Twitter">
           <span class="fab fa-twitter fa-fw" style="width: 1rem; height: 100%;"></span>
         </a>
-
-        <a type="button" id="share-facebook-button" class="btn btn-outline-primary btn-sm rounded-circle p-0 ms-1"
-          href="\#" target="_blank" rel="nofollow noopener noreferrer" data-bs-toggle="tooltip"
-          data-bs-placement="bottom" title="Facebook">
-          <span class="fab fa-facebook-f fa-fw" style="width: 1em; height: 100%"></span>
+        <a id="share-facebook-button" class="btn btn-outline-primary btn-sm rounded-circle p-0 ms-1" href="\#"
+          target="_blank" rel="nofollow noopener noreferrer" data-bs-toggle="tooltip" data-bs-placement="bottom"
+          title="Facebook">
+          <span class="fab fa-facebook-square fa-fw" style="width: 1rem; height: 100%"></span>
         </a>
       </div>
     </div>
@@ -200,7 +199,9 @@
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-          <button type="button" id="settings-save-button" class="btn btn-primary" data-bs-dismiss="modal">Save</button>
+          <button type="button" id="settings-save-button" class="btn btn-primary" data-bs-dismiss="modal">
+            <span class="px-2">Save</span>
+          </button>
         </div>
       </div>
     </div>
