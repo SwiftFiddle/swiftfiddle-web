@@ -159,12 +159,12 @@
     </div>
     <div class="row">
       <div class="col">
-        <a id="share-twitter-button" class="btn btn-outline-primary btn-sm rounded-circle p-0 ms-1" href="\#"
+        <a id="share-twitter-button" class="btn btn-outline-primary btn-sm rounded-circle p-0 me-2" href="\#"
           target="_blank" rel="nofollow noopener noreferrer" data-bs-toggle="tooltip" data-bs-placement="bottom"
           title="Twitter">
           <span class="fab fa-twitter fa-fw" style="width: 1rem; height: 100%;"></span>
         </a>
-        <a id="share-facebook-button" class="btn btn-outline-primary btn-sm rounded-circle p-0 ms-1" href="\#"
+        <a id="share-facebook-button" class="btn btn-outline-primary btn-sm rounded-circle p-0 me-2" href="\#"
           target="_blank" rel="nofollow noopener noreferrer" data-bs-toggle="tooltip" data-bs-placement="bottom"
           title="Facebook">
           <span class="fab fa-facebook-square fa-fw" style="width: 1rem; height: 100%"></span>
