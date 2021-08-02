@@ -58,12 +58,6 @@
     </div>
   </div>
 
-  <script>
-    FontAwesomeConfig = {
-      searchPseudoElements: true
-    };
-  </script>
-  <script src="https://kit.fontawesome.com/7eb94bd1f2.js" crossorigin="anonymous"></script>
   <!-- beautify ignore:start -->
   <script>
     const foldingRanges = [];
