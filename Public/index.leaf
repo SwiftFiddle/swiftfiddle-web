@@ -322,12 +322,6 @@
   </div>
 
   <script>
-    FontAwesomeConfig = {
-      searchPseudoElements: true
-    };
-  </script>
-  <script src="https://kit.fontawesome.com/7eb94bd1f2.js" crossorigin="anonymous"></script>
-  <script>
     window.appConfig = {
       initialText: `#(codeSnippet)`,
       isEmbedded: false,

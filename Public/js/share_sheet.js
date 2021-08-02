@@ -93,8 +93,13 @@ if (popoverContent) {
         }
       })
       .catch((error) => {
-        console.error(error.response.statusText);
-        Snackbar.alert(error.response.statusText);
+        if (error.response) {
+          console.error(error.response.statusText);
+          Snackbar.alert(error.response.statusText);
+        } else {
+          console.error(error);
+          Snackbar.alert(error);
+        }
       })
       .finally(() => {
         linkCopyButtonIcon.classList.remove("d-none");

@@ -6,6 +6,64 @@ Sentry.init({
   tracesSampleRate: 1.0,
 });
 
+import { config, library, dom } from "@fortawesome/fontawesome-svg-core";
+config.searchPseudoElements = true;
+
+import {
+  faCodeBranch,
+  faPlay,
+  faCircleNotch,
+  faStop,
+  faEraser,
+  faAlignLeft,
+  faShareAlt,
+  faCog,
+  faQuestion,
+  faExclamationTriangle,
+} from "@fortawesome/pro-solid-svg-icons";
+import {
+  faCheck,
+  faClipboard,
+  faFileImport,
+  faKeyboard,
+  faToolbox,
+  faCommentAltSmile,
+  faCheckCircle,
+} from "@fortawesome/pro-regular-svg-icons";
+import {
+  faSwift,
+  faGithub,
+  faTwitter,
+  faFacebookSquare,
+} from "@fortawesome/free-brands-svg-icons";
+
+library.add(
+  faCodeBranch,
+  faPlay,
+  faCircleNotch,
+  faStop,
+  faEraser,
+  faAlignLeft,
+  faShareAlt,
+  faCog,
+  faQuestion,
+  faExclamationTriangle,
+
+  faCheck,
+  faClipboard,
+  faFileImport,
+  faKeyboard,
+  faToolbox,
+  faCommentAltSmile,
+  faCheckCircle,
+
+  faSwift,
+  faGithub,
+  faTwitter,
+  faFacebookSquare
+);
+dom.watch();
+
 import "./scss/index.scss";
 import "./css/common.css";
 import "./css/version_picker.css";
