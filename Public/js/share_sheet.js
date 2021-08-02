@@ -60,7 +60,7 @@ if (popoverContent) {
 
     const params = {
       toolchain_version: VersionPicker.current(),
-      code: `print("Hello World!!")`,
+      code: window.app.editor.getValue(),
     };
     axios
       .post("/shared_link", params)

@@ -71,7 +71,7 @@ import "./css/share_sheet.css";
 import "./js/share_sheet.js";
 
 import("./js/app.js").then((module) => {
-  new module.App(window.appConfig);
+  window.app = new module.App(window.appConfig);
 });
 
 document.getElementById("run-button").classList.remove("disabled");
