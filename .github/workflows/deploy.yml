@@ -11,6 +11,7 @@ env:
   GKE_ZONE: us-central1-c
   DOCKER_HUB_USERNAME: ${{ secrets.DOCKER_HUB_USERNAME }}
   DOCKER_HUB_ACCESS_TOKEN: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
+  FONTAWESOME_TOKEN: ${{ secrets.FONTAWESOME_TOKEN }}
   CLOUDFLARE_EMAIL: ${{ secrets.CLOUDFLARE_EMAIL }}
   CLOUDFLARE_API_KEY: ${{ secrets.CLOUDFLARE_API_KEY }}
   CLOUDFLARE_ZONE_ID: ${{ secrets.CLOUDFLARE_ZONE_ID }}
@@ -47,7 +48,7 @@ jobs:
         run: |
           set -ex
 
-          docker build --rm --tag swiftfiddle/web-frontend:latest .
+          docker build --build-arg FONTAWESOME_TOKEN={{ env.FONTAWESOME_TOKEN }} --rm --tag swiftfiddle/web-frontend:latest .
           docker push swiftfiddle/web-frontend:latest
 
   deploy:

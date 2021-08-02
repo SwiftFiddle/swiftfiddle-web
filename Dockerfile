@@ -2,8 +2,11 @@ FROM node:lts-slim as node
 
 WORKDIR /build
 
+ARG FONTAWESOME_TOKEN
 COPY package*.json ./
-RUN npm ci
+RUN echo "@fortawesome:registry=https://npm.fontawesome.com/\n//npm.fontawesome.com/:_authToken=${FONTAWESOME_TOKEN}" > ./.npmrc \
+    && npm ci \
+    && rm -f ./.npmrc
 
 COPY webpack.*.js ./
 COPY Public ./Public/
