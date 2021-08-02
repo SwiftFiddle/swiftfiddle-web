@@ -7,7 +7,7 @@ Sentry.init({
 });
 
 import "./scss/index.scss";
-import "./css/index.css";
+import "./css/common.css";
 import "./css/version_picker.css";
 import "./css/share_sheet.css";
 import "./js/share_sheet.js";

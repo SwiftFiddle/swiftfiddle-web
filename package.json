@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "@fortawesome/fontawesome-pro": "5.15.3",
     "@popperjs/core": "2.9.2",
     "@sentry/browser": "6.10.0",
     "@sentry/tracing": "6.10.0",
