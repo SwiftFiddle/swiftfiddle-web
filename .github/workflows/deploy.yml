@@ -48,7 +48,7 @@ jobs:
         run: |
           set -ex
 
-          docker build --build-arg FONTAWESOME_TOKEN={{ env.FONTAWESOME_TOKEN }} --rm --tag swiftfiddle/web-frontend:latest .
+          docker build --build-arg FONTAWESOME_TOKEN=${{ env.FONTAWESOME_TOKEN }} --rm --tag swiftfiddle/web-frontend:latest .
           docker push swiftfiddle/web-frontend:latest
 
   deploy:
