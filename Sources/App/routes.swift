@@ -22,46 +22,52 @@ func routes(_ app: Application) throws {
     app.get(":id") { req -> EventLoopFuture<Response> in
         if let path = req.parameters.get("id"), let id = try SharedLink.id(from: path) {
             let promise = req.eventLoop.makePromise(of: Response.self)
-            try SharedLink.content(client: req.client, id: id.replacingOccurrences(of: ".png", with: ""))
-                .whenComplete {
-                    switch $0 {
-                    case .success(let content):
-                        do {
-                            if let content = content {
-                                let code = content.fields.shared_link.mapValue.fields.content.stringValue
-                                let swiftVersion = content.fields.shared_link.mapValue.fields.swift_version.stringValue
-                                try handleImportContent(req, promise, id, code, swiftVersion)
-                            } else {
-                                promise.fail(Abort(.notFound))
-                            }
-                        } catch {
-                            promise.fail(Abort(.internalServerError))
+            try SharedLink.content(
+                client: req.client,
+                id: id.replacingOccurrences(of: ".png", with: "")
+            )
+            .whenComplete {
+                switch $0 {
+                case .success(let content):
+                    do {
+                        if let content = content {
+                            let code = content.fields.shared_link.mapValue.fields.content.stringValue
+                            let swiftVersion = content.fields.shared_link.mapValue.fields.swift_version.stringValue
+                            try handleImportContent(req, promise, id, code, swiftVersion)
+                        } else {
+                            promise.fail(Abort(.notFound))
                         }
-                    case .failure(let error):
-                        promise.fail(error)
+                    } catch {
+                        promise.fail(Abort(.internalServerError))
                     }
+                case .failure(let error):
+                    promise.fail(error)
                 }
+            }
             return promise.futureResult
         } else if let path = req.parameters.get("id"), let id = try Gist.id(from: path) {
             let promise = req.eventLoop.makePromise(of: Response.self)
-            Gist.content(client: req.client, id: id.replacingOccurrences(of: ".png", with: ""))
-                .whenComplete{
-                    switch $0 {
-                    case .success(let content):
-                        do {
-                            if let content = content {
-                                let code = Array(content.files.values)[0].content
-                                try handleImportContent(req, promise, id, code, nil)
-                            } else {
-                                promise.fail(Abort(.notFound))
-                            }
-                        } catch {
-                            promise.fail(Abort(.internalServerError))
+            Gist.content(
+                client: req.client,
+                id: id.replacingOccurrences(of: ".png", with: "")
+            )
+            .whenComplete{
+                switch $0 {
+                case .success(let content):
+                    do {
+                        if let content = content {
+                            let code = Array(content.files.values)[0].content
+                            try handleImportContent(req, promise, id, code, nil)
+                        } else {
+                            promise.fail(Abort(.notFound))
                         }
-                    case .failure(let error):
-                        promise.fail(error)
+                    } catch {
+                        promise.fail(Abort(.internalServerError))
                     }
+                case .failure(let error):
+                    promise.fail(error)
                 }
+            }
             return promise.futureResult
         } else {
             throw Abort(.notFound)
@@ -134,20 +140,31 @@ func routes(_ app: Application) throws {
 
         let promise = req.eventLoop.makePromise(of: [String: String].self)
 
-        try Firestore.createDocument(client: req.client, id: id, code: parameter.code, swiftVersion: swiftVersion)
-            .whenComplete {
-                switch $0 {
-                case .success:
-                    promise.succeed(
-                        ["swift_version": swiftVersion,
-                        "content": code,
-                        "url": "https://swiftfiddle.com/\(id)",
-                        ]
-                    )
-                case .failure(let error):
-                    promise.fail(error)
-                }
+        try Firestore.createDocument(
+            client: req.client,
+            id: id,
+            code: parameter.code,
+            swiftVersion: swiftVersion
+        )
+        .whenComplete {
+            switch $0 {
+            case .success:
+                try? ShareImage.generate(client: req.client, from: code)
+                    .whenSuccess {
+                        guard let buffer = $0 else { return }
+                        guard let data = buffer.getData(at: 0, length: buffer.readableBytes) else { return }
+                        _ = req.cache.set("/\(id).png", to: data, expiresIn: .days(14))
+                    }
+                promise.succeed(
+                    ["swift_version": swiftVersion,
+                    "content": code,
+                    "url": "https://swiftfiddle.com/\(id)",
+                    ]
+                )
+            case .failure(let error):
+                promise.fail(error)
             }
+        }
 
         return promise.futureResult
     }
@@ -199,14 +216,34 @@ private func handleImportContent(_ req: Request, _ promise: EventLoopPromise<Res
                                  _ id: String, _ code: String, _ swiftVersion: String?) throws {
     let path = req.url.path
     if path.hasSuffix(".png") {
-        return try ShareImage.generate(client: req.client, from: code)
-            .flatMapThrowing {
-                guard let buffer = $0 else { throw Abort(.notFound) }
-                return Response(status: .ok, headers: ["Content-Type": "image/png"], body: Response.Body(buffer: buffer))
+        _ = req.cache.get(path, as: Data.self)
+            .flatMapThrowing { (data) in
+                if let data = data {
+                    req.eventLoop.future(
+                        Response(
+                            status: .ok,
+                            headers: ["Content-Type": "image/png"],
+                            body: Response.Body(buffer: ByteBuffer(data: data)
+                            )
+                        )
+                    )
+                    .cascade(to: promise)
+                } else {
+                    try ShareImage.generate(
+                        client: req.client, from: code
+                    )
+                    .flatMapThrowing { (buffer) -> Response in
+                        guard let buffer = buffer else { throw Abort(.notFound) }
+                        if let data = buffer.getData(at: 0, length: buffer.readableBytes) {
+                            _ = req.cache.set(path, to: data, expiresIn: .days(14))
+                        }
+                        return Response(status: .ok, headers: ["Content-Type": "image/png"], body: Response.Body(buffer: buffer))
+                    }
+                    .cascade(to: promise)
+                }
             }
-            .cascade(to: promise)
     } else {
-        return req.view.render(
+        req.view.render(
             "index", InitialPageResponse(
                 title: "Swift Playground",
                 versions: try VersionGroup.grouped(versions: availableVersions()),
