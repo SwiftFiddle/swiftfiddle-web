@@ -39,7 +39,7 @@ spec:
       labels:
         app.kubernetes.io/name: web-frontend
       annotations:
-        commit_sha: "97f7411d5483f0be24ecdaeabcf418159970e6d5"
+        commit_sha: "02434ec5fd1d42c90444baa7123b5ad68e921c35"
     spec:
       containers:
         - image: swiftfiddle/web-frontend:latest
@@ -52,11 +52,6 @@ spec:
               path: /health
               port: 8080
           env:
-            - name: GCP_PROJECT
-              valueFrom:
-                secretKeyRef:
-                  name: credentials
-                  key: GCP_PROJECT
             - name: FIREBASE_API_KEY
               valueFrom:
                 secretKeyRef:
@@ -67,8 +62,8 @@ spec:
                 secretKeyRef:
                   name: credentials
                   key: FIREBASE_REFRESH_TOKEN
-            - name: BUGSNAG_API_KEY
+            - name: GCP_PROJECT
               valueFrom:
                 secretKeyRef:
                   name: credentials
-                  key: BUGSNAG_API_KEY
+                  key: GCP_PROJECT
