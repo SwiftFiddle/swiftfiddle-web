@@ -243,11 +243,21 @@ private func handleImportContent(_ req: Request, _ promise: EventLoopPromise<Res
                 }
             }
     } else {
+        let version: String
+        if let swiftVersion = swiftVersion {
+            if swiftVersion == "nightly-master" {
+                version = "nightly-main"
+            } else {
+                version = swiftVersion
+            }
+        } else {
+            version = stableVersion()
+        }
         req.view.render(
             "index", InitialPageResponse(
                 title: "Swift Playground",
                 versions: try VersionGroup.grouped(versions: availableVersions()),
-                stableVersion: swiftVersion ?? stableVersion(),
+                stableVersion: version,
                 latestVersion: try latestVersion(),
                 codeSnippet: escape(code),
                 ogpImageUrl: "https://swiftfiddle.com/\(id).png",
