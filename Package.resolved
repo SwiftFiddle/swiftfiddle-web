@@ -20,6 +20,15 @@
         }
       },
       {
+        "package": "bugsnag",
+        "repositoryURL": "https://github.com/nodes-vapor/bugsnag.git",
+        "state": {
+          "branch": null,
+          "revision": "4f02ae4b0ace7f342c94ac8b4870f85a972c216c",
+          "version": "4.0.0-rc.2"
+        }
+      },
+      {
         "package": "console-kit",
         "repositoryURL": "https://github.com/vapor/console-kit.git",
         "state": {

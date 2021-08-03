@@ -1,5 +1,8 @@
 import Vapor
 import Leaf
+import Bugsnag
+
+private let bugsnagApiKey = Environment.get("BUGSNAG_API_KEY")
 
 public func configure(_ app: Application) throws {
     app.middleware = Middlewares()
@@ -7,6 +10,15 @@ public func configure(_ app: Application) throws {
     app.middleware.use(CustomHeaderMiddleware())
     let publicDirectory = "\(app.directory.publicDirectory)/dist"
     app.middleware.use(FileMiddleware(publicDirectory: publicDirectory))
+
+    if let bugsnagApiKey = bugsnagApiKey {
+        app.bugsnag.configuration = BugsnagConfiguration(
+            apiKey: bugsnagApiKey,
+            releaseStage: app.environment.name,
+            shouldReport: app.environment.name != "local"
+        )
+        app.middleware.use(BugsnagMiddleware())
+    }
 
     app.http.server.configuration.supportPipelining = true
     app.http.server.configuration.requestDecompression = .enabled

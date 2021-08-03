@@ -52,6 +52,11 @@ spec:
               path: /health
               port: 8080
           env:
+            - name: GCP_PROJECT
+              valueFrom:
+                secretKeyRef:
+                  name: credentials
+                  key: GCP_PROJECT
             - name: FIREBASE_API_KEY
               valueFrom:
                 secretKeyRef:
@@ -62,8 +67,8 @@ spec:
                 secretKeyRef:
                   name: credentials
                   key: FIREBASE_REFRESH_TOKEN
-            - name: GCP_PROJECT
+            - name: BUGSNAG_API_KEY
               valueFrom:
                 secretKeyRef:
                   name: credentials
-                  key: GCP_PROJECT
+                  key: BUGSNAG_API_KEY
