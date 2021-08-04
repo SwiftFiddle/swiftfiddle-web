@@ -8,7 +8,7 @@
     "@sentry/browser": "6.10.0",
     "@sentry/tracing": "6.10.0",
     "axios": "0.21.1",
-    "bootstrap": "5.0.2",
+    "bootstrap": "5.1.0",
     "monaco-editor": "0.26.1",
     "monaco-editor-webpack-plugin": "4.1.1",
     "xterm": "4.13.0",
