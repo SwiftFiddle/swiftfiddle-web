@@ -18,7 +18,7 @@ import {
 library.add(faCodeBranch, faPlay, faCircleNotch, faExternalLinkAlt);
 dom.watch();
 
-import "./scss/index.scss";
+import "./scss/default.scss";
 import "./css/embedded.css";
 
 import { App } from "./js/app";

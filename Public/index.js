@@ -64,7 +64,7 @@ library.add(
 );
 dom.watch();
 
-import "./scss/index.scss";
+import "./scss/default.scss";
 import "./css/common.css";
 import "./css/version_picker.css";
 import "./css/share_sheet.css";
