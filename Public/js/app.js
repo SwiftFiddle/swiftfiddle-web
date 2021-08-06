@@ -1,9 +1,5 @@
 "use strict";
 
-import { Editor } from "./editor.js";
-import { Console } from "./console.js";
-import { LanguageServer } from "./language_server.js";
-import { SwiftFormat } from "./swift_format.js";
 import { Runner } from "./runner.js";
 import { VersionPicker } from "./version_picker.js";
 import { uuidv4 } from "./uuid.js";
@@ -20,195 +16,209 @@ export class App {
     this.isEmbedded = config.isEmbedded;
     const foldingRanges = config.foldingRanges;
 
-    this.editor = new Editor(initialText, this.isEmbedded);
-    this.console = new Console(document.getElementById("terminal-container"));
-    this.history = [];
+    import("./editor.js").then((module) => {
+      this.editor = new module.Editor(initialText, this.isEmbedded);
 
-    const promises = [];
-    let sequence = 0;
+      const promises = [];
+      let sequence = 0;
 
-    const languageServer = new LanguageServer("wss://lsp.swiftfiddle.com/");
+      import("./language_server.js").then((module) => {
+        const languageServer = new module.LanguageServer(
+          "wss://lsp.swiftfiddle.com/"
+        );
 
-    languageServer.onconnect = () => {
-      languageServer.openDocument(this.editor.getValue());
-    };
+        languageServer.onconnect = () => {
+          languageServer.openDocument(this.editor.getValue());
+        };
 
-    languageServer.onresponse = (response) => {
-      const promise = promises[response.id];
-      switch (response.method) {
-        case "hover":
-          if (!promise) {
-            return;
-          }
-          if (response.value) {
-            const range = {
-              startLineNumber: response.position.line,
-              startColumn: response.position.utf16index,
-              endLineNumber: response.position.line,
-              endColumn: response.position.utf16index,
-            };
-            promise.fulfill({
-              range: range,
-              contents: [{ value: response.value.contents.value }],
-            });
-          } else {
-            promise.fulfill();
-          }
-          break;
-        case "completion":
-          if (!promise) {
-            return;
-          }
-          if (response.value) {
-            const completions = {
-              suggestions: response.value.items.map((item) => {
-                const textEdit = item.textEdit;
-                const start = textEdit.range.start;
-                const end = textEdit.range.end;
-                const kind = languageServer.convertCompletionItemKind(
-                  item.kind
-                );
+        languageServer.onresponse = (response) => {
+          const promise = promises[response.id];
+          switch (response.method) {
+            case "hover":
+              if (!promise) {
+                return;
+              }
+              if (response.value) {
                 const range = {
-                  startLineNumber: start.line + 1,
-                  startColumn: start.character + 1,
-                  endLineNumber: end.line + 1,
-                  endColumn: end.character + 1,
+                  startLineNumber: response.position.line,
+                  startColumn: response.position.utf16index,
+                  endLineNumber: response.position.line,
+                  endColumn: response.position.utf16index,
                 };
-                return {
-                  label: item.label,
-                  kind: kind,
-                  detail: item.detail,
-                  filterText: item.filterText,
-                  insertText: textEdit.newText,
+                promise.fulfill({
                   range: range,
+                  contents: [{ value: response.value.contents.value }],
+                });
+              } else {
+                promise.fulfill();
+              }
+              break;
+            case "completion":
+              if (!promise) {
+                return;
+              }
+              if (response.value) {
+                const completions = {
+                  suggestions: response.value.items.map((item) => {
+                    const textEdit = item.textEdit;
+                    const start = textEdit.range.start;
+                    const end = textEdit.range.end;
+                    const kind = languageServer.convertCompletionItemKind(
+                      item.kind
+                    );
+                    const range = {
+                      startLineNumber: start.line + 1,
+                      startColumn: start.character + 1,
+                      endLineNumber: end.line + 1,
+                      endColumn: end.character + 1,
+                    };
+                    return {
+                      label: item.label,
+                      kind: kind,
+                      detail: item.detail,
+                      filterText: item.filterText,
+                      insertText: textEdit.newText,
+                      range: range,
+                    };
+                  }),
                 };
-              }),
-            };
-            promise.fulfill(completions);
-          } else {
-            promise.fulfill();
-          }
-        case "diagnostics":
-          this.editor.clearMarkers();
+                promise.fulfill(completions);
+              } else {
+                promise.fulfill();
+              }
+            case "diagnostics":
+              this.editor.clearMarkers();
 
-          if (!response.value) {
-            return;
-          }
-          const diagnostics = response.value.diagnostics;
-          if (!diagnostics || !diagnostics.length) {
-            return;
-          }
+              if (!response.value) {
+                return;
+              }
+              const diagnostics = response.value.diagnostics;
+              if (!diagnostics || !diagnostics.length) {
+                return;
+              }
 
-          const markers = diagnostics.map((diagnostic) => {
-            const start = diagnostic.range.start;
-            const end = diagnostic.range.end;
-            const startLineNumber = start.line + 1;
-            const startColumn = start.character + 1;
-            const endLineNumber = end.line + 1;
-            const endColumn = start.character + 1;
+              const markers = diagnostics.map((diagnostic) => {
+                const start = diagnostic.range.start;
+                const end = diagnostic.range.end;
+                const startLineNumber = start.line + 1;
+                const startColumn = start.character + 1;
+                const endLineNumber = end.line + 1;
+                const endColumn = start.character + 1;
 
-            let severity = languageServer.convertDiagnosticSeverity(
-              diagnostic.severity
+                let severity = languageServer.convertDiagnosticSeverity(
+                  diagnostic.severity
+                );
+
+                return {
+                  startLineNumber: startLineNumber,
+                  startColumn: startColumn,
+                  endLineNumber: endLineNumber,
+                  endColumn: endColumn,
+                  message: diagnostic.message,
+                  severity: severity,
+                  source: diagnostic.source,
+                };
+              });
+
+              this.editor.updateMarkers(markers);
+              break;
+            default:
+              break;
+          }
+        };
+
+        if (formatButton) {
+          import("./swift_format.js").then((module) => {
+            const formatterService = new module.SwiftFormat(
+              "wss://formatter.swiftfiddle.com"
             );
-
-            return {
-              startLineNumber: startLineNumber,
-              startColumn: startColumn,
-              endLineNumber: endLineNumber,
-              endColumn: endColumn,
-              message: diagnostic.message,
-              severity: severity,
-              source: diagnostic.source,
+            formatterService.onresponse = (response) => {
+              this.editor.setValue(response);
             };
+
+            formatButton.addEventListener("click", (event) => {
+              event.preventDefault();
+              formatterService.format(this.editor.getValue());
+            });
           });
+        }
 
-          this.editor.updateMarkers(markers);
-          break;
-        default:
-          break;
-      }
-    };
+        this.editor.onaction = (action) => {
+          switch (action) {
+            case "run":
+              this.run();
+              break;
+            case "share":
+              const shareButton = document.getElementById("share-button");
+              if (shareButton.classList.contains("disabled")) {
+                return;
+              }
+              shareButton.click();
+              break;
+            default:
+              break;
+          }
+        };
 
-    if (formatButton) {
-      const formatterService = new SwiftFormat(
-        "wss://formatter.swiftfiddle.com"
-      );
-      formatterService.onresponse = (response) => {
-        this.editor.setValue(response);
-      };
+        window.addEventListener("unload", () => {
+          languageServer.close();
+        });
 
-      formatButton.addEventListener("click", (event) => {
-        event.preventDefault();
-        formatterService.format(this.editor.getValue());
-      });
-    }
+        this.editor.onchange = () => {
+          languageServer.syncDocument(this.editor.getValue());
+          updateButtonState(this.editor);
+        };
+        updateButtonState(this.editor);
 
-    this.editor.onaction = (action) => {
-      switch (action) {
-        case "run":
-          this.run();
-          break;
-        case "share":
-          const shareButton = document.getElementById("share-button");
-          if (shareButton.classList.contains("disabled")) {
+        this.editor.onhover = (position) => {
+          if (!languageServer.isReady) {
             return;
           }
-          shareButton.click();
-          break;
-        default:
-          break;
-      }
-    };
 
-    window.addEventListener("unload", () => {
-      languageServer.close();
+          sequence++;
+          const row = position.lineNumber - 1;
+          const column = position.column - 1;
+          languageServer.requestHover(sequence, row, column);
+
+          return new Promise((fulfill, reject) => {
+            promises[sequence] = { fulfill: fulfill, reject: reject };
+          });
+        };
+
+        this.editor.oncompletion = (position) => {
+          if (!languageServer.isReady) {
+            return;
+          }
+
+          sequence++;
+          const row = position.lineNumber - 1;
+          const column = position.column - 1;
+          languageServer.requestCompletion(sequence, row, column);
+
+          const promise = new Promise((fulfill, reject) => {
+            promises[sequence] = { fulfill: fulfill, reject: reject };
+          });
+          return promise;
+        };
+
+        if (foldingRanges && foldingRanges.length) {
+          this.editor.fold(foldingRanges);
+        }
+
+        this.editor.focus();
+        this.editor.scrollToBottm();
+
+        this.setupEventHandlers();
+      });
     });
 
-    this.editor.onchange = () => {
-      languageServer.syncDocument(this.editor.getValue());
-      updateButtonState(this.editor);
-    };
-    updateButtonState(this.editor);
+    import("./console.js").then((module) => {
+      this.console = new module.Console(
+        document.getElementById("terminal-container")
+      );
+    });
 
-    this.editor.onhover = (position) => {
-      if (!languageServer.isReady) {
-        return;
-      }
-
-      sequence++;
-      const row = position.lineNumber - 1;
-      const column = position.column - 1;
-      languageServer.requestHover(sequence, row, column);
-
-      return new Promise((fulfill, reject) => {
-        promises[sequence] = { fulfill: fulfill, reject: reject };
-      });
-    };
-
-    this.editor.oncompletion = (position) => {
-      if (!languageServer.isReady) {
-        return;
-      }
-
-      sequence++;
-      const row = position.lineNumber - 1;
-      const column = position.column - 1;
-      languageServer.requestCompletion(sequence, row, column);
-
-      const promise = new Promise((fulfill, reject) => {
-        promises[sequence] = { fulfill: fulfill, reject: reject };
-      });
-      return promise;
-    };
-
-    if (foldingRanges && foldingRanges.length) {
-      this.editor.fold(foldingRanges);
-    }
-
-    this.editor.focus();
-    this.editor.scrollToBottm();
-
-    this.setupEventHandlers();
+    this.history = [];
   }
 
   setupEventHandlers() {
