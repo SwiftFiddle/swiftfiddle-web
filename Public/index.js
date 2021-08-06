@@ -29,7 +29,9 @@ import {
   faToolbox,
   faCommentAltSmile,
   faCheckCircle,
+  faAt,
 } from "@fortawesome/pro-regular-svg-icons";
+import { faMonitorHeartRate } from "@fortawesome/pro-light-svg-icons";
 import {
   faSwift,
   faGithub,
@@ -56,6 +58,9 @@ library.add(
   faToolbox,
   faCommentAltSmile,
   faCheckCircle,
+  faAt,
+
+  faMonitorHeartRate,
 
   faSwift,
   faGithub,
