@@ -1,7 +1,5 @@
 "use strict";
 
-import * as monaco from "monaco-editor/esm/vs/editor/editor.api";
-
 import { Editor } from "./editor.js";
 import { Console } from "./console.js";
 import { LanguageServer } from "./language_server.js";
@@ -43,12 +41,12 @@ export class App {
             return;
           }
           if (response.value) {
-            const range = new monaco.Range(
-              response.position.line,
-              response.position.utf16index,
-              response.position.line,
-              response.position.utf16index
-            );
+            const range = {
+              startLineNumber: response.position.line,
+              startColumn: response.position.utf16index,
+              endLineNumber: response.position.line,
+              endColumn: response.position.utf16index,
+            };
             promise.fulfill({
               range: range,
               contents: [{ value: response.value.contents.value }],
@@ -70,12 +68,12 @@ export class App {
                 const kind = languageServer.convertCompletionItemKind(
                   item.kind
                 );
-                const range = new monaco.Range(
-                  start.line + 1,
-                  start.character + 1,
-                  end.line + 1,
-                  end.character + 1
-                );
+                const range = {
+                  startLineNumber: start.line + 1,
+                  startColumn: start.character + 1,
+                  endLineNumber: end.line + 1,
+                  endColumn: end.character + 1,
+                };
                 return {
                   label: item.label,
                   kind: kind,
@@ -433,13 +431,13 @@ export class App {
       let severity;
       switch (type) {
         case "warning":
-          severity = monaco.MarkerSeverity.Warning;
+          severity = 4; // monaco.MarkerSeverity.Warning;
           break;
         case "error":
-          severity = monaco.MarkerSeverity.Error;
+          severity = 8; // monaco.MarkerSeverity.Error;
           break;
         default:
-          severity = monaco.MarkerSeverity.Info;
+          severity = 2; // monaco.MarkerSeverity.Info;
           break;
       }
 
