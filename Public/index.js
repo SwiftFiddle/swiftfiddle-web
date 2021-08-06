@@ -3,7 +3,6 @@
 import "./scss/default.scss";
 import "./css/common.css";
 import "./css/version_picker.css";
-import "./css/share_sheet.css";
 
 import { setupErrorTracking } from "./js/logger.js";
 setupErrorTracking();
@@ -74,37 +73,40 @@ dom.watch();
 import("./js/app.js").then((module) => {
   window.app = new module.App(window.appConfig);
 
-  document.getElementById("run-button").classList.remove("disabled");
-  document.getElementById("clear-console-button").classList.remove("disabled");
-  document.getElementById("format-button").classList.remove("disabled");
-  document.getElementById("share-button").classList.remove("disabled");
-
   import("bootstrap").then((module) => {
-    const tooltipTriggers = [].slice.call(
-      document.querySelectorAll('[data-bs-toggle="tooltip"]')
-    );
-    tooltipTriggers.map((trigger) => {
-      return new module.Tooltip(trigger);
+    [].slice
+      .call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+      .map((trigger) => {
+        return new module.Tooltip(trigger);
+      });
+    import("./css/share_sheet.css").then((module) => {
+      import("./js/share_sheet.js").then((module) => {
+        document.getElementById("share-button").classList.remove("disabled");
+      });
     });
+
+    document.getElementById("run-button").classList.remove("disabled");
+    document
+      .getElementById("clear-console-button")
+      .classList.remove("disabled");
+    document.getElementById("format-button").classList.remove("disabled");
   });
 
   const settingsModal = document.getElementById("settings-modal");
   settingsModal.addEventListener("show.bs.modal", function (event) {
-    import("./js/share_sheet.js").then((module) => {
-      const input = document.getElementById("settings-timeout");
-      const timeout = window.appConfig.timeout;
-      if (!timeout) {
-        input.value = "";
-      } else if (timeout && Number.isInteger(timeout)) {
-        input.value = timeout;
-      } else {
-        input.value = "60";
-      }
+    const input = document.getElementById("settings-timeout");
+    const timeout = window.appConfig.timeout;
+    if (!timeout) {
+      input.value = "";
+    } else if (timeout && Number.isInteger(timeout)) {
+      input.value = timeout;
+    } else {
+      input.value = "60";
+    }
 
-      const compilerOptions = window.appConfig.compilerOptions;
-      document.getElementById("settings-compiler-options").value =
-        compilerOptions;
-    });
+    const compilerOptions = window.appConfig.compilerOptions;
+    document.getElementById("settings-compiler-options").value =
+      compilerOptions;
   });
 
   const settingsSaveButton = document.getElementById("settings-save-button");
