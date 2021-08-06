@@ -1,0 +1,357 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  annotations:
+    ingress.gcp.kubernetes.io/pre-shared-cert: mcrt-5d36f692-6892-483e-af04-303ec17861ae
+    ingress.kubernetes.io/backends: '{"k8s1-c2184739-default-runner-v22-80-e09a51fe":"HEALTHY","k8s1-c2184739-default-runner-v30-80-a440005a":"HEALTHY","k8s1-c2184739-default-runner-v40-80-60729bf0":"HEALTHY","k8s1-c2184739-default-runner-v42-80-d2674d0c":"HEALTHY","k8s1-c2184739-default-runner-v50-80-79e0dd9b":"HEALTHY","k8s1-c2184739-default-runner-v51-80-4bb9581a":"HEALTHY","k8s1-c2184739-default-runner-v52-80-d0ff9e23":"HEALTHY","k8s1-c2184739-default-runner-v521-80-7723d08a":"HEALTHY","k8s1-c2184739-default-runner-v522-80-63ddec15":"HEALTHY","k8s1-c2184739-default-runner-v523-80-7bdc6f6e":"HEALTHY","k8s1-c2184739-default-runner-v524-80-46601ec2":"HEALTHY","k8s1-c2184739-default-runner-v525-80-a36e13ca":"HEALTHY","k8s1-c2184739-default-runner-v53-80-fbb0ae87":"HEALTHY","k8s1-c2184739-default-runner-v531-80-6c65d326":"HEALTHY","k8s1-c2184739-default-runner-v532-80-be380573":"HEALTHY","k8s1-c2184739-default-runner-v533-80-f1ee26dc":"HEALTHY","k8s1-c2184739-default-runner-v54-80-3d57e8c5":"HEALTHY","k8s1-c2184739-default-runner-v541-80-bd715ee6":"HEALTHY","k8s1-c2184739-default-runner-v542-80-abd68670":"HEALTHY","k8s1-c2184739-default-runner-vnightly-53-80-8d3d88fe":"HEALTHY","k8s1-c2184739-default-runner-vnightly-54-80-0f27cd00":"HEALTHY","k8s1-c2184739-default-runner-vnightly-55-80-5ee46b97":"HEALTHY","k8s1-c2184739-default-runner-vnightly-main-80-3ead3e7d":"HEALTHY","k8s1-c2184739-default-web-frontend-80-fe7a9579":"HEALTHY"}'
+    ingress.kubernetes.io/forwarding-rule: k8s2-fr-idmq0kgu-default-swiftfiddle-ingress-echcudhm
+    ingress.kubernetes.io/https-forwarding-rule: k8s2-fs-idmq0kgu-default-swiftfiddle-ingress-echcudhm
+    ingress.kubernetes.io/https-target-proxy: k8s2-ts-idmq0kgu-default-swiftfiddle-ingress-echcudhm
+    ingress.kubernetes.io/ssl-cert: mcrt-5d36f692-6892-483e-af04-303ec17861ae
+    ingress.kubernetes.io/static-ip: k8s2-fr-idmq0kgu-default-swiftfiddle-ingress-echcudhm
+    ingress.kubernetes.io/target-proxy: k8s2-tp-idmq0kgu-default-swiftfiddle-ingress-echcudhm
+    ingress.kubernetes.io/url-map: k8s2-um-idmq0kgu-default-swiftfiddle-ingress-echcudhm
+    networking.gke.io/managed-certificates: swiftfiddle-certificate
+  creationTimestamp: "2021-08-05T03:03:13Z"
+  finalizers:
+  - networking.gke.io/ingress-finalizer-V2
+  generation: 1
+  name: swiftfiddle-ingress
+  namespace: default
+  resourceVersion: "15499"
+  uid: d6a99b77-b35b-4981-84a7-838ba943f506
+spec:
+  defaultBackend:
+    service:
+      name: web-frontend
+      port:
+        number: 80
+  rules:
+  - http:
+      paths:
+      - backend:
+          service:
+            name: runner-v22
+            port:
+              number: 80
+        path: /runner/2.2/*
+        pathType: ImplementationSpecific
+      - backend:
+          service:
+            name: runner-v22
+            port:
+              number: 80
+        path: /runner/2.2.1/*
+        pathType: ImplementationSpecific
+      - backend:
+          service:
+            name: runner-v30
+            port:
+              number: 80
+        path: /runner/3.0/*
+        pathType: ImplementationSpecific
+      - backend:
+          service:
+            name: runner-v30
+            port:
+              number: 80
+        path: /runner/3.0.1/*
+        pathType: ImplementationSpecific
+      - backend:
+          service:
+            name: runner-v30
+            port:
+              number: 80
+        path: /runner/3.0.2/*
+        pathType: ImplementationSpecific
+      - backend:
+          service:
+            name: runner-v30
+            port:
+              number: 80
+        path: /runner/3.1/*
+        pathType: ImplementationSpecific
+      - backend:
+          service:
+            name: runner-v30
+            port:
+              number: 80
+        path: /runner/3.1.1/*
+        pathType: ImplementationSpecific
+      - backend:
+          service:
+            name: runner-v40
+            port:
+              number: 80
+        path: /runner/4.0/*
+        pathType: ImplementationSpecific
+      - backend:
+          service:
+            name: runner-v40
+            port:
+              number: 80
+        path: /runner/4.0.2/*
+        pathType: ImplementationSpecific
+      - backend:
+          service:
+            name: runner-v40
+            port:
+              number: 80
+        path: /runner/4.0.3/*
+        pathType: ImplementationSpecific
+      - backend:
+          service:
+            name: runner-v40
+            port:
+              number: 80
+        path: /runner/4.1/*
+        pathType: ImplementationSpecific
+      - backend:
+          service:
+            name: runner-v40
+            port:
+              number: 80
+        path: /runner/4.1.1/*
+        pathType: ImplementationSpecific
+      - backend:
+          service:
+            name: runner-v40
+            port:
+              number: 80
+        path: /runner/4.1.2/*
+        pathType: ImplementationSpecific
+      - backend:
+          service:
+            name: runner-v40
+            port:
+              number: 80
+        path: /runner/4.1.3/*
+        pathType: ImplementationSpecific
+      - backend:
+          service:
+            name: runner-v42
+            port:
+              number: 80
+        path: /runner/4.2/*
+        pathType: ImplementationSpecific
+      - backend:
+          service:
+            name: runner-v42
+            port:
+              number: 80
+        path: /runner/4.2.1/*
+        pathType: ImplementationSpecific
+      - backend:
+          service:
+            name: runner-v42
+            port:
+              number: 80
+        path: /runner/4.2.2/*
+        pathType: ImplementationSpecific
+      - backend:
+          service:
+            name: runner-v42
+            port:
+              number: 80
+        path: /runner/4.2.3/*
+        pathType: ImplementationSpecific
+      - backend:
+          service:
+            name: runner-v42
+            port:
+              number: 80
+        path: /runner/4.2.4/*
+        pathType: ImplementationSpecific
+      - backend:
+          service:
+            name: runner-v50
+            port:
+              number: 80
+        path: /runner/5.0/*
+        pathType: ImplementationSpecific
+      - backend:
+          service:
+            name: runner-v50
+            port:
+              number: 80
+        path: /runner/5.0.1/*
+        pathType: ImplementationSpecific
+      - backend:
+          service:
+            name: runner-v50
+            port:
+              number: 80
+        path: /runner/5.0.2/*
+        pathType: ImplementationSpecific
+      - backend:
+          service:
+            name: runner-v50
+            port:
+              number: 80
+        path: /runner/5.0.3/*
+        pathType: ImplementationSpecific
+      - backend:
+          service:
+            name: runner-v51
+            port:
+              number: 80
+        path: /runner/5.1/*
+        pathType: ImplementationSpecific
+      - backend:
+          service:
+            name: runner-v51
+            port:
+              number: 80
+        path: /runner/5.1.1/*
+        pathType: ImplementationSpecific
+      - backend:
+          service:
+            name: runner-v51
+            port:
+              number: 80
+        path: /runner/5.1.2/*
+        pathType: ImplementationSpecific
+      - backend:
+          service:
+            name: runner-v51
+            port:
+              number: 80
+        path: /runner/5.1.3/*
+        pathType: ImplementationSpecific
+      - backend:
+          service:
+            name: runner-v51
+            port:
+              number: 80
+        path: /runner/5.1.4/*
+        pathType: ImplementationSpecific
+      - backend:
+          service:
+            name: runner-v51
+            port:
+              number: 80
+        path: /runner/5.1.5/*
+        pathType: ImplementationSpecific
+      - backend:
+          service:
+            name: runner-v52
+            port:
+              number: 80
+        path: /runner/5.2/*
+        pathType: ImplementationSpecific
+      - backend:
+          service:
+            name: runner-v521
+            port:
+              number: 80
+        path: /runner/5.2.1/*
+        pathType: ImplementationSpecific
+      - backend:
+          service:
+            name: runner-v522
+            port:
+              number: 80
+        path: /runner/5.2.2/*
+        pathType: ImplementationSpecific
+      - backend:
+          service:
+            name: runner-v523
+            port:
+              number: 80
+        path: /runner/5.2.3/*
+        pathType: ImplementationSpecific
+      - backend:
+          service:
+            name: runner-v524
+            port:
+              number: 80
+        path: /runner/5.2.4/*
+        pathType: ImplementationSpecific
+      - backend:
+          service:
+            name: runner-v525
+            port:
+              number: 80
+        path: /runner/5.2.5/*
+        pathType: ImplementationSpecific
+      - backend:
+          service:
+            name: runner-v53
+            port:
+              number: 80
+        path: /runner/5.3/*
+        pathType: ImplementationSpecific
+      - backend:
+          service:
+            name: runner-v531
+            port:
+              number: 80
+        path: /runner/5.3.1/*
+        pathType: ImplementationSpecific
+      - backend:
+          service:
+            name: runner-v532
+            port:
+              number: 80
+        path: /runner/5.3.2/*
+        pathType: ImplementationSpecific
+      - backend:
+          service:
+            name: runner-v533
+            port:
+              number: 80
+        path: /runner/5.3.3/*
+        pathType: ImplementationSpecific
+      - backend:
+          service:
+            name: runner-v54
+            port:
+              number: 80
+        path: /runner/5.4/*
+        pathType: ImplementationSpecific
+      - backend:
+          service:
+            name: runner-v541
+            port:
+              number: 80
+        path: /runner/5.4.1/*
+        pathType: ImplementationSpecific
+      - backend:
+          service:
+            name: runner-v542
+            port:
+              number: 80
+        path: /runner/5.4.2/*
+        pathType: ImplementationSpecific
+      - backend:
+          service:
+            name: runner-vnightly-53
+            port:
+              number: 80
+        path: /runner/nightly-5.3/*
+        pathType: ImplementationSpecific
+      - backend:
+          service:
+            name: runner-vnightly-54
+            port:
+              number: 80
+        path: /runner/nightly-5.4/*
+        pathType: ImplementationSpecific
+      - backend:
+          service:
+            name: runner-vnightly-55
+            port:
+              number: 80
+        path: /runner/nightly-5.5/*
+        pathType: ImplementationSpecific
+      - backend:
+          service:
+            name: runner-vnightly-main
+            port:
+              number: 80
+        path: /runner/nightly-main/*
+        pathType: ImplementationSpecific
+status:
+  loadBalancer:
+    ingress:
+    - ip: 35.201.78.105

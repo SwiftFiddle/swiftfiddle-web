@@ -1,0 +1,150 @@
+addonsConfig:
+  dnsCacheConfig: {}
+  gcePersistentDiskCsiDriverConfig:
+    enabled: true
+  horizontalPodAutoscaling: {}
+  httpLoadBalancing: {}
+  kubernetesDashboard:
+    disabled: true
+  networkPolicyConfig:
+    disabled: true
+authenticatorGroupsConfig: {}
+autoscaling:
+  autoprovisioningNodePoolDefaults:
+    imageType: COS_CONTAINERD
+    management:
+      autoRepair: true
+      autoUpgrade: true
+    oauthScopes:
+    - https://www.googleapis.com/auth/logging.write
+    - https://www.googleapis.com/auth/monitoring
+    serviceAccount: default
+    upgradeSettings:
+      maxSurge: 1
+  enableNodeAutoprovisioning: true
+  resourceLimits:
+  - maximum: '6'
+    minimum: '2'
+    resourceType: cpu
+  - maximum: '32'
+    minimum: '16'
+    resourceType: memory
+clusterIpv4Cidr: 10.88.0.0/14
+createTime: '2021-08-05T02:47:56+00:00'
+currentMasterVersion: 1.20.8-gke.900
+currentNodeCount: 2
+currentNodeVersion: 1.20.8-gke.900
+databaseEncryption:
+  state: DECRYPTED
+defaultMaxPodsConstraint:
+  maxPodsPerNode: '110'
+endpoint: 34.123.161.243
+id: a3e948da410744c48d52e2cc3858ebc721045c3f7da746bea762d9b378189955
+initialClusterVersion: 1.20.8-gke.900
+instanceGroupUrls:
+- https://www.googleapis.com/compute/v1/projects/swift-playground-fbe87/zones/us-central1-c/instanceGroupManagers/gke-swiftfiddle-cluster-default-pool-3c1fc5dd-grp
+ipAllocationPolicy:
+  clusterIpv4Cidr: 10.88.0.0/14
+  clusterIpv4CidrBlock: 10.88.0.0/14
+  clusterSecondaryRangeName: gke-swiftfiddle-cluster-pods-a3e948da
+  servicesIpv4Cidr: 10.92.0.0/20
+  servicesIpv4CidrBlock: 10.92.0.0/20
+  servicesSecondaryRangeName: gke-swiftfiddle-cluster-services-a3e948da
+  useIpAliases: true
+labelFingerprint: a9dc16a7
+legacyAbac: {}
+location: us-central1-c
+locations:
+- us-central1-c
+loggingService: logging.googleapis.com/kubernetes
+maintenancePolicy:
+  resourceVersion: e3b0c442
+masterAuth:
+  clusterCaCertificate: LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSURLakNDQWhLZ0F3SUJBZ0lRQWVyY3RlUUhyVklxblFUV0hjVm9rekFOQmdrcWhraUc5dzBCQVFzRkFEQXYKTVMwd0t3WURWUVFERXlSbE1EazFZelkwWmkxak5HVmtMVFJpT0RNdE9EWTJaQzAwT1RneVpUWTBORGN6WmpNdwpIaGNOTWpFd09EQTFNREUwTnpVMldoY05Nall3T0RBME1ESTBOelUyV2pBdk1TMHdLd1lEVlFRREV5UmxNRGsxCll6WTBaaTFqTkdWa0xUUmlPRE10T0RZMlpDMDBPVGd5WlRZME5EY3paak13Z2dFaU1BMEdDU3FHU0liM0RRRUIKQVFVQUE0SUJEd0F3Z2dFS0FvSUJBUUNsb0lMZGoreGRNUFVseE5WSkZROGM1eU1CanZjc2lXYVg3Ui9nN2F2Nwo1a2FPRHpVNzkvNjVoZzE5L2tZQ2xRMzQxNStGVUpSV0IyaWhKRklOQTJMMjFPSjJ2dzNlVTBXNHF1SzFLdGVsCkNvK05nRXlXR2I4NHNWMTJaWlE3TW9xcmRhUUpHQVFXL0xESWRxakdEMFhTNGh3cTVJQlRibzJxbmZnaHJVTkYKMDZHaUtiQXhTSkRBaEszc0F2d3Fia0RjZlhkdmlzd0xoTG5ydGZ5MFJLbktUVDE5UXNTeWMwcVVUNTF6K0NnLwpRVnhLalkwaHNVSzlvUExlVVBmM2tvQXpoTkNxQ1gydzU3Ymk1Yi9SS2tFSmhjL0pWY1ZySWJQT1Z2bWlESEU5CnloZkk5QzRpeSszNVNVSXNPQjRjZ0hOSjRyUmNMR0V5RllKVW9TdkhmaDh0QWdNQkFBR2pRakJBTUE0R0ExVWQKRHdFQi93UUVBd0lDQkRBUEJnTlZIUk1CQWY4RUJUQURBUUgvTUIwR0ExVWREZ1FXQkJUZ2JmbXFVMWJqTVdqMwprY2ErUERIY0dxajZtekFOQmdrcWhraUc5dzBCQVFzRkFBT0NBUUVBRnJPZVRjRXQ5dG5UWmo5bWdpWjZoM2krCnZ1Y3NTd2wyRFc4eGwwR1BlUmRqY1g3WnNyb016QnhMWSs0UEk2UWtJOXFZMERqblJuVnpFQ1VHU1c5WFovYUwKZjBIdE5BZFpxUEIxZGJLemdGaE9FU0pDR2syd3ZpRDhYVzVRMzUwY1JFdDFrdERSUkozNXBrNFJmaDNHcTVKdQpDblhNcGk1RjNKMzZ6UGsvSUp6MEowM3ZncUZBTm90MDlzS0RLbHFBVjJ3YTNlblFPK2dmVEVvdzFIZDVTSGlSCmYzcE90RERSd2hQNUFMMU1XOEQ4Wko0cHh3bytIQlJSM1QzL0lTcENnMTNMM3l5TW5sSTN0Wm5ycWxOT3JnZWkKQzI0cm1SNEFiczhIVUtkeFFGT2pTWmhZR21GVGtMV2ZNWXhtL0EzRUQybGRUSlJCSzQxUFR0bzVOMk5sSWc9PQotLS0tLUVORCBDRVJUSUZJQ0FURS0tLS0tCg==
+masterAuthorizedNetworksConfig: {}
+monitoringService: monitoring.googleapis.com/kubernetes
+name: swiftfiddle-cluster
+network: default
+networkConfig:
+  datapathProvider: LEGACY_DATAPATH
+  defaultSnatStatus: {}
+  network: projects/swift-playground-fbe87/global/networks/default
+  subnetwork: projects/swift-playground-fbe87/regions/us-central1/subnetworks/default
+nodeConfig:
+  diskSizeGb: 100
+  diskType: pd-standard
+  imageType: COS_CONTAINERD
+  kubeletConfig: {}
+  machineType: n2-standard-4
+  metadata:
+    disable-legacy-endpoints: 'true'
+  oauthScopes:
+  - https://www.googleapis.com/auth/devstorage.read_only
+  - https://www.googleapis.com/auth/logging.write
+  - https://www.googleapis.com/auth/monitoring
+  - https://www.googleapis.com/auth/servicecontrol
+  - https://www.googleapis.com/auth/service.management.readonly
+  - https://www.googleapis.com/auth/trace.append
+  preemptible: true
+  serviceAccount: default
+  shieldedInstanceConfig:
+    enableIntegrityMonitoring: true
+nodePools:
+- autoscaling:
+    enabled: true
+    maxNodeCount: 10
+    minNodeCount: 1
+  config:
+    diskSizeGb: 100
+    diskType: pd-standard
+    imageType: COS_CONTAINERD
+    kubeletConfig: {}
+    machineType: n2-standard-4
+    metadata:
+      disable-legacy-endpoints: 'true'
+    oauthScopes:
+    - https://www.googleapis.com/auth/devstorage.read_only
+    - https://www.googleapis.com/auth/logging.write
+    - https://www.googleapis.com/auth/monitoring
+    - https://www.googleapis.com/auth/servicecontrol
+    - https://www.googleapis.com/auth/service.management.readonly
+    - https://www.googleapis.com/auth/trace.append
+    preemptible: true
+    serviceAccount: default
+    shieldedInstanceConfig:
+      enableIntegrityMonitoring: true
+  initialNodeCount: 3
+  instanceGroupUrls:
+  - https://www.googleapis.com/compute/v1/projects/swift-playground-fbe87/zones/us-central1-c/instanceGroupManagers/gke-swiftfiddle-cluster-default-pool-3c1fc5dd-grp
+  locations:
+  - us-central1-c
+  management:
+    autoRepair: true
+    autoUpgrade: true
+  maxPodsConstraint:
+    maxPodsPerNode: '110'
+  name: default-pool
+  podIpv4CidrSize: 24
+  selfLink: https://container.googleapis.com/v1/projects/swift-playground-fbe87/zones/us-central1-c/clusters/swiftfiddle-cluster/nodePools/default-pool
+  status: RUNNING
+  upgradeSettings:
+    maxSurge: 1
+  version: 1.20.8-gke.900
+notificationConfig:
+  pubsub: {}
+releaseChannel:
+  channel: REGULAR
+resourceUsageExportConfig:
+  bigqueryDestination:
+    datasetId: swiftfiddle_usage
+  consumptionMeteringConfig:
+    enabled: true
+selfLink: https://container.googleapis.com/v1/projects/swift-playground-fbe87/zones/us-central1-c/clusters/swiftfiddle-cluster
+servicesIpv4Cidr: 10.92.0.0/20
+shieldedNodes:
+  enabled: true
+status: RUNNING
+subnetwork: default
+verticalPodAutoscaling:
+  enabled: true
+zone: us-central1-c
