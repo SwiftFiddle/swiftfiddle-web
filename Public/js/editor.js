@@ -3,27 +3,8 @@
 import * as monaco from "monaco-editor/esm/vs/editor/editor.api";
 
 export class Editor {
-  constructor(initialText, isEmbedded) {
-    this.editor = monaco.editor.create(
-      document.getElementById("editor-container"),
-      {
-        value: initialText,
-        fontSize: "14pt",
-        lineHeight: 21,
-        language: "swift",
-        wordWrap: "on",
-        wrappingIndent: "indent",
-        tabSize: 2,
-        lightbulb: {
-          enabled: true,
-        },
-        minimap: {
-          enabled: false,
-        },
-        theme: "vs-light",
-        showFoldingControls: "mouseover",
-      }
-    );
+  constructor(container, options) {
+    this.editor = monaco.editor.create(container, options);
 
     this.editor.onDidChangeModelContent(() => {
       this.onchange();
@@ -51,16 +32,6 @@ export class Editor {
         this.onaction("share");
       },
     });
-
-    if (isEmbedded) {
-      this.editor.updateOptions({
-        readOnly: true,
-        renderIndentGuides: false,
-        glyphMargin: false,
-        lineNumbersMinChars: 4,
-        lineDecorationsWidth: 6,
-      });
-    }
 
     monaco.languages.registerCompletionItemProvider("swift", {
       triggerCharacters: ["."],
