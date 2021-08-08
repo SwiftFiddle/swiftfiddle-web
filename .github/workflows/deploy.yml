@@ -32,7 +32,7 @@ jobs:
           git pull --rebase origin master
 
           tempdir=$(mktemp -d)
-          curl -sfL -o "$tempdir/Package.swift" https://raw.github.com/kishikawakatsumi/swiftfiddle-lsp/main/Resources/ProjectTemplate/Package.swift
+          curl -sfL -o "$tempdir/Package.swift" https://raw.github.com/swiftfiddle/swiftfiddle-lsp/main/Resources/ProjectTemplate/Package.swift
           swift package --package-path "$tempdir" dump-package > Resources/Package.json
 
           git add Resources/Package.json
