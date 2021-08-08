@@ -40,7 +40,7 @@
       <div class="col-md-auto p-2" style="min-width: 175px">
         <span class="dropdown">
           <button class="btn btn-outline-primary btn-sm rounded-pill dropdown-toggle w-100" type="button"
-            data-bs-toggle="dropdown" aria-expanded="false" id="version-selector">
+            data-bs-toggle="dropdown" aria-expanded="false" aria-label="Version Picker">
             <span class="fas fa-code-branch fa-fw mx-2"></span>
             <span id="version-value" class="fw-bolder">#(stableVersion)</span>
           </button>
@@ -71,11 +71,11 @@
         </button>
         <button type="button" id="clear-console-button"
           class="btn btn-outline-primary btn-sm rounded-circle p-0 ms-1 disabled" data-bs-toggle="tooltip"
-          data-bs-placement="bottom" title="Clear Console">
+          data-bs-placement="bottom" title="Clear Console" aria-label="Clear Console">
           <span class="fas fa-eraser fa-fw"></span>
         </button>
         <button type="button" id="format-button" class="btn btn-outline-primary btn-sm rounded-circle p-0 ms-1 disabled"
-          data-bs-toggle="tooltip" data-bs-placement="bottom" title="Format">
+          data-bs-toggle="tooltip" data-bs-placement="bottom" title="Format" aria-label="Format">
           <span class="fas fa-align-left fa-fw"></span>
         </button>
       </div>
@@ -85,13 +85,13 @@
         </button>
         <span data-bs-toggle="tooltip" data-bs-placement="bottom" title="Settings">
           <button type="button" id="settings-button" class="btn btn-outline-primary btn-sm rounded-circle p-0 ms-1"
-            data-bs-toggle="modal" data-bs-target="#settings-modal">
+            data-bs-toggle="modal" data-bs-target="#settings-modal" aria-label="Settings">
             <span class="fas fa-cog fa-fw"></span>
           </button>
         </span>
         <span data-bs-toggle="tooltip" data-bs-placement="bottom" title="Help">
           <button type="button" id="help-button" class="btn btn-outline-primary btn-sm rounded-circle p-0 ms-1"
-            data-bs-toggle="modal" data-bs-target="#help-modal">
+            data-bs-toggle="modal" data-bs-target="#help-modal" aria-label="Help">
             <span class="fas fa-question fa-fw"></span>
           </button>
         </span>
@@ -107,7 +107,7 @@
       </div>
     </main>
 
-    <footer class="row p-1 bg-light">
+    <footer class="row p-1 mb-1 bg-light">
       <div class="row">
         <div class="col-md-12 mx-1 text-center text-dark">
           <a class="text-reset small" href="https://status.swiftfiddle.com" target="_blank"
@@ -135,7 +135,7 @@
           <input id="share-sheet-link-field" class="form-control" type="url" value="" onfocus="this.select();"
             readonly />
           <button id="share-sheet-link-copy-button" class="btn btn-outline-primary" type="button"
-            data-bs-toggle="tooltip" title="Copy to Clipboard">
+            data-bs-toggle="tooltip" title="Copy to Clipboard" aria-label="Copy to Clipboard">
             <span id="share-sheet-link-copy-button-icon" class="far fa-clipboard fa-fw"></span>
             <span id="share-sheet-link-copy-button-spinner" class="fas fa-circle-notch fa-spin fa-fw d-none">
             </span>
@@ -155,7 +155,7 @@
             rows="3" onfocus="this.select();" readonly>
           </textarea>
           <button id="share-sheet-embed-copy-button" class="btn btn-outline-primary" type="button"
-            data-bs-toggle="tooltip" title="Copy to Clipboard">
+            data-bs-toggle="tooltip" title="Copy to Clipboard" aria-label="Copy to Clipboard">
             <span id="share-sheet-embed-copy-button-icon" class="far fa-clipboard fa-fw"></span>
             <span id="share-sheet-embed-copy-button-spinner" class="fas fa-circle-notch fa-spin fa-fw d-none">
             </span>
@@ -167,12 +167,12 @@
       <div class="col">
         <a id="share-twitter-button" class="btn btn-outline-primary btn-sm rounded-circle p-0 me-2" href="\#"
           target="_blank" rel="nofollow noopener noreferrer" data-bs-toggle="tooltip" data-bs-placement="bottom"
-          title="Twitter">
+          title="Twitter" aria-label="Share Twitter">
           <span class="fab fa-twitter fa-fw" style="width: 1rem; height: 100%;"></span>
         </a>
         <a id="share-facebook-button" class="btn btn-outline-primary btn-sm rounded-circle p-0 me-2" href="\#"
           target="_blank" rel="nofollow noopener noreferrer" data-bs-toggle="tooltip" data-bs-placement="bottom"
-          title="Facebook">
+          title="Facebook" aria-label="Share Facebook">
           <span class="fab fa-facebook-square fa-fw" style="width: 1rem; height: 100%;"></span>
         </a>
       </div>

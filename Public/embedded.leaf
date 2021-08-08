@@ -35,7 +35,7 @@
       <div class="col">
         <span class="dropdown">
           <button class="btn btn-outline-primary btn-sm rounded-pill dropdown-toggle w-100" type="button"
-            data-bs-toggle="dropdown" aria-expanded="false" id="version-selector">
+            data-bs-toggle="dropdown" aria-expanded="false" aria-label="Version Picker">
             <span class="fas fa-code-branch mx-2" style="width: 1em; height: 1em;"></span>
             <span id="version-value" class="fw-bolder">#(stableVersion)</span>
           </button>
