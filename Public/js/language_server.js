@@ -56,6 +56,14 @@ export class LanguageServer {
     this.connection.send(JSON.stringify(params));
   }
 
+  requestFormat(code) {
+    const params = {
+      method: "format",
+      code: code,
+    };
+    this.connection.send(JSON.stringify(params));
+  }
+
   convertCompletionItemKind(kind) {
     switch (kind) {
       case 1:

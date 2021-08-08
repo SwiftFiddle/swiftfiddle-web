@@ -1,7 +1,6 @@
 "use strict";
 
 import { LanguageServer } from "./language_server.js";
-import { SwiftFormat } from "./swift_format.js";
 import { Runner } from "./runner.js";
 import { uuidv4 } from "./uuid.js";
 import {
@@ -120,24 +119,12 @@ export class App {
 
           this.editor.updateMarkers(markers);
           break;
+        case "format":
+          this.editor.setValue(response.value);
         default:
           break;
       }
     };
-
-    if (formatButton) {
-      const formatterService = new SwiftFormat(
-        "wss://formatter.swiftfiddle.com"
-      );
-      formatterService.onresponse = (response) => {
-        this.editor.setValue(response);
-      };
-
-      formatButton.addEventListener("click", (event) => {
-        event.preventDefault();
-        formatterService.format(this.editor.getValue());
-      });
-    }
 
     this.editor.onaction = (action) => {
       switch (action) {
@@ -161,6 +148,10 @@ export class App {
     });
 
     this.editor.onchange = () => {
+      if (!languageServer.isReady) {
+        return;
+      }
+
       languageServer.syncDocument(this.editor.getValue());
       updateButtonState(this.editor);
     };
@@ -200,10 +191,13 @@ export class App {
     this.editor.focus();
     this.editor.scrollToBottm();
 
-    this.setupEventHandlers();
-  }
+    if (formatButton) {
+      formatButton.addEventListener("click", (event) => {
+        event.preventDefault();
+        languageServer.requestFormat(this.editor.getValue());
+      });
+    }
 
-  setupEventHandlers() {
     runButton.addEventListener("click", (event) => {
       event.preventDefault();
       this.run();
