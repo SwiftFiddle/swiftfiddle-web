@@ -33,8 +33,8 @@
   <div class="container-fluid g-0 d-flex flex-column min-vh-100">
     <header class="row m-0 g-0 justify-content-start bg-light">
       <div class="col-md-auto m-2">
-        <span class="fab fa-swift fa-2x text-primary"></span>
-        <span class="h4 text-dark align-text-bottom m-0">Swift Playground</span>
+        <span class="fab fa-swift fa-2x text-primary d-inline-block align-middle"></span>
+        <span class="h4 text-dark d-inline-block align-middle m-0">Swift Playground</span>
       </div>
       <div class="col-md-auto p-2" style="min-width: 175px">
         <span class="dropdown">
