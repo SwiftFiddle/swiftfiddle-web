@@ -38,6 +38,7 @@ export class MainView {
     this.versionPicker = new VersionPicker();
     this.shareSheet = new ShareSheet(this.editor, this.versionPicker);
     this.app = new App(this.editor, this.console, this.versionPicker);
+
     this.init();
   }
 

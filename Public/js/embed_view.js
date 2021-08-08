@@ -37,6 +37,7 @@ export class EmbedView {
     this.console = new Console(document.getElementById("terminal-container"));
     this.versionPicker = new VersionPicker();
     this.app = new App(this.editor, this.console, this.versionPicker);
+
     this.init();
   }
 
