@@ -1,13 +1,10 @@
 "use strict";
 
-const axios = require("axios").default;
 import { Snackbar } from "./snackbar.js";
 
 export class Runner {
   constructor(console) {
-    const CancelToken = axios.CancelToken;
-    this.source = CancelToken.source();
-
+    this.abortController = new AbortController();
     this.console = console;
     this.onmessage = () => {};
   }
@@ -18,13 +15,20 @@ export class Runner {
     );
 
     const startTime = performance.now();
-    axios
-      .post(`/runner/${params.toolchain_version}/run`, params, {
-        cancelToken: this.source.token,
+
+    fetch(`/runner/${params.toolchain_version}/run`, {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(params),
+      signal: this.abortController.signal,
+    })
+      .then((response) => {
+        return response.json();
       })
       .then((response) => {
-        const data = response.data;
-
         const endTime = performance.now();
         const execTime = ` ${((endTime - startTime) / 1000).toFixed(0)}s`;
 
@@ -38,7 +42,7 @@ export class Runner {
 
         const buffer = [];
         buffer.push(
-          `\x1b[38;5;72m${data.version
+          `\x1b[38;5;72m${response.version
             .split("\n")
             .map((line, i) => {
               // prettier-ignore
@@ -64,17 +68,17 @@ export class Runner {
             .join("\n")}\x1b[0m`
         );
 
-        const matchTimeout = data.errors.match(
+        const matchTimeout = response.errors.match(
           /Maximum execution time of \d+ seconds exceeded\./
         );
         if (matchTimeout) {
-          buffer.push(`${data.errors.replace(matchTimeout[0], "")}\x1b[0m`);
+          buffer.push(`${response.errors.replace(matchTimeout[0], "")}\x1b[0m`);
         } else {
-          buffer.push(`${data.errors}\x1b[0m`);
+          buffer.push(`${response.errors}\x1b[0m`);
         }
 
-        if (data.output) {
-          buffer.push(`\x1b[37m${data.output}\x1b[0m`);
+        if (response.output) {
+          buffer.push(`\x1b[37m${response.output}\x1b[0m`);
         } else {
           buffer.push(`\x1b[0m\x1b[1m*** No output. ***\x1b[0m\n`);
         }
@@ -83,13 +87,19 @@ export class Runner {
           buffer.push(`\x1b[31;1m${matchTimeout[0]}\n`); // Timeout error message
         }
 
-        completion(buffer, data.errors, null);
+        completion(buffer, response.errors, null);
       })
       .catch((error) => {
-        completion([], "", error, axios.isCancel(error));
-        if (error.response) {
-          console.error(error.response.statusText);
-          Snackbar.alert(error.response.statusText);
+        const isCancel = error.name == "AbortError";
+        completion([], "", error, isCancel);
+        if (!isCancel) {
+          if (error.response) {
+            console.error(error.response.statusText);
+            Snackbar.alert(error.response.statusText);
+          } else {
+            console.error(error);
+            Snackbar.alert(error);
+          }
         }
       })
       .finally(() => {
@@ -99,7 +109,7 @@ export class Runner {
   }
 
   stop() {
-    this.source.cancel();
+    this.abortController.abort();
   }
 
   createConnection(endpoint) {

@@ -15,7 +15,6 @@ export class ShareSheet {
   }
 
   init() {
-    const axios = require("axios").default;
     const placeholderData =
       "0000000000000000000000000000000000000000000000000000000000000000000000000000";
 
@@ -70,35 +69,38 @@ export class ShareSheet {
         toolchain_version: this.versionPicker.selected,
         code: this.editor.getValue(),
       };
-      axios
-        .post("/shared_link", params)
+      const method = "POST";
+      const body = JSON.stringify(params);
+      const headers = {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      };
+      fetch("/shared_link", { method, headers, body })
         .then((response) => {
-          if (response.data) {
-            const url = response.data.url;
+          return response.json();
+        })
+        .then((response) => {
+          const url = response.url;
 
-            link.dataset.value = url;
-            linkField.value = url;
-            linkCopyButton.classList.remove("disabled");
+          link.dataset.value = url;
+          linkField.value = url;
+          linkCopyButton.classList.remove("disabled");
 
-            embed.dataset.value = placeholderData;
-            embedField.value = `<iframe width="100%" height="300" frameborder="0"
+          embed.dataset.value = placeholderData;
+          embedField.value = `<iframe width="100%" height="300" frameborder="0"
   src="${url}/embedded/">
 </iframe>`;
-            embedCopyButton.classList.remove("disabled");
+          embedCopyButton.classList.remove("disabled");
 
-            const shareTwitterButton = document.getElementById(
-              "share-twitter-button"
-            );
-            shareTwitterButton.href = `https://twitter.com/intent/tweet?text=&url=${url}`;
+          const shareTwitterButton = document.getElementById(
+            "share-twitter-button"
+          );
+          shareTwitterButton.href = `https://twitter.com/intent/tweet?text=&url=${url}`;
 
-            const shareFacebookButton = document.getElementById(
-              "share-facebook-button"
-            );
-            shareFacebookButton.href = `https://www.facebook.com/sharer/sharer.php?u=${url}`;
-          } else {
-            console.error(response.statusText);
-            Snackbar.alert(response.statusText);
-          }
+          const shareFacebookButton = document.getElementById(
+            "share-facebook-button"
+          );
+          shareFacebookButton.href = `https://www.facebook.com/sharer/sharer.php?u=${url}`;
         })
         .catch((error) => {
           if (error.response) {
