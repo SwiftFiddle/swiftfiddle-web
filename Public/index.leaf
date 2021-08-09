@@ -291,7 +291,8 @@
               Report
             </dt>
             <dd>
-              <a href="https://github.com/swiftfiddle/swiftfiddle-web/issues/new">github.com/swiftfiddle/swiftfiddle-web
+              <a href="https://github.com/swiftfiddle/swiftfiddle-web/issues/new" target="_blank"
+                rel="nofollow noopener noreferrer">github.com/swiftfiddle/swiftfiddle-web
               </a>
             </dd>
           </dl>
