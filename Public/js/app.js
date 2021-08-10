@@ -120,7 +120,9 @@ export class App {
           this.editor.updateMarkers(markers);
           break;
         case "format":
-          this.editor.setValue(response.value);
+          if (response.value) {
+            this.editor.setValue(response.value);
+          }
         default:
           break;
       }
