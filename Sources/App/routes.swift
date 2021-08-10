@@ -187,7 +187,7 @@ func routes(_ app: Application) throws {
         )
 
         return req.client.send(clientRequest)
-}
+    }
 
     app.on(.POST, "runner", "*", "run", body: .collect(maxSize: "10mb")) { (req) -> EventLoopFuture<ClientResponse> in
         guard let data = req.body.data else { throw Abort(.badRequest) }
