@@ -5,11 +5,12 @@ import { Console } from "./console.js";
 import { VersionPicker } from "./version_picker.js";
 import { App } from "./app.js";
 import { runButton } from "./ui_control.js";
+import { unescapeHTML } from "./unescape.js";
 
 export class EmbedView {
   constructor(config) {
     this.editor = new Editor(document.getElementById("editor-container"), {
-      value: config.initialText,
+      value: unescapeHTML(config.initialText),
       fontSize: "14pt",
       lineHeight: 21,
       language: "swift",

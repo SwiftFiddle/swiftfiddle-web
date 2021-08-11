@@ -14,11 +14,12 @@ import {
   runButton,
   shareButton,
 } from "./ui_control.js";
+import { unescapeHTML } from "./unescape.js";
 
 export class MainView {
   constructor(config) {
     this.editor = new Editor(document.getElementById("editor-container"), {
-      value: config.initialText,
+      value: unescapeHTML(config.initialText),
       fontSize: "14pt",
       lineHeight: 21,
       language: "swift",
