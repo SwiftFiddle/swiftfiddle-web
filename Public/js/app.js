@@ -329,15 +329,13 @@ export class App {
       this.history.forEach((line) => {
         const regex =
           /[\u001b\u009b][[()#;?]*(?:[0-9]{1,4}(?:;[0-9]{0,4})*)?[0-9A-ORZcf-nqry=><]/g;
-        const plainText = line
-          .replace(regex, "")
-          .replace(/\/\[REDACTED\]/g, "");
+        const plainText = line.replace(regex, "");
         this.console.write(`\x1b[2m${plainText}`);
       });
       this.history.push(...buffer);
 
       buffer.forEach((line) => {
-        this.console.write(line.replace(/\/\[REDACTED\]/g, ""));
+        this.console.write(line);
       });
 
       const markers = this.parseErrorMessage(stderr);
@@ -378,7 +376,7 @@ export class App {
           .filter(Boolean)
           .map((line) => {
             return {
-              text: `${line.replace(/\/\[REDACTED\]/g, "")}\x1b[0m`,
+              text: `${line}\x1b[0m`,
               numberOfLines: Math.ceil(line.length / this.console.cols),
             };
           })
