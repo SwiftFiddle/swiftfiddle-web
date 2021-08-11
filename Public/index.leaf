@@ -82,15 +82,15 @@
         <button type="button" id="share-button" class="btn btn-outline-primary btn-sm rounded-pill disabled">
           <span class="fas fa-share-alt fa-fw ms-2"></span><span class="mx-2">Share</span>
         </button>
-        <span data-bs-toggle="tooltip" data-bs-placement="bottom" title="Settings">
+        <span data-bs-toggle="modal" data-bs-target="#settings-modal">
           <button type="button" id="settings-button" class="btn btn-outline-primary btn-sm rounded-circle p-0 ms-1"
-            data-bs-toggle="modal" data-bs-target="#settings-modal" aria-label="Settings">
+            aria-label="Settings" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Settings">
             <span class="fas fa-cog fa-fw"></span>
           </button>
         </span>
-        <span data-bs-toggle="tooltip" data-bs-placement="bottom" title="Help">
+        <span data-bs-toggle="modal" data-bs-target="#help-modal">
           <button type="button" id="help-button" class="btn btn-outline-primary btn-sm rounded-circle p-0 ms-1"
-            data-bs-toggle="modal" data-bs-target="#help-modal" aria-label="Help">
+            aria-label="Help" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Help">
             <span class="fas fa-question fa-fw"></span>
           </button>
         </span>
