@@ -70,11 +70,13 @@
         </button>
         <button type="button" id="clear-console-button"
           class="btn btn-outline-primary btn-sm rounded-circle p-0 ms-1 disabled" data-bs-toggle="tooltip"
-          data-bs-placement="bottom" title="Clear Console" aria-label="Clear Console">
+          data-bs-placement="bottom" data-bs-container="\#clear-console-button" title="Clear Console"
+          aria-label="Clear Console">
           <span class="fas fa-eraser fa-fw"></span>
         </button>
         <button type="button" id="format-button" class="btn btn-outline-primary btn-sm rounded-circle p-0 ms-1 disabled"
-          data-bs-toggle="tooltip" data-bs-placement="bottom" title="Format" aria-label="Format">
+          data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-container="\#format-button" title="Format"
+          aria-label="Format">
           <span class="fas fa-align-left fa-fw"></span>
         </button>
       </div>
@@ -84,13 +86,15 @@
         </button>
         <span data-bs-toggle="modal" data-bs-target="#settings-modal">
           <button type="button" id="settings-button" class="btn btn-outline-primary btn-sm rounded-circle p-0 ms-1"
-            aria-label="Settings" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Settings">
+            aria-label="Settings" data-bs-toggle="tooltip" data-bs-placement="bottom"
+            data-bs-container="\#settings-button" title="Settings">
             <span class="fas fa-cog fa-fw"></span>
           </button>
         </span>
         <span data-bs-toggle="modal" data-bs-target="#help-modal">
           <button type="button" id="help-button" class="btn btn-outline-primary btn-sm rounded-circle p-0 ms-1"
-            aria-label="Help" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Help">
+            aria-label="Help" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-container="\#help-button"
+            title="Help">
             <span class="fas fa-question fa-fw"></span>
           </button>
         </span>
@@ -134,7 +138,8 @@
           <input id="share-sheet-link-field" class="form-control" type="url" value="" onfocus="this.select();"
             readonly />
           <button id="share-sheet-link-copy-button" class="btn btn-outline-primary" type="button"
-            data-bs-toggle="tooltip" title="Copy to Clipboard" aria-label="Copy to Clipboard">
+            data-bs-toggle="tooltip" data-bs-container="\#share-sheet-link-copy-button" title="Copy to Clipboard"
+            aria-label="Copy to Clipboard">
             <span id="share-sheet-link-copy-button-icon" class="far fa-clipboard fa-fw"></span>
             <span id="share-sheet-link-copy-button-spinner" class="fas fa-circle-notch fa-spin fa-fw d-none">
             </span>
@@ -154,7 +159,8 @@
             rows="3" onfocus="this.select();" readonly>
           </textarea>
           <button id="share-sheet-embed-copy-button" class="btn btn-outline-primary" type="button"
-            data-bs-toggle="tooltip" title="Copy to Clipboard" aria-label="Copy to Clipboard">
+            data-bs-toggle="tooltip" data-bs-container="\#share-sheet-embed-copy-button" title="Copy to Clipboard"
+            aria-label="Copy to Clipboard">
             <span id="share-sheet-embed-copy-button-icon" class="far fa-clipboard fa-fw"></span>
             <span id="share-sheet-embed-copy-button-spinner" class="fas fa-circle-notch fa-spin fa-fw d-none">
             </span>
@@ -166,12 +172,12 @@
       <div class="col">
         <a id="share-twitter-button" class="btn btn-outline-primary btn-sm rounded-circle p-0 me-2" href="\#"
           target="_blank" rel="nofollow noopener noreferrer" data-bs-toggle="tooltip" data-bs-placement="bottom"
-          title="Twitter" aria-label="Share Twitter">
+          data-bs-container="\#share-twitter-button" title="Twitter" aria-label="Share Twitter">
           <span class="fab fa-twitter fa-fw" style="width: 1rem; height: 100%;"></span>
         </a>
         <a id="share-facebook-button" class="btn btn-outline-primary btn-sm rounded-circle p-0 me-2" href="\#"
           target="_blank" rel="nofollow noopener noreferrer" data-bs-toggle="tooltip" data-bs-placement="bottom"
-          title="Facebook" aria-label="Share Facebook">
+          data-bs-container="\#share-facebook-button" title="Facebook" aria-label="Share Facebook">
           <span class="fab fa-facebook-square fa-fw" style="width: 1rem; height: 100%;"></span>
         </a>
       </div>
