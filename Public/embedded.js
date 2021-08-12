@@ -1,12 +1,10 @@
 "use strict";
 
-import("./js/logger.js");
-
 import "./scss/default.scss";
 import "./css/embedded.css";
 
+import "./js/logger.js";
 import "./js/icon_embed.js";
+import { EmbedView } from "./js/embed_view.js";
 
-import("./js/embed_view.js").then((module) => {
-  new module.EmbedView(window.appConfig);
-});
+new EmbedView(window.appConfig);

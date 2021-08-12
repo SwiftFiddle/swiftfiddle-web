@@ -88,7 +88,19 @@ module.exports = {
     }),
   ],
   optimization: {
-    chunkIds: "named",
-    splitChunks: { chunks: "all" },
+    splitChunks: {
+      cacheGroups: {
+        "monaco-editor": {
+          test: /[\\/]monaco-editor[\\/]/,
+          chunks: "initial",
+          name: "monaco-editor",
+        },
+        xterm: {
+          test: /[\\/]xterm[\\/]/,
+          chunks: "initial",
+          name: "xterm",
+        },
+      },
+    },
   },
 };

@@ -1,12 +1,10 @@
 "use strict";
 
-import("./js/logger.js");
-
 import "./scss/default.scss";
 import "./css/common.css";
 
+import "./js/logger.js";
 import "./js/icon.js";
+import { MainView } from "./js/main_view.js";
 
-import("./js/main_view.js").then((module) => {
-  new module.MainView(window.appConfig);
-});
+new MainView(window.appConfig);
