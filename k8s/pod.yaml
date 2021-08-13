@@ -34,6 +34,43 @@ spec:
     drainingTimeoutSec: 720
 
 ---
+apiVersion: "v1"
+kind: "LimitRange"
+metadata:
+  name: limitrange
+spec:
+  limits:
+    - type: "Container"
+      max:
+        memory: "512Mi"
+      min:
+        memory: "64Mi"
+      default:
+        memory: "512Mi"
+      defaultRequest:
+        memory: "128Mi"
+
+---
+apiVersion: autoscaling/v2beta2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: web-frontend
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: web-frontend
+  minReplicas: 1
+  maxReplicas: 10
+  metrics:
+    - type: Resource
+      resource:
+        name: memory
+        target:
+          type: Utilization
+          averageUtilization: 40
+
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -41,7 +78,7 @@ metadata:
   labels:
     app.kubernetes.io/name: web-frontend
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
       app.kubernetes.io/name: web-frontend
@@ -50,23 +87,23 @@ spec:
       labels:
         app.kubernetes.io/name: web-frontend
       annotations:
-        commit_sha: "0c3f2e2c9910847ac918c14590caf38b93b41f1f"
+        commit_sha: "a72336ed553437b0267446c059d3d59f9fcb55fb"
     spec:
       containers:
         - image: swiftfiddle/web-frontend:latest
           name: web-frontend
           imagePullPolicy: Always
-          resources:
-            limits:
-              memory: "256Mi"
-            requests:
-              memory: "64Mi"
           ports:
             - containerPort: 8080
           readinessProbe:
             httpGet:
               path: /health
               port: 8080
+          resources:
+            limits:
+              memory: "256Mi"
+            requests:
+              memory: "64Mi"
           env:
             - name: FIREBASE_API_KEY
               valueFrom:
