@@ -34,6 +34,43 @@ spec:
     drainingTimeoutSec: 720
 
 ---
+apiVersion: "v1"
+kind: "LimitRange"
+metadata:
+  name: limitrange
+spec:
+  limits:
+    - type: "Container"
+      max:
+        memory: "512Mi"
+      min:
+        memory: "64Mi"
+      default:
+        memory: "512Mi"
+      defaultRequest:
+        memory: "128Mi"
+
+---
+apiVersion: autoscaling/v1
+kind: HorizontalPodAutoscaler
+metadata:
+  name: web-frontend
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: web-frontend
+  minReplicas: 1
+  maxReplicas: 10
+  metrics:
+    - type: Resource
+      resource:
+        name: memory
+        target:
+          type: Utilization
+          averageUtilization: 40
+
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -41,6 +78,7 @@ metadata:
   labels:
     app.kubernetes.io/name: web-frontend
 spec:
+  replicas: 1
   selector:
     matchLabels:
       app.kubernetes.io/name: web-frontend
@@ -61,6 +99,11 @@ spec:
             httpGet:
               path: /health
               port: 8080
+          resources:
+            limits:
+              memory: "256Mi"
+            requests:
+              memory: "64Mi"
           env:
             - name: FIREBASE_API_KEY
               valueFrom:
