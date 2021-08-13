@@ -42,13 +42,13 @@ spec:
   limits:
     - type: "Container"
       max:
-        memory: "512Mi"
+        memory: 512Mi
       min:
-        memory: "64Mi"
+        memory: 64Mi
       default:
-        memory: "512Mi"
+        memory: 512Mi
       defaultRequest:
-        memory: "128Mi"
+        memory: 128Mi
 
 ---
 apiVersion: autoscaling/v2beta2
@@ -67,8 +67,8 @@ spec:
       resource:
         name: memory
         target:
-          type: Utilization
-          averageUtilization: 40
+          type: AverageValue
+          averageValue: 256Mi
 
 ---
 apiVersion: apps/v1
@@ -87,7 +87,7 @@ spec:
       labels:
         app.kubernetes.io/name: web-frontend
       annotations:
-        commit_sha: "a72336ed553437b0267446c059d3d59f9fcb55fb"
+        commit_sha: "3ef943fa6f1f9cbef10adbb0206890ab9a4ff8fe"
     spec:
       containers:
         - image: swiftfiddle/web-frontend:latest
