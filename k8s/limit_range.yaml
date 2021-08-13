@@ -6,10 +6,10 @@ spec:
   limits:
     - type: "Container"
       max:
-        memory: "256Mi"
+        memory: "1Gi"
       min:
-        memory: "4Mi"
+        memory: "512Mi"
       default:
-        memory: "256Mi"
+        memory: "1Gi"
       defaultRequest:
-        memory: "128Mi"
+        memory: "512Mi"
