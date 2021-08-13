@@ -41,6 +41,7 @@ metadata:
   labels:
     app.kubernetes.io/name: web-frontend
 spec:
+  replicas: 2
   selector:
     matchLabels:
       app.kubernetes.io/name: web-frontend
@@ -55,6 +56,11 @@ spec:
         - image: swiftfiddle/web-frontend:latest
           name: web-frontend
           imagePullPolicy: Always
+          resources:
+            limits:
+              memory: "256Mi"
+            requests:
+              memory: "64Mi"
           ports:
             - containerPort: 8080
           readinessProbe:

@@ -196,6 +196,10 @@ export class App {
     if (formatButton) {
       formatButton.addEventListener("click", (event) => {
         event.preventDefault();
+
+        if (!languageServer.isReady) {
+          return;
+        }
         languageServer.requestFormat(this.editor.getValue());
       });
     }
