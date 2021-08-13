@@ -42,13 +42,13 @@ spec:
   limits:
     - type: "Container"
       max:
-        memory: "512Mi"
+        memory: 512Mi
       min:
-        memory: "64Mi"
+        memory: 64Mi
       default:
-        memory: "512Mi"
+        memory: 512Mi
       defaultRequest:
-        memory: "128Mi"
+        memory: 128Mi
 
 ---
 apiVersion: autoscaling/v2beta2
@@ -67,8 +67,8 @@ spec:
       resource:
         name: memory
         target:
-          type: Utilization
-          averageUtilization: 40
+          type: AverageValue
+          averageValue: 256Mi
 
 ---
 apiVersion: apps/v1
