@@ -33,14 +33,16 @@
   <div class="container-fluid g-0 d-flex flex-column min-vh-100">
     <header class="row m-0 g-0 justify-content-start bg-light">
       <div class="col-md-auto m-2">
-        <span class="fab fa-swift fa-2x text-primary d-inline-block align-middle"></span>
+        <span class="fab fa-swift fa-2x text-primary d-inline-block align-middle"
+          style="min-width: 2rem; min-height: 2rem;"></span>
         <span class="h4 text-dark d-inline-block align-middle m-0">Swift Playground</span>
       </div>
       <div class="col-md-auto p-2" style="min-width: 175px">
         <span class="dropdown">
           <button class="btn btn-outline-primary btn-sm rounded-pill dropdown-toggle w-100" type="button"
             data-bs-toggle="dropdown" aria-expanded="false" aria-label="Version Picker">
-            <span class="fas fa-code-branch fa-fw mx-2"></span>
+            <span class="fas fa-code-branch fa-fw mx-2"
+              style="display: inline-block; min-width: 1em; min-height: 1em;"></span>
             <span id="version-value" class="fw-bolder">#(stableVersion)</span>
           </button>
           <!-- beautify ignore:start -->
@@ -61,40 +63,43 @@
       </div>
       <div class="col-md-auto m-2">
         <button type="button" id="run-button" class="btn btn-primary btn-sm rounded-pill disabled">
-          <span id="run-button-icon" class="fas fa-play fa-fw ms-2"></span>
+          <span id="run-button-icon" class="fas fa-play fa-fw ms-2"
+            style="display: inline-block; min-width: 1em; min-height: 1em;"></span>
           <span id="run-button-spinner" class="fas fa-circle-notch fa-spin fa-fw ms-2 d-none"></span>
           <span class="mx-2">Run</span>
         </button>
         <button type="button" id="stop-button" class="btn btn-primary btn-sm rounded-pill ms-1 disabled">
-          <span class="fas fa-stop fa-fw ms-2"></span><span class="mx-2">Stop</span>
+          <span class="fas fa-stop fa-fw ms-2"
+            style="display: inline-block; min-width: 1em; min-height: 1em;"></span><span class="mx-2">Stop</span>
         </button>
         <button type="button" id="clear-console-button"
           class="btn btn-outline-primary btn-sm rounded-circle p-0 ms-1 disabled" data-bs-toggle="tooltip"
           data-bs-placement="bottom" data-bs-container="\#clear-console-button" title="Clear Console"
-          aria-label="Clear Console">
+          aria-label="Clear Console" style="min-width: 2rem; min-height: 2rem;">
           <span class="fas fa-eraser fa-fw"></span>
         </button>
         <button type="button" id="format-button" class="btn btn-outline-primary btn-sm rounded-circle p-0 ms-1 disabled"
           data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-container="\#format-button" title="Format"
-          aria-label="Format">
+          aria-label="Format" style="min-width: 2rem; min-height: 2rem;">
           <span class="fas fa-align-left fa-fw"></span>
         </button>
       </div>
       <div class="col-md-auto m-2">
         <button type="button" id="share-button" class="btn btn-outline-primary btn-sm rounded-pill disabled">
-          <span class="fas fa-share-alt fa-fw ms-2"></span><span class="mx-2">Share</span>
+          <span class="fas fa-share-alt fa-fw ms-2"
+            style="display: inline-block; min-width: 1em; min-height: 1em;"></span><span class="mx-2">Share</span>
         </button>
         <span data-bs-toggle="modal" data-bs-target="#settings-modal">
           <button type="button" id="settings-button" class="btn btn-outline-primary btn-sm rounded-circle p-0 ms-1"
             aria-label="Settings" data-bs-toggle="tooltip" data-bs-placement="bottom"
-            data-bs-container="\#settings-button" title="Settings">
+            data-bs-container="\#settings-button" title="Settings" style="min-width: 2rem; min-height: 2rem;">
             <span class="fas fa-cog fa-fw"></span>
           </button>
         </span>
         <span data-bs-toggle="modal" data-bs-target="#help-modal">
           <button type="button" id="help-button" class="btn btn-outline-primary btn-sm rounded-circle p-0 ms-1"
             aria-label="Help" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-container="\#help-button"
-            title="Help">
+            title="Help" style="min-width: 2rem; min-height: 2rem;">
             <span class="fas fa-question fa-fw"></span>
           </button>
         </span>
