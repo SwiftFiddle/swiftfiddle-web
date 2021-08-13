@@ -13,7 +13,7 @@ func routes(_ app: Application) throws {
                 stableVersion: stableVersion(),
                 latestVersion: try latestVersion(),
                 codeSnippet: escape(defaultCodeSnippet),
-                ogpImageUrl: "https://swiftfiddle.com/images/default_ogp.jpeg",
+                ogpImageUrl: "https://swiftfiddle.com/images/ogp_small.png",
                 packageInfo: swiftPackageInfo(app)
             )
         )
