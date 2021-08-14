@@ -15,14 +15,14 @@
     content="SwiftFiddle is an online playground for creating, sharing and embedding Swift fiddles (little Swift programs that run directly in your browser)." />
   <meta property="og:site_name" content="SwiftFiddle - Swift Online Playground" />
 
-  <meta name="msapplication-TileColor" content="\#da532c">
+  <meta name="msapplication-TileColor" content="#da532c">
   <meta name="msapplication-config" content="/favicons/browserconfig.xml">
-  <meta name="theme-color" content="\#ffffff">
+  <meta name="theme-color" content="#ffffff">
   <link rel="apple-touch-icon" sizes="180x180" href="/favicons/apple-touch-icon.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/favicons/favicon-32x32.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/favicons/favicon-16x16.png">
   <link rel="manifest" href="/favicons/site.webmanifest">
-  <link rel="mask-icon" href="/favicons/safari-pinned-tab.svg" color="\#5bbad5">
+  <link rel="mask-icon" href="/favicons/safari-pinned-tab.svg" color="#5bbad5">
   <link rel="shortcut icon" href="/favicons/favicon.ico">
 
   <title>SwiftFiddle - Swift Online Playground</title>
@@ -54,9 +54,9 @@
               <li><h6 class="dropdown-header">#(versionGroup.majorVersion)</h6></li>
               #for(version in versionGroup.versions):
                 #if(version == stableVersion):
-                  <li class="version-picker-item ms-2 active-tick"><a class="dropdown-item" data-target="\#">#(version)</a></li>
+                  <li class="version-picker-item ms-2 active-tick"><a class="dropdown-item" data-target="#">#(version)</a></li>
                 #else:
-                  <li class="version-picker-item ms-2"><a class="dropdown-item" data-target="\#">#(version)</a></li>
+                  <li class="version-picker-item ms-2"><a class="dropdown-item" data-target="#">#(version)</a></li>
                 #endif
               #endfor
             #endfor
@@ -77,12 +77,12 @@
         </button>
         <button type="button" id="clear-console-button"
           class="btn btn-outline-primary btn-sm rounded-circle p-0 ms-1 disabled" data-bs-toggle="tooltip"
-          data-bs-placement="bottom" data-bs-container="\#clear-console-button" title="Clear Console"
+          data-bs-placement="bottom" data-bs-container="#clear-console-button" title="Clear Console"
           aria-label="Clear Console" style="min-width: 2rem; min-height: 2rem;">
           <span class="fas fa-eraser fa-fw"></span>
         </button>
         <button type="button" id="format-button" class="btn btn-outline-primary btn-sm rounded-circle p-0 ms-1 disabled"
-          data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-container="\#format-button" title="Format"
+          data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-container="#format-button" title="Format"
           aria-label="Format" style="min-width: 2rem; min-height: 2rem;">
           <span class="fas fa-align-left fa-fw"></span>
         </button>
@@ -95,13 +95,13 @@
         <span data-bs-toggle="modal" data-bs-target="#settings-modal">
           <button type="button" id="settings-button" class="btn btn-outline-primary btn-sm rounded-circle p-0 ms-1"
             aria-label="Settings" data-bs-toggle="tooltip" data-bs-placement="bottom"
-            data-bs-container="\#settings-button" title="Settings" style="min-width: 2rem; min-height: 2rem;">
+            data-bs-container="#settings-button" title="Settings" style="min-width: 2rem; min-height: 2rem;">
             <span class="fas fa-cog fa-fw"></span>
           </button>
         </span>
         <span data-bs-toggle="modal" data-bs-target="#help-modal">
           <button type="button" id="help-button" class="btn btn-outline-primary btn-sm rounded-circle p-0 ms-1"
-            aria-label="Help" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-container="\#help-button"
+            aria-label="Help" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-container="#help-button"
             title="Help" style="min-width: 2rem; min-height: 2rem;">
             <span class="fas fa-question fa-fw"></span>
           </button>
@@ -149,7 +149,7 @@
           <input id="share-sheet-link-field" class="form-control" type="url" value="" onfocus="this.select();"
             readonly />
           <button id="share-sheet-link-copy-button" class="btn btn-outline-primary" type="button"
-            data-bs-toggle="tooltip" data-bs-container="\#share-sheet-link-copy-button" title="Copy to Clipboard"
+            data-bs-toggle="tooltip" data-bs-container="#share-sheet-link-copy-button" title="Copy to Clipboard"
             aria-label="Copy to Clipboard">
             <span id="share-sheet-link-copy-button-icon" class="far fa-clipboard fa-fw"></span>
             <span id="share-sheet-link-copy-button-spinner" class="fas fa-circle-notch fa-spin fa-fw d-none">
@@ -170,7 +170,7 @@
             rows="3" onfocus="this.select();" readonly>
           </textarea>
           <button id="share-sheet-embed-copy-button" class="btn btn-outline-primary" type="button"
-            data-bs-toggle="tooltip" data-bs-container="\#share-sheet-embed-copy-button" title="Copy to Clipboard"
+            data-bs-toggle="tooltip" data-bs-container="#share-sheet-embed-copy-button" title="Copy to Clipboard"
             aria-label="Copy to Clipboard">
             <span id="share-sheet-embed-copy-button-icon" class="far fa-clipboard fa-fw"></span>
             <span id="share-sheet-embed-copy-button-spinner" class="fas fa-circle-notch fa-spin fa-fw d-none">
@@ -181,14 +181,14 @@
     </div>
     <div class="row">
       <div class="col">
-        <a id="share-twitter-button" class="btn btn-outline-primary btn-sm rounded-circle p-0 me-2" href="\#"
+        <a id="share-twitter-button" class="btn btn-outline-primary btn-sm rounded-circle p-0 me-2" href="#"
           target="_blank" rel="nofollow noopener noreferrer" data-bs-toggle="tooltip" data-bs-placement="bottom"
-          data-bs-container="\#share-twitter-button" title="Twitter" aria-label="Share Twitter">
+          data-bs-container="#share-twitter-button" title="Twitter" aria-label="Share Twitter">
           <span class="fab fa-twitter fa-fw" style="width: 1rem; height: 100%;"></span>
         </a>
-        <a id="share-facebook-button" class="btn btn-outline-primary btn-sm rounded-circle p-0 me-2" href="\#"
+        <a id="share-facebook-button" class="btn btn-outline-primary btn-sm rounded-circle p-0 me-2" href="#"
           target="_blank" rel="nofollow noopener noreferrer" data-bs-toggle="tooltip" data-bs-placement="bottom"
-          data-bs-container="\#share-facebook-button" title="Facebook" aria-label="Share Facebook">
+          data-bs-container="#share-facebook-button" title="Facebook" aria-label="Share Facebook">
           <span class="fab fa-facebook-square fa-fw" style="width: 1rem; height: 100%;"></span>
         </a>
       </div>

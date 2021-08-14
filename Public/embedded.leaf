@@ -45,9 +45,9 @@
               <li><h6 class="dropdown-header">#(versionGroup.majorVersion)</h6></li>
               #for(version in versionGroup.versions):
                 #if(version == stableVersion):
-                  <li class="version-picker-item ms-2 active-tick"><a class="dropdown-item" data-target="\#">#(version)</a></li>
+                  <li class="version-picker-item ms-2 active-tick"><a class="dropdown-item" data-target="#">#(version)</a></li>
                 #else:
-                  <li class="version-picker-item ms-2"><a class="dropdown-item" data-target="\#">#(version)</a></li>
+                  <li class="version-picker-item ms-2"><a class="dropdown-item" data-target="#">#(version)</a></li>
                 #endif
               #endfor
             #endfor
