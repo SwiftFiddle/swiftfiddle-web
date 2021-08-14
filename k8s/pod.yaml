@@ -65,6 +65,12 @@ spec:
   metrics:
     - type: Resource
       resource:
+        name: cpu
+        target:
+          type: Utilization
+          averageUtilization: 60
+    - type: Resource
+      resource:
         name: memory
         target:
           type: AverageValue
@@ -87,7 +93,7 @@ spec:
       labels:
         app.kubernetes.io/name: web-frontend
       annotations:
-        commit_sha: "3ef943fa6f1f9cbef10adbb0206890ab9a4ff8fe"
+        commit_sha: "7e9972c25411cd170099fce66932afcfdac56853"
     spec:
       containers:
         - image: swiftfiddle/web-frontend:latest
