@@ -33,7 +33,7 @@
   <div class="container-fluid g-0 d-flex flex-column min-vh-100">
     <header class="row m-0 g-0 justify-content-start bg-light">
       <div class="col-md-auto m-2">
-        <span class="fab fa-swift fa-2x text-primary d-inline-block align-middle"
+        <span class="fab fa-swift fa-2x text-primary d-inline-block align-middle" aria-hidden="true"
           style="min-width: 2rem; min-height: 2rem;"></span>
         <span class="h4 text-dark d-inline-block align-middle m-0">Swift Playground</span>
       </div>
@@ -63,25 +63,25 @@
       </div>
       <div class="col-md-auto m-2">
         <button type="button" id="run-button" class="btn btn-primary btn-sm rounded-pill disabled">
-          <span id="run-button-icon" class="fas fa-play fa-fw ms-2"
+          <span id="run-button-icon" class="fas fa-play fa-fw ms-2" aria-hidden="true"
             style="display: inline-block; min-width: 1em; min-height: 1em;"></span>
-          <span id="run-button-spinner" class="fas fa-circle-notch fa-spin fa-fw ms-2 d-none"></span>
+          <span id="run-button-spinner" class="fas fa-circle-notch fa-spin fa-fw ms-2 d-none" aria-hidden="true"></span>
           <span class="mx-2">Run</span>
         </button>
         <button type="button" id="stop-button" class="btn btn-primary btn-sm rounded-pill ms-1 disabled">
-          <span class="fas fa-stop fa-fw ms-2"
+          <span class="fas fa-stop fa-fw ms-2" aria-hidden="true"
             style="display: inline-block; min-width: 1em; min-height: 1em;"></span><span class="mx-2">Stop</span>
         </button>
         <button type="button" id="clear-console-button"
           class="btn btn-outline-primary btn-sm rounded-circle p-0 ms-1 disabled" data-bs-toggle="tooltip"
           data-bs-placement="bottom" data-bs-container="\#clear-console-button" title="Clear Console"
           aria-label="Clear Console" style="min-width: 2rem; min-height: 2rem;">
-          <span class="fas fa-eraser fa-fw"></span>
+          <span class="fas fa-eraser fa-fw" aria-hidden="true"></span>
         </button>
         <button type="button" id="format-button" class="btn btn-outline-primary btn-sm rounded-circle p-0 ms-1 disabled"
           data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-container="\#format-button" title="Format"
           aria-label="Format" style="min-width: 2rem; min-height: 2rem;">
-          <span class="fas fa-align-left fa-fw"></span>
+          <span class="fas fa-align-left fa-fw" aria-hidden="true"></span>
         </button>
       </div>
       <div class="col-md-auto m-2">
@@ -120,15 +120,15 @@
         <div class="col-md-12 mx-1 text-center text-dark">
           <a class="text-reset small" href="https://status.swiftfiddle.com" target="_blank"
             rel="nofollow noopener noreferrer">
-            <span class="fal fa-monitor-heart-rate mx-1"
+            <span class="fal fa-monitor-heart-rate mx-1" aria-hidden="true"
               style="display: inline-block; min-width: 1em; min-height: 1em;"></span>System Status</a>
           <a class="text-reset small ms-1" href="https://github.com/swiftfiddle/swiftfiddle-web" target="_blank"
             rel="nofollow noopener noreferrer">
-            <span class="fab fa-github mx-1"
+            <span class="fab fa-github mx-1" aria-hidden="true"
               style="display: inline-block; min-width: 1em; min-height: 1em;"></span>Source Code</a>
           <a class="text-reset small ms-1" href="https://twitter.com/k_katsumi" target="_blank"
             rel="nofollow noopener noreferrer">
-            <span class="far fa-at mx-1"
+            <span class="far fa-at mx-1" aria-hidden="true"
               style="display: inline-block; min-width: 1em; min-height: 1em;"></span>Creator</a>
         </div>
       </div>
@@ -143,13 +143,15 @@
           <span class="h6">Share</span>
         </label>
         <div class="input-group mb-3">
+          <label for="share-sheet-link-field" class="form-label visually-hidden">Share URL</label>
           <input id="share-sheet-link-field" class="form-control" type="url" value="" onfocus="this.select();"
             readonly />
           <button id="share-sheet-link-copy-button" class="btn btn-outline-primary" type="button"
             data-bs-toggle="tooltip" data-bs-container="\#share-sheet-link-copy-button" title="Copy to Clipboard"
             aria-label="Copy to Clipboard">
-            <span id="share-sheet-link-copy-button-icon" class="far fa-clipboard fa-fw"></span>
-            <span id="share-sheet-link-copy-button-spinner" class="fas fa-circle-notch fa-spin fa-fw d-none">
+            <span id="share-sheet-link-copy-button-icon" class="far fa-clipboard fa-fw" aria-hidden="true"></span>
+            <span id="share-sheet-link-copy-button-spinner" class="fas fa-circle-notch fa-spin fa-fw d-none"
+              aria-hidden="true">
             </span>
           </button>
         </div>
@@ -169,8 +171,9 @@
           <button id="share-sheet-embed-copy-button" class="btn btn-outline-primary" type="button"
             data-bs-toggle="tooltip" data-bs-container="\#share-sheet-embed-copy-button" title="Copy to Clipboard"
             aria-label="Copy to Clipboard">
-            <span id="share-sheet-embed-copy-button-icon" class="far fa-clipboard fa-fw"></span>
-            <span id="share-sheet-embed-copy-button-spinner" class="fas fa-circle-notch fa-spin fa-fw d-none">
+            <span id="share-sheet-embed-copy-button-icon" class="far fa-clipboard fa-fw" aria-hidden="true"></span>
+            <span id="share-sheet-embed-copy-button-spinner" class="fas fa-circle-notch fa-spin fa-fw d-none"
+              aria-hidden="true">
             </span>
           </button>
         </div>
