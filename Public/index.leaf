@@ -120,13 +120,16 @@
         <div class="col-md-12 mx-1 text-center text-dark">
           <a class="text-reset small" href="https://status.swiftfiddle.com" target="_blank"
             rel="nofollow noopener noreferrer">
-            <span class="fal fa-monitor-heart-rate mx-1"></span>System Status</a>
+            <span class="fal fa-monitor-heart-rate mx-1"
+              style="display: inline-block; min-width: 1em; min-height: 1em;"></span>System Status</a>
           <a class="text-reset small ms-1" href="https://github.com/swiftfiddle/swiftfiddle-web" target="_blank"
             rel="nofollow noopener noreferrer">
-            <span class="fab fa-github mx-1"></span>Source Code</a>
+            <span class="fab fa-github mx-1"
+              style="display: inline-block; min-width: 1em; min-height: 1em;"></span>Source Code</a>
           <a class="text-reset small ms-1" href="https://twitter.com/k_katsumi" target="_blank"
             rel="nofollow noopener noreferrer">
-            <span class="far fa-at mx-1"></span>Creator</a>
+            <span class="far fa-at mx-1"
+              style="display: inline-block; min-width: 1em; min-height: 1em;"></span>Creator</a>
         </div>
       </div>
     </footer>
