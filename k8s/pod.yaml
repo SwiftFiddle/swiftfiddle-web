@@ -93,7 +93,7 @@ spec:
       labels:
         app.kubernetes.io/name: web-frontend
       annotations:
-        commit_sha: "bd7032e7ad61bde80e6c3ade5fe11647a368bf7c"
+        commit_sha: "91f44e7023088d688bb16edfbe2f16420c41c294"
     spec:
       containers:
         - image: swiftfiddle/web-frontend:latest
