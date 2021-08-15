@@ -30,4 +30,4 @@ jobs:
       - name: Delete Failed Pods
         run: |
           set -ex
-          kubectl get pods --field-selector status.phase=Failed -A
+          kubectl delete pods --field-selector status.phase=Failed -A
