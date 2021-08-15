@@ -8,14 +8,14 @@ const alertBlock = document.getElementById("snackbar-alert");
 export class Snackbar {
   static info(message) {
     const messageContainer = document.getElementById("snackbar-info-message");
-    messageContainer.innerText = message;
+    messageContainer.textContent = message;
     infoBlock.classList.remove("d-none");
     new Toast(infoBlock).show();
   }
 
   static alert(message) {
     const messageContainer = document.getElementById("snackbar-alert-message");
-    messageContainer.innerText = message;
+    messageContainer.textContent = message;
     alertBlock.classList.remove("d-none");
     new Toast(alertBlock).show();
   }

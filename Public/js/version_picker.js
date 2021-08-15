@@ -2,7 +2,7 @@
 
 export class VersionPicker {
   get selected() {
-    return document.getElementById("version-value").innerText;
+    return document.getElementById("version-value").textContent;
   }
 }
 
@@ -13,7 +13,7 @@ document.querySelectorAll(".version-picker-item").forEach((listItem) => {
     }
     listItem.classList.add("active-tick");
 
-    document.getElementById("version-value").innerText =
-      listItem.querySelector(".dropdown-item").innerText;
+    document.getElementById("version-value").textContent =
+      listItem.querySelector(".dropdown-item").textContent;
   });
 });
