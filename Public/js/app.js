@@ -1,6 +1,6 @@
 "use strict";
 
-import Worker from "worker-loader!./web_worker.js";
+import Worker from "worker-loader!./worker.js";
 
 import { LanguageServer } from "./language_server.js";
 import { Runner } from "./runner.js";

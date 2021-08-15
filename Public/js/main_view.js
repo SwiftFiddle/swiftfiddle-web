@@ -2,7 +2,7 @@
 
 import "../css/version_picker.css";
 
-import Worker from "worker-loader!./web_worker.js";
+import Worker from "worker-loader!./worker.js";
 
 import { Tooltip } from "bootstrap";
 import { Editor } from "./editor.js";

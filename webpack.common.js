@@ -59,7 +59,7 @@ module.exports = {
         type: "asset/resource",
       },
       {
-        test: /\.[web_worker]\.js$/,
+        test: "/.worker.js$/",
         loader: "worker-loader",
         options: {
           filename: "[name].[contenthash].worker.js",
@@ -82,6 +82,7 @@ module.exports = {
       template: "./Public/embedded.leaf",
     }),
     new MonacoWebpackPlugin({
+      filename: "[name].[contenthash].worker.js",
       languages: ["swift"],
     }),
     new CopyWebbackPlugin({
