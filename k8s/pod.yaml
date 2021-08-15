@@ -42,13 +42,13 @@ spec:
   limits:
     - type: "Container"
       max:
-        memory: 512Mi
+        memory: 2Gi
       min:
-        memory: 64Mi
+        memory: 128Mi
       default:
         memory: 512Mi
       defaultRequest:
-        memory: 128Mi
+        memory: 256Mi
 
 ---
 apiVersion: autoscaling/v2beta2
@@ -93,7 +93,7 @@ spec:
       labels:
         app.kubernetes.io/name: web-frontend
       annotations:
-        commit_sha: "d9244fd800284826b44875b19c47445853e7cb55"
+        commit_sha: "7bef3489fef066793f4a7cb4ec49ab00709bbac3"
     spec:
       containers:
         - image: swiftfiddle/web-frontend:latest
@@ -107,9 +107,9 @@ spec:
               port: 8080
           resources:
             limits:
-              memory: "256Mi"
+              memory: "1Gi"
             requests:
-              memory: "64Mi"
+              memory: "256Mi"
           env:
             - name: FIREBASE_API_KEY
               valueFrom:
