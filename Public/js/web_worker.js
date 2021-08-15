@@ -14,8 +14,11 @@ onmessage = (e) => {
       if (!query.c) {
         return;
       }
-      const data = Decoder.decode(query.c);
-      if (data) {
+      try {
+        const data = Decoder.decode(query.c);
+        if (!data) {
+          return;
+        }
         postMessage({
           type: e.data.type,
           value: {
@@ -23,7 +26,7 @@ onmessage = (e) => {
             version: data.version,
           },
         });
-      }
+      } catch (error) {}
       break;
     }
     case "encode": {
