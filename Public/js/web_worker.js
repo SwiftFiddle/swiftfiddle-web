@@ -19,11 +19,16 @@ onmessage = (e) => {
         if (!data) {
           return;
         }
+        const code = data.c || data.code;
+        const version = data.v || data.version;
+        if (!code || !version) {
+          return;
+        }
         postMessage({
           type: e.data.type,
           value: {
-            code: data.code,
-            version: data.version,
+            code: code,
+            version: version,
           },
         });
       } catch (error) {}
@@ -36,8 +41,8 @@ onmessage = (e) => {
       postMessage({
         type: e.data.type,
         value: `?c=${Encoder.encode({
-          code: e.data.value.code,
-          version: e.data.value.version,
+          c: e.data.value.code,
+          v: e.data.value.version,
         })}`,
       });
       break;
