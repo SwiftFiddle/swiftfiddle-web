@@ -1,5 +1,7 @@
 "use strict";
 
+import Worker from "worker-loader!./web_worker.js";
+
 import { LanguageServer } from "./language_server.js";
 import { Runner } from "./runner.js";
 import { uuidv4 } from "./uuid.js";
@@ -12,10 +14,36 @@ import {
 } from "./ui_control.js";
 
 export class App {
-  constructor(editor, console, versionPicker) {
+  constructor(editor, terminal, versionPicker) {
     this.editor = editor;
-    this.console = console;
+    this.console = terminal;
     this.versionPicker = versionPicker;
+
+    if (window.Worker) {
+      const debounce = (() => {
+        const timers = {};
+        return function (callback, delay, id) {
+          delay = delay || 600;
+          id = id || "duplicated event";
+          if (timers[id]) {
+            clearTimeout(timers[id]);
+          }
+          timers[id] = setTimeout(callback, delay);
+        };
+      })();
+      this.worker = new Worker();
+      this.worker.onmessage = (e) => {
+        if (e.data && e.data.type === "encode") {
+          debounce(
+            () => {
+              history.replaceState(null, "", e.data.value);
+            },
+            600,
+            "update_location"
+          );
+        }
+      };
+    }
 
     this.history = [];
 
@@ -154,10 +182,14 @@ export class App {
         return;
       }
 
-      languageServer.syncDocument(this.editor.getValue());
-      updateButtonState(this.editor);
+      const value = this.editor.getValue();
+      const version = this.versionPicker.selected;
+      languageServer.syncDocument(value);
+
+      this.updateButtonState();
+      this.saveEditState();
     };
-    updateButtonState(this.editor);
+    this.updateButtonState();
 
     this.editor.onhover = (position) => {
       if (!languageServer.isReady) {
@@ -234,6 +266,10 @@ export class App {
       this.handleFileSelect.bind(this),
       false
     );
+
+    this.versionPicker.onchange = () => {
+      this.saveEditState();
+    };
   }
 
   handleDragOver(event) {
@@ -460,19 +496,37 @@ export class App {
       };
     });
   }
-}
 
-function updateButtonState(editor) {
-  const value = editor.getValue();
-  if (!value || !value.trim()) {
-    runButton.classList.add("disabled");
-    if (shareButton) {
-      shareButton.classList.add("disabled");
+  saveEditState() {
+    if (!this.worker) {
+      return;
     }
-  } else {
-    runButton.classList.remove("disabled");
-    if (shareButton) {
-      shareButton.classList.remove("disabled");
+    const code = this.editor.getValue();
+    const version = this.versionPicker.selected;
+    if (!code || !version) {
+      return;
+    }
+    this.worker.postMessage({
+      type: "encode",
+      value: {
+        code: code,
+        version: version,
+      },
+    });
+  }
+
+  updateButtonState() {
+    const value = this.editor.getValue();
+    if (!value || !value.trim()) {
+      runButton.classList.add("disabled");
+      if (shareButton) {
+        shareButton.classList.add("disabled");
+      }
+    } else {
+      runButton.classList.remove("disabled");
+      if (shareButton) {
+        shareButton.classList.remove("disabled");
+      }
     }
   }
 }

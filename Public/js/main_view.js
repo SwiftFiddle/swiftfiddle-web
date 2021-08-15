@@ -2,6 +2,8 @@
 
 import "../css/version_picker.css";
 
+import Worker from "worker-loader!./web_worker.js";
+
 import { Tooltip } from "bootstrap";
 import { Editor } from "./editor.js";
 import { Console } from "./console.js";
@@ -39,6 +41,20 @@ export class MainView {
     this.versionPicker = new VersionPicker();
     this.shareSheet = new ShareSheet(this.editor, this.versionPicker);
     this.app = new App(this.editor, this.console, this.versionPicker);
+
+    if (window.location.search && window.Worker) {
+      this.worker = new Worker();
+      this.worker.onmessage = (e) => {
+        if (e.data && e.data.type === "decode") {
+          this.editor.setValue(e.data.value.code);
+          this.versionPicker.selected = e.data.value.version;
+        }
+      };
+      this.worker.postMessage({
+        type: "decode",
+        value: window.location.search,
+      });
+    }
 
     this.init();
   }
