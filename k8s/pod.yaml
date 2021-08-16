@@ -42,13 +42,13 @@ spec:
   limits:
     - type: "Container"
       max:
-        memory: 2Gi
+        memory: 1Gi
       min:
-        memory: 128Mi
+        memory: 64Mi
       default:
         memory: 512Mi
       defaultRequest:
-        memory: 256Mi
+        memory: 128Mi
 
 ---
 apiVersion: autoscaling/v2beta2
@@ -74,7 +74,7 @@ spec:
         name: memory
         target:
           type: AverageValue
-          averageValue: 256Mi
+          averageValue: 128Mi
 
 ---
 apiVersion: apps/v1
@@ -93,7 +93,7 @@ spec:
       labels:
         app.kubernetes.io/name: web-frontend
       annotations:
-        commit_sha: "7bef3489fef066793f4a7cb4ec49ab00709bbac3"
+        commit_sha: "9233b2520846c3e1b19d85e321c8c00196bf5a36"
     spec:
       containers:
         - image: swiftfiddle/web-frontend:latest
@@ -101,15 +101,18 @@ spec:
           imagePullPolicy: Always
           ports:
             - containerPort: 8080
-          readinessProbe:
+          livenessProbe:
             httpGet:
               path: /health
               port: 8080
+            initialDelaySeconds: 10
+            timeoutSeconds: 10
+            failureThreshold: 1
           resources:
             limits:
-              memory: "1Gi"
-            requests:
               memory: "256Mi"
+            requests:
+              memory: "64Mi"
           env:
             - name: FIREBASE_API_KEY
               valueFrom:
