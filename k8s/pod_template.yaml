@@ -101,10 +101,13 @@ spec:
           imagePullPolicy: Always
           ports:
             - containerPort: 8080
-          readinessProbe:
+          livenessProbe:
             httpGet:
               path: /health
               port: 8080
+            initialDelaySeconds: 10
+            timeoutSeconds: 10
+            failureThreshold: 1
           resources:
             limits:
               memory: "512Gi"
