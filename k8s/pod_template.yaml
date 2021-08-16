@@ -42,12 +42,16 @@ spec:
   limits:
     - type: "Container"
       max:
+        cpu: 500m
         memory: 1Gi
       min:
+        cpu: 50m
         memory: 64Mi
       default:
+        cpu: 250m
         memory: 512Mi
       defaultRequest:
+        cpu: 100m
         memory: 128Mi
 
 ---
@@ -110,9 +114,11 @@ spec:
             failureThreshold: 1
           resources:
             limits:
-              memory: "256Mi"
+              cpu: 200m
+              memory: 256Mi
             requests:
-              memory: "64Mi"
+              cpu: 50m
+              memory: 64Mi
           env:
             - name: FIREBASE_API_KEY
               valueFrom:
