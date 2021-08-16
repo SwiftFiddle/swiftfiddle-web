@@ -44,11 +44,11 @@ spec:
       max:
         memory: 1Gi
       min:
-        memory: 128Mi
+        memory: 64Mi
       default:
         memory: 512Mi
       defaultRequest:
-        memory: 256Mi
+        memory: 128Mi
 
 ---
 apiVersion: autoscaling/v2beta2
@@ -74,7 +74,7 @@ spec:
         name: memory
         target:
           type: AverageValue
-          averageValue: 256Mi
+          averageValue: 128Mi
 
 ---
 apiVersion: apps/v1
@@ -110,9 +110,9 @@ spec:
             failureThreshold: 1
           resources:
             limits:
-              memory: "512Gi"
-            requests:
               memory: "256Mi"
+            requests:
+              memory: "64Mi"
           env:
             - name: FIREBASE_API_KEY
               valueFrom:
