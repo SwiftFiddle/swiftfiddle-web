@@ -42,12 +42,16 @@ spec:
   limits:
     - type: "Container"
       max:
+        cpu: 500m
         memory: 1Gi
       min:
+        cpu: 50m
         memory: 64Mi
       default:
+        cpu: 250m
         memory: 512Mi
       defaultRequest:
+        cpu: 100m
         memory: 128Mi
 
 ---
@@ -93,7 +97,7 @@ spec:
       labels:
         app.kubernetes.io/name: web-frontend
       annotations:
-        commit_sha: "1a5525ed0e7f6caf2c7bc3baca68f56733bb52a7"
+        commit_sha: "9ba246bf19765b2c80719c7196845d8119c59b08"
     spec:
       containers:
         - image: swiftfiddle/web-frontend:latest
@@ -110,9 +114,11 @@ spec:
             failureThreshold: 1
           resources:
             limits:
-              memory: "256Mi"
+              cpu: 200m
+              memory: 256Mi
             requests:
-              memory: "64Mi"
+              cpu: 50m
+              memory: 64Mi
           env:
             - name: FIREBASE_API_KEY
               valueFrom:
