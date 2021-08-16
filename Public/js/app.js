@@ -23,7 +23,7 @@ export class App {
       const debounce = (() => {
         const timers = {};
         return function (callback, delay, id) {
-          delay = delay || 600;
+          delay = delay || 400;
           id = id || "duplicated event";
           if (timers[id]) {
             clearTimeout(timers[id]);
@@ -38,7 +38,7 @@ export class App {
             () => {
               history.replaceState(null, "", e.data.value);
             },
-            600,
+            400,
             "update_location"
           );
         }
