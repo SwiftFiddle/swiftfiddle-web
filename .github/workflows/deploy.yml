@@ -21,7 +21,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - name: Update Package.json
+      - name: Update Package.swift.json
         run: |
           set -ex
 
@@ -31,11 +31,12 @@ jobs:
           git pull --rebase origin master
 
           tempdir=$(mktemp -d)
-          curl -sfL -o "$tempdir/Package.swift" https://raw.github.com/swiftfiddle/swiftfiddle-lsp/main/Resources/ProjectTemplate/Package.swift
-          swift package --package-path "$tempdir" dump-package > Resources/Package.json
+          filename="Package.swift"
+          curl -sfL -o "$tempdir/$filename" https://raw.github.com/swiftfiddle/swiftfiddle-lsp/main/Resources/ProjectTemplate/$filename
+          swift package --package-path "$tempdir" dump-package > Resources/$filename.json
 
-          git add Resources/Package.json
-          git diff-index --quiet HEAD || git commit -m "Update Package.json"
+          git add Resources/$filename.json
+          git diff-index --quiet HEAD || git commit -m "Update $filename.json"
           git push origin master
 
       - name: Setup Cloud SDK
@@ -52,7 +53,7 @@ jobs:
         run: |
           set -ex
 
-          IMAGE_TAG=swiftfiddle/web-frontend:latest
+          IMAGE_TAG=${{ env.GCR_HOSTNAME }}/${{ env.PROJECT_ID }}/web-frontend:latest
 
           docker build --build-arg FONTAWESOME_TOKEN=${{ env.FONTAWESOME_TOKEN }} --rm --tag ${IMAGE_TAG} .
           docker push ${IMAGE_TAG}

@@ -288,7 +288,7 @@ private func handleEmbeddedContent(_ req: Request, _ promise: EventLoopPromise<R
 }
 
 private func swiftPackageInfo(_ app: Application) -> [PackageInfo] {
-    let packagePath = URL(fileURLWithPath: "\(app.directory.resourcesDirectory)Package.json")
+    let packagePath = URL(fileURLWithPath: app.directory.resourcesDirectory).appendingPathComponent("Package.swift.json")
     let decoder = JSONDecoder()
     do {
         let package = try decoder.decode(Package.self, from: Data(contentsOf: packagePath))

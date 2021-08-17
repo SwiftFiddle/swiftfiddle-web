@@ -102,7 +102,7 @@ spec:
         commit_sha: "%COMMIT_SHA%"
     spec:
       containers:
-        - image: gcr.io/swiftfiddle/web-frontend:latest
+        - image: us.gcr.io/swift-playground-fbe87/web-frontend:latest
           name: web-frontend
           imagePullPolicy: Always
           ports:
