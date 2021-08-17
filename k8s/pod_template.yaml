@@ -42,16 +42,16 @@ spec:
   limits:
     - type: "Container"
       max:
-        cpu: 500m
+        cpu: 200m
         memory: 1Gi
       min:
-        cpu: 50m
+        cpu: 0m
         memory: 64Mi
       default:
-        cpu: 250m
+        cpu: 100m
         memory: 512Mi
       defaultRequest:
-        cpu: 100m
+        cpu: 10m
         memory: 128Mi
 
 ---
@@ -88,7 +88,7 @@ metadata:
   labels:
     app.kubernetes.io/name: web-frontend
 spec:
-  replicas: 1
+  replicas: 2
   selector:
     matchLabels:
       app.kubernetes.io/name: web-frontend
@@ -116,11 +116,11 @@ spec:
             failureThreshold: 1
           resources:
             limits:
-              cpu: 200m
-              memory: 256Mi
+              cpu: 40m
+              memory: 128Mi
             requests:
-              cpu: 50m
-              memory: 64Mi
+              cpu: 10m
+              memory: 32Mi
           env:
             - name: FIREBASE_API_KEY
               valueFrom:
