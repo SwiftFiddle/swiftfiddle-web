@@ -92,6 +92,8 @@ spec:
   selector:
     matchLabels:
       app.kubernetes.io/name: web-frontend
+  minReadySeconds: 60
+  progressDeadlineSeconds: 600
   template:
     metadata:
       labels:
@@ -100,7 +102,7 @@ spec:
         commit_sha: "%COMMIT_SHA%"
     spec:
       containers:
-        - image: swiftfiddle/web-frontend:latest
+        - image: gcr.io/swiftfiddle/web-frontend:latest
           name: web-frontend
           imagePullPolicy: Always
           ports:
@@ -135,3 +137,4 @@ spec:
                 secretKeyRef:
                   name: credentials
                   key: GCP_PROJECT
+      terminationGracePeriodSeconds: 60
