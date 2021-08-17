@@ -46,7 +46,7 @@ spec:
         memory: 1Gi
       min:
         cpu: 0m
-        memory: 64Mi
+        memory: 32Mi
       default:
         cpu: 100m
         memory: 512Mi
