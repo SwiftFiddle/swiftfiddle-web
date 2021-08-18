@@ -88,15 +88,10 @@ metadata:
   labels:
     app.kubernetes.io/name: web-frontend
 spec:
+  replicas: 2
   selector:
     matchLabels:
       app.kubernetes.io/name: web-frontend
-  replicas: 2
-  strategy:
-    type: RollingUpdate
-    rollingUpdate:
-      maxUnavailable: 1
-      maxSurge: 0
   minReadySeconds: 60
   progressDeadlineSeconds: 600
   template:
@@ -104,7 +99,7 @@ spec:
       labels:
         app.kubernetes.io/name: web-frontend
       annotations:
-        commit_sha: "30351f0d6946eeed2479c5e62edff19c66187003"
+        commit_sha: "93f9e5ad2f2a0256bcc5d9faf3c6fdc51ef7198b"
     spec:
       containers:
         - image: us.gcr.io/swift-playground-fbe87/web-frontend:latest
