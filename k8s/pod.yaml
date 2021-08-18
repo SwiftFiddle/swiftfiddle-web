@@ -65,7 +65,7 @@ spec:
     kind: Deployment
     name: web-frontend
   minReplicas: 1
-  maxReplicas: 10
+  maxReplicas: 4
   metrics:
     - type: Resource
       resource:
@@ -99,7 +99,7 @@ spec:
       labels:
         app.kubernetes.io/name: web-frontend
       annotations:
-        commit_sha: "1ad857783c407211b2834ea3c2f0ee89bf33b0ff"
+        commit_sha: "30351f0d6946eeed2479c5e62edff19c66187003"
     spec:
       containers:
         - image: us.gcr.io/swift-playground-fbe87/web-frontend:latest
