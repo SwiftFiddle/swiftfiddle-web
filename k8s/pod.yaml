@@ -88,10 +88,15 @@ metadata:
   labels:
     app.kubernetes.io/name: web-frontend
 spec:
-  replicas: 2
   selector:
     matchLabels:
       app.kubernetes.io/name: web-frontend
+  replicas: 2
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 1
+      maxSurge: 0
   minReadySeconds: 60
   progressDeadlineSeconds: 600
   template:
