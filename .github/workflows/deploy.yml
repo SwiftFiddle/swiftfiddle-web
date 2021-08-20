@@ -10,6 +10,7 @@ env:
   GKE_CLUSTER: swiftfiddle-cluster
   GKE_ZONE: us-central1-c
   GCR_HOSTNAME: us.gcr.io
+  SERVICE_NAME: web-frontend
   FONTAWESOME_TOKEN: ${{ secrets.FONTAWESOME_TOKEN }}
   CLOUDFLARE_EMAIL: ${{ secrets.CLOUDFLARE_EMAIL }}
   CLOUDFLARE_API_KEY: ${{ secrets.CLOUDFLARE_API_KEY }}
@@ -53,7 +54,7 @@ jobs:
         run: |
           set -ex
 
-          IMAGE_TAG=${{ env.GCR_HOSTNAME }}/${{ env.PROJECT_ID }}/web-frontend:latest
+          IMAGE_TAG=${{ env.GCR_HOSTNAME }}/${{ env.PROJECT_ID }}/${{ env.SERVICE_NAME }}:latest
 
           docker build --build-arg FONTAWESOME_TOKEN=${{ env.FONTAWESOME_TOKEN }} --rm --tag ${IMAGE_TAG} .
           docker push ${IMAGE_TAG}
@@ -81,22 +82,10 @@ jobs:
         run: |
           set -ex
 
-          git config --global user.name "${GITHUB_ACTOR}"
-          git config --global user.email "${GITHUB_ACTOR}@users.noreply.github.com"
+          sed "s/%COMMIT_SHA%/${{ github.sha }}/g;" "k8s/pod_template.yaml" | kubectl apply -f -
 
-          git pull --rebase origin master
-
-          commit_sha=$(git rev-parse HEAD)
-          sed "s/%COMMIT_SHA%/$commit_sha/g;" "k8s/pod_template.yaml" > "k8s/pod.yaml"
-
-          kubectl apply -f k8s/pod.yaml
-
-          kubectl rollout status deployment/web-frontend
+          kubectl rollout status deployment/${{ env.SERVICE_NAME }}
           kubectl get services -o wide
-
-          git add k8s/pod.yaml
-          git diff-index --quiet HEAD || git commit -m "Deploy to GKE $(git rev-parse --short HEAD)"
-          git push origin master
 
   purge_cache:
     runs-on: ubuntu-latest

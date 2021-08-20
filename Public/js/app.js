@@ -50,7 +50,9 @@ export class App {
     const promises = [];
     let sequence = 0;
 
-    const languageServer = new LanguageServer("wss://lsp.swiftfiddle.com/");
+    const languageServer = new LanguageServer(
+      "wss://swiftfiddle.com/lang-server"
+    );
 
     languageServer.onconnect = () => {
       languageServer.openDocument(this.editor.getValue());

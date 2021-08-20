@@ -3,8 +3,7 @@
 import "./scss/default.scss";
 import "./css/common.css";
 
-import "./js/logger.js";
 import "./js/icon.js";
-import { MainView } from "./js/main_view.js";
 
+import { MainView } from "./js/main_view.js";
 new MainView(window.appConfig);

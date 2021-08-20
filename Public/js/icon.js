@@ -22,6 +22,7 @@ import {
   faCommentAltSmile,
   faCheckCircle,
   faAt,
+  faDonate,
 } from "@fortawesome/pro-regular-svg-icons";
 import { faMonitorHeartRate } from "@fortawesome/pro-light-svg-icons";
 import {
@@ -52,6 +53,7 @@ library.add(
   faCommentAltSmile,
   faCheckCircle,
   faAt,
+  faDonate,
 
   faMonitorHeartRate,
 

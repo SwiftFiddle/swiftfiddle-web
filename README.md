@@ -18,24 +18,3 @@ SwiftFiddle is an online playground for creating, sharing and embedding Swift fi
 <a href="https://swiftfiddle.com"><img width="1280" alt="Screen Shot" src="https://user-images.githubusercontent.com/40610/114289126-6dae6780-9ab0-11eb-877d-ac29614dc053.png"></a>
 
 https://swiftfiddle.com
-
-## Running Locally
-
-```shell
-$ docker compose up
-```
-
-Then access `127.0.0.0` on your web browser.
-
-## Development
-
-```shell
-$ docker compose pull
-$ swift run
-```
-
-Then access `127.0.0.0:8080` on your web browser.
-
-### Related Projects
-
-- [SwiftFiddle LSP](https://github.com/swiftfiddle/swiftfiddle-lsp) (Provide Code Completion powered by [SourceKit-LSP](https://github.com/apple/sourcekit-lsp))
