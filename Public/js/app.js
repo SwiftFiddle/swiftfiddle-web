@@ -16,7 +16,7 @@ import {
 export class App {
   constructor(editor, terminal, versionPicker) {
     this.editor = editor;
-    this.console = terminal;
+    this.terminal = terminal;
     this.versionPicker = versionPicker;
 
     if (window.Worker) {
@@ -252,7 +252,7 @@ export class App {
     if (clearConsoleButton) {
       clearConsoleButton.addEventListener("click", (event) => {
         event.preventDefault();
-        this.console.clear();
+        this.terminal.clear();
         this.history.length = 0;
       });
     }
@@ -308,13 +308,13 @@ export class App {
 
     this.editor.clearMarkers();
 
-    this.console.saveCursorPosition();
-    this.console.switchAlternateBuffer();
-    this.console.moveCursorTo(0, 0);
-    this.console.hideCursor();
+    this.terminal.saveCursorPosition();
+    this.terminal.switchAlternateBuffer();
+    this.terminal.moveCursorTo(0, 0);
+    this.terminal.hideCursor();
 
     const altBuffer = [];
-    const cancelToken = this.console.showSpinner("Running", () => {
+    const cancelToken = this.terminal.showSpinner("Running", () => {
       return altBuffer.filter(Boolean);
     });
 
@@ -334,7 +334,7 @@ export class App {
       params.options = window.appConfig.compilerOptions;
     }
 
-    const runner = new Runner(this.console);
+    const runner = new Runner(this.terminal);
     runner.onmessage = (message) => {
       altBuffer.length = 0;
       altBuffer.push(...this.parseMessage(message));
@@ -358,11 +358,11 @@ export class App {
       document.getElementById("run-button-icon").classList.remove("d-none");
       document.getElementById("run-button-spinner").classList.add("d-none");
 
-      this.console.hideSpinner(cancelToken);
-      this.console.switchNormalBuffer();
-      this.console.showCursor();
-      this.console.restoreCursorPosition();
-      this.console.reset();
+      this.terminal.hideSpinner(cancelToken);
+      this.terminal.switchNormalBuffer();
+      this.terminal.showCursor();
+      this.terminal.restoreCursorPosition();
+      this.terminal.reset();
 
       if (isCancel) {
         buffer = altBuffer.map((b) => `${b.text}\n`);
@@ -372,12 +372,12 @@ export class App {
         const regex =
           /[\u001b\u009b][[()#;?]*(?:[0-9]{1,4}(?:;[0-9]{0,4})*)?[0-9A-ORZcf-nqry=><]/g;
         const plainText = line.replace(regex, "");
-        this.console.write(`\x1b[2m${plainText}`);
+        this.terminal.write(`\x1b[2m${plainText}`);
       });
       this.history.push(...buffer);
 
       buffer.forEach((line) => {
-        this.console.write(line);
+        this.terminal.write(line);
       });
 
       const markers = this.parseErrorMessage(stderr);
@@ -406,7 +406,7 @@ export class App {
           .map((line) => {
             return {
               text: `\x1b[38;5;156m\x1b[2m${line}\x1b[0m`,
-              numberOfLines: Math.ceil(line.length / this.console.cols),
+              numberOfLines: Math.ceil(line.length / this.terminal.cols),
             };
           })
       );
@@ -419,7 +419,7 @@ export class App {
           .map((line) => {
             return {
               text: `${line}\x1b[0m`,
-              numberOfLines: Math.ceil(line.length / this.console.cols),
+              numberOfLines: Math.ceil(line.length / this.terminal.cols),
             };
           })
       );
@@ -432,7 +432,7 @@ export class App {
           .map((line) => {
             return {
               text: `\x1b[37m${line}\x1b[0m`,
-              numberOfLines: Math.ceil(line.length / this.console.cols),
+              numberOfLines: Math.ceil(line.length / this.terminal.cols),
             };
           })
       );

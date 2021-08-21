@@ -1,6 +1,7 @@
 "use strict";
 
 import * as monaco from "monaco-editor/esm/vs/editor/editor.api";
+import { datadogLogs } from "@datadog/browser-logs";
 import { uuidv4 } from "./uuid.js";
 
 export class LanguageServer {
@@ -144,12 +145,10 @@ export class LanguageServer {
       return this.connection;
     }
 
-    console.log(`Connecting to ${endpoint}`);
     this.sessionId = uuidv4();
     const connection = new WebSocket(endpoint);
 
     connection.onopen = () => {
-      console.log(`Language Server connected (${connection.readyState}).`);
       this.onconnect();
       const cancelToken = setInterval(() => {
         if (connection.readyState !== 1) {
@@ -171,7 +170,6 @@ export class LanguageServer {
     };
 
     connection.onclose = (event) => {
-      console.log(`Language Server disconnected (${event.code}).`);
       if (event.code !== 1006) {
         return;
       }
@@ -181,7 +179,7 @@ export class LanguageServer {
     };
 
     connection.onerror = (event) => {
-      console.error(`Language Server error: ${event.message}`);
+      datadogLogs.logger.error("lang-server websocket error", event);
       connection.close();
     };
 
