@@ -1,11 +1,12 @@
 "use strict";
 
+import { datadogLogs } from "@datadog/browser-logs";
 import { Snackbar } from "./snackbar.js";
 
 export class Runner {
-  constructor(console) {
+  constructor(terminal) {
     this.abortController = new AbortController();
-    this.console = console;
+    this.terminal = terminal;
     this.onmessage = () => {};
   }
 
@@ -16,7 +17,8 @@ export class Runner {
 
     const startTime = performance.now();
 
-    fetch(`/runner/${params.toolchain_version}/run`, {
+    const path = `/runner/${params.toolchain_version}/run`;
+    fetch(path, {
       method: "POST",
       headers: {
         Accept: "application/json",
@@ -46,7 +48,7 @@ export class Runner {
             .split("\n")
             .map((line, i) => {
               // prettier-ignore
-              const padding = this.console.cols - line.length - timestamp.length - execTime.length;
+              const padding = this.terminal.cols - line.length - timestamp.length - execTime.length;
               let _1 = "";
               if (padding < 0) {
                 _1 = `\x1b[0m${timestamp}${execTime}\n`;
@@ -94,12 +96,11 @@ export class Runner {
         completion([], "", error, isCancel);
         if (!isCancel) {
           if (error.response) {
-            console.error(error.response.statusText);
             Snackbar.alert(error.response.statusText);
           } else {
-            console.error(error);
             Snackbar.alert(error);
           }
+          datadogLogs.logger.error(`${path}`, error);
         }
       })
       .finally(() => {
@@ -120,12 +121,9 @@ export class Runner {
       return this.connection;
     }
 
-    console.log(`Connecting to ${endpoint}`);
     const connection = new WebSocket(endpoint);
 
     connection.onopen = () => {
-      console.log(`WebSocket connection opened (${connection.readyState}).`);
-
       document.addEventListener("visibilitychange", () => {
         switch (document.visibilityState) {
           case "hidden":
@@ -140,7 +138,6 @@ export class Runner {
     };
 
     connection.onclose = (event) => {
-      console.log(`WebSocket connection closed (${event.code}).`);
       if (event.code !== 1006) {
         return;
       }
@@ -150,7 +147,7 @@ export class Runner {
     };
 
     connection.onerror = (event) => {
-      console.error(`WebSocket connection error (${event.message}).`);
+      datadogLogs.logger.error("runner websocket error", event);
       connection.close();
     };
 
