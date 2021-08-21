@@ -34,7 +34,7 @@
       "requirement" : {
         "range" : [
           {
-            "lowerBound" : "0.0.5",
+            "lowerBound" : "0.0.7",
             "upperBound" : "1.0.0"
           }
         ]
