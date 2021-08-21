@@ -5,7 +5,7 @@ const BundleAnalyzerPlugin =
 
 module.exports = merge(common, {
   mode: "production",
-  devtool: "source-map",
+  devtool: "hidden-source-map",
   plugins: [
     new BundleAnalyzerPlugin({ analyzerMode: "static", openAnalyzer: false }),
   ],
