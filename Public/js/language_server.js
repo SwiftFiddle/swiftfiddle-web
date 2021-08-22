@@ -1,6 +1,7 @@
 "use strict";
 
 import * as monaco from "monaco-editor/esm/vs/editor/editor.api";
+import ReconnectingWebSocket from "reconnecting-websocket";
 import { datadogLogs } from "@datadog/browser-logs";
 import { uuidv4 } from "./uuid.js";
 
@@ -9,7 +10,6 @@ export class LanguageServer {
     this.connection = this.createConnection(endpoint);
 
     this.onconnect = () => {};
-    this.onready = () => {};
     this.onresponse = () => {};
   }
 
@@ -146,36 +146,17 @@ export class LanguageServer {
     }
 
     this.sessionId = uuidv4();
-    const connection = new WebSocket(endpoint);
+    const connection = new ReconnectingWebSocket(endpoint, [], {
+      maxReconnectionDelay: 10000,
+      minReconnectionDelay: 1000,
+      reconnectionDelayGrowFactor: 1.3,
+      connectionTimeout: 10000,
+      maxRetries: Infinity,
+      debug: false,
+    });
 
     connection.onopen = () => {
       this.onconnect();
-      const cancelToken = setInterval(() => {
-        if (connection.readyState !== 1) {
-          clearInterval(cancelToken);
-          return;
-        }
-        connection.send("ping");
-      }, 10000);
-
-      document.addEventListener("visibilitychange", () => {
-        switch (document.visibilityState) {
-          case "hidden":
-            break;
-          case "visible":
-            this.connection = this.createConnection(connection.url);
-            break;
-        }
-      });
-    };
-
-    connection.onclose = (event) => {
-      if (event.code !== 1006) {
-        return;
-      }
-      setTimeout(() => {
-        this.connection = this.createConnection(connection.url);
-      }, 1000);
     };
 
     connection.onerror = (event) => {
