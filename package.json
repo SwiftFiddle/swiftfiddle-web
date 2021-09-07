@@ -10,7 +10,7 @@
     "@fortawesome/pro-regular-svg-icons": "5.15.3",
     "@fortawesome/pro-solid-svg-icons": "5.15.3",
     "@popperjs/core": "2.10.1",
-    "bootstrap": "5.1.0",
+    "bootstrap": "5.1.1",
     "monaco-editor": "0.27.0",
     "pako": "2.0.4",
     "reconnecting-websocket": "4.4.0",
