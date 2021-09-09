@@ -21,7 +21,7 @@
       "requirement" : {
         "range" : [
           {
-            "lowerBound" : "1.0.0",
+            "lowerBound" : "1.0.1",
             "upperBound" : "2.0.0"
           }
         ]
