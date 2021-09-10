@@ -14,7 +14,7 @@
     "monaco-editor": "0.27.0",
     "pako": "2.0.4",
     "reconnecting-websocket": "4.4.0",
-    "xterm": "4.14.0",
+    "xterm": "4.14.1",
     "xterm-addon-fit": "0.5.0"
   },
   "devDependencies": {
