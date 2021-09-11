@@ -12,12 +12,12 @@ export class Runner {
 
   run(params, completion) {
     this.connection = this.createConnection(
-      `wss://staging.swiftfiddle.com/runner/${params.toolchain_version}/logs/${params._nonce}`
+      `wss://swiftfiddle.com/runner/${params.toolchain_version}/logs/${params._nonce}`
     );
 
     const startTime = performance.now();
 
-    const path = `https://staging.swiftfiddle.com/runner/${params.toolchain_version}/run`;
+    const path = `https://swiftfiddle.com/runner/${params.toolchain_version}/run`;
     fetch(path, {
       method: "POST",
       headers: {
