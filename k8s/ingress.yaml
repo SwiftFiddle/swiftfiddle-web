@@ -15,6 +15,7 @@ spec:
   tls:
     - hosts:
         - swiftfiddle.com
+        - www.swiftfiddle.com
       secretName: swiftfiddle-tls
   rules:
     - host: swiftfiddle.com
