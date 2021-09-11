@@ -19,6 +19,12 @@ func routes(_ app: Application) throws {
         )
     }
 
+    app.webSocket("ws", "echo") { (req, ws) in
+        ws.onText { (ws, text) in
+            ws.send("OK")
+        }
+    }
+
     app.get(":id") { req -> EventLoopFuture<Response> in
         if let path = req.parameters.get("id"), let id = try SharedLink.id(from: path) {
             let promise = req.eventLoop.makePromise(of: Response.self)
