@@ -51,7 +51,7 @@ export class App {
     let sequence = 0;
 
     const languageServer = new LanguageServer(
-      "wss://swiftfiddle.com/lang-server/api"
+      "wss://staging.swiftfiddle.com/lang-server/api"
     );
 
     languageServer.onconnect = () => {
