@@ -5,13 +5,18 @@ on:
   workflow_dispatch:
 
 env:
-  PROJECT_ID: ${{ secrets.GCP_PROJECT }}
-  GCP_SA_KEY: ${{ secrets.GCP_SA_KEY }}
-  GKE_CLUSTER: swiftfiddle-cluster
-  GKE_ZONE: us-central1-c
-  GCR_HOSTNAME: us.gcr.io
+  AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}
+  REGISTRY_NAME: swiftfiddle.azurecr.io
+  REGISTRY_USERNAME: ${{ secrets.REGISTRY_USERNAME }}
+  REGISTRY_PASSWORD: ${{ secrets.REGISTRY_PASSWORD }}
+  CLUSTER_NAME: swiftfiddle
+  CLUSTER_RESOURCE_GROUP: swiftfiddle
+
+  APP_NAME: swiftfiddle/web-frontend
   SERVICE_NAME: web-frontend
+
   FONTAWESOME_TOKEN: ${{ secrets.FONTAWESOME_TOKEN }}
+
   CLOUDFLARE_EMAIL: ${{ secrets.CLOUDFLARE_EMAIL }}
   CLOUDFLARE_API_KEY: ${{ secrets.CLOUDFLARE_API_KEY }}
   CLOUDFLARE_ZONE_ID: ${{ secrets.CLOUDFLARE_ZONE_ID }}
@@ -40,21 +45,17 @@ jobs:
           git diff-index --quiet HEAD || git commit -m "Update $filename.json"
           git push origin master
 
-      - name: Setup Cloud SDK
-        uses: google-github-actions/setup-gcloud@v0.2.1
+      - uses: azure/docker-login@v1
         with:
-          project_id: ${{ env.PROJECT_ID }}
-          service_account_key: ${{ env.GCP_SA_KEY }}
-          export_default_credentials: true
-
-      - name: Authorize Docker push
-        run: gcloud auth configure-docker
+          login-server: ${{ env.REGISTRY_NAME }}
+          username: ${{ env.REGISTRY_USERNAME }}
+          password: ${{ env.REGISTRY_PASSWORD }}
 
       - name: Build and Push Docker Images
         run: |
           set -ex
 
-          IMAGE_TAG=${{ env.GCR_HOSTNAME }}/${{ env.PROJECT_ID }}/${{ env.SERVICE_NAME }}:latest
+          IMAGE_TAG=${{ env.REGISTRY_NAME }}/${{ env.APP_NAME }}:latest
 
           docker build --build-arg FONTAWESOME_TOKEN=${{ env.FONTAWESOME_TOKEN }} --rm --tag ${IMAGE_TAG} .
           docker push ${IMAGE_TAG}
@@ -65,18 +66,12 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - name: Setup Cloud SDK
-        uses: google-github-actions/setup-gcloud@v0.2.1
+      - uses: azure/setup-kubectl@v1
+      - uses: azure/aks-set-context@v1
         with:
-          project_id: ${{ env.PROJECT_ID }}
-          service_account_key: ${{ env.GCP_SA_KEY }}
-          export_default_credentials: true
-
-      - uses: google-github-actions/get-gke-credentials@v0.3.0
-        with:
-          cluster_name: ${{ env.GKE_CLUSTER }}
-          location: ${{ env.GKE_ZONE }}
-          credentials: ${{ env.GCP_SA_KEY }}
+          creds: ${{ env.AZURE_CREDENTIALS }}
+          cluster-name: ${{ env.CLUSTER_NAME }}
+          resource-group: ${{ env.CLUSTER_RESOURCE_GROUP }}
 
       - name: Deploy
         run: |
@@ -108,18 +103,18 @@ jobs:
         run: |
           set -ex
 
-          curl --silent --show-error --fail -i -X POST "https://swiftfiddle.com/run" \
+          curl --silent --show-error --fail -i -X POST "https://staging.swiftfiddle.com/run" \
             -H "Content-Type:application/json" \
             --data '{"code":"print(\"Hello, World!\")","toolchain_version":"latest"}'
-          curl --silent --show-error --fail -i -X POST "https://swiftfiddle.com/run" \
+          curl --silent --show-error --fail -i -X POST "https://staging.swiftfiddle.com/run" \
             -H "Content-Type:application/json" \
             --data '{"code":"print(\"Hello, World!\")","toolchain_version":"stable"}'
 
-          versions=$(curl --silent -X GET "https://swiftfiddle.com/versions" -H "Content-Type:application/json")
+          versions=$(curl --silent -X GET "https://staging.swiftfiddle.com/versions" -H "Content-Type:application/json")
           len=$(echo $versions | jq length)
           for i in $( seq 0 $(($len - 1)) ); do
             version=$(echo $versions | jq .[$i])
-            curl --silent --show-error --fail -i -X POST "https://swiftfiddle.com/run" \
+            curl --silent --show-error --fail -i -X POST "https://staging.swiftfiddle.com/run" \
               -H "Content-Type:application/json" \
               --data "{\"code\":\"print(\\\"Hello, World!\\\")\",\"toolchain_version\":$version}"
           done

@@ -2,8 +2,6 @@ apiVersion: v1
 kind: Service
 metadata:
   name: web-frontend
-  annotations:
-    cloud.google.com/backend-config: '{"ports": {"80": "backendconfig"}}'
 spec:
   selector:
     app.kubernetes.io/name: web-frontend
@@ -12,26 +10,6 @@ spec:
       port: 80
       targetPort: 8080
   type: NodePort
-
----
-apiVersion: networking.gke.io/v1beta1
-kind: FrontendConfig
-metadata:
-  name: frontendconfig
-spec:
-  redirectToHttps:
-    enabled: true
-    responseCodeName: MOVED_PERMANENTLY_DEFAULT
-
----
-apiVersion: cloud.google.com/v1
-kind: BackendConfig
-metadata:
-  name: backendconfig
-spec:
-  timeoutSec: 660
-  connectionDraining:
-    drainingTimeoutSec: 720
 
 ---
 apiVersion: "v1"
@@ -106,8 +84,10 @@ spec:
       annotations:
         commit_sha: "%COMMIT_SHA%"
     spec:
+      nodeSelector:
+        name: defaultpool
       containers:
-        - image: us.gcr.io/swift-playground-fbe87/web-frontend:latest
+        - image: swiftfiddle.azurecr.io/swiftfiddle/web-frontend:latest
           name: web-frontend
           imagePullPolicy: Always
           ports:
