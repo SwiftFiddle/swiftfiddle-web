@@ -1,0 +1,78 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ingress
+  annotations:
+    kubernetes.io/ingress.class: "nginx"
+    nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
+    nginx.ingress.kubernetes.io/proxy-send-timeout: "3600"
+    nginx.ingress.kubernetes.io/proxy-read-timeout: "3600"
+    nginx.ingress.kubernetes.io/use-regex: "true"
+    cert-manager.io/issuer: "letsencrypt"
+    nginx.ingress.kubernetes.io/websocket-services: "lang-server,web-frontend,runner-vnightly-main,runner-v542,runner-v50,runner-v40,runner-v22"
+    nginx.org/websocket-services: "lang-server,web-frontend,runner-vnightly-main,runner-v542,runner-v50,runner-v40,runner-v22"
+spec:
+  tls:
+    - hosts:
+        - swiftfiddle.com
+      secretName: swiftfiddle-tls
+  rules:
+    - host: swiftfiddle.com
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: web-frontend
+                port:
+                  number: 80
+          - path: /lang-server
+            pathType: Prefix
+            backend:
+              service:
+                name: lang-server
+                port:
+                  number: 80
+          - path: /runner/nightly*
+            pathType: Prefix
+            backend:
+              service:
+                name: runner-vnightly-main
+                port:
+                  number: 80
+          - path: /runner/5.4.2
+            pathType: Prefix
+            backend:
+              service:
+                name: runner-v542
+                port:
+                  number: 80
+          - path: /runner/5*
+            pathType: Prefix
+            backend:
+              service:
+                name: runner-v50
+                port:
+                  number: 80
+          - path: /runner/4*
+            pathType: Prefix
+            backend:
+              service:
+                name: runner-v40
+                port:
+                  number: 80
+          - path: /runner/3*
+            pathType: Prefix
+            backend:
+              service:
+                name: runner-v22
+                port:
+                  number: 80
+          - path: /runner/2*
+            pathType: Prefix
+            backend:
+              service:
+                name: runner-v22
+                port:
+                  number: 80

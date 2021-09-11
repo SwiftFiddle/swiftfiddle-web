@@ -17,7 +17,7 @@ export class Runner {
 
     const startTime = performance.now();
 
-    const path = `/runner/${params.toolchain_version}/run`;
+    const path = `https://swiftfiddle.com/runner/${params.toolchain_version}/run`;
     fetch(path, {
       method: "POST",
       headers: {
