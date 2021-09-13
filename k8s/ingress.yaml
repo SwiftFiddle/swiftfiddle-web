@@ -8,7 +8,6 @@ metadata:
     nginx.ingress.kubernetes.io/proxy-send-timeout: "3600"
     nginx.ingress.kubernetes.io/proxy-read-timeout: "3600"
     nginx.ingress.kubernetes.io/use-regex: "true"
-    nginx.ingress.kubernetes.io/websocket-services: "lang-server,runner-vnightly-main,runner-vstable,runner-v50,runner-v40,runner-v22"
     nginx.org/websocket-services: "lang-server,runner-vnightly-main,runner-vstable,runner-v50,runner-v40,runner-v22"
     cert-manager.io/issuer: "zerossl"
     cert-manager.io/acme-challenge-type: "dns01"
