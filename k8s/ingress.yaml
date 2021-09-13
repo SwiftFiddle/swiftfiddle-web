@@ -8,8 +8,8 @@ metadata:
     nginx.ingress.kubernetes.io/proxy-send-timeout: "3600"
     nginx.ingress.kubernetes.io/proxy-read-timeout: "3600"
     nginx.ingress.kubernetes.io/use-regex: "true"
-    nginx.ingress.kubernetes.io/websocket-services: "lang-server,web-frontend,runner-vnightly-main,runner-v542,runner-v50,runner-v40,runner-v22"
-    nginx.org/websocket-services: "lang-server,web-frontend,runner-vnightly-main,runner-v542,runner-v50,runner-v40,runner-v22"
+    nginx.ingress.kubernetes.io/websocket-services: "lang-server,runner-vnightly-main,runner-vstable,runner-v50,runner-v40,runner-v22"
+    nginx.org/websocket-services: "lang-server,runner-vnightly-main,runner-vstable,runner-v50,runner-v40,runner-v22"
     cert-manager.io/issuer: "zerossl"
     cert-manager.io/acme-challenge-type: "dns01"
 spec:
@@ -42,14 +42,14 @@ spec:
                 name: lang-server
                 port:
                   number: 80
-          - path: /runner/nightly*
+          - path: /runner/nightly.*
             pathType: Prefix
             backend:
               service:
                 name: runner-vnightly-main
                 port:
                   number: 80
-          - path: /runner/5.4.3/*
+          - path: /runner/5.4.3/.*
             pathType: Prefix
             backend:
               service:
