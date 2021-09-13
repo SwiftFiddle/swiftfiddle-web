@@ -53,7 +53,7 @@ spec:
             pathType: Prefix
             backend:
               service:
-                name: runner-v543
+                name: runner-vstable
                 port:
                   number: 80
           - path: /runner/5*
