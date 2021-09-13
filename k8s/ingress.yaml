@@ -56,28 +56,28 @@ spec:
                 name: runner-vstable
                 port:
                   number: 80
-          - path: /runner/5*
+          - path: /runner/5.*
             pathType: Prefix
             backend:
               service:
                 name: runner-v50
                 port:
                   number: 80
-          - path: /runner/4*
+          - path: /runner/4.*
             pathType: Prefix
             backend:
               service:
                 name: runner-v40
                 port:
                   number: 80
-          - path: /runner/3*
+          - path: /runner/3.*
             pathType: Prefix
             backend:
               service:
                 name: runner-v22
                 port:
                   number: 80
-          - path: /runner/2*
+          - path: /runner/2.*
             pathType: Prefix
             backend:
               service:
