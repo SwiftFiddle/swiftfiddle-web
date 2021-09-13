@@ -16,6 +16,7 @@ spec:
   tls:
     - hosts:
         - "*.swiftfiddle.com"
+        - www.swiftfiddle.com
         - swiftfiddle.com
       secretName: swiftfiddle-certificate
   defaultBackend:
