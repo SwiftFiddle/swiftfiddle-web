@@ -1,0 +1,13 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: swiftfiddle.com
+  namespace: default
+spec:
+  secretName: swiftfiddle-certificate
+  dnsNames:
+    - "*.swiftfiddle.com"
+    - swiftfiddle.com
+  issuerRef:
+    name: zerossl
+    kind: Issuer

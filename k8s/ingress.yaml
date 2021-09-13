@@ -8,15 +8,21 @@ metadata:
     nginx.ingress.kubernetes.io/proxy-send-timeout: "3600"
     nginx.ingress.kubernetes.io/proxy-read-timeout: "3600"
     nginx.ingress.kubernetes.io/use-regex: "true"
-    cert-manager.io/issuer: "letsencrypt"
     nginx.ingress.kubernetes.io/websocket-services: "lang-server,web-frontend,runner-vnightly-main,runner-v542,runner-v50,runner-v40,runner-v22"
     nginx.org/websocket-services: "lang-server,web-frontend,runner-vnightly-main,runner-v542,runner-v50,runner-v40,runner-v22"
+    cert-manager.io/issuer: "zerossl"
+    cert-manager.io/acme-challenge-type: "dns01"
 spec:
   tls:
     - hosts:
+        - "*.swiftfiddle.com"
         - swiftfiddle.com
-        - www.swiftfiddle.com
-      secretName: swiftfiddle-tls
+      secretName: swiftfiddle-certificate
+  defaultBackend:
+    service:
+      name: web-frontend
+      port:
+        number: 80
   rules:
     - host: swiftfiddle.com
       http:
