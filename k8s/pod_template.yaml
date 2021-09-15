@@ -21,7 +21,7 @@ spec:
     - type: "Container"
       max:
         cpu: 200m
-        memory: 2Gi
+        memory: 4Gi
       min:
         cpu: 0m
         memory: 32Mi
