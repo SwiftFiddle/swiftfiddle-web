@@ -18,7 +18,7 @@
     "xterm-addon-fit": "0.5.0"
   },
   "devDependencies": {
-    "autoprefixer": "10.3.5",
+    "autoprefixer": "10.3.6",
     "copy-webpack-plugin": "9.0.1",
     "css-loader": "6.3.0",
     "html-webpack-plugin": "5.3.2",
