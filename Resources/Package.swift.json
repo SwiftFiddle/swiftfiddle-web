@@ -3,82 +3,106 @@
   "cxxLanguageStandard" : null,
   "dependencies" : [
     {
-      "name" : "swift-algorithms",
-      "productFilter" : null,
-      "requirement" : {
-        "range" : [
-          {
-            "lowerBound" : "1.0.0",
-            "upperBound" : "2.0.0"
+      "scm" : [
+        {
+          "identity" : "swift-algorithms",
+          "location" : "https://github.com/apple/swift-algorithms",
+          "productFilter" : null,
+          "requirement" : {
+            "range" : [
+              {
+                "lowerBound" : "1.0.0",
+                "upperBound" : "2.0.0"
+              }
+            ]
           }
-        ]
-      },
-      "url" : "https://github.com/apple/swift-algorithms"
+        }
+      ]
     },
     {
-      "name" : "swift-atomics",
-      "productFilter" : null,
-      "requirement" : {
-        "range" : [
-          {
-            "lowerBound" : "1.0.2",
-            "upperBound" : "2.0.0"
+      "scm" : [
+        {
+          "identity" : "swift-atomics",
+          "location" : "https://github.com/apple/swift-atomics",
+          "productFilter" : null,
+          "requirement" : {
+            "range" : [
+              {
+                "lowerBound" : "1.0.2",
+                "upperBound" : "2.0.0"
+              }
+            ]
           }
-        ]
-      },
-      "url" : "https://github.com/apple/swift-atomics"
+        }
+      ]
     },
     {
-      "name" : "swift-collections",
-      "productFilter" : null,
-      "requirement" : {
-        "range" : [
-          {
-            "lowerBound" : "1.0.1",
-            "upperBound" : "2.0.0"
+      "scm" : [
+        {
+          "identity" : "swift-collections",
+          "location" : "https://github.com/apple/swift-collections",
+          "productFilter" : null,
+          "requirement" : {
+            "range" : [
+              {
+                "lowerBound" : "1.0.1",
+                "upperBound" : "2.0.0"
+              }
+            ]
           }
-        ]
-      },
-      "url" : "https://github.com/apple/swift-collections"
+        }
+      ]
     },
     {
-      "name" : "swift-crypto",
-      "productFilter" : null,
-      "requirement" : {
-        "range" : [
-          {
-            "lowerBound" : "2.0.0",
-            "upperBound" : "3.0.0"
+      "scm" : [
+        {
+          "identity" : "swift-crypto",
+          "location" : "https://github.com/apple/swift-crypto",
+          "productFilter" : null,
+          "requirement" : {
+            "range" : [
+              {
+                "lowerBound" : "2.0.0",
+                "upperBound" : "3.0.0"
+              }
+            ]
           }
-        ]
-      },
-      "url" : "https://github.com/apple/swift-crypto"
+        }
+      ]
     },
     {
-      "name" : "swift-numerics",
-      "productFilter" : null,
-      "requirement" : {
-        "range" : [
-          {
-            "lowerBound" : "1.0.1",
-            "upperBound" : "2.0.0"
+      "scm" : [
+        {
+          "identity" : "swift-numerics",
+          "location" : "https://github.com/apple/swift-numerics",
+          "productFilter" : null,
+          "requirement" : {
+            "range" : [
+              {
+                "lowerBound" : "1.0.1",
+                "upperBound" : "2.0.0"
+              }
+            ]
           }
-        ]
-      },
-      "url" : "https://github.com/apple/swift-numerics"
+        }
+      ]
     },
     {
-      "name" : "swift-system",
-      "productFilter" : null,
-      "requirement" : {
-        "range" : [
-          {
-            "lowerBound" : "1.0.0",
-            "upperBound" : "2.0.0"
+      "scm" : [
+        {
+          "identity" : "swift-system",
+          "location" : "https://github.com/apple/swift-system",
+          "productFilter" : null,
+          "requirement" : {
+            "range" : [
+              {
+                "lowerBound" : "1.0.0",
+                "upperBound" : "2.0.0"
+              }
+            ]
           }
-        ]
-      },
-      "url" : "https://github.com/apple/swift-system"
+        }
+      ]
     }
   ],
   "name" : "App",
