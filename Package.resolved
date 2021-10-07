@@ -6,8 +6,8 @@
         "repositoryURL": "https://github.com/swift-server/async-http-client.git",
         "state": {
           "branch": null,
-          "revision": "16ad7588b1bb1a3000524785b9217e238f0c2ea8",
-          "version": "1.6.0"
+          "revision": "d928cc81b31796dcea7378bf7e2519bed569c659",
+          "version": "1.6.1"
         }
       },
       {
@@ -51,8 +51,8 @@
         "repositoryURL": "https://github.com/vapor/multipart-kit.git",
         "state": {
           "branch": null,
-          "revision": "30f53439b52587b016a5e5b3dce7f50f686681be",
-          "version": "4.4.0"
+          "revision": "82f255699b1de9ba1f34dfc6b99e99aba5a1f8eb",
+          "version": "4.5.0"
         }
       },
       {
@@ -78,8 +78,8 @@
         "repositoryURL": "https://github.com/apple/swift-crypto.git",
         "state": {
           "branch": null,
-          "revision": "3bea268b223651c4ab7b7b9ad62ef9b2d4143eb6",
-          "version": "1.1.6"
+          "revision": "127d3745c37b5705e4bc8d16c7951c48dcc3332c",
+          "version": "2.0.0"
         }
       },
       {
