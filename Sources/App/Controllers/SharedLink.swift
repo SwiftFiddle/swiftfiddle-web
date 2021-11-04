@@ -14,7 +14,7 @@ struct SharedLink {
         return path
     }
 
-    static func content(client: Client, id: String) throws -> EventLoopFuture<Document?> {
-        return try Firestore.documentsGet(client: client, id: id)
+    static func content(client: Client, id: String) async throws -> Document {
+        return try await Firestore.documentsGet(client: client, id: id)
     }
 }

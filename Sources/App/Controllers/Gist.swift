@@ -28,11 +28,19 @@ struct Gist: Codable {
         return path
     }
 
-    static func content(client: Client, id: String) -> EventLoopFuture<Gist?> {
-        client.get(
-            URI(string: "https://api.github.com/gists/\(id)"), headers: HTTPHeaders([("User-Agent", "SwiftFiddle")])
+    static func content(client: Client, id: String) async throws -> Gist {
+        let response = try await client.send(
+            ClientRequest(
+                method: .GET,
+                url: "https://api.github.com/gists/\(id)",
+                headers: ["User-Agent": "SwiftFiddle"]
+            )
         )
-        .map { $0.body }
-        .optionalFlatMapThrowing { try $0.getJSONDecodable(Gist.self, at: 0, length: $0.readableBytes) }
+        guard let body = response.body else { throw Abort(.notFound) }
+
+        let content = try body.getJSONDecodable(Gist.self, at: 0, length: body.readableBytes)
+        guard let content = content else { throw Abort(.internalServerError) }
+
+        return content
     }
 }
