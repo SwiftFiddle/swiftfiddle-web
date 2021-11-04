@@ -5,75 +5,85 @@ private let apiKey = Environment.get("FIREBASE_API_KEY")!
 private let refreshToken = Environment.get("FIREBASE_REFRESH_TOKEN")!
 
 struct Firestore {
-    static func documentsGet(client: Client, id: String) throws -> EventLoopFuture<Document?> {
-        return try refreshAccessToken(client: client)
-            .map { $0?.access_token }
-            .optionalFlatMap { (token) -> EventLoopFuture<Document?> in
-                return client.get(
-                    "https://firestore.googleapis.com/v1/projects/\(projectId)/databases/(default)/documents/code_snippets/\(id)?key=\(apiKey)",
-                    headers: [
-                        "Authorization": "Bearer \(token)",
-                        "Accept": "application/json",
-                    ]
-                )
-                .map { $0.body }
-                .optionalFlatMapThrowing {
-                    let decoder = JSONDecoder()
-                    decoder.dateDecodingStrategy = .formatted(Document.dateFormatter)
-                    return try $0.getJSONDecodable(Document.self, decoder: decoder, at: 0, length: $0.readableBytes)
-                }
-            }
-    }
-    
-    static func createDocument(client: Client, id: String, type: String = "plain_text", code: String, swiftVersion: String) throws -> EventLoopFuture<Document?> {
-        return try refreshAccessToken(client: client)
-            .map { $0?.access_token }
-            .optionalFlatMap { (token) -> EventLoopFuture<Document?> in
-                return client.post(
-                    "https://firestore.googleapis.com/v1/projects/\(projectId)/databases/(default)/documents/code_snippets/?documentId=\(id)&key=\(apiKey)",
-                    headers: [
-                        "Authorization": "Bearer \(token)",
-                        "Accept": "application/json",
-                        "Content-Type": "application/json",
-                    ]
-                ) {
-                    try $0.content.encode(
-                        ["fields": DocumentFields(
-                            type: DocumentField(stringValue: type),
-                            id: DocumentField(stringValue: id),
-                            shared_link: DocumentSharedLink(
-                                mapValue: DocumentSharedLinkMapValue(
-                                    fields: DocumentSharedLinkMapValueFields(
-                                        content: DocumentField(stringValue: code),
-                                        swift_version: DocumentField(stringValue: swiftVersion),
-                                        url: DocumentField(stringValue: "https://swiftfiddle.com/\(id)")
-                                    )
-                                )
-                            )
-                        )],
-                        as: .json
-                    )
-                }
-                .map { $0.body }
-                .optionalFlatMapThrowing {
-                    let decoder = JSONDecoder()
-                    decoder.dateDecodingStrategy = .formatted(Document.dateFormatter)
-                    return try $0.getJSONDecodable(Document.self, decoder: decoder, at: 0, length: $0.readableBytes)
-                }
-            }
+    static func documentsGet(client: Client, id: String) async throws -> Document {
+        let token = try await refreshAccessToken(client: client)
+        let request = ClientRequest(
+            method: .GET,
+            url: "https://firestore.googleapis.com/v1/projects/\(projectId)/databases/(default)/documents/code_snippets/\(id)?key=\(apiKey)",
+            headers: [
+                "Authorization": "Bearer \(token.access_token)",
+                "Accept": "application/json",
+            ]
+        )
+        let response = try await client.send(request)
+        guard let body = response.body else { throw Abort(.notFound) }
+
+        let decoder = JSONDecoder()
+        decoder.dateDecodingStrategy = .formatted(Document.dateFormatter)
+        let document = try body.getJSONDecodable(Document.self, decoder: decoder, at: 0, length: body.readableBytes)
+
+        guard let document = document else { throw Abort(.internalServerError) }
+        return document
     }
 
-    private static func refreshAccessToken(client: Client) throws -> EventLoopFuture<Token?> {
-        return client.post("https://securetoken.googleapis.com/v1/token?key=\(apiKey)", headers: ["Content-Type": "application/x-www-form-urlencoded"]) {
-            try $0.content.encode(
-                ["grant_type": "refresh_token",
-                 "refresh_token": refreshToken,
-                ],
-                as: .urlEncodedForm
+    static func createDocument(client: Client, id: String, type: String = "plain_text", code: String, swiftVersion: String) async throws -> Document {
+        let token = try await refreshAccessToken(client: client)
+        let url = URI(
+            string: "https://firestore.googleapis.com/v1/projects/\(projectId)/databases/(default)/documents/code_snippets/?documentId=\(id)&key=\(apiKey)"
+        )
+        var request = ClientRequest(
+            method: .POST,
+            url: url,
+            headers: [
+                "Authorization": "Bearer \(token.access_token)",
+                "Accept": "application/json",
+                "Content-Type": "application/json",
+            ]
+        )
+        let fields = DocumentFields(
+            type: DocumentField(stringValue: type),
+            id: DocumentField(stringValue: id),
+            shared_link: DocumentSharedLink(
+                mapValue: DocumentSharedLinkMapValue(
+                    fields: DocumentSharedLinkMapValueFields(
+                        content: DocumentField(stringValue: code),
+                        swift_version: DocumentField(stringValue: swiftVersion),
+                        url: DocumentField(stringValue: "https://swiftfiddle.com/\(id)")
+                    )
+                )
             )
-        }
-        .map { $0.body }
-        .optionalFlatMapThrowing { try $0.getJSONDecodable(Token.self, at: 0, length: $0.readableBytes) }
+        )
+        try request.content.encode(
+            ["fields": fields],
+            as: .json
+        )
+        let response = try await client.send(request)
+        guard let body = response.body else { throw Abort(.notFound) }
+
+        let decoder = JSONDecoder()
+        decoder.dateDecodingStrategy = .formatted(Document.dateFormatter)
+        let document = try body.getJSONDecodable(Document.self, decoder: decoder, at: 0, length: body.readableBytes)
+
+        guard let document = document else { throw Abort(.internalServerError) }
+        return document
+    }
+
+    private static func refreshAccessToken(client: Client) async throws -> Token {
+        var request = ClientRequest(
+            method: .POST,
+            url: "https://securetoken.googleapis.com/v1/token?key=\(apiKey)",
+            headers: ["Content-Type": "application/x-www-form-urlencoded"]
+        )
+        try request.content.encode(
+            ["grant_type": "refresh_token", "refresh_token": refreshToken],
+            as: .urlEncodedForm
+        )
+        let response = try await client.send(request)
+
+        guard let body = response.body else { throw Abort(.internalServerError) }
+        guard let token = try body.getJSONDecodable(Token.self, at: 0, length: body.readableBytes) else { throw Abort(.internalServerError) }
+
+        return token
     }
 }
 

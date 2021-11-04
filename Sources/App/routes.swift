@@ -20,62 +20,30 @@ func routes(_ app: Application) throws {
         )
     }
 
-    app.get(":id") { req -> EventLoopFuture<Response> in
+    app.get(":id") { req -> Response in
         if let path = req.parameters.get("id"), let id = try SharedLink.id(from: path) {
-            let promise = req.eventLoop.makePromise(of: Response.self)
-            try SharedLink.content(
+            let content = try await SharedLink.content(
                 client: req.client,
                 id: id.replacingOccurrences(of: ".png", with: "")
             )
-            .whenComplete {
-                switch $0 {
-                case .success(let content):
-                    do {
-                        if let content = content {
-                            let code = content.fields.shared_link.mapValue.fields.content.stringValue
-                            let swiftVersion = content.fields.shared_link.mapValue.fields.swift_version.stringValue
-                            try handleImportContent(req, promise, id, code, swiftVersion)
-                        } else {
-                            promise.fail(Abort(.notFound))
-                        }
-                    } catch {
-                        promise.fail(Abort(.internalServerError))
-                    }
-                case .failure(let error):
-                    promise.fail(error)
-                }
-            }
-            return promise.futureResult
+            
+            let code = content.fields.shared_link.mapValue.fields.content.stringValue
+            let swiftVersion = content.fields.shared_link.mapValue.fields.swift_version.stringValue
+            return try await makeImportResponse(req, id, code, swiftVersion)
         } else if let path = req.parameters.get("id"), let id = try Gist.id(from: path) {
-            let promise = req.eventLoop.makePromise(of: Response.self)
-            Gist.content(
+            let content = try await Gist.content(
                 client: req.client,
                 id: id.replacingOccurrences(of: ".png", with: "")
             )
-            .whenComplete{
-                switch $0 {
-                case .success(let content):
-                    do {
-                        if let content = content {
-                            let code = Array(content.files.values)[0].content
-                            try handleImportContent(req, promise, id, code, nil)
-                        } else {
-                            promise.fail(Abort(.notFound))
-                        }
-                    } catch {
-                        promise.fail(Abort(.internalServerError))
-                    }
-                case .failure(let error):
-                    promise.fail(error)
-                }
-            }
-            return promise.futureResult
+
+            let code = Array(content.files.values)[0].content
+            return try await makeImportResponse(req, id, code, nil)
         } else {
             throw Abort(.notFound)
         }
     }
 
-    app.get(":id", "embedded") { req -> EventLoopFuture<Response> in
+    app.get(":id", "embedded") { req -> Response in
         let foldRanges: [FoldRange] = req.query[[String].self, at: "fold"]?.compactMap {
             let lines = $0.split(separator: "-")
             guard lines.count == 2 else { return nil }
@@ -85,94 +53,48 @@ func routes(_ app: Application) throws {
         } ?? []
 
         if let path = req.parameters.get("id"), let id = try SharedLink.id(from: path) {
-            let promise = req.eventLoop.makePromise(of: Response.self)
-            try SharedLink.content(client: req.client, id: id)
-                .whenComplete {
-                    switch $0 {
-                    case .success(let content):
-                        do {
-                            if let content = content {
-                                let code = content.fields.shared_link.mapValue.fields.content.stringValue
-                                let swiftVersion = content.fields.shared_link.mapValue.fields.swift_version.stringValue
-                                try handleEmbeddedContent(req, promise, id, code, swiftVersion, foldRanges)
-                            } else {
-                                promise.fail(Abort(.notFound))
-                            }
-                        } catch {
-                            promise.fail(Abort(.internalServerError))
-                        }
-                    case .failure(let error):
-                        promise.fail(error)
-                    }
-                }
-            return promise.futureResult
+            let document = try await SharedLink.content(client: req.client, id: id)
+
+            let code = document.fields.shared_link.mapValue.fields.content.stringValue
+            let swiftVersion = document.fields.shared_link.mapValue.fields.swift_version.stringValue
+
+            return try await makeEmbeddedResponse(req, id, code, swiftVersion, foldRanges)
         } else if let path = req.parameters.get("id"), let id = try Gist.id(from: path) {
-            let promise = req.eventLoop.makePromise(of: Response.self)
-            Gist.content(client: req.client, id: id)
-                .whenComplete{
-                    switch $0 {
-                    case .success(let content):
-                        do {
-                            if let content = content {
-                                let code = Array(content.files.values)[0].content
-                                try handleEmbeddedContent(req, promise, id, code, nil, foldRanges)
-                            } else {
-                                promise.fail(Abort(.notFound))
-                            }
-                        } catch {
-                            promise.fail(Abort(.internalServerError))
-                        }
-                    case .failure(let error):
-                        promise.fail(error)
-                    }
-                }
-            return promise.futureResult
+            let content = try await Gist.content(client: req.client, id: id)
+            let code = Array(content.files.values)[0].content
+
+            return try await makeEmbeddedResponse(req, id, code, nil, foldRanges)
         } else {
             throw Abort(.notFound)
         }
     }
 
-    app.on(.POST, "shared_link", body: .collect(maxSize: "10mb")) { (req) -> EventLoopFuture<[String: String]> in
+    app.on(.POST, "shared_link", body: .collect(maxSize: "10mb")) { (req) -> [String: String] in
         let parameter = try req.content.decode(SharedLinkRequestParameter.self)
         let code = parameter.code
         let swiftVersion = parameter.toolchain_version
 
         guard let id = Base32.encoode(bytes: convertHexToBytes(UUID().uuidString.replacingOccurrences(of: "-", with: "")))?.lowercased() else { throw Abort(.internalServerError) }
 
-        let promise = req.eventLoop.makePromise(of: [String: String].self)
-
-        try Firestore.createDocument(
+        _ = try await Firestore.createDocument(
             client: req.client,
             id: id,
             code: parameter.code,
             swiftVersion: swiftVersion
         )
-        .whenComplete {
-            switch $0 {
-            case .success:
-                try? ShareImage.generate(client: req.client, from: code)
-                    .whenSuccess {
-                        guard let buffer = $0 else { return }
-                        guard let data = buffer.getData(at: 0, length: buffer.readableBytes) else { return }
-                        _ = req.cache.set("/\(id).png", to: data, expiresIn: .days(14))
-                    }
-                promise.succeed(
-                    ["swift_version": swiftVersion,
-                    "content": code,
-                    "url": "https://swiftfiddle.com/\(id)",
-                    ]
-                )
-            case .failure(let error):
-                promise.fail(error)
-            }
+        if let data = try? await ShareImage.generate(client: req.client, from: code) {
+            try? await req.cache.set("/\(id).png", to: data, expiresIn: .days(14))
         }
-
-        return promise.futureResult
+        return [
+            "swift_version": swiftVersion,
+            "content": code,
+            "url": "https://swiftfiddle.com/\(id)",
+        ]
     }
 
     app.get("versions") { (req) in try availableVersions() }
 
-    app.on(.POST, "run", body: .collect(maxSize: "10mb")) { (req) -> EventLoopFuture<ClientResponse> in
+    app.on(.POST, "run", body: .collect(maxSize: "10mb")) { (req) -> ClientResponse in
         guard let data = req.body.data else { throw Abort(.badRequest) }
         guard let parameter = try? req.content.decode(ExecutionRequestParameter.self) else {
             throw Abort(.badRequest)
@@ -187,10 +109,10 @@ func routes(_ app: Application) throws {
             body: data
         )
 
-        return req.client.send(clientRequest)
+        return try await req.client.send(clientRequest)
     }
 
-    app.on(.POST, "runner", "*", "run", body: .collect(maxSize: "10mb")) { (req) -> EventLoopFuture<ClientResponse> in
+    app.on(.POST, "runner", "*", "run", body: .collect(maxSize: "10mb")) { (req) -> ClientResponse in
         guard let data = req.body.data else { throw Abort(.badRequest) }
         let latestVersion = (try? latestVersion()) ?? stableVersion()
 
@@ -209,40 +131,28 @@ func routes(_ app: Application) throws {
             headers: HTTPHeaders([("Content-type", "application/json")]),
             body: data
         )
-        return req.client.send(clientRequest)
+        return try await req.client.send(clientRequest)
     }
 }
 
-private func handleImportContent(_ req: Request, _ promise: EventLoopPromise<Response>,
-                                 _ id: String, _ code: String, _ swiftVersion: String?) throws {
+private func makeImportResponse(_ req: Request, _ id: String, _ code: String, _ swiftVersion: String?) async throws -> Response {
     let path = req.url.path
     if path.hasSuffix(".png") {
-        _ = req.cache.get(path, as: Data.self)
-            .flatMapThrowing { (data) in
-                if let data = data {
-                    req.eventLoop.future(
-                        Response(
-                            status: .ok,
-                            headers: ["Content-Type": "image/png"],
-                            body: Response.Body(buffer: ByteBuffer(data: data)
-                            )
-                        )
-                    )
-                    .cascade(to: promise)
-                } else {
-                    try ShareImage.generate(
-                        client: req.client, from: code
-                    )
-                    .flatMapThrowing { (buffer) -> Response in
-                        guard let buffer = buffer else { throw Abort(.notFound) }
-                        if let data = buffer.getData(at: 0, length: buffer.readableBytes) {
-                            _ = req.cache.set(path, to: data, expiresIn: .days(14))
-                        }
-                        return Response(status: .ok, headers: ["Content-Type": "image/png"], body: Response.Body(buffer: buffer))
-                    }
-                    .cascade(to: promise)
-                }
-            }
+        if let data = try await req.cache.get(path, as: Data.self) {
+            return Response(
+                status: .ok,
+                headers: ["Content-Type": "image/png"],
+                body: Response.Body(buffer: ByteBuffer(data: data))
+            )
+        } else {
+            guard let data = try await ShareImage.generate(client: req.client, from: code) else { throw Abort(.notFound) }
+            try? await req.cache.set(path, to: data, expiresIn: .days(14))
+            return Response(
+                status: .ok,
+                headers: ["Content-Type": "image/png"],
+                body: Response.Body(buffer:  ByteBuffer(data: data))
+            )
+        }
     } else {
         let version: String
         if let swiftVersion = swiftVersion {
@@ -254,7 +164,7 @@ private func handleImportContent(_ req: Request, _ promise: EventLoopPromise<Res
         } else {
             version = stableVersion()
         }
-        req.view.render(
+        return try await req.view.render(
             "index", InitialPageResponse(
                 title: "Swift Playground",
                 versions: try VersionGroup.grouped(versions: availableVersions()),
@@ -266,14 +176,11 @@ private func handleImportContent(_ req: Request, _ promise: EventLoopPromise<Res
             )
         )
         .encodeResponse(for: req)
-        .cascade(to: promise)
     }
 }
 
-private func handleEmbeddedContent(_ req: Request, _ promise: EventLoopPromise<Response>,
-                                   _ id: String, _ code: String, _ swiftVersion: String?,
-                                   _ foldRanges: [FoldRange]) throws {
-    req.view.render(
+private func makeEmbeddedResponse(_ req: Request, _ id: String, _ code: String, _ swiftVersion: String?, _ foldRanges: [FoldRange]) async throws -> Response {
+    return try await req.view.render(
         "embedded", EmbeddedPageResponse(
             title: "Swift Playground",
             versions: try VersionGroup.grouped(versions: availableVersions()),
@@ -285,7 +192,6 @@ private func handleEmbeddedContent(_ req: Request, _ promise: EventLoopPromise<R
         )
     )
     .encodeResponse(for: req)
-    .cascade(to: promise)
 }
 
 private func swiftPackageInfo(_ app: Application) -> [PackageInfo] {
