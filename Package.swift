@@ -4,7 +4,7 @@ import PackageDescription
 let package = Package(
     name: "swift-playground",
     platforms: [
-        .macOS(.v10_15)
+        .macOS(.v12)
     ],
     dependencies: [
         .package(url: "https://github.com/vapor/vapor.git", from: "4.52.1"),
