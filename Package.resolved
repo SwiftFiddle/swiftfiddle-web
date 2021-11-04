@@ -6,8 +6,8 @@
         "repositoryURL": "https://github.com/swift-server/async-http-client.git",
         "state": {
           "branch": null,
-          "revision": "d5bd8d6526fa861adf18be7217bc180e6c13ac0d",
-          "version": "1.6.2"
+          "revision": "1081b0b0541f535ca088acdb56f5ca5598bc6247",
+          "version": "1.6.3"
         }
       },
       {
@@ -15,8 +15,8 @@
         "repositoryURL": "https://github.com/vapor/async-kit.git",
         "state": {
           "branch": null,
-          "revision": "f6f92e6d3704bd72ffb4d00e302c98476fe65854",
-          "version": "1.9.0"
+          "revision": "748c026f4dc93c0b9d05fe43a07d3922ca126744",
+          "version": "1.10.0"
         }
       },
       {
@@ -51,8 +51,8 @@
         "repositoryURL": "https://github.com/vapor/multipart-kit.git",
         "state": {
           "branch": null,
-          "revision": "82f255699b1de9ba1f34dfc6b99e99aba5a1f8eb",
-          "version": "4.5.0"
+          "revision": "2dd9368a3c9580792b77c7ef364f3735909d9996",
+          "version": "4.5.1"
         }
       },
       {
@@ -150,8 +150,8 @@
         "repositoryURL": "https://github.com/vapor/vapor.git",
         "state": {
           "branch": null,
-          "revision": "3835f3a65a65d65793d639768d41a464f361eb75",
-          "version": "4.51.1"
+          "revision": "68233685fd1a943e8772634e02abfec076dcb8f4",
+          "version": "4.52.1"
         }
       },
       {
