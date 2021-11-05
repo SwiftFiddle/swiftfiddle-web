@@ -27,7 +27,7 @@ export class Editor {
     this.editor.addAction({
       id: "share",
       label: "Share",
-      keybindings: [monaco.KeyMod.CtrlCmd | monaco.KeyCode.KEY_S],
+      keybindings: [monaco.KeyMod.CtrlCmd | monaco.KeyCode.KeyS],
       run: () => {
         this.onaction("share");
       },
