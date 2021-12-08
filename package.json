@@ -3,7 +3,7 @@
     "build": "webpack --progress --config webpack.prod.js"
   },
   "dependencies": {
-    "@datadog/browser-logs": "3.8.0",
+    "@datadog/browser-logs": "3.9.0",
     "@fortawesome/fontawesome-svg-core": "1.2.36",
     "@fortawesome/free-brands-svg-icons": "5.15.4",
     "@fortawesome/pro-light-svg-icons": "5.15.3",
