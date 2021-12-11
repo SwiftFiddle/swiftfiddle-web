@@ -2,7 +2,7 @@
 
 import "../css/share_sheet.css";
 
-import { datadogLogs } from "@datadog/browser-logs";
+import * as Sentry from "@sentry/browser";
 import { Popover } from "bootstrap";
 import { Snackbar } from "./snackbar.js";
 
@@ -104,12 +104,12 @@ export class ShareSheet {
           shareFacebookButton.href = `https://www.facebook.com/sharer/sharer.php?u=${url}`;
         })
         .catch((error) => {
+          Sentry.captureException(error);
           if (error.response) {
             Snackbar.alert(error.response.statusText);
           } else {
             Snackbar.alert(error);
           }
-          datadogLogs.logger.error("Shared link creation error", error);
         })
         .finally(() => {
           linkCopyButtonIcon.classList.remove("d-none");

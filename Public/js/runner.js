@@ -1,6 +1,6 @@
 "use strict";
 
-import { datadogLogs } from "@datadog/browser-logs";
+import * as Sentry from "@sentry/browser";
 import { Snackbar } from "./snackbar.js";
 
 export class Runner {
@@ -95,12 +95,12 @@ export class Runner {
         const isCancel = error.name == "AbortError";
         completion([], "", error, isCancel);
         if (!isCancel) {
+          Sentry.captureException(error);
           if (error.response) {
             Snackbar.alert(error.response.statusText);
           } else {
             Snackbar.alert(error);
           }
-          datadogLogs.logger.error(`${path}`, error);
         }
       })
       .finally(() => {
@@ -147,7 +147,7 @@ export class Runner {
     };
 
     connection.onerror = (event) => {
-      datadogLogs.logger.error("runner websocket error", event);
+      Sentry.captureEvent(event);
       connection.close();
     };
 
