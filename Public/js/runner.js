@@ -1,5 +1,6 @@
 "use strict";
 
+import { track } from "insights-js";
 import { datadogLogs } from "@datadog/browser-logs";
 import { Snackbar } from "./snackbar.js";
 
@@ -18,6 +19,12 @@ export class Runner {
     const startTime = performance.now();
 
     const path = `/runner/${params.toolchain_version}/run`;
+    track({
+      id: "runner.run",
+      parameters: {
+        path,
+      },
+    });
     fetch(path, {
       method: "POST",
       headers: {
