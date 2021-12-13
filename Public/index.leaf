@@ -25,6 +25,8 @@
   <link rel="mask-icon" href="/favicons/safari-pinned-tab.svg" color="#5bbad5">
   <link rel="shortcut icon" href="/favicons/favicon.ico">
 
+  <script defer data-domain="swiftfiddle.com" src="https://plausible.io/js/plausible.js"></script>
+
   <title>SwiftFiddle - Swift Online Playground</title>
 </head>
 
