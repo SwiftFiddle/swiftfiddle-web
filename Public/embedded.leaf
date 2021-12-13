@@ -4,9 +4,6 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-
-  <script defer data-domain="swiftfiddle.com" src="https://plausible.io/js/plausible.js"></script>
-
   <title>SwiftFiddle - Swift Online Playground</title>
 </head>
 

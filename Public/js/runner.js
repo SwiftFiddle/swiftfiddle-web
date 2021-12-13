@@ -1,5 +1,11 @@
 "use strict";
 
+import Plausible from "plausible-tracker";
+
+const { trackEvent } = Plausible({
+  domain: "swiftfiddle.com",
+});
+
 import { datadogLogs } from "@datadog/browser-logs";
 import { Snackbar } from "./snackbar.js";
 
@@ -18,6 +24,8 @@ export class Runner {
     const startTime = performance.now();
 
     const path = `/runner/${params.toolchain_version}/run`;
+    trackEvent("run", { props: { path } });
+
     fetch(path, {
       method: "POST",
       headers: {
