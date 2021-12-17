@@ -60,4 +60,13 @@ final class AppTests: XCTestCase {
 
         waitForExpectations(timeout: 5)
     }
+
+    func testShareImage() async throws {
+        let app = Application(.testing)
+        defer { app.shutdown() }
+        try configure(app)
+
+        let data = await try ShareImage.generate(client: app.client, from: "import Foundation")
+        try XCTUnwrap(data)
+    }
 }
