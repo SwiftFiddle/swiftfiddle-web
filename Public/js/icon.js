@@ -25,6 +25,7 @@ import {
   faDonate,
 } from "@fortawesome/pro-regular-svg-icons";
 import { faMonitorHeartRate } from "@fortawesome/pro-light-svg-icons";
+import { faRobot } from "@fortawesome/pro-duotone-svg-icons";
 import {
   faSwift,
   faGithub,
@@ -56,6 +57,8 @@ library.add(
   faDonate,
 
   faMonitorHeartRate,
+
+  faRobot,
 
   faSwift,
   faGithub,

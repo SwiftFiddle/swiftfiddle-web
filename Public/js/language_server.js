@@ -11,6 +11,8 @@ export class LanguageServer {
 
     this.onconnect = () => {};
     this.onresponse = () => {};
+    this.onerror = () => {};
+    this.onclose = () => {};
   }
 
   get isReady() {
@@ -161,7 +163,12 @@ export class LanguageServer {
 
     connection.onerror = (event) => {
       datadogLogs.logger.error("lang-server websocket error", event);
+      this.onerror(event);
       connection.close();
+    };
+
+    connection.onclose = (event) => {
+      this.onclose(event);
     };
 
     connection.onmessage = (event) => {

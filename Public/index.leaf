@@ -106,6 +106,14 @@
             <span class="fas fa-question fa-fw"></span>
           </button>
         </span>
+        <a href="#" onClick="return false;" id="lang-server-status" data-bs-toggle="tooltip" data-bs-placement="bottom"
+          data-bs-trigger="hover" data-bs-html="true"
+          title="<p class='p-0 m-0'><b>Language Server Status:</b></p><p class='p-0 m-0 text-end'>Initializing...&nbsp;<span class='fas fa-circle-notch fa-spin fa-fw'></span></p>"
+          aria-label="Language Server Status" style="min-width: 2rem; min-height: 2rem;">
+          <span id="lang-server-status-icon" class="fad fa-robot fa-fw fa-swap-opacity mx-2"
+            style="--fa-primary-color: #0d6efd; --fa-secondary-color: #0d6efd;" aria-label="Language Server Status">
+          </span>
+        </a>
       </div>
     </header>
 
@@ -391,7 +399,8 @@
   </div>
 
   <!-- Toasts -->
-  <div class="position-absolute top-0 start-50 translate-middle-x p-3" style="z-index: 1081;">
+  <div id="snackbar-info-container" class="position-absolute top-0 start-50 translate-middle-x p-3 d-none"
+    style="z-index: 1081;">
     <div id="snackbar-info" class="toast align-items-center d-none" role="alert" aria-live="assertive"
       aria-atomic="true">
       <div class="d-flex">
@@ -403,7 +412,8 @@
       </div>
     </div>
   </div>
-  <div class="position-absolute top-0 start-50 translate-middle-x p-3" style="z-index: 1081;">
+  <div id="snackbar-alert-container" class="position-absolute top-0 start-50 translate-middle-x p-3 d-none"
+    style="z-index: 1081;">
     <div id="snackbar-alert" class="toast align-items-center d-none" role="alert" aria-live="assertive"
       aria-atomic="true">
       <div class="d-flex">
