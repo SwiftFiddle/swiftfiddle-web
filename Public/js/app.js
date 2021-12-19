@@ -2,6 +2,7 @@
 
 import Worker from "worker-loader!./worker.js";
 
+import { Tooltip } from "bootstrap";
 import { LanguageServer } from "./language_server.js";
 import { Runner } from "./runner.js";
 import { uuidv4 } from "./uuid.js";
@@ -56,6 +57,9 @@ export class App {
 
     languageServer.onconnect = () => {
       languageServer.openDocument(this.editor.getValue());
+    };
+    languageServer.onclose = () => {
+      this.updateLanguageServerStatus(false);
     };
 
     languageServer.onresponse = (response) => {
@@ -114,6 +118,7 @@ export class App {
             promise.fulfill();
           }
         case "diagnostics":
+          this.updateLanguageServerStatus(true);
           this.editor.clearMarkers();
 
           if (!response.value) {
@@ -528,6 +533,34 @@ export class App {
       runButton.classList.remove("disabled");
       if (shareButton) {
         shareButton.classList.remove("disabled");
+      }
+    }
+  }
+
+  updateLanguageServerStatus(enabled) {
+    const statusIcon = document.getElementById("lang-server-status-icon");
+    const statusContainer = document.getElementById("lang-server-status");
+    if (statusIcon) {
+      if (enabled) {
+        statusIcon.classList.remove("fa-swap-opacity");
+        if (statusContainer) {
+          statusContainer.setAttribute(
+            "data-bs-original-title",
+            "<p class='p-0 m-0'><b>Language Server Status:</b></p><p class='p-0 m-0 text-end'>Ready&nbsp;<span class='far fa-check-circle fa-fw'></span></p>"
+          );
+          const tooltip = Tooltip.getInstance(statusContainer);
+          tooltip.hide();
+        }
+      } else {
+        statusIcon.classList.add("fa-swap-opacity");
+        if (statusContainer) {
+          statusContainer.setAttribute(
+            "data-bs-original-title",
+            "<p class='p-0 m-0'><b>Language Server Status:</b></p><p class='p-0 m-0 text-end'>Initializing...&nbsp;<span class='fas fa-circle-notch fa-spin fa-fw'></span></p>"
+          );
+          const tooltip = Tooltip.getInstance(statusContainer);
+          tooltip.hide();
+        }
       }
     }
   }
