@@ -164,8 +164,11 @@
           <button id="share-sheet-link-copy-button" class="btn btn-outline-primary" type="button"
             data-bs-toggle="tooltip" data-bs-container="#share-sheet-link-copy-button" title="Copy to Clipboard"
             aria-label="Copy to Clipboard">
-            <span id="share-sheet-link-copy-button-icon" class="far fa-clipboard fa-fw"></span>
-            <span id="share-sheet-link-copy-button-spinner" class="fad fa-spinner-third fa-spin fa-fw d-none">
+            <span id="share-sheet-link-copy-button-icon">
+              <span class="far fa-clipboard fa-fw"></span>
+            </span>
+            <span id="share-sheet-link-copy-button-spinner" class="d-none">
+              <span class="fad fa-spinner-third fa-spin fa-fw"></span>
             </span>
           </button>
         </div>
@@ -185,8 +188,11 @@
           <button id="share-sheet-embed-copy-button" class="btn btn-outline-primary" type="button"
             data-bs-toggle="tooltip" data-bs-container="#share-sheet-embed-copy-button" title="Copy to Clipboard"
             aria-label="Copy to Clipboard">
-            <span id="share-sheet-embed-copy-button-icon" class="far fa-clipboard fa-fw"></span>
-            <span id="share-sheet-embed-copy-button-spinner" class="fad fa-spinner-third fa-spin fa-fw d-none">
+            <span id="share-sheet-embed-copy-button-icon">
+              <span class="far fa-clipboard fa-fw"></span>
+            </span>
+            <span id="share-sheet-embed-copy-button-spinner" class="d-none">
+              <span class="fad fa-spinner-third fa-spin fa-fw"></span>
             </span>
           </button>
         </div>
