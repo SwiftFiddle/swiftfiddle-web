@@ -4,13 +4,13 @@ import { config, library, dom } from "@fortawesome/fontawesome-svg-core";
 import {
   faCodeBranch,
   faPlay,
-  faCircleNotch,
   faStop,
   faEraser,
   faAlignLeft,
   faShareAlt,
   faCog,
   faQuestion,
+  faCheckCircle as faCheckCircleSolid,
   faExclamationTriangle,
 } from "@fortawesome/pro-solid-svg-icons";
 import {
@@ -25,7 +25,7 @@ import {
   faDonate,
 } from "@fortawesome/pro-regular-svg-icons";
 import { faMonitorHeartRate } from "@fortawesome/pro-light-svg-icons";
-import { faRobot } from "@fortawesome/pro-duotone-svg-icons";
+import { faSpinnerThird, faRobot } from "@fortawesome/pro-duotone-svg-icons";
 import {
   faSwift,
   faGithub,
@@ -37,13 +37,13 @@ config.searchPseudoElements = true;
 library.add(
   faCodeBranch,
   faPlay,
-  faCircleNotch,
   faStop,
   faEraser,
   faAlignLeft,
   faShareAlt,
   faCog,
   faQuestion,
+  faCheckCircleSolid,
   faExclamationTriangle,
 
   faCheck,
@@ -58,6 +58,7 @@ library.add(
 
   faMonitorHeartRate,
 
+  faSpinnerThird,
   faRobot,
 
   faSwift,
