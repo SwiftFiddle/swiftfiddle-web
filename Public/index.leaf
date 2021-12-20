@@ -68,7 +68,7 @@
         <button type="button" id="run-button" class="btn btn-primary btn-sm rounded-pill disabled">
           <span id="run-button-icon" class="fas fa-play fa-fw ms-2"
             style="display: inline-block; min-width: 1em; min-height: 1em;"></span>
-          <span id="run-button-spinner" class="fas fa-circle-notch fa-spin fa-fw ms-2 d-none"></span>
+          <span id="run-button-spinner" class="fad fa-spinner-third fa-spin fa-fw ms-2 d-none"></span>
           <span class="mx-2">Run</span>
         </button>
         <button type="button" id="stop-button" class="btn btn-primary btn-sm rounded-pill ms-1 disabled">
@@ -106,9 +106,9 @@
             <span class="fas fa-question fa-fw"></span>
           </button>
         </span>
-        <a href="#" onClick="return false;" id="lang-server-status" data-bs-toggle="tooltip" data-bs-placement="bottom"
-          data-bs-trigger="hover" data-bs-html="true"
-          title="<p class='p-0 m-0'><b>Language Server Status:</b></p><p class='p-0 m-0 text-end'>Initializing...&nbsp;<span class='fas fa-circle-notch fa-spin fa-fw'></span></p>"
+        <a id="lang-server-status" href="#" onClick="return false;" data-bs-toggle="tooltip" data-bs-placement="bottom"
+          data-bs-trigger="hover" data-bs-html="true" data-bs-container="#lang-server-status"
+          title="<p class='p-0 m-0'><b>Language Server Status:</b></p><p class='p-0 m-0 text-end'>Initializing...&nbsp;<span class='fad fa-spinner-third fa-spin fa-fw'></span></p>"
           aria-label="Language Server Status" style="min-width: 2rem; min-height: 2rem;">
           <span id="lang-server-status-icon" class="fad fa-robot fa-fw fa-swap-opacity mx-2"
             style="--fa-primary-color: #0d6efd; --fa-secondary-color: #0d6efd;" aria-label="Language Server Status">
@@ -165,7 +165,7 @@
             data-bs-toggle="tooltip" data-bs-container="#share-sheet-link-copy-button" title="Copy to Clipboard"
             aria-label="Copy to Clipboard">
             <span id="share-sheet-link-copy-button-icon" class="far fa-clipboard fa-fw"></span>
-            <span id="share-sheet-link-copy-button-spinner" class="fas fa-circle-notch fa-spin fa-fw d-none">
+            <span id="share-sheet-link-copy-button-spinner" class="fad fa-spinner-third fa-spin fa-fw d-none">
             </span>
           </button>
         </div>
@@ -186,7 +186,7 @@
             data-bs-toggle="tooltip" data-bs-container="#share-sheet-embed-copy-button" title="Copy to Clipboard"
             aria-label="Copy to Clipboard">
             <span id="share-sheet-embed-copy-button-icon" class="far fa-clipboard fa-fw"></span>
-            <span id="share-sheet-embed-copy-button-spinner" class="fas fa-circle-notch fa-spin fa-fw d-none">
+            <span id="share-sheet-embed-copy-button-spinner" class="fad fa-spinner-third fa-spin fa-fw d-none">
             </span>
           </button>
         </div>
