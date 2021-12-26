@@ -109,6 +109,7 @@ export class App {
                   detail: item.detail,
                   filterText: item.filterText,
                   insertText: textEdit.newText,
+                  insertTextRules: languageServer.insertTextRule(),
                   range: range,
                 };
               }),

@@ -124,6 +124,10 @@ export class LanguageServer {
     }
   }
 
+  insertTextRule() {
+    return monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet;
+  }
+
   convertDiagnosticSeverity(severity) {
     switch (severity) {
       case 1:
