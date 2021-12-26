@@ -118,15 +118,7 @@
     }
   ],
   "products" : [
-    {
-      "name" : "App",
-      "targets" : [
-        "App"
-      ],
-      "type" : {
-        "executable" : null
-      }
-    }
+
   ],
   "providers" : null,
   "swiftLanguageVersions" : null,
