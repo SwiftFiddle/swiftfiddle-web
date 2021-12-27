@@ -20,9 +20,8 @@ struct Firestore {
 
         let decoder = JSONDecoder()
         decoder.dateDecodingStrategy = .formatted(Document.dateFormatter)
-        let document = try body.getJSONDecodable(Document.self, decoder: decoder, at: 0, length: body.readableBytes)
 
-        guard let document = document else { throw Abort(.internalServerError) }
+        let document = try decoder.decode(Document.self, from: body)
         return document
     }
 
@@ -62,9 +61,8 @@ struct Firestore {
 
         let decoder = JSONDecoder()
         decoder.dateDecodingStrategy = .formatted(Document.dateFormatter)
-        let document = try body.getJSONDecodable(Document.self, decoder: decoder, at: 0, length: body.readableBytes)
 
-        guard let document = document else { throw Abort(.internalServerError) }
+        let document = try decoder.decode(Document.self, from: body)
         return document
     }
 
@@ -79,10 +77,9 @@ struct Firestore {
             as: .urlEncodedForm
         )
         let response = try await client.send(request)
-
         guard let body = response.body else { throw Abort(.internalServerError) }
-        guard let token = try body.getJSONDecodable(Token.self, at: 0, length: body.readableBytes) else { throw Abort(.internalServerError) }
 
+        let token = try JSONDecoder().decode(Token.self, from: body)
         return token
     }
 }

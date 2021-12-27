@@ -38,9 +38,7 @@ struct Gist: Codable {
         )
         guard let body = response.body else { throw Abort(.notFound) }
 
-        let content = try body.getJSONDecodable(Gist.self, at: 0, length: body.readableBytes)
-        guard let content = content else { throw Abort(.internalServerError) }
-
+        let content = try JSONDecoder().decode(Gist.self, from: body)
         return content
     }
 }
