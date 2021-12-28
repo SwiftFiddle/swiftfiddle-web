@@ -52,7 +52,7 @@ export class App {
     let sequence = 0;
 
     const languageServer = new LanguageServer(
-      "wss://swiftfiddle-lsp-kattav26rq-uc.a.run.app/lang-server/api"
+      "wss://swiftfiddle-lsp.proudground-a2bff2d0.northeurope.azurecontainerapps.io/lang-server/api"
     );
 
     languageServer.onconnect = () => {
