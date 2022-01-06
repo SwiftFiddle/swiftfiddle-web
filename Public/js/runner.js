@@ -9,6 +9,8 @@ const { trackEvent } = Plausible({
 import { datadogLogs } from "@datadog/browser-logs";
 import { Snackbar } from "./snackbar.js";
 
+import ReconnectingWebSocket from "reconnecting-websocket";
+
 export class Runner {
   constructor(terminal) {
     this.abortController = new AbortController();
@@ -129,7 +131,14 @@ export class Runner {
       return this.connection;
     }
 
-    const connection = new WebSocket(endpoint);
+    const connection = new ReconnectingWebSocket(endpoint, [], {
+      maxReconnectionDelay: 10000,
+      minReconnectionDelay: 1000,
+      reconnectionDelayGrowFactor: 1.3,
+      connectionTimeout: 10000,
+      maxRetries: Infinity,
+      debug: false,
+    });
 
     connection.onopen = () => {
       document.addEventListener("visibilitychange", () => {
@@ -143,15 +152,6 @@ export class Runner {
             break;
         }
       });
-    };
-
-    connection.onclose = (event) => {
-      if (event.code !== 1006) {
-        return;
-      }
-      setTimeout(() => {
-        this.connection = this.createConnection(connection.url);
-      }, 1000);
     };
 
     connection.onerror = (event) => {
