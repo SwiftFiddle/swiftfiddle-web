@@ -128,7 +128,8 @@ export class Runner {
   createConnection(endpoint) {
     if (
       this.connection &&
-      (this.connection.readyState === 0 || this.connection.readyState === 1)
+      (this.connection.readyState === WebSocket.CONNECTING ||
+        this.connection.readyState === WebSocket.OPEN)
     ) {
       return this.connection;
     }
