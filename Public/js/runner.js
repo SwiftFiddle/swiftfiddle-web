@@ -121,6 +121,8 @@ export class Runner {
 
   stop() {
     this.abortController.abort();
+    this.connection.close();
+    this.connection = null;
   }
 
   createConnection(endpoint) {
