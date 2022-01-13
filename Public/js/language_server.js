@@ -2,7 +2,6 @@
 
 import * as monaco from "monaco-editor/esm/vs/editor/editor.api";
 import ReconnectingWebSocket from "reconnecting-websocket";
-import { datadogLogs } from "@datadog/browser-logs";
 import { uuidv4 } from "./uuid.js";
 
 export class LanguageServer {
@@ -166,7 +165,6 @@ export class LanguageServer {
     };
 
     connection.onerror = (event) => {
-      datadogLogs.logger.error("lang-server websocket error", event);
       this.onerror(event);
       connection.close();
     };

@@ -156,7 +156,6 @@ export class Runner {
     };
 
     connection.onerror = (event) => {
-      datadogLogs.logger.error("runner websocket error", event);
       connection.close();
     };
 
