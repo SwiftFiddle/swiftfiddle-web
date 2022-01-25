@@ -1,6 +1,5 @@
 "use strict";
 
-import { datadogLogs } from "@datadog/browser-logs";
 import { Snackbar } from "./snackbar.js";
 
 import ReconnectingWebSocket from "reconnecting-websocket";
@@ -100,7 +99,6 @@ export class Runner {
           } else {
             Snackbar.alert(error);
           }
-          datadogLogs.logger.error(`${path}`, error);
         }
       })
       .finally(() => {

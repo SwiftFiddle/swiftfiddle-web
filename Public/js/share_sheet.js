@@ -2,7 +2,6 @@
 
 import "../css/share_sheet.css";
 
-import { datadogLogs } from "@datadog/browser-logs";
 import { Popover } from "bootstrap";
 import { Snackbar } from "./snackbar.js";
 
@@ -109,7 +108,6 @@ export class ShareSheet {
           } else {
             Snackbar.alert(error);
           }
-          datadogLogs.logger.error("Shared link creation error", error);
         })
         .finally(() => {
           linkCopyButtonIcon.classList.remove("d-none");
