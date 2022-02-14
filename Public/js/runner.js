@@ -12,9 +12,11 @@ export class Runner {
   }
 
   run(params, completion) {
-    this.connection = this.createConnection(
-      `wss://swiftfiddle.com/runner/${params.toolchain_version}/logs/${params._nonce}`
-    );
+    if (!window.appConfig.isEmbedded) {
+      this.connection = this.createConnection(
+        `wss://swiftfiddle.com/runner/${params.toolchain_version}/logs/${params._nonce}`
+      );
+    }
 
     const startTime = performance.now();
 
@@ -104,8 +106,10 @@ export class Runner {
         }
       })
       .finally(() => {
-        this.connection.close();
-        this.connection = null;
+        if (this.connection) {
+          this.connection.close();
+          this.connection = null;
+        }
       });
   }
 
