@@ -17,13 +17,13 @@
         <div id="terminal-container" class="h-100" style="position: relative;">
           <div class="run-button-background">
             <button type="button" id="run-button" class="btn btn-link">
-              <span id="run-button-icon" class="fas fa-play fa-sm fa-fw"></span>
-              <span id="run-button-spinner" class="fad fa-spinner-third fa-spin fa-sm fa-fw d-none"></span>
+              <span id="run-button-icon" class="fa-solid fa-play fa-sm fa-fw"></span>
+              <span id="run-button-spinner" class="fa-duotone fa-spinner-third fa-spin fa-sm fa-fw d-none"></span>
             </button>
           </div>
           <div class="open-button-background">
             <a id="open-button" class="btn btn-link" href="#(url)" target="_blank" rel="noopener">
-              <span class="fas fa-external-link-alt fa-sm fa-fw pe-1"></span>
+              <span class="fa-solid fa-external-link-alt fa-sm fa-fw pe-1"></span>
             </a>
           </div>
         </div>
@@ -35,7 +35,7 @@
         <span class="dropdown">
           <button class="btn btn-outline-primary btn-sm rounded-pill dropdown-toggle w-100" type="button"
             data-bs-toggle="dropdown" aria-expanded="false" aria-label="Version Picker">
-            <span class="fas fa-code-branch mx-2" style="width: 1em; height: 1em;"></span>
+            <span class="fa-solid fa-code-branch mx-2" style="width: 1em; height: 1em;"></span>
             <span id="version-value" class="fw-bolder">#(stableVersion)</span>
           </button>
           <!-- beautify ignore:start -->

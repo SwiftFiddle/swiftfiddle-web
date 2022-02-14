@@ -44,7 +44,7 @@
         <span class="dropdown">
           <button class="btn btn-outline-primary btn-sm rounded-pill dropdown-toggle w-100" type="button"
             data-bs-toggle="dropdown" aria-expanded="false" aria-label="Version Picker">
-            <span class="fas fa-code-branch fa-fw mx-2"
+            <span class="fa-solid fa-code-branch fa-fw mx-2"
               style="display: inline-block; min-width: 1em; min-height: 1em;"></span>
             <span id="version-value" class="fw-bolder">#(stableVersion)</span>
           </button>
@@ -66,44 +66,44 @@
       </div>
       <div class="col-md-auto m-2">
         <button type="button" id="run-button" class="btn btn-primary btn-sm rounded-pill disabled">
-          <span id="run-button-icon" class="fas fa-play fa-fw ms-2"
+          <span id="run-button-icon" class="fa-solid fa-play fa-fw ms-2"
             style="display: inline-block; min-width: 1em; min-height: 1em;"></span>
           <span id="run-button-spinner" class="fad fa-spinner-third fa-spin fa-fw ms-2 d-none"></span>
           <span class="mx-2">Run</span>
         </button>
         <button type="button" id="stop-button" class="btn btn-primary btn-sm rounded-pill ms-1 disabled">
-          <span class="fas fa-stop fa-fw ms-2"
+          <span class="fa-solid fa-stop fa-fw ms-2"
             style="display: inline-block; min-width: 1em; min-height: 1em;"></span><span class="mx-2">Stop</span>
         </button>
         <button type="button" id="clear-console-button"
           class="btn btn-outline-primary btn-sm rounded-circle p-0 ms-1 disabled" data-bs-toggle="tooltip"
           data-bs-placement="bottom" data-bs-container="#clear-console-button" title="Clear Console"
           aria-label="Clear Console" style="min-width: 2rem; min-height: 2rem;">
-          <span class="fas fa-eraser fa-fw"></span>
+          <span class="fa-solid fa-eraser fa-fw"></span>
         </button>
         <button type="button" id="format-button" class="btn btn-outline-primary btn-sm rounded-circle p-0 ms-1 disabled"
           data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-container="#format-button" title="Format"
           aria-label="Format" style="min-width: 2rem; min-height: 2rem;">
-          <span class="fas fa-align-left fa-fw"></span>
+          <span class="fa-solid fa-align-left fa-fw"></span>
         </button>
       </div>
       <div class="col-md-auto m-2">
         <button type="button" id="share-button" class="btn btn-outline-primary btn-sm rounded-pill disabled">
-          <span class="fas fa-share-alt fa-fw ms-2"
+          <span class="fa-solid fa-share-alt fa-fw ms-2"
             style="display: inline-block; min-width: 1em; min-height: 1em;"></span><span class="mx-2">Share</span>
         </button>
         <span data-bs-toggle="modal" data-bs-target="#settings-modal">
           <button type="button" id="settings-button" class="btn btn-outline-primary btn-sm rounded-circle p-0 ms-1"
             aria-label="Settings" data-bs-toggle="tooltip" data-bs-placement="bottom"
             data-bs-container="#settings-button" title="Settings" style="min-width: 2rem; min-height: 2rem;">
-            <span class="fas fa-cog fa-fw"></span>
+            <span class="fa-solid fa-cog fa-fw"></span>
           </button>
         </span>
         <span data-bs-toggle="modal" data-bs-target="#help-modal">
           <button type="button" id="help-button" class="btn btn-outline-primary btn-sm rounded-circle p-0 ms-1"
             aria-label="Help" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-container="#help-button"
             title="Help" style="min-width: 2rem; min-height: 2rem;">
-            <span class="fas fa-question fa-fw"></span>
+            <span class="fa-solid fa-question fa-fw"></span>
           </button>
         </span>
         <a id="lang-server-status" href="#" onClick="return false;" data-bs-toggle="tooltip" data-bs-placement="bottom"
@@ -131,12 +131,12 @@
         <div class="col-md-12 mx-1 text-center text-dark">
           <a class="text-reset text-decoration-none small ms-1" href="https://status.swiftfiddle.com" target="_blank"
             rel="nofollow noopener noreferrer">
-            <span class="fal fa-monitor-heart-rate me-1 d-inline-block"
+            <span class="fa-light fa-monitor-heart-rate me-1 d-inline-block"
               style="display: inline-block; min-width: 1em; min-height: 1em;"></span>System Status</a>
           <a class="text-reset text-decoration-none small ms-4 d-inline-block"
             href="https://github.com/swiftfiddle/swiftfiddle-web/issues/new" target="_blank"
             rel="nofollow noopener noreferrer">
-            <span class="far fa-comment-alt-smile me-1"
+            <span class="fa-regular fa-comment-alt-smile me-1"
               style="display: inline-block; min-width: 1em; min-height: 1em;"></span>Feedback</a>
           <a class="text-reset text-decoration-none small ms-4 d-inline-block"
             href="https://github.com/swiftfiddle/swiftfiddle-web" target="_blank" rel="nofollow noopener noreferrer">
@@ -144,7 +144,7 @@
               style="display: inline-block; min-width: 1em; min-height: 1em;"></span>Source Code</a>
           <a class="text-reset text-decoration-none small ms-4 me-1 d-inline-block" href="https://twitter.com/k_katsumi"
             target="_blank" rel="nofollow noopener noreferrer">
-            <span class="far fa-at me-1"
+            <span class="fa-regular fa-at me-1"
               style="display: inline-block; min-width: 1em; min-height: 1em;"></span>Creator</a>
         </div>
       </div>
@@ -165,7 +165,7 @@
             data-bs-toggle="tooltip" data-bs-container="#share-sheet-link-copy-button" title="Copy to Clipboard"
             aria-label="Copy to Clipboard">
             <span id="share-sheet-link-copy-button-icon">
-              <span class="far fa-clipboard fa-fw"></span>
+              <span class="fa-regular fa-clipboard fa-fw"></span>
             </span>
             <span id="share-sheet-link-copy-button-spinner" class="d-none">
               <span class="fad fa-spinner-third fa-spin fa-fw"></span>
@@ -189,7 +189,7 @@
             data-bs-toggle="tooltip" data-bs-container="#share-sheet-embed-copy-button" title="Copy to Clipboard"
             aria-label="Copy to Clipboard">
             <span id="share-sheet-embed-copy-button-icon">
-              <span class="far fa-clipboard fa-fw"></span>
+              <span class="fa-regular fa-clipboard fa-fw"></span>
             </span>
             <span id="share-sheet-embed-copy-button-spinner" class="d-none">
               <span class="fad fa-spinner-third fa-spin fa-fw"></span>
@@ -257,7 +257,7 @@
         </div>
         <div class="modal-body">
           <dl>
-            <dt class="bg-light rounded"><span class="far fa-file-import fa-fw me-1"></span>Import</dt>
+            <dt class="bg-light rounded"><span class="fa-regular fa-file-import fa-fw me-1"></span>Import</dt>
             <dd>There are a few different ways to import code into Playground:</dd>
           </dl>
           <ul>
@@ -268,7 +268,7 @@
           </ul>
 
           <dl>
-            <dt class="bg-light rounded pt-2"><span class="far fa-keyboard fa-fw me-1"></span>Keyboard Shortcuts</dt>
+            <dt class="bg-light rounded pt-2"><span class="fa-regular fa-keyboard fa-fw me-1"></span>Keyboard Shortcuts</dt>
             <dd>
               <table class="table">
                 <thead>
@@ -295,7 +295,7 @@
           </dl>
 
           <dl>
-            <dt class="bg-light rounded pt-2"><span class="far fa-toolbox fa-fw me-1"></span>Installed Libraries</dt>
+            <dt class="bg-light rounded pt-2"><span class="fa-regular fa-toolbox fa-fw me-1"></span>Installed Libraries</dt>
             <dd>
               <table class="table table-sm table-borderless">
                 <thead>
@@ -323,7 +323,7 @@
           </dl>
 
           <dl>
-            <dt class="bg-light rounded pt-2"><span class="far fa-comment-alt-smile fa-fw me-1"></span>Feedback / Bug
+            <dt class="bg-light rounded pt-2"><span class="fa-regular fa-comment-alt-smile fa-fw me-1"></span>Feedback / Bug
               Report
             </dt>
             <dd>
@@ -342,7 +342,7 @@
     aria-labelledby="service-list-offcanvas-label">
     <div class="offcanvas-header">
       <h5 class="offcanvas-title" id="service-list-offcanvas-label">
-        <span class="far fa-toolbox fa-fw me-2"></span>Swift Web Tools
+        <span class="fa-regular fa-toolbox fa-fw me-2"></span>Swift Web Tools
       </h5>
       <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close">
       </button>
@@ -411,7 +411,7 @@
       aria-atomic="true">
       <div class="d-flex">
         <div class="toast-body fw-bolder">
-          <span class="far fa-check-circle fa-lg text-success me-2">
+          <span class="fa-regular fa-check-circle fa-lg text-success me-2">
           </span><span id="snackbar-info-message" class="text-dark"></span>
         </div>
         <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
@@ -424,7 +424,7 @@
       aria-atomic="true">
       <div class="d-flex">
         <div class="toast-body fw-bolder">
-          <span class="fas fa-exclamation-triangle text-danger me-2"></span>
+          <span class="fa-solid fa-exclamation-triangle text-danger me-2"></span>
           <span id="snackbar-alert-message" class="text-danger"></span>
         </div>
         <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
