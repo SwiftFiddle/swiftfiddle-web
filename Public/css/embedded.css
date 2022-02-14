@@ -9,7 +9,7 @@ body {
 div.run-button-background {
   position: absolute;
   top: 0;
-  right: calc(2.4em + 2px);
+  right: calc(2.4em + 2px + 2px);
   width: 2.4em;
   height: 2.4em;
   color: white;
@@ -24,7 +24,7 @@ div.run-button-background {
 div.open-button-background {
   position: absolute;
   top: 0;
-  right: 0;
+  right: 2px;
   width: 2.4em;
   height: 2.4em;
   color: white;
