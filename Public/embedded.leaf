@@ -18,7 +18,7 @@
           <div class="run-button-background">
             <button type="button" id="run-button" class="btn btn-link">
               <span id="run-button-icon" class="fa-solid fa-play fa-sm fa-fw"></span>
-              <span id="run-button-spinner" class="fa-duotone fa-spinner-third fa-spin fa-sm fa-fw d-none"></span>
+              <span id="run-button-spinner" class="fa-solid fa-spinner-third fa-spin fa-sm fa-fw d-none"></span>
             </button>
           </div>
           <div class="open-button-background">
