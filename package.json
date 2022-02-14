@@ -28,7 +28,7 @@
     "postcss": "8.4.6",
     "postcss-loader": "6.2.1",
     "sass": "1.49.7",
-    "sass-loader": "12.4.0",
+    "sass-loader": "12.5.0",
     "style-loader": "3.3.1",
     "webpack": "5.68.0",
     "webpack-bundle-analyzer": "4.5.0",
