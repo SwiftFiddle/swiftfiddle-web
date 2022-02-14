@@ -4,7 +4,6 @@ import { config, library, dom } from "@fortawesome/fontawesome-svg-core";
 import {
   faCodeBranch,
   faPlay,
-  faSpinnerThird as faSpinnerThirdRegular,
   faStop,
   faEraser,
   faAlignLeft,
@@ -38,7 +37,6 @@ config.searchPseudoElements = true;
 library.add(
   faCodeBranch,
   faPlay,
-  faSpinnerThirdRegular,
   faStop,
   faEraser,
   faAlignLeft,
