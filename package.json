@@ -25,7 +25,7 @@
     "html-webpack-plugin": "5.5.0",
     "mini-css-extract-plugin": "2.5.3",
     "monaco-editor-webpack-plugin": "7.0.1",
-    "postcss": "8.4.6",
+    "postcss": "8.4.7",
     "postcss-loader": "6.2.1",
     "sass": "1.49.9",
     "sass-loader": "12.6.0",
