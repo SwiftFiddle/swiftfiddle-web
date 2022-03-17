@@ -1,7 +1,7 @@
 import Foundation
 
 func latestVersion() throws -> String { try availableVersions()[0] }
-func stableVersion() -> String { "5.5.3" }
+func stableVersion() -> String { "5.6" }
 
 func availableVersions() throws -> [String] {
     [
