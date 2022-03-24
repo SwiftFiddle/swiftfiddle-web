@@ -202,10 +202,11 @@ private func swiftPackageInfo(_ app: Application) -> [PackageInfo] {
         guard let target = package.targets.first else { return [] }
         return zip(package.dependencies, target.dependencies).compactMap { (dependency, target) -> PackageInfo? in
             guard let product = target.product.first, let productName = product else { return nil }
-            guard let range = dependency.requirement.range.first else { return nil }
+            guard let scm = dependency.scm.first else { return nil }
+            guard let range = scm.requirement.range.first else { return nil }
             return PackageInfo(
-                url: dependency.url,
-                name: dependency.name,
+                url: scm.location,
+                name: scm.identity,
                 productName: productName,
                 version: range.lowerBound
             )

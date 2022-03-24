@@ -7,8 +7,12 @@ struct Package: Codable {
 }
 
 struct Dependency: Codable {
-    let name: String
-    let url: String
+    let scm: [SCM]
+}
+
+struct SCM: Codable {
+    let identity: String
+    let location: String
     let requirement: Requirement
 }
 
