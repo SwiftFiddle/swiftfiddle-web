@@ -3,10 +3,14 @@
   "cxxLanguageStandard" : null,
   "dependencies" : [
     {
-      "scm" : [
+      "sourceControl" : [
         {
           "identity" : "swift-algorithms",
-          "location" : "https://github.com/apple/swift-algorithms",
+          "location" : {
+            "remote" : [
+              "https://github.com/apple/swift-algorithms"
+            ]
+          },
           "productFilter" : null,
           "requirement" : {
             "range" : [
@@ -20,10 +24,14 @@
       ]
     },
     {
-      "scm" : [
+      "sourceControl" : [
         {
           "identity" : "swift-atomics",
-          "location" : "https://github.com/apple/swift-atomics",
+          "location" : {
+            "remote" : [
+              "https://github.com/apple/swift-atomics"
+            ]
+          },
           "productFilter" : null,
           "requirement" : {
             "range" : [
@@ -37,10 +45,14 @@
       ]
     },
     {
-      "scm" : [
+      "sourceControl" : [
         {
           "identity" : "swift-collections",
-          "location" : "https://github.com/apple/swift-collections",
+          "location" : {
+            "remote" : [
+              "https://github.com/apple/swift-collections"
+            ]
+          },
           "productFilter" : null,
           "requirement" : {
             "range" : [
@@ -54,10 +66,14 @@
       ]
     },
     {
-      "scm" : [
+      "sourceControl" : [
         {
           "identity" : "swift-crypto",
-          "location" : "https://github.com/apple/swift-crypto",
+          "location" : {
+            "remote" : [
+              "https://github.com/apple/swift-crypto"
+            ]
+          },
           "productFilter" : null,
           "requirement" : {
             "range" : [
@@ -71,10 +87,14 @@
       ]
     },
     {
-      "scm" : [
+      "sourceControl" : [
         {
           "identity" : "swift-numerics",
-          "location" : "https://github.com/apple/swift-numerics",
+          "location" : {
+            "remote" : [
+              "https://github.com/apple/swift-numerics"
+            ]
+          },
           "productFilter" : null,
           "requirement" : {
             "range" : [
@@ -88,10 +108,14 @@
       ]
     },
     {
-      "scm" : [
+      "sourceControl" : [
         {
           "identity" : "swift-system",
-          "location" : "https://github.com/apple/swift-system",
+          "location" : {
+            "remote" : [
+              "https://github.com/apple/swift-system"
+            ]
+          },
           "productFilter" : null,
           "requirement" : {
             "range" : [
@@ -106,7 +130,11 @@
     }
   ],
   "name" : "App",
-  "packageKind" : "root",
+  "packageKind" : {
+    "root" : [
+      "/tmp/tmp.uUsuPnqDPC"
+    ]
+  },
   "pkgConfig" : null,
   "platforms" : [
     {
