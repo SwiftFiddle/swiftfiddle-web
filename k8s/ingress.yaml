@@ -37,13 +37,6 @@ spec:
                 name: web-frontend
                 port:
                   number: 80
-          - path: /lang-server
-            pathType: Prefix
-            backend:
-              service:
-                name: lang-server
-                port:
-                  number: 80
           - path: /runner/nightly.*
             pathType: Prefix
             backend:
