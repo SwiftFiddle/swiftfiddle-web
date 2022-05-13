@@ -7,13 +7,17 @@ struct Package: Codable {
 }
 
 struct Dependency: Codable {
-    let scm: [SCM]
+    let sourceControl: [SourceControl]
 }
 
-struct SCM: Codable {
+struct SourceControl: Codable {
     let identity: String
-    let location: String
+    let location: Location
     let requirement: Requirement
+}
+
+struct Location: Codable {
+    let remote: [String]
 }
 
 struct Requirement: Codable {
