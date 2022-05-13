@@ -8,7 +8,7 @@ struct Gist: Codable {
     struct File: Codable {
         let filename: String
         let type: String
-        let language: String
+        let language: String?
         let raw_url: String
         let size: Int
         let truncated: Bool
