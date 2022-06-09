@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="82px" height="48px" viewBox="0 0 82 48" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>Rectangle Copy</title>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <rect id="Rectangle-Copy" stroke="#0D6EFD" stroke-width="4" fill-opacity="0" fill="#0D6EFD" x="2" y="2" width="78" height="44" rx="8"></rect>
+        <text id="LSP-Copy" font-family="SFPro-Semibold, SF Pro" font-size="28" font-weight="500" fill="#0D6EFD">
+            <tspan x="16.838553" y="34">LSP</tspan>
+        </text>
+    </g>
+</svg>

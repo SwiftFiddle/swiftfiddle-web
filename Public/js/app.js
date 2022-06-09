@@ -472,8 +472,8 @@ export class App {
         case "error":
           severity = 8; // monaco.MarkerSeverity.Error;
           break;
-        default:
-          severity = 2; // monaco.MarkerSeverity.Info;
+        default: // monaco.MarkerSeverity.Info;
+          severity = 2;
           break;
       }
 
@@ -543,7 +543,7 @@ export class App {
     const statusContainer = document.getElementById("lang-server-status");
     if (statusIcon) {
       if (enabled) {
-        statusIcon.classList.remove("fa-swap-opacity");
+        statusIcon.src = "/images/lsp_fill.svg";
         if (statusContainer) {
           statusContainer.setAttribute(
             "data-bs-original-title",
@@ -553,7 +553,7 @@ export class App {
           tooltip.hide();
         }
       } else {
-        statusIcon.classList.add("fa-swap-opacity");
+        statusIcon.src = "/images/lsp.svg";
         if (statusContainer) {
           statusContainer.setAttribute(
             "data-bs-original-title",

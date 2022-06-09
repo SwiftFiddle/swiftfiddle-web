@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="82px" height="48px" viewBox="0 0 82 48" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>Rectangle</title>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <rect id="Rectangle" stroke="#0D6EFD" fill="#0D6EFD" x="0.5" y="0.5" width="81" height="47" rx="8"></rect>
+        <text id="LSP" font-family="SFPro-Semibold, SF Pro" font-size="28" font-weight="500" fill="#FFFFFF">
+            <tspan x="16.838553" y="34">LSP</tspan>
+        </text>
+    </g>
+</svg>
