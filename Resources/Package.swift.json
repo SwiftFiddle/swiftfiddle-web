@@ -120,7 +120,7 @@
           "requirement" : {
             "range" : [
               {
-                "lowerBound" : "1.1.1",
+                "lowerBound" : "1.2.1",
                 "upperBound" : "2.0.0"
               }
             ]
@@ -132,7 +132,7 @@
   "name" : "App",
   "packageKind" : {
     "root" : [
-      "/tmp/tmp.qV3QS7AJZe"
+      "/tmp/tmp.RVSiRjp9gJ"
     ]
   },
   "pkgConfig" : null,
