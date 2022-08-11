@@ -21,7 +21,7 @@ export class ShareSheet {
     const popoverContent = document.getElementById("share-sheet");
     const popover = new Popover(shareButton, {
       title: "",
-      trigger: "manual",
+      trigger: "click",
       html: true,
       content: popoverContent,
       container: "body",
@@ -116,11 +116,6 @@ export class ShareSheet {
           embedCopyButtonIcon.classList.remove("d-none");
           embedCopyButtonSpinner.classList.add("d-none");
         });
-    });
-
-    shareButton.addEventListener("click", (event) => {
-      popover.toggle();
-      event.stopPropagation();
     });
 
     document.body.addEventListener("click", (event) => {
