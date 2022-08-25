@@ -4,7 +4,7 @@
       "type": "lldb",
       "request": "launch",
       "name": "Debug Run",
-      "program": "${workspaceFolder:swiftfiddle-web}/.build/debug/Run",
+      "program": ".build/debug/Run",
       "args": [],
       "cwd": "${workspaceFolder:swiftfiddle-web}",
       "preLaunchTask": "swift: Build Debug Run"
@@ -13,7 +13,7 @@
       "type": "lldb",
       "request": "launch",
       "name": "Release Run",
-      "program": "${workspaceFolder:swiftfiddle-web}/.build/release/Run",
+      "program": ".build/release/Run",
       "args": [],
       "cwd": "${workspaceFolder:swiftfiddle-web}",
       "preLaunchTask": "swift: Build Release Run"

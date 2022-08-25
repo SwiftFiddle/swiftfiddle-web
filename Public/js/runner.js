@@ -1,5 +1,10 @@
 "use strict";
 
+import Plausible from "plausible-tracker";
+const { trackEvent } = Plausible({
+  domain: "swiftfiddle.com",
+});
+
 import { Snackbar } from "./snackbar.js";
 
 import ReconnectingWebSocket from "reconnecting-websocket";
@@ -21,6 +26,10 @@ export class Runner {
     const startTime = performance.now();
 
     const path = `/runner/${params.toolchain_version}/run`;
+    if (params.toolchain_version !== "5.6.2") {
+      trackEvent("run", { props: { path } });
+    }
+
     fetch(path, {
       method: "POST",
       headers: {
