@@ -66,11 +66,13 @@ jobs:
       - uses: actions/checkout@v3
 
       - uses: azure/setup-kubectl@v3
-      - uses: azure/aks-set-context@v3
+      - uses: azure/login@v1
         with:
           creds: ${{ env.AZURE_CREDENTIALS }}
-          cluster-name: ${{ env.CLUSTER_NAME }}
+      - uses: azure/aks-set-context@v3
+        with:
           resource-group: ${{ env.RESOURCE_GROUP }}
+          cluster-name: ${{ env.CLUSTER_NAME }}
 
       - name: Deploy
         run: |
