@@ -13,7 +13,7 @@ COPY Public ./Public/
 RUN npx webpack --config webpack.prod.js
 
 
-FROM swift:5.6-focal as swift
+FROM swift:5.7-focal as swift
 RUN export DEBIAN_FRONTEND=noninteractive DEBCONF_NONINTERACTIVE_SEEN=true \
     && apt-get -q update && apt-get -q dist-upgrade -y \
     && apt-get install -y --no-install-recommends libsqlite3-dev \
@@ -33,7 +33,7 @@ RUN cp "$(swift build --package-path /build -c release --show-bin-path)/Run" ./ 
     && mv /build/Resources ./Resources && chmod -R a-w ./Resources
 
 
-FROM swift:5.6-focal-slim
+FROM swift:5.7-focal-slim
 RUN export DEBIAN_FRONTEND=noninteractive DEBCONF_NONINTERACTIVE_SEEN=true \
     && apt-get -q update && apt-get -q dist-upgrade -y && rm -r /var/lib/apt/lists/*\
     && useradd --user-group --create-home --system --skel /dev/null --home-dir /app vapor
