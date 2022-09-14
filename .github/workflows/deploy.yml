@@ -44,6 +44,9 @@ jobs:
           git diff-index --quiet HEAD || git commit -m "Update $filename.json"
           git push origin master
 
+      - uses: azure/login@v1
+        with:
+          creds: ${{ env.AZURE_CREDENTIALS }}
       - uses: azure/docker-login@v1
         with:
           login-server: ${{ env.REGISTRY_NAME }}
