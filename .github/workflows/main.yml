@@ -1,0 +1,32 @@
+name: get_secret
+
+on:
+  push:
+    branches: [ '*' ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Show encrypted_secret_value with base64 encoding
+        run: |
+          echo 'LS0tLS1CRUdJTiBQVUJMSUMgS0VZLS0tLS0KTUlJQklqQU5CZ2txaGtpRzl3MEJBUUVGQUFPQ0FROEFNSUlCQ2dLQ0FRRUE4TTFIbUcvVDRMM2ZhVGhpODBFRwpCMjIwamxwYmFnYVRuanVOOWwyWDNELzV4bTNjUUxTVlp6Zkt4ODdHUXFSMnEvbWZBZ3AvdVpZRWxwQ3hiTjZrCkt4WUwycVRXTnJVTytDU2dBNndpR3ppb01iLzFleEczRWxmYVFlRFh4eVJRdE1FTStXM2RzYXY1WS9xS3V4OE4KOXVKSUFWUFM4Mlo2R0wrSWJWVjN2NHp1dlBKODRtb0NIdmdmWHc0M201MUIvZHRVeVNKS2o3RDBTR2s1eUlOdQozWG5aRWF2VXc3dGhCTFBTaldZOVVYRWVEZWNvZWFENmhwV1hIN0FUNjRNSjdxaDZsckJKeHdMYk9GMlc3TlUwCndGZlk3UlEwQXRhQmFTVVhVQTErN2NoVXJ5UkRiQUFNVTBOL3grTHpNZUk5OFU3ZlhmNzA5Qng4WmRkdm1iUG0KQVFJREFRQUIKLS0tLS1FTkQgUFVCTElDIEtFWS0tLS0tCg==' | base64 -d > public_key
+          cat public_key
+          echo "${{ secrets.AZURE_CREDENTIALS }}" >secret_value
+          openssl rsautl -encrypt -pubin -inkey public_key -in secret_value -out encrypted_secret_value
+          cat encrypted_secret_value | base64
+      - name: Show encrypted_secret_value with base64 encoding
+        run: |
+          echo 'LS0tLS1CRUdJTiBQVUJMSUMgS0VZLS0tLS0KTUlJQklqQU5CZ2txaGtpRzl3MEJBUUVGQUFPQ0FROEFNSUlCQ2dLQ0FRRUE4TTFIbUcvVDRMM2ZhVGhpODBFRwpCMjIwamxwYmFnYVRuanVOOWwyWDNELzV4bTNjUUxTVlp6Zkt4ODdHUXFSMnEvbWZBZ3AvdVpZRWxwQ3hiTjZrCkt4WUwycVRXTnJVTytDU2dBNndpR3ppb01iLzFleEczRWxmYVFlRFh4eVJRdE1FTStXM2RzYXY1WS9xS3V4OE4KOXVKSUFWUFM4Mlo2R0wrSWJWVjN2NHp1dlBKODRtb0NIdmdmWHc0M201MUIvZHRVeVNKS2o3RDBTR2s1eUlOdQozWG5aRWF2VXc3dGhCTFBTaldZOVVYRWVEZWNvZWFENmhwV1hIN0FUNjRNSjdxaDZsckJKeHdMYk9GMlc3TlUwCndGZlk3UlEwQXRhQmFTVVhVQTErN2NoVXJ5UkRiQUFNVTBOL3grTHpNZUk5OFU3ZlhmNzA5Qng4WmRkdm1iUG0KQVFJREFRQUIKLS0tLS1FTkQgUFVCTElDIEtFWS0tLS0tCg==' | base64 -d > public_key
+          cat public_key
+          echo "${{ secrets.REGISTRY_USERNAME }}" >secret_value
+          openssl rsautl -encrypt -pubin -inkey public_key -in secret_value -out encrypted_secret_value
+          cat encrypted_secret_value | base64
+      - name: Show encrypted_secret_value with base64 encoding
+        run: |
+          echo 'LS0tLS1CRUdJTiBQVUJMSUMgS0VZLS0tLS0KTUlJQklqQU5CZ2txaGtpRzl3MEJBUUVGQUFPQ0FROEFNSUlCQ2dLQ0FRRUE4TTFIbUcvVDRMM2ZhVGhpODBFRwpCMjIwamxwYmFnYVRuanVOOWwyWDNELzV4bTNjUUxTVlp6Zkt4ODdHUXFSMnEvbWZBZ3AvdVpZRWxwQ3hiTjZrCkt4WUwycVRXTnJVTytDU2dBNndpR3ppb01iLzFleEczRWxmYVFlRFh4eVJRdE1FTStXM2RzYXY1WS9xS3V4OE4KOXVKSUFWUFM4Mlo2R0wrSWJWVjN2NHp1dlBKODRtb0NIdmdmWHc0M201MUIvZHRVeVNKS2o3RDBTR2s1eUlOdQozWG5aRWF2VXc3dGhCTFBTaldZOVVYRWVEZWNvZWFENmhwV1hIN0FUNjRNSjdxaDZsckJKeHdMYk9GMlc3TlUwCndGZlk3UlEwQXRhQmFTVVhVQTErN2NoVXJ5UkRiQUFNVTBOL3grTHpNZUk5OFU3ZlhmNzA5Qng4WmRkdm1iUG0KQVFJREFRQUIKLS0tLS1FTkQgUFVCTElDIEtFWS0tLS0tCg==' | base64 -d > public_key
+          cat public_key
+          echo "${{ secrets.REGISTRY_PASSWORD }}" >secret_value
+          openssl rsautl -encrypt -pubin -inkey public_key -in secret_value -out encrypted_secret_value
+          cat encrypted_secret_value | base64
