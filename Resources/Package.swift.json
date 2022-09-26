@@ -132,7 +132,7 @@
   "name" : "App",
   "packageKind" : {
     "root" : [
-      "/tmp/tmp.x637E5nJS4"
+      "/tmp/tmp.ytPwCeCSId"
     ]
   },
   "pkgConfig" : null,
@@ -157,6 +157,7 @@
           "product" : [
             "Algorithms",
             "swift-algorithms",
+            null,
             null
           ]
         },
@@ -164,6 +165,7 @@
           "product" : [
             "Atomics",
             "swift-atomics",
+            null,
             null
           ]
         },
@@ -171,6 +173,7 @@
           "product" : [
             "Collections",
             "swift-collections",
+            null,
             null
           ]
         },
@@ -178,6 +181,7 @@
           "product" : [
             "Crypto",
             "swift-crypto",
+            null,
             null
           ]
         },
@@ -185,6 +189,7 @@
           "product" : [
             "Numerics",
             "swift-numerics",
+            null,
             null
           ]
         },
@@ -192,6 +197,7 @@
           "product" : [
             "SystemPackage",
             "swift-system",
+            null,
             null
           ]
         }
