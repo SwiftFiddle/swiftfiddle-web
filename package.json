@@ -11,7 +11,7 @@
     "@fortawesome/pro-solid-svg-icons": "6.0.0",
     "@popperjs/core": "2.11.6",
     "bootstrap": "5.2.2",
-    "monaco-editor": "0.34.0",
+    "monaco-editor": "0.34.1",
     "pako": "2.0.4",
     "plausible-tracker": "0.3.8",
     "reconnecting-websocket": "4.4.0",
