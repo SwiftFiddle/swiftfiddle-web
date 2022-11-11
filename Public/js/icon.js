@@ -23,6 +23,7 @@ import {
   faCheckCircle,
   faAt,
   faDonate,
+  faHeart,
 } from "@fortawesome/pro-regular-svg-icons";
 import { faMonitorHeartRate } from "@fortawesome/pro-light-svg-icons";
 import { faSpinnerThird, faRobot } from "@fortawesome/pro-duotone-svg-icons";
@@ -55,6 +56,7 @@ library.add(
   faCheckCircle,
   faAt,
   faDonate,
+  faHeart,
 
   faMonitorHeartRate,
 
