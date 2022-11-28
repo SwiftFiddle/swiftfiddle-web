@@ -33,8 +33,8 @@
         "repositoryURL": "https://github.com/vapor/leaf.git",
         "state": {
           "branch": null,
-          "revision": "bf1c27928c3f7f93fcdca570d7514727fa23e14e",
-          "version": "4.2.2"
+          "revision": "79fbcfb7dd2eb0f01e01b3fb7ee2763df75ef3f6",
+          "version": "4.2.3"
         }
       },
       {
@@ -105,8 +105,8 @@
         "repositoryURL": "https://github.com/apple/swift-crypto.git",
         "state": {
           "branch": null,
-          "revision": "f652300628eb2003449e627f1f394a27ea2af9a8",
-          "version": "2.2.0"
+          "revision": "71ae6adf89ba5346a209ec7f48dbb571a7e8ad1e",
+          "version": "2.2.1"
         }
       },
       {
@@ -132,8 +132,8 @@
         "repositoryURL": "https://github.com/apple/swift-nio.git",
         "state": {
           "branch": null,
-          "revision": "edfceecba13d68c1c993382806e72f7e96feaa86",
-          "version": "2.44.0"
+          "revision": "e855380cb5234e96b760d93e0bfdc403e381e928",
+          "version": "2.45.0"
         }
       },
       {
