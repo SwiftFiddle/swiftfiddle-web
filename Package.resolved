@@ -33,8 +33,8 @@
         "repositoryURL": "https://github.com/vapor/leaf.git",
         "state": {
           "branch": null,
-          "revision": "79fbcfb7dd2eb0f01e01b3fb7ee2763df75ef3f6",
-          "version": "4.2.3"
+          "revision": "6fe0e843c6599f5189e45c7b08739ebc5c410c3b",
+          "version": "4.2.4"
         }
       },
       {
