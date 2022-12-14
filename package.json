@@ -21,7 +21,7 @@
   "devDependencies": {
     "autoprefixer": "10.4.13",
     "copy-webpack-plugin": "11.0.0",
-    "css-loader": "6.7.2",
+    "css-loader": "6.7.3",
     "html-webpack-plugin": "5.5.0",
     "mini-css-extract-plugin": "2.7.2",
     "monaco-editor-webpack-plugin": "7.0.1",
