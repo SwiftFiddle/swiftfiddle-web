@@ -1,7 +1,7 @@
 import Foundation
 
 func latestVersion() throws -> String { try availableVersions()[0] }
-func stableVersion() -> String { "5.7.1" }
+func stableVersion() -> String { "5.7" }
 
 func availableVersions() throws -> [String] {
     [
@@ -11,7 +11,6 @@ func availableVersions() throws -> [String] {
         "nightly-5.5",
         "nightly-5.4",
         "nightly-5.3",
-        "5.7.1",
         "5.7",
         "5.6.3",
         "5.6.2",
