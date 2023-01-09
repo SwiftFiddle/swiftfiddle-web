@@ -15,8 +15,8 @@
         "repositoryURL": "https://github.com/vapor/async-kit.git",
         "state": {
           "branch": null,
-          "revision": "3be4b6418d1e8b835b0b1a1bee06b249faa4da5f",
-          "version": "1.14.0"
+          "revision": "929808e51fea04f01de0e911ce826ef70c4db4ea",
+          "version": "1.15.0"
         }
       },
       {
@@ -105,8 +105,8 @@
         "repositoryURL": "https://github.com/apple/swift-crypto.git",
         "state": {
           "branch": null,
-          "revision": "92a04c10fc5ce0504f8396aac7392126033e547c",
-          "version": "2.2.2"
+          "revision": "9cc89f0170308b813af05dadcd26f9a2dee47713",
+          "version": "2.2.3"
         }
       },
       {
@@ -186,8 +186,8 @@
         "repositoryURL": "https://github.com/vapor/vapor.git",
         "state": {
           "branch": null,
-          "revision": "eb2da0d749e185789970c32f7fd9c114a339fa13",
-          "version": "4.67.5"
+          "revision": "888c8b68642c1d340b6b3e9b2b8445fb0f6148c9",
+          "version": "4.68.0"
         }
       },
       {
