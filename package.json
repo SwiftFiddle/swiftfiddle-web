@@ -9,7 +9,7 @@
     "@fortawesome/pro-light-svg-icons": "6.0.0",
     "@fortawesome/pro-regular-svg-icons": "6.0.0",
     "@fortawesome/pro-solid-svg-icons": "6.0.0",
-    "@popperjs/core": "2.11.6",
+    "@popperjs/core": "2.11.7",
     "bootstrap": "5.2.3",
     "monaco-editor": "0.36.1",
     "pako": "2.1.0",
