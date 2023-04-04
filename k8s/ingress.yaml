@@ -44,7 +44,7 @@ spec:
                 name: runner-vnightly-main
                 port:
                   number: 80
-          - path: /runner/5.7.3/.*
+          - path: /runner/5.8/.*
             pathType: Prefix
             backend:
               service:
