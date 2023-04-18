@@ -26,7 +26,7 @@ export class Runner {
     const startTime = performance.now();
 
     const path = `/runner/${params.toolchain_version}/run`;
-    if (params.toolchain_version !== "5.7") {
+    if (params.toolchain_version !== "5.8") {
       trackEvent("run", { props: { path } });
     }
 
