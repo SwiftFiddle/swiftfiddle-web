@@ -30,7 +30,7 @@ export class Console {
         background: "#002b36",
         foreground: "#93a1a1",
       },
-      fontFamily: "Menlo,Consolas,sans-serif,monospace",
+      fontFamily: "Menlo, Consolas, 'DejaVu Sans Mono', 'Ubuntu Mono', monospace",
       fontSize: 15,
       lineHeight: 1.1,
       convertEol: true,
