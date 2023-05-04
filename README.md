@@ -19,6 +19,12 @@ SwiftFiddle is an online playground for creating, sharing and embedding Swift fi
 
 https://swiftfiddle.com
 
+## Supporters & Sponsors
+
+Open source projects thrive on the generosity and support of people like you. If you find this project valuable, please consider extending your support. Contributing to the project not only sustains its growth, but also helps drive innovation and improve its features.
+
+To support this project, you can become a sponsor through [GitHub Sponsors](https://github.com/sponsors/kishikawakatsumi). Your contribution will be greatly appreciated and will help keep the project alive and thriving. Thanks for your consideration! :heart:
+
 ### Related Projects
 
 - [SwiftFiddle LSP](https://github.com/swiftfiddle/swiftfiddle-lsp) (Provide Code Completion powered by [SourceKit-LSP](https://github.com/apple/sourcekit-lsp))
