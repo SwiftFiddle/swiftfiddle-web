@@ -15,7 +15,7 @@
 
 SwiftFiddle is an online playground for creating, sharing and embedding Swift fiddles (little Swift programs that run directly in your browser).
 
-<a href="https://swiftfiddle.com"><img width="1280" alt="Screen Shot" src="https://user-images.githubusercontent.com/40610/130245770-967d3beb-a7cd-4c6a-9ba1-320c83b67c61.png"></a>
+<a href="https://swiftfiddle.com"><img width="1280" alt="Screen Shot" src="https://user-images.githubusercontent.com/40610/236131852-489cade1-9bbc-4b77-9608-f32e0919941e.png"></a>
 
 https://swiftfiddle.com
 
