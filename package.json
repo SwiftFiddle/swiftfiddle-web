@@ -1,6 +1,7 @@
 {
   "scripts": {
-    "build": "webpack --progress --config webpack.prod.js"
+    "build": "webpack --progress --config webpack.prod.js",
+    "dev": "webpack --progress --config webpack.dev.js"
   },
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "6.4.0",
@@ -16,7 +17,8 @@
     "plausible-tracker": "0.3.8",
     "reconnecting-websocket": "4.4.0",
     "xterm": "5.1.0",
-    "xterm-addon-fit": "0.7.0"
+    "xterm-addon-fit": "0.7.0",
+    "xterm-addon-web-links": "0.8.0"
   },
   "devDependencies": {
     "autoprefixer": "10.4.14",

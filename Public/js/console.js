@@ -3,6 +3,7 @@
 import "xterm/css/xterm.css";
 import { Terminal } from "xterm";
 import { FitAddon } from "xterm-addon-fit";
+import { WebLinksAddon } from "xterm-addon-web-links";
 
 const ESC = "\u001B[";
 
@@ -30,7 +31,8 @@ export class Console {
         background: "#002b36",
         foreground: "#93a1a1",
       },
-      fontFamily: "Menlo, Consolas, 'DejaVu Sans Mono', 'Ubuntu Mono', monospace",
+      fontFamily:
+        "Menlo, Consolas, 'DejaVu Sans Mono', 'Ubuntu Mono', monospace",
       fontSize: 15,
       lineHeight: 1.1,
       convertEol: true,
@@ -40,11 +42,17 @@ export class Console {
     });
     this.terminal.open(container);
 
+    this.terminal.loadAddon(new WebLinksAddon());
+
     const fitAddon = new FitAddon();
     this.terminal.loadAddon(fitAddon);
     fitAddon.fit();
 
-    this.terminal.write(`\x1b[37mWelcome to SwiftFiddle.\x1b[0m\n`);
+    this.terminal.writeln(`${ESC}37mWelcome to SwiftFiddle.${ESC}0m`);
+    this.terminal.writeln(
+      `Empower our project through your generous support on GitHub Sponsors! 💖`
+    );
+    this.terminal.writeln(`👉 https://github.com/sponsors/kishikawakatsumi/`);
   }
 
   get rows() {
@@ -66,45 +74,45 @@ export class Console {
   }
 
   cursorUp(count = 1) {
-    this.terminal.write(ESC + count + "A");
+    this.terminal.write(`${ESC}${count}A`);
   }
 
   cursorDown(count = 1) {
-    this.terminal.write(ESC + count + "B");
+    this.terminal.write(`${ESC}${count}B`);
   }
 
   cursorForward(count = 1) {
-    this.terminal.write(ESC + count + "C");
+    this.terminal.write(`${ESC}${count}C`);
   }
 
   cursorBackward(count = 1) {
-    this.terminal.write(ESC + count + "D");
+    this.terminal.write(`${ESC}${count}D`);
   }
 
   saveCursorPosition() {
-    this.terminal.write(ESC + "s");
+    this.terminal.write(`${ESC}s`);
   }
 
   restoreCursorPosition() {
-    this.terminal.write(ESC + "u");
+    this.terminal.write(`${ESC}u`);
   }
 
   hideCursor() {
-    this.terminal.write(ESC + "?25l");
+    this.terminal.write(`${ESC}?25l`);
   }
 
   showCursor() {
-    this.terminal.write(ESC + "?25h");
+    this.terminal.write(`${ESC}?25h`);
   }
 
   eraseLine() {
-    this.terminal.write("\x1b[2K\r");
+    this.terminal.write(`${ESC}2K\r`);
   }
 
   eraseLines(count) {
     for (let i = 0; i < count; i++) {
-      this.terminal.write(`\x1b[1F`);
-      this.terminal.write("\x1b[2K\r");
+      this.terminal.write(`${ESC}1F`);
+      this.terminal.write(`${ESC}2K\r`);
     }
   }
 
@@ -133,7 +141,7 @@ export class Console {
       );
       self.terminal.write(
         // https://gist.github.com/fnky/458719343aabd01cfb17a3a4f7296797#256-colors
-        `\x1b[1m\x1b[38;5;111m${animationText}\x1b[0m${speces}${seconds}`
+        `${ESC}1m${ESC}38;5;111m${animationText}${ESC}0m${speces}${seconds}`
       );
       spins++;
     }
