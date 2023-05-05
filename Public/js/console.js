@@ -11,25 +11,27 @@ export class Console {
   constructor(container) {
     this.terminal = new Terminal({
       theme: {
-        // https://ethanschoonover.com/solarized/
-        brightBlack: "#93a1a1", // base03
-        black: "#073642", // base02
-        brightGreen: "#586e75", // base01
-        brightYellow: "#657b83", // base00
-        brightBlue: "#839496", // base0
-        brightCyan: "#93a1a1", // base1
-        white: "#eee8d5", // base2
-        brightWhite: "#fdf6e3", // base3
-        yellow: "#b58900", // yellow
-        brightRed: "#cb4b16", // orange
-        red: "#dc322f", // red
-        magenta: "#d33682", // magenta
-        brightMagenta: "#6c71c4", // violet
-        blue: "#268bd2", // blue
-        cyan: "#2aa198", // cyan
-        green: "#859900", // green
-        background: "#002b36",
-        foreground: "#93a1a1",
+        // https://github.com/sonph/onehalf
+        background: "#282C34",
+        black: "#282C34",
+        blue: "#61AFEF",
+        brightBlack: "#282C34",
+        brightBlue: "#61AFEF",
+        brightCyan: "#56B6C2",
+        brightGreen: "#98C379",
+        brightPurple: "#C678DD",
+        brightRed: "#E06C75",
+        brightWhite: "#DCDFE4",
+        brightYellow: "#E5C07B",
+        cyan: "#56B6C2",
+        foreground: "#82868C",
+        green: "#98C379",
+        name: "One Half Dark",
+        purple: "#C678DD",
+        red: "#E06C75",
+        white: "#DCDFE4",
+        yellow: "#E5C07B",
+        cursorAccent: "#282C34",
       },
       fontFamily:
         "Menlo, Consolas, 'DejaVu Sans Mono', 'Ubuntu Mono', monospace",
@@ -50,9 +52,11 @@ export class Console {
 
     this.terminal.writeln(`${ESC}37mWelcome to SwiftFiddle.${ESC}0m`);
     this.terminal.writeln(
-      `Empower our project through your generous support on GitHub Sponsors! 💖`
+      `${ESC}32mEmpower our project through your generous support on GitHub Sponsors! 💖${ESC}0m`
     );
-    this.terminal.writeln(`👉 https://github.com/sponsors/kishikawakatsumi/`);
+    this.terminal.writeln(
+      `${ESC}32mhttps://github.com/sponsors/kishikawakatsumi/${ESC}0m`
+    );
   }
 
   get rows() {
@@ -68,9 +72,9 @@ export class Console {
       throw new TypeError("The `x` argument is required");
     }
     if (typeof y !== "number") {
-      this.terminal.write(ESC + (x + 1) + "G");
+      this.terminal.write(`${ESC}${x + 1}G`);
     }
-    this.terminal.write(ESC + (y + 1) + ";" + (x + 1) + "H");
+    this.terminal.write(`${ESC}${y + 1};${x + 1}H`);
   }
 
   cursorUp(count = 1) {
@@ -140,8 +144,7 @@ export class Console {
         self.terminal.cols - animationText.length - seconds.length
       );
       self.terminal.write(
-        // https://gist.github.com/fnky/458719343aabd01cfb17a3a4f7296797#256-colors
-        `${ESC}1m${ESC}38;5;111m${animationText}${ESC}0m${speces}${seconds}`
+        `${ESC}1m${ESC}34m${animationText}${ESC}0m${speces}${seconds}`
       );
       spins++;
     }

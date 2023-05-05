@@ -191,7 +191,6 @@ export class App {
       }
 
       const value = this.editor.getValue();
-      const version = this.versionPicker.selected;
       languageServer.syncDocument(value);
 
       this.updateButtonState();
@@ -411,7 +410,7 @@ export class App {
           .filter(Boolean)
           .map((line) => {
             return {
-              text: `\x1b[38;5;156m\x1b[2m${line}\x1b[0m`,
+              text: `\x1b[32m\x1b[2m${line}\x1b[0m`,
               numberOfLines: Math.ceil(line.length / this.terminal.cols),
             };
           })
@@ -424,7 +423,7 @@ export class App {
           .filter(Boolean)
           .map((line) => {
             return {
-              text: `${line}\x1b[0m`,
+              text: `\x1b[2m${line}\x1b[0m`,
               numberOfLines: Math.ceil(line.length / this.terminal.cols),
             };
           })
