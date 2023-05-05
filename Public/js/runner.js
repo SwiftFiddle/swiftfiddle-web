@@ -56,7 +56,7 @@ export class Runner {
 
         const buffer = [];
         buffer.push(
-          `\x1b[38;5;72m${response.version
+          `\x1b[32m${response.version
             .split("\n")
             .map((line, i) => {
               // prettier-ignore
@@ -74,9 +74,9 @@ export class Runner {
                 _2 = "";
               }
               if (i == 0) {
-                return `${_1}\x1b[38;5;156m\x1b[2m${line}\x1b[0m${_2}`;
+                return `${_1}\x1b[32m${line}\x1b[0m${_2}`;
               } else {
-                return `\x1b[38;5;156m\x1b[2m${line}\x1b[0m`;
+                return `\x1b[32m${line}\x1b[0m`;
               }
             })
             .join("\n")}\x1b[0m`
