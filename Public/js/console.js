@@ -24,7 +24,7 @@ export class Console {
         brightWhite: "#DCDFE4",
         brightYellow: "#E5C07B",
         cyan: "#56B6C2",
-        foreground: "#82868C", // Modified
+        foreground: "#969AA0", // Modified
         green: "#98C379",
         name: "One Half Dark",
         purple: "#C678DD",

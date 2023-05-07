@@ -377,7 +377,7 @@ export class App {
         const regex =
           /[\u001b\u009b][[()#;?]*(?:[0-9]{1,4}(?:;[0-9]{0,4})*)?[0-9A-ORZcf-nqry=><]/g;
         const plainText = line.replace(regex, "");
-        this.terminal.write(`\x1b[2m\x1b[37m${plainText}\x1b[0m`);
+        this.terminal.write(`\x1b[38;2;120;124;130m${plainText}\x1b[0m`); // #787C82
       });
       this.history.push(...buffer);
 
@@ -410,7 +410,7 @@ export class App {
           .filter(Boolean)
           .map((line) => {
             return {
-              text: `\x1b[32m${line}\x1b[0m`,
+              text: `\x1b[38;2;127;168;183m${line}\x1b[0m`, // #7FA8B7
               numberOfLines: Math.ceil(line.length / this.terminal.cols),
             };
           })
