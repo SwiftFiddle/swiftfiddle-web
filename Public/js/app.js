@@ -456,7 +456,7 @@ export class App {
         ""
       )
       .matchAll(
-        /\/main\.swift:(\d+):(\d+): (error|warning|note): ([\s\S]*?)\n*(?=(?:\/|$))/gi
+        /(?:\/main\.swift|<stdin>):(\d+):(\d+): (error|warning|note): ([\s\S]*?)\n*(?=(?:\/|$))/gi
       );
     return [...matches].map((match) => {
       const row = +match[1];
