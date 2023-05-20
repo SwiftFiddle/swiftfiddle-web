@@ -11,7 +11,7 @@ let package = Package(
         .package(url: "https://github.com/vapor/leaf.git", from: "4.2.4"),
     ],
     targets: [
-        .target(
+        .executableTarget(
             name: "App",
             dependencies: [
                 .product(name: "Vapor", package: "vapor"),
@@ -19,11 +19,6 @@ let package = Package(
             ],
             swiftSettings: [
                 .unsafeFlags(["-cross-module-optimization"], .when(configuration: .release)),
-            ]
-        ),
-        .executableTarget(
-            name: "Run", dependencies: [
-                .target(name: "App"),
             ]
         ),
         .testTarget(

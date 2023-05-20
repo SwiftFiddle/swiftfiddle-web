@@ -1,40 +1,40 @@
 import Foundation
 
 struct Package: Codable {
-    let name: String
-    let dependencies: [Dependency]
-    let targets: [Target]
+  let name: String
+  let dependencies: [Dependency]
+  let targets: [Target]
 }
 
 struct Dependency: Codable {
-    let sourceControl: [SourceControl]
+  let sourceControl: [SourceControl]
 }
 
 struct SourceControl: Codable {
-    let identity: String
-    let location: Location
-    let requirement: Requirement
+  let identity: String
+  let location: Location
+  let requirement: Requirement
 }
 
 struct Location: Codable {
-    let remote: [String]
+  let remote: [String]
 }
 
 struct Requirement: Codable {
-    let range: [Range]
+  let range: [Range]
 }
 
 struct Range: Codable {
-    let lowerBound: String
-    let upperBound: String
+  let lowerBound: String
+  let upperBound: String
 }
 
 struct Target: Codable {
-    let dependencies: [TargetDependency]
-    let name: String
-    let type: String
+  let dependencies: [TargetDependency]
+  let name: String
+  let type: String
 }
 
 struct TargetDependency: Codable {
-    let product: [String?]
+  let product: [String?]
 }
