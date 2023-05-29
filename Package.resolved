@@ -6,8 +6,8 @@
         "repositoryURL": "https://github.com/swift-server/async-http-client.git",
         "state": {
           "branch": null,
-          "revision": "333e60cc90f52973f7ee29cd8e3a7f6adfe79f4e",
-          "version": "1.17.0"
+          "revision": "78db67e5bf4a8543075787f228e8920097319281",
+          "version": "1.18.0"
         }
       },
       {
@@ -186,8 +186,8 @@
         "repositoryURL": "https://github.com/vapor/vapor.git",
         "state": {
           "branch": null,
-          "revision": "b42287f2c3909930be6329922906a6a8092943d2",
-          "version": "4.76.2"
+          "revision": "8b79ff0bd264a33bd0b7471dcf50dd1be983f992",
+          "version": "4.76.3"
         }
       },
       {
@@ -195,8 +195,8 @@
         "repositoryURL": "https://github.com/vapor/websocket-kit.git",
         "state": {
           "branch": null,
-          "revision": "17c0afbf24f4e288e183bc34317dc97b5cd084bd",
-          "version": "2.9.0"
+          "revision": "2ec14506d5f8199926906dc5a620ac22b147db86",
+          "version": "2.13.0"
         }
       }
     ]
