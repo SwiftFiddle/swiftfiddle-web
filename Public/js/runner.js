@@ -5,8 +5,6 @@ const { trackEvent } = Plausible({
   domain: "swiftfiddle.com",
 });
 
-import { Snackbar } from "./snackbar.js";
-
 import ReconnectingWebSocket from "reconnecting-websocket";
 
 export class Runner {
@@ -107,11 +105,7 @@ export class Runner {
         const isCancel = error.name == "AbortError";
         completion([], "", error, isCancel);
         if (!isCancel) {
-          if (error.response) {
-            Snackbar.alert(error.response.statusText);
-          } else {
-            Snackbar.alert(error);
-          }
+          this.terminal.writeln(`\x1b[37m❌  ${error}\x1b[0m`);
         }
       })
       .finally(() => {
