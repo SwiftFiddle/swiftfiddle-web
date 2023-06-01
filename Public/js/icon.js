@@ -12,6 +12,7 @@ import {
   faQuestion,
   faCheckCircle as faCheckCircleSolid,
   faExclamationTriangle,
+  faHeart,
 } from "@fortawesome/pro-solid-svg-icons";
 import {
   faCheck,
@@ -23,7 +24,6 @@ import {
   faCheckCircle,
   faAt,
   faDonate,
-  faHeart,
 } from "@fortawesome/pro-regular-svg-icons";
 import { faMonitorHeartRate } from "@fortawesome/pro-light-svg-icons";
 import { faSpinnerThird, faRobot } from "@fortawesome/pro-duotone-svg-icons";
@@ -46,6 +46,7 @@ library.add(
   faQuestion,
   faCheckCircleSolid,
   faExclamationTriangle,
+  faHeart,
 
   faCheck,
   faClipboard,
@@ -56,7 +57,6 @@ library.add(
   faCheckCircle,
   faAt,
   faDonate,
-  faHeart,
 
   faMonitorHeartRate,
 

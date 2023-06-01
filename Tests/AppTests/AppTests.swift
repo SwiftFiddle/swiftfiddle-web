@@ -36,20 +36,23 @@ final class AppTests: XCTestCase {
          let files = contents["files"] as? [String: Any],
          let filename = files.keys.first, let file = files[filename] as? [String: Any],
          let content = file["content"] as? String {
-        XCTAssertEqual(content, """
-                    struct Player {
-                        var name: String
-                        var highScore: Int = 0
-                        var history: [Int] = []
+        XCTAssertEqual(
+          content,
+          """
+          struct Player {
+              var name: String
+              var highScore: Int = 0
+              var history: [Int] = []
 
-                        init(_ name: String) {
-                            self.name = name
-                        }
-                    }
+              init(_ name: String) {
+                  self.name = name
+              }
+          }
 
-                    var player = Player("Tomas")
+          var player = Player("Tomas")
 
-                    """)
+          """
+        )
       } else {
         XCTFail()
       }

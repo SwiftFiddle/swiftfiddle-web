@@ -6,7 +6,7 @@ func routes(_ app: Application) throws {
   app.get { (req) in try await index(req) }
   app.get("index.html") { (req) in try await index(req) }
   func index(_ req: Request) async throws -> View {
-    return try await req.view.render(
+    try await req.view.render(
       "index",
       InitialPageResponse(
         title: "Swift Playground",

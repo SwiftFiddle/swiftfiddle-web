@@ -173,6 +173,10 @@ export class Console {
     this.terminal.write(text);
   }
 
+  writeln(text) {
+    this.terminal.writeln(text);
+  }
+
   clear() {
     this.terminal.clear();
   }
