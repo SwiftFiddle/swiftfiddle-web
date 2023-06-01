@@ -15,107 +15,118 @@
     content="SwiftFiddle is an online playground for creating, sharing and embedding Swift fiddles (little Swift programs that run directly in your browser)." />
   <meta property="og:site_name" content="SwiftFiddle - Swift Online Playground" />
 
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+  <link rel="manifest" href="/site.webmanifest">
+  <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
   <meta name="msapplication-TileColor" content="#da532c">
-  <meta name="msapplication-config" content="/favicons/browserconfig.xml">
   <meta name="theme-color" content="#ffffff">
-  <link rel="apple-touch-icon" sizes="180x180" href="/favicons/apple-touch-icon.png">
-  <link rel="icon" type="image/png" sizes="32x32" href="/favicons/favicon-32x32.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="/favicons/favicon-16x16.png">
-  <link rel="manifest" href="/favicons/site.webmanifest">
-  <link rel="mask-icon" href="/favicons/safari-pinned-tab.svg" color="#5bbad5">
-  <link rel="shortcut icon" href="/favicons/favicon.ico">
+
+  <style>
+    body {
+      height: 100vh;
+      height: 100svh;
+    }
+
+    .swift-logo {
+      width: 2rem;
+      height: 2rem;
+    }
+
+    .button-circle {
+      width: 2rem;
+      height: 2rem;
+    }
+  </style>
 
   <title>SwiftFiddle - Swift Online Playground</title>
 </head>
 
 <body>
-  <!-- Main Content -->
-  <div class="container-fluid g-0 d-flex flex-column min-vh-100">
-    <header class="row m-0 g-0 justify-content-start bg-light">
-      <div class="col-md-auto m-2">
-        <a class="text-decoration-none" href="/">
-          <span class="fab fa-swift fa-2x text-primary d-inline-block align-middle"
-            style="min-width: 2rem; min-height: 2rem;"></span>
-          <span class="h4 text-dark d-inline-block align-middle m-0">Swift Playground</span>
-        </a>
-      </div>
-      <div class="col-md-auto p-2" style="min-width: 175px">
-        <span class="dropdown">
-          <button class="btn btn-outline-primary btn-sm rounded-pill dropdown-toggle w-100" type="button"
-            data-bs-toggle="dropdown" aria-expanded="false" aria-label="Version Picker">
-            <span class="fa-solid fa-code-branch fa-fw mx-2"
-              style="display: inline-block; min-width: 1em; min-height: 1em;"></span>
-            <span id="version-value" class="fw-bolder">#(stableVersion)</span>
-          </button>
-          <!-- beautify ignore:start -->
-          <ul id="version-picker" class="dropdown-menu">
-            #for(versionGroup in versions):
-              <li><h6 class="dropdown-header">#(versionGroup.majorVersion)</h6></li>
-              #for(version in versionGroup.versions):
-                #if(version == stableVersion):
-                  <li class="version-picker-item ms-2 active-tick"><a class="dropdown-item" data-target="#">#(version)</a></li>
-                #else:
-                  <li class="version-picker-item ms-2"><a class="dropdown-item" data-target="#">#(version)</a></li>
-                #endif
+  <div class="container-fluid d-flex flex-column bg-light g-0 vh-100">
+    <header class="row row-cols-1 g-0" style="padding: 0.25rem 0 0.25rem 0">
+      <div class="col">
+        <div class="d-inline-block mx-1">
+          <a class="text-decoration-none" href="/">
+            <span class="fa-brands fa-swift fa-2x text-primary d-inline-block align-middle px-1 swift-logo"></span><span
+              class="h4 text-dark d-inline-block align-middle m-0">Swift Playground</span>
+          </a>
+        </div>
+        <div class="d-inline-block px-1">
+          <span class="dropdown" style="min-width: 175px">
+            <button type="button" class="btn btn-outline-primary btn-sm rounded-pill dropdown-toggle m-1"
+              data-bs-toggle="dropdown" aria-expanded="false" aria-label="Version Picker" style="width: 160px;">
+              <span class="fa-solid fa-code-branch fa-fw d-inline-block mx-2"
+                style="min-width: 1em; min-height: 1em;"></span>
+              <span id="version-value" class="fw-bolder">#(stableVersion)</span>
+            </button>
+            <!-- beautify ignore:start -->
+            <ul id="version-picker" class="dropdown-menu">
+              #for(versionGroup in versions):
+                <li><h6 class="dropdown-header">#(versionGroup.majorVersion)</h6></li>
+                #for(version in versionGroup.versions):
+                  #if(version == stableVersion):
+                    <li class="version-picker-item ms-2 active-tick"><a class="dropdown-item" data-target="#">#(version)</a></li>
+                  #else:
+                    <li class="version-picker-item ms-2"><a class="dropdown-item" data-target="#">#(version)</a></li>
+                  #endif
+                #endfor
               #endfor
-            #endfor
-          </ul>
+            </ul>
           <!-- beautify ignore:end -->
-        </span>
-      </div>
-      <div class="col-md-auto m-2">
-        <button type="button" id="run-button" class="btn btn-primary btn-sm rounded-pill disabled">
-          <span id="run-button-icon" class="fa-solid fa-play fa-fw ms-2"
-            style="display: inline-block; min-width: 1em; min-height: 1em;"></span>
-          <span id="run-button-spinner" class="fad fa-spinner-third fa-spin fa-fw ms-2 d-none"></span>
-          <span class="mx-2">Run</span>
-        </button>
-        <button type="button" id="stop-button" class="btn btn-primary btn-sm rounded-pill ms-1 disabled">
-          <span class="fa-solid fa-stop fa-fw ms-2"
-            style="display: inline-block; min-width: 1em; min-height: 1em;"></span><span class="mx-2">Stop</span>
-        </button>
-        <button type="button" id="clear-console-button"
-          class="btn btn-outline-primary btn-sm rounded-circle p-0 ms-1 disabled" data-bs-toggle="tooltip"
-          data-bs-placement="bottom" data-bs-container="#clear-console-button" title="Clear Console"
-          aria-label="Clear Console" style="min-width: 2rem; min-height: 2rem;">
-          <span class="fa-solid fa-eraser fa-fw"></span>
-        </button>
-        <button type="button" id="format-button" class="btn btn-outline-primary btn-sm rounded-circle p-0 ms-1 disabled"
-          data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-container="#format-button" title="Format"
-          aria-label="Format" style="min-width: 2rem; min-height: 2rem;">
-          <span class="fa-solid fa-align-left fa-fw"></span>
-        </button>
-        <a id="lang-server-status" class="ms-2" href="#" onClick="return false;" data-bs-toggle="tooltip"
-          data-bs-placement="bottom" data-bs-trigger="hover" data-bs-html="true" data-bs-container="#lang-server-status"
-          title="<p class='p-0 m-0'><b>Language Server Status:</b></p><p class='p-0 m-0 text-end'>Initializing...&nbsp;<span class='fad fa-spinner-third fa-spin fa-fw'></span></p>"
-          aria-label="Language Server Status" style="min-width: 2rem; min-height: 2rem; display: inline-block;">
-          <img id="lang-server-status-icon" src="/images/lsp.svg" style="width: 41px; height: 24px"
-            aria-label="Language Server Status">
-        </a>
-      </div>
-      <div class="col-md-auto m-2">
-        <button type="button" id="share-button" class="btn btn-outline-primary btn-sm rounded-pill disabled">
-          <span class="fa-solid fa-share-alt fa-fw ms-2"
-            style="display: inline-block; min-width: 1em; min-height: 1em;"></span><span class="mx-2">Share</span>
-        </button>
-        <span data-bs-toggle="modal" data-bs-target="#settings-modal">
-          <button type="button" id="settings-button" class="btn btn-outline-primary btn-sm rounded-circle p-0 ms-1"
-            aria-label="Settings" data-bs-toggle="tooltip" data-bs-placement="bottom"
-            data-bs-container="#settings-button" title="Settings" style="min-width: 2rem; min-height: 2rem;">
-            <span class="fa-solid fa-cog fa-fw"></span>
+          </span>
+          <button id="run-button" type="button" class="btn btn-primary btn-sm rounded-pill px-3 m-1 disabled"
+            aria-label="Run">
+            <span id="run-button-icon" class="fa-solid fa-play fa-fw"></span>
+            <span id="run-button-spinner" class="fa-duotone fa-spinner-third fa-spin fa-fw d-none"></span>
+            <span class="px-1">Run</span>
           </button>
-        </span>
-        <span data-bs-toggle="modal" data-bs-target="#help-modal">
-          <button type="button" id="help-button" class="btn btn-outline-primary btn-sm rounded-circle p-0 ms-1"
-            aria-label="Help" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-container="#help-button"
-            title="Help" style="min-width: 2rem; min-height: 2rem;">
-            <span class="fa-solid fa-question fa-fw"></span>
+          <button id="stop-button" type="button" class="btn btn-primary btn-sm rounded-pill m-1 disabled">
+            <span class="fa-solid fa-stop fa-fw ms-2"
+              style="display: inline-block; min-width: 1em; min-height: 1em;"></span><span class="mx-2">Stop</span>
           </button>
-        </span>
+          <button id="clear-console-button" type="button"
+            class="btn btn-outline-primary btn-sm rounded-circle button-circle m-1 disabled" data-bs-toggle="tooltip"
+            data-bs-placement="bottom" data-bs-container="#clear-console-button" title="Clear Console"
+            aria-label="Clear Console">
+            <span class="fa-solid fa-eraser"></span>
+          </button>
+          <button id="format-button" type="button"
+            class="btn btn-outline-primary btn-sm rounded-circle button-circle m-1 disabled" data-bs-toggle="tooltip"
+            data-bs-placement="bottom" data-bs-container="#format-button" title="Format" aria-label="Format">
+            <span class="fa-solid fa-align-left"></span>
+          </button>
+          <a id="lang-server-status" class="m-1" href="#" onClick="return false;" data-bs-toggle="tooltip"
+            data-bs-placement="bottom" data-bs-trigger="hover" data-bs-html="true"
+            data-bs-container="#lang-server-status"
+            title="<p class='p-0 m-0'><b>Language Server Status:</b></p><p class='p-0 m-0 text-end'>Initializing...&nbsp;<span class='fa-duotone fa-spinner-third fa-spin fa-fw'></span></p>"
+            aria-label="Language Server Status" style="min-width: 2rem; min-height: 2rem; display: inline-block;">
+            <img id="lang-server-status-icon" src="/images/lsp.svg" style="width: 41px; height: 24px"
+              aria-label="Language Server Status">
+          </a>
+          <button type="button" id="share-button" class="btn btn-outline-primary btn-sm rounded-pill px-2 m-1 disabled">
+            <span class="fa-solid fa-share-alt mx-1"
+              style="display: inline-block; min-width: 1em; min-height: 1em;"></span><span class="mx-2">Share</span>
+          </button>
+          <span data-bs-toggle="modal" data-bs-target="#settings-modal">
+            <button type="button" id="settings-button"
+              class="btn btn-outline-primary btn-sm rounded-circle  button-circle m-1" aria-label="Settings"
+              data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-container="#settings-button" title="Settings">
+              <span class="fa-solid fa-cog"></span>
+            </button>
+          </span>
+          <span data-bs-toggle="modal" data-bs-target="#help-modal">
+            <button id="help-button" type="button"
+              class="btn btn-outline-primary btn-sm rounded-circle  button-circle m-1" aria-label="Help"
+              data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-container="#help-button" title="Help">
+              <span class="fa-solid fa-question"></span>
+            </button>
+        </div>
       </div>
     </header>
 
-    <main class="row bg-light flex-fill fill d-flex g-0">
+    <main class="row flex-fill fill d-flex g-0">
       <div class="col-md-6">
         <div id="editor-container" class="h-100"></div>
       </div>
@@ -124,37 +135,35 @@
       </div>
     </main>
 
-    <footer class="row p-1 mb-1 bg-light">
-      <div class="row p-0 m-0">
-        <div class="col-md-12 text-center text-dark">
-          <span class="mx-2">
-            <a class="text-reset text-decoration-none small d-inline-block" href="https://status.swiftfiddle.com"
-              target="_blank" rel="nofollow noopener noreferrer">
-              <span class="fa-light fa-monitor-heart-rate me-1 d-inline-block"
-                style="min-width: 1em; min-height: 1em;"></span>System Status</a>
-          </span>
-          <span class="mx-2">
-            <a class="text-reset text-decoration-none small d-inline-block"
-              href="https://github.com/swiftfiddle/swiftfiddle-web/issues/new" target="_blank"
-              rel="nofollow noopener noreferrer">
-              <span class="fa-regular fa-comment-alt-smile me-1 d-inline-block"
-                style="min-width: 1em; min-height: 1em;"></span>Feedback</a>
-          </span>
-          <span class="mx-2">
-            <a class="text-reset text-decoration-none small d-inline-block"
-              href="https://github.com/swiftfiddle/swiftfiddle-web" target="_blank" rel="nofollow noopener noreferrer">
-              <span class="fab fa-github me-1" style="min-width: 1em; min-height: 1em;"></span>Source Code</a>
-          </span>
-          <span class="mx-2">
-            <a class="text-reset text-decoration-none small d-inline-block" href="https://twitter.com/k_katsumi"
-              target="_blank" rel="nofollow noopener noreferrer">
-              <span class="fa-regular fa-at me-1" style="min-width: 1em; min-height: 1em;"></span>Creator</a>
-          </span>
-          <span class="mx-2">
-            <a class="text-reset text-decoration-none small d-inline-block"
-              href="https://github.com/sponsors/kishikawakatsumi" target="_blank" rel="nofollow noopener noreferrer">
-              <span class="fa-regular fa-heart me-1" style="min-width: 1em; min-height: 1em;"></span>Donate</a>
-          </span>
+    <footer class="row row-cols-1 g-0">
+      <div class="col p-1 text-center">
+        <div class="d-inline-block mx-2">
+          <a class="text-reset text-decoration-none small" href="https://status.swiftfiddle.com/" target="_blank"
+            rel="nofollow noopener noreferrer"><span class="fa-light fa-monitor-heart-rate"></span><span
+              class="mx-2">System
+              Status</span></a>
+        </div>
+        <div class="d-inline-block mx-2">
+          <a class="text-reset text-decoration-none small"
+            href="https://github.com/swiftfiddle/swiftfiddle-web/issues/new" target="_blank"
+            rel="nofollow noopener noreferrer"><span class="fa-regular fa-comment-alt-smile"></span><span
+              class="mx-2">Feedback</span></a>
+        </div>
+        <div class="d-inline-block mx-2">
+          <a class="text-reset text-decoration-none small" href="https://github.com/swiftfiddle/swiftfiddle-web"
+            target="_blank" rel="nofollow noopener noreferrer"><span class="fa-brands fa-github"></span><span
+              class="mx-2">Source
+              Code</span></a>
+        </div>
+        <div class="d-inline-block mx-2">
+          <a class="text-reset text-decoration-none small" href="https://hachyderm.io/@kishikawakatsumi" target="_blank"
+            rel="nofollow noopener noreferrer"><span class="fa-regular fa-at"></span><span
+              class="mx-2">Creator</span></a>
+        </div>
+        <div class="d-inline-block mx-2">
+          <a class="text-reset text-decoration-none small" href="https://github.com/sponsors/kishikawakatsumi"
+            target="_blank" rel="nofollow noopener noreferrer">
+            <span class="fa-solid fa-heart" style="color: #bf3989;"></span></span><span class="mx-2">Donate</span></a>
         </div>
       </div>
     </footer>
@@ -277,7 +286,8 @@
           </ul>
 
           <dl>
-            <dt class="bg-light rounded pt-2"><span class="fa-regular fa-keyboard fa-fw me-1"></span>Keyboard Shortcuts
+            <dt class="bg-light rounded pt-2"><span class="fa-regular fa-keyboard fa-fw me-1"></span>Keyboard
+              Shortcuts
             </dt>
             <dd>
               <table class="table">
@@ -305,7 +315,8 @@
           </dl>
 
           <dl>
-            <dt class="bg-light rounded pt-2"><span class="fa-regular fa-toolbox fa-fw me-1"></span>Installed Libraries
+            <dt class="bg-light rounded pt-2"><span class="fa-regular fa-toolbox fa-fw me-1"></span>Installed
+              Libraries
             </dt>
             <dd>
               <table class="table table-sm table-borderless">
@@ -334,7 +345,8 @@
           </dl>
 
           <dl>
-            <dt class="bg-light rounded pt-2"><span class="fa-regular fa-comment-alt-smile fa-fw me-1"></span>Feedback /
+            <dt class="bg-light rounded pt-2"><span class="fa-regular fa-comment-alt-smile fa-fw me-1"></span>Feedback
+              /
               Bug
               Report
             </dt>
