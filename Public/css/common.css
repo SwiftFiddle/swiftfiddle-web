@@ -3,6 +3,15 @@
   height: 2rem;
 }
 
+.svg-inline--fa.fa-fw {
+  width: 1em;
+}
+
+.terminal.xterm {
+  padding: calc(1rem * 0.25);
+  height: 100%;
+}
+
 a .card-body {
   -o-transition: 0.5s;
   -ms-transition: 0.5s;
@@ -13,9 +22,4 @@ a .card-body {
 
 a .card-body:hover {
   background-color: #f8f9fa;
-}
-
-.terminal.xterm {
-  padding: calc(1rem * 0.25);
-  height: 100%;
 }
