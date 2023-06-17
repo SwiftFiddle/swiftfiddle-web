@@ -38,6 +38,9 @@ export class Runner {
       signal: this.abortController.signal,
     })
       .then((response) => {
+        if (!response.ok) {
+          throw new Error(response.statusText);
+        }
         return response.json();
       })
       .then((response) => {
