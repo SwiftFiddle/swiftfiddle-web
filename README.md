@@ -1,7 +1,4 @@
 <p>
-<a href="https://github.com/swiftfiddle/swiftfiddle-web/actions">
-<img src="https://github.com/swiftfiddle/swiftfiddle-web/workflows/CI/badge.svg">
-</a>
 <img src="https://img.shields.io/badge/os-macOS/Linux-green.svg?style=flat" alt="macOS/Linux">
 <a href="http://swift.org">
 <img src="https://img.shields.io/badge/swift-5.4-orange.svg?style=flat" alt="Swift 5.4 Compatible">
