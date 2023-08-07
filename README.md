@@ -1,7 +1,7 @@
 <p>
 <img src="https://img.shields.io/badge/os-macOS/Linux-green.svg?style=flat" alt="macOS/Linux">
 <a href="http://swift.org">
-<img src="https://img.shields.io/badge/swift-5.4-orange.svg?style=flat" alt="Swift 5.4 Compatible">
+<img src="https://img.shields.io/badge/swift-5.8.1-orange.svg?style=flat" alt="Swift 5.8.1 Compatible">
 </a>
 <a href="https://github.com/swiftfiddle/swiftfiddle-web/blob/master/LICENSE">
 <img src="https://img.shields.io/badge/license-MIT-yellow.svg?style=flat" alt="MIT">
