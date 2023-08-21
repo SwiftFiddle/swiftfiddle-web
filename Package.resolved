@@ -24,8 +24,8 @@
         "repositoryURL": "https://github.com/vapor/console-kit.git",
         "state": {
           "branch": null,
-          "revision": "447f1046fb4e9df40973fe426ecb24a6f0e8d3b4",
-          "version": "4.6.0"
+          "revision": "9a12000f4064a2bdc49068d7258292ec1bdc88fc",
+          "version": "4.7.0"
         }
       },
       {
@@ -60,8 +60,8 @@
         "repositoryURL": "https://github.com/vapor/routing-kit.git",
         "state": {
           "branch": null,
-          "revision": "611bc45c5dfb1f54b84d99b89d1f72191fb6b71b",
-          "version": "4.7.2"
+          "revision": "e0539da5b60a60d7381f44cdcf04036f456cee2f",
+          "version": "4.8.0"
         }
       },
       {
@@ -159,8 +159,8 @@
         "repositoryURL": "https://github.com/apple/swift-nio-ssl.git",
         "state": {
           "branch": null,
-          "revision": "e866a626e105042a6a72a870c88b4c531ba05f83",
-          "version": "2.24.0"
+          "revision": "320bd978cceb8e88c125dcbb774943a92f6286e9",
+          "version": "2.25.0"
         }
       },
       {
@@ -186,8 +186,8 @@
         "repositoryURL": "https://github.com/vapor/vapor.git",
         "state": {
           "branch": null,
-          "revision": "474d91b67db9515b5bf3f3558635955c3fe18a44",
-          "version": "4.78.1"
+          "revision": "1bb4a2ed94bec7a92f92e82896408c785d068f5c",
+          "version": "4.79.0"
         }
       },
       {
