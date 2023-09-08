@@ -217,23 +217,32 @@ private func swiftPackageInfo(_ app: Application) -> [PackageInfo] {
   }
 }
 
+private func escape(_ s: String) -> String {
+  s
+    .replacingOccurrences(of: #"\"#, with: #"\\"#)
+    .replacingOccurrences(of: #"`"#, with: #"\`"#)
+}
+
 private let defaultCodeSnippet = #"""
 import Foundation
 
-func greet(_ something: String) -> String {
-  let greeting = "Hello, " + something + "!"
-  return greeting
-}
+let hello = "Hello, world!"
+let multilineString = """
+                  @@@
+      @@          @@@@
+    @@  @@@         @@@@@
+    @@@@@@@@@       @@@@@
+      @@@@@@@@@@    @@@@@@
+        @@@@@@@@@@  @@@@@@
+          @@@@@@@@@@@@@@@@@
+@           @@@@@@@@@@@@@@@
+@@@@@@        @@@@@@@@@@@@@
+  @@@@@@@@@@@@@@@@@@@@@@@@@@
+    @@@@@@@@@@@@@@@@@@@@@@@@
+        @@@@@@@@@@@@@     @
+                      \(hello)
+"""
 
-// Prints "Hello, World!"
-print(greet("World"))
-
-// Prints "Hello, Swift!"
-print(greet("Swift"))
+print(multilineString)
 
 """#
-
-private func escape(_ s: String) -> String {
-  s.replacingOccurrences(of: #"\"#, with: #"\\"#)
-    .replacingOccurrences(of: #"`"#, with: #"\`"#)
-}
