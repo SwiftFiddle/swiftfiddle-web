@@ -8,7 +8,9 @@
           "identity" : "swift-algorithms",
           "location" : {
             "remote" : [
-              "https://github.com/apple/swift-algorithms"
+              {
+                "urlString" : "https://github.com/apple/swift-algorithms"
+              }
             ]
           },
           "productFilter" : null,
@@ -29,7 +31,9 @@
           "identity" : "swift-atomics",
           "location" : {
             "remote" : [
-              "https://github.com/apple/swift-atomics"
+              {
+                "urlString" : "https://github.com/apple/swift-atomics"
+              }
             ]
           },
           "productFilter" : null,
@@ -50,7 +54,9 @@
           "identity" : "swift-collections",
           "location" : {
             "remote" : [
-              "https://github.com/apple/swift-collections"
+              {
+                "urlString" : "https://github.com/apple/swift-collections"
+              }
             ]
           },
           "productFilter" : null,
@@ -71,7 +77,9 @@
           "identity" : "swift-crypto",
           "location" : {
             "remote" : [
-              "https://github.com/apple/swift-crypto"
+              {
+                "urlString" : "https://github.com/apple/swift-crypto"
+              }
             ]
           },
           "productFilter" : null,
@@ -92,7 +100,9 @@
           "identity" : "swift-numerics",
           "location" : {
             "remote" : [
-              "https://github.com/apple/swift-numerics"
+              {
+                "urlString" : "https://github.com/apple/swift-numerics"
+              }
             ]
           },
           "productFilter" : null,
@@ -113,7 +123,9 @@
           "identity" : "swift-system",
           "location" : {
             "remote" : [
-              "https://github.com/apple/swift-system"
+              {
+                "urlString" : "https://github.com/apple/swift-system"
+              }
             ]
           },
           "productFilter" : null,
@@ -132,7 +144,7 @@
   "name" : "App",
   "packageKind" : {
     "root" : [
-      "/tmp/tmp.pwQsl35cBJ"
+      "/tmp/tmp.ebNnEbVcEc"
     ]
   },
   "pkgConfig" : null,
@@ -206,6 +218,7 @@
 
       ],
       "name" : "App",
+      "packageAccess" : false,
       "resources" : [
 
       ],
