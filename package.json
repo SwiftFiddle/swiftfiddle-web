@@ -1,15 +1,13 @@
 {
   "scripts": {
-    "build": "webpack --progress --config webpack.prod.js",
+    "prod": "webpack --progress --config webpack.prod.js",
     "dev": "webpack --progress --config webpack.dev.js"
   },
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "6.4.2",
     "@fortawesome/free-brands-svg-icons": "6.4.2",
-    "@fortawesome/pro-duotone-svg-icons": "6.4.0",
-    "@fortawesome/pro-light-svg-icons": "6.4.0",
-    "@fortawesome/pro-regular-svg-icons": "6.4.0",
-    "@fortawesome/pro-solid-svg-icons": "6.4.0",
+    "@fortawesome/free-regular-svg-icons": "6.4.2",
+    "@fortawesome/free-solid-svg-icons": "6.4.2",
     "@popperjs/core": "2.11.8",
     "bootstrap": "5.3.2",
     "monaco-editor": "0.44.0",

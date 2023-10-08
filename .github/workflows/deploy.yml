@@ -13,8 +13,6 @@ env:
   RESOURCE_GROUP: swiftfiddle
   SERVICE_NAME: web-frontend
 
-  FONTAWESOME_TOKEN: ${{ secrets.FONTAWESOME_TOKEN }}
-
   CLOUDFLARE_EMAIL: ${{ secrets.CLOUDFLARE_EMAIL }}
   CLOUDFLARE_API_KEY: ${{ secrets.CLOUDFLARE_API_KEY }}
   CLOUDFLARE_ZONE_ID: ${{ secrets.CLOUDFLARE_ZONE_ID }}
@@ -59,7 +57,7 @@ jobs:
 
           IMAGE_TAG=${{ env.REGISTRY_NAME }}/${{ env.RESOURCE_GROUP }}/${{ env.SERVICE_NAME }}:latest
 
-          docker build --build-arg FONTAWESOME_TOKEN=${{ env.FONTAWESOME_TOKEN }} --rm --tag ${IMAGE_TAG} .
+          docker build --rm --tag ${IMAGE_TAG} .
           docker push ${IMAGE_TAG}
 
   deploy:

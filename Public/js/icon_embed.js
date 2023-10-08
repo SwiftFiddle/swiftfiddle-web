@@ -3,8 +3,8 @@ import {
   faCodeBranch,
   faPlay,
   faExternalLinkAlt,
-} from "@fortawesome/pro-solid-svg-icons";
-import { faSpinnerThird } from "@fortawesome/pro-duotone-svg-icons";
+} from "@fortawesome/free-solid-svg-icons";
+// import { faSpinnerThird } from "@fortawesome/pro-duotone-svg-icons";
 
-library.add(faCodeBranch, faPlay, faExternalLinkAlt, faSpinnerThird);
+library.add(faCodeBranch, faPlay, faExternalLinkAlt /*faSpinnerThird*/);
 dom.watch();

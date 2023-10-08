@@ -4,29 +4,27 @@ import { config, library, dom } from "@fortawesome/fontawesome-svg-core";
 import {
   faCodeBranch,
   faPlay,
+  faCircleNotch,
   faStop,
   faEraser,
   faAlignLeft,
   faShareNodes,
   faCog,
   faQuestion,
+  faFileImport,
+  faToolbox,
+  faHeartPulse,
+  faAt,
+  faHeart,
   faCheckCircle as faCheckCircleSolid,
   faExclamationTriangle,
-  faHeart,
-} from "@fortawesome/pro-solid-svg-icons";
+} from "@fortawesome/free-solid-svg-icons";
 import {
-  faCheck,
   faClipboard,
-  faFileImport,
   faKeyboard,
-  faToolbox,
-  faMessageSmile,
   faCheckCircle,
-  faAt,
-  faDonate,
-} from "@fortawesome/pro-regular-svg-icons";
-import { faMonitorHeartRate } from "@fortawesome/pro-light-svg-icons";
-import { faSpinnerThird, faRobot } from "@fortawesome/pro-duotone-svg-icons";
+  faMessage,
+} from "@fortawesome/free-regular-svg-icons";
 import {
   faSwift,
   faGithub,
@@ -38,30 +36,25 @@ config.searchPseudoElements = true;
 library.add(
   faCodeBranch,
   faPlay,
+  faCircleNotch,
   faStop,
   faEraser,
   faAlignLeft,
   faShareNodes,
   faCog,
   faQuestion,
+  faFileImport,
+  faToolbox,
+  faHeartPulse,
+  faAt,
+  faHeart,
   faCheckCircleSolid,
   faExclamationTriangle,
-  faHeart,
 
-  faCheck,
   faClipboard,
-  faFileImport,
   faKeyboard,
-  faToolbox,
-  faMessageSmile,
   faCheckCircle,
-  faAt,
-  faDonate,
-
-  faMonitorHeartRate,
-
-  faSpinnerThird,
-  faRobot,
+  faMessage,
 
   faSwift,
   faGithub,
