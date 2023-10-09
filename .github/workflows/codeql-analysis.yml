@@ -27,7 +27,7 @@ jobs:
   analyze:
     name: Analyze
     runs-on: ubuntu-latest
-    container: swift:5.8.1-focal
+    container: swift:5.9.0-focal
     permissions:
       actions: read
       contents: read
