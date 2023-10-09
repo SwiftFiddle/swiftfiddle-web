@@ -205,13 +205,12 @@ private func swiftPackageInfo(_ app: Application) -> [PackageInfo] {
       guard let sourceControl = dependency.sourceControl.first else { return nil }
       guard let range = sourceControl.requirement.range.first else { return nil }
       return PackageInfo(
-        url: sourceControl.location.remote.first ?? "",
+        url: sourceControl.location.remote.first?.urlString ?? "",
         name: sourceControl.identity,
         productName: productName,
         version: range.lowerBound
       )
     }
-
   } catch {
     return []
   }

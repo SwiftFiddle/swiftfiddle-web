@@ -17,7 +17,11 @@ struct SourceControl: Codable {
 }
 
 struct Location: Codable {
-  let remote: [String]
+  let remote: [Remote]
+}
+
+struct Remote: Codable {
+  let urlString: String
 }
 
 struct Requirement: Codable {
