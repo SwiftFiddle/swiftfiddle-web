@@ -194,6 +194,20 @@ export class Runner {
     this.abortController.abort();
   }
 
+  printTimestamp() {
+    const now = new Date();
+    const timestamp = now.toLocaleString("en-US", {
+      hour: "numeric",
+      minute: "2-digit",
+      second: "2-digit",
+      hour12: false,
+    });
+    const padding = this.terminal.cols - timestamp.length;
+    this.terminal.writeln(
+      `\x1b[2m\x1b[38;5;15;48;5;238m${" ".repeat(padding)}${timestamp}\x1b[0m`
+    );
+  }
+
   createConnection(endpoint) {
     if (
       this.connection &&
