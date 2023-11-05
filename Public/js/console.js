@@ -164,6 +164,34 @@ export class Console {
     }, interval);
   }
 
+  showSpinner_(message) {
+    const self = this;
+    const startTime = performance.now();
+    const interval = 200;
+    const SPINNER = ["⠋", "⠙", "⠹", "⠸", "⠼", "⠴", "⠦", "⠧", "⠇", "⠏"];
+    let spins = 0;
+    function updateSpinner(message) {
+      const progressText = `${SPINNER[spins % SPINNER.length]} ${message}`;
+      const dotCount = Math.floor((spins * 2) / 4) % 4;
+      const animationText = `${progressText} ${".".repeat(dotCount)}`;
+      const endTime = performance.now();
+      const seconds = `${((endTime - startTime) / 1000).toFixed(0)}s`;
+      const speces = " ".repeat(
+        self.terminal.cols - animationText.length - seconds.length
+      );
+      self.terminal.write(
+        `${ESC}1m${ESC}34m${animationText}${ESC}0m${speces}${seconds}`
+      );
+      spins++;
+    }
+
+    updateSpinner(message);
+    return setInterval(() => {
+      this.eraseLine();
+      updateSpinner(message);
+    }, interval);
+  }
+
   hideSpinner(cancelToken) {
     clearInterval(cancelToken);
     this.eraseLine();

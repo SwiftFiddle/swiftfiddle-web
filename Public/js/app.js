@@ -298,7 +298,7 @@ export class App {
     reader.readAsText(files[0], "UTF-8");
   }
 
-  run() {
+  async run() {
     if (runButton.classList.contains("disabled")) {
       return;
     }
@@ -307,21 +307,6 @@ export class App {
     if (stopButton) {
       stopButton.classList.remove("disabled");
     }
-
-    document.getElementById("run-button-icon").classList.add("d-none");
-    document.getElementById("run-button-spinner").classList.remove("d-none");
-
-    this.editor.clearMarkers();
-
-    this.terminal.saveCursorPosition();
-    this.terminal.switchAlternateBuffer();
-    this.terminal.moveCursorTo(0, 0);
-    this.terminal.hideCursor();
-
-    const altBuffer = [];
-    const cancelToken = this.terminal.showSpinner("Running", () => {
-      return altBuffer.filter(Boolean);
-    });
 
     const params = {
       toolchain_version: this.versionPicker.selected,
@@ -339,60 +324,80 @@ export class App {
       params.options = window.appConfig.compilerOptions;
     }
 
-    const runner = new Runner(this.terminal);
-    runner.onmessage = (message) => {
-      altBuffer.length = 0;
-      altBuffer.push(...this.parseMessage(message));
-    };
+    if (params.toolchain_version === "nightly-5.6") {
+      const runner = new Runner(this.terminal);
+      await runner.run_(params);
+    } else {
+      document.getElementById("run-button-icon").classList.add("d-none");
+      document.getElementById("run-button-spinner").classList.remove("d-none");
 
-    let stopRunner;
-    if (stopButton) {
-      stopRunner = () => {
-        runner.stop();
-        stopButton.removeEventListener("click", stopRunner);
+      this.editor.clearMarkers();
+
+      this.terminal.saveCursorPosition();
+      this.terminal.switchAlternateBuffer();
+      this.terminal.moveCursorTo(0, 0);
+      this.terminal.hideCursor();
+
+      const altBuffer = [];
+      const cancelToken = this.terminal.showSpinner("Running", () => {
+        return altBuffer.filter(Boolean);
+      });
+
+      const runner = new Runner(this.terminal);
+      runner.onmessage = (message) => {
+        altBuffer.length = 0;
+        altBuffer.push(...this.parseMessage(message));
       };
-      stopButton.addEventListener("click", stopRunner);
+
+      let stopRunner;
+      if (stopButton) {
+        stopRunner = () => {
+          runner.stop();
+          stopButton.removeEventListener("click", stopRunner);
+        };
+        stopButton.addEventListener("click", stopRunner);
+      }
+
+      runner.run(params, (buffer, stderr, error, isCancel) => {
+        runButton.classList.remove("disabled");
+        if (stopButton) {
+          stopButton.classList.add("disabled");
+        }
+
+        document.getElementById("run-button-icon").classList.remove("d-none");
+        document.getElementById("run-button-spinner").classList.add("d-none");
+
+        this.terminal.hideSpinner(cancelToken);
+        this.terminal.switchNormalBuffer();
+        this.terminal.showCursor();
+        this.terminal.restoreCursorPosition();
+        this.terminal.reset();
+
+        if (isCancel) {
+          buffer = altBuffer.map((b) => `${b.text}\n`);
+        }
+
+        this.history.forEach((line) => {
+          const regex =
+            /[\u001b\u009b][[()#;?]*(?:[0-9]{1,4}(?:;[0-9]{0,4})*)?[0-9A-ORZcf-nqry=><]/g;
+          const plainText = line.replace(regex, "");
+          this.terminal.write(`\x1b[38;2;120;124;130m${plainText}\x1b[0m`); // #787C82
+        });
+        this.history.push(...buffer);
+
+        buffer.forEach((line) => {
+          this.terminal.write(line);
+        });
+
+        const markers = this.parseErrorMessage(stderr);
+        this.editor.updateMarkers(markers);
+        this.editor.focus();
+
+        if (stopButton) {
+          stopButton.removeEventListener("click", stopRunner);
+        }
+      });
     }
-
-    runner.run(params, (buffer, stderr, error, isCancel) => {
-      runButton.classList.remove("disabled");
-      if (stopButton) {
-        stopButton.classList.add("disabled");
-      }
-
-      document.getElementById("run-button-icon").classList.remove("d-none");
-      document.getElementById("run-button-spinner").classList.add("d-none");
-
-      this.terminal.hideSpinner(cancelToken);
-      this.terminal.switchNormalBuffer();
-      this.terminal.showCursor();
-      this.terminal.restoreCursorPosition();
-      this.terminal.reset();
-
-      if (isCancel) {
-        buffer = altBuffer.map((b) => `${b.text}\n`);
-      }
-
-      this.history.forEach((line) => {
-        const regex =
-          /[\u001b\u009b][[()#;?]*(?:[0-9]{1,4}(?:;[0-9]{0,4})*)?[0-9A-ORZcf-nqry=><]/g;
-        const plainText = line.replace(regex, "");
-        this.terminal.write(`\x1b[38;2;120;124;130m${plainText}\x1b[0m`); // #787C82
-      });
-      this.history.push(...buffer);
-
-      buffer.forEach((line) => {
-        this.terminal.write(line);
-      });
-
-      const markers = this.parseErrorMessage(stderr);
-      this.editor.updateMarkers(markers);
-      this.editor.focus();
-
-      if (stopButton) {
-        stopButton.removeEventListener("click", stopRunner);
-      }
-    });
   }
 
   parseMessage(message) {
