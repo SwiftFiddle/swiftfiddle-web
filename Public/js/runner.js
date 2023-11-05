@@ -177,15 +177,16 @@ export class Runner {
         }
         result = await reader.read();
       }
+
+      return { stdout: outputs.join("\n"), stderr: errors.join("\n") };
     } catch (error) {
       const isCancel = error.name == "AbortError";
-      completion([], "", error, isCancel);
       if (!isCancel) {
         this.terminal.writeln(`\x1b[37m❌  ${error}\x1b[0m`);
       }
-    }
 
-    return { stdout: outputs.join("\n"), stderr: errors.join("\n") };
+      return { stdout: "", stderr: "" };
+    }
   }
 
   stop() {
