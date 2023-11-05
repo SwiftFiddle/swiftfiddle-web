@@ -121,7 +121,7 @@ export class Runner {
   }
 
   async run_(params) {
-    const path = `/runner/${params.toolchain_version}/run_`;
+    const path = `/runner/${params.toolchain_version}/run`;
     if (params.toolchain_version !== "5.9.1") {
       trackEvent("run", { props: { path } });
     }
