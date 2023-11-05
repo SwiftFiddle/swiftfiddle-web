@@ -6,7 +6,6 @@ const { trackEvent } = Plausible({
 });
 
 import ReconnectingWebSocket from "reconnecting-websocket";
-import { TextLineStream } from "./textlinesteam.js";
 
 export class Runner {
   constructor(terminal) {
