@@ -6,7 +6,6 @@ const { trackEvent } = Plausible({
 });
 
 import ReconnectingWebSocket from "reconnecting-websocket";
-import { TextLineStream } from "./textlinesteam.js";
 
 export class Runner {
   constructor(terminal) {
@@ -120,92 +119,8 @@ export class Runner {
       });
   }
 
-  async run_(params) {
-    const path = `/runner/${params.toolchain_version}/run_`;
-    if (params.toolchain_version !== "5.9.1") {
-      trackEvent("run", { props: { path } });
-    }
-
-    const cancelToken = this.terminal.showSpinner_("Running");
-
-    params._streaming = true;
-    try {
-      const response = await fetch(path, {
-        method: "POST",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(params),
-        signal: this.abortController.signal,
-      });
-
-      const reader = response.body
-        .pipeThrough(new TextDecoderStream())
-        .pipeThrough(new TextLineStream({ allowCR: true }))
-        .getReader();
-      let result = await reader.read();
-
-      this.terminal.hideSpinner(cancelToken);
-      this.printTimestamp();
-
-      if (!response.ok) {
-        this.terminal.writeln(
-          `\x1b[37m❌  ${response.status} ${response.statusText}\x1b[0m`
-        );
-        this.terminal.hideSpinner(cancelToken);
-      }
-
-      const outputs = [];
-      const errors = [];
-      while (!result.done) {
-        const text = result.value;
-        const response = JSON.parse(text);
-        switch (response.kind) {
-          case "version":
-            this.terminal.writeln(
-              `\x1b[38;2;127;168;183m${response.text}\x1b[0m`
-            );
-            break;
-          case "stderr":
-            this.terminal.write(`${response.text}\x1b[0m`);
-            errors.push(response.text);
-            break;
-          case "stdout":
-            this.terminal.write(`\x1b[37m${response.text}\x1b[0m`);
-            outputs.push(response.text);
-            break;
-        }
-        result = await reader.read();
-      }
-
-      return { stdout: outputs.join("\n"), stderr: errors.join("\n") };
-    } catch (error) {
-      const isCancel = error.name == "AbortError";
-      if (!isCancel) {
-        this.terminal.writeln(`\x1b[37m❌  ${error}\x1b[0m`);
-      }
-
-      return { stdout: "", stderr: "" };
-    }
-  }
-
   stop() {
     this.abortController.abort();
-  }
-
-  printTimestamp() {
-    const now = new Date();
-    const timestamp = now.toLocaleString("en-US", {
-      hour: "numeric",
-      minute: "2-digit",
-      second: "2-digit",
-      hour12: false,
-    });
-    const padding = this.terminal.cols - timestamp.length;
-    this.terminal.writeln(
-      `\x1b[2m\x1b[38;5;15;48;5;238m${" ".repeat(padding)}${timestamp}\x1b[0m`
-    );
   }
 
   createConnection(endpoint) {
