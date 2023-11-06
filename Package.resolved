@@ -15,8 +15,8 @@
         "repositoryURL": "https://github.com/vapor/async-kit.git",
         "state": {
           "branch": null,
-          "revision": "eab9edff78e8ace20bd7cb6e792ab46d54f59ab9",
-          "version": "1.18.0"
+          "revision": "7ece208cd401687641c88367a00e3ea2b04311f1",
+          "version": "1.19.0"
         }
       },
       {
@@ -24,8 +24,8 @@
         "repositoryURL": "https://github.com/vapor/console-kit.git",
         "state": {
           "branch": null,
-          "revision": "ccd0773b3ad3c67a19918aaef6903678592bb087",
-          "version": "4.9.0"
+          "revision": "f4ef965dadd999f7e4687053153c97b8b320819c",
+          "version": "4.10.1"
         }
       },
       {
@@ -141,8 +141,8 @@
         "repositoryURL": "https://github.com/apple/swift-nio.git",
         "state": {
           "branch": null,
-          "revision": "9497e442486aab515c8486ef8153a506f93a5032",
-          "version": "2.61.0"
+          "revision": "853522d90871b4b63262843196685795b5008c46",
+          "version": "2.61.1"
         }
       },
       {
@@ -195,8 +195,8 @@
         "repositoryURL": "https://github.com/vapor/vapor.git",
         "state": {
           "branch": null,
-          "revision": "288d73a368ac0d0e228dd9b81eecc576b50b9d6d",
-          "version": "4.84.6"
+          "revision": "0fa646e517dff34aa5d0ae12d221021ec07a801d",
+          "version": "4.85.1"
         }
       },
       {
