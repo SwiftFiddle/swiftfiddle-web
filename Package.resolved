@@ -24,8 +24,8 @@
         "repositoryURL": "https://github.com/vapor/console-kit.git",
         "state": {
           "branch": null,
-          "revision": "18262d24c98c4b76aed2d6def3544b58d0cbad63",
-          "version": "4.13.0"
+          "revision": "a7dd7001196d39b758e4990ec0f26f80162f4c84",
+          "version": "4.14.0"
         }
       },
       {
@@ -42,8 +42,8 @@
         "repositoryURL": "https://github.com/vapor/leaf-kit.git",
         "state": {
           "branch": null,
-          "revision": "13f2fc4c8479113cd23876d9a434ef4573e368bb",
-          "version": "1.10.2"
+          "revision": "547a1340b3a063ca738be4351660f59179c8dc34",
+          "version": "1.10.3"
         }
       },
       {
@@ -195,8 +195,8 @@
         "repositoryURL": "https://github.com/vapor/vapor.git",
         "state": {
           "branch": null,
-          "revision": "c710b8f4412aaa69ab03e77b4be27ce799f5fc1e",
-          "version": "4.88.0"
+          "revision": "00c902ce53f8b00703e2edcd457400fef422c7fd",
+          "version": "4.89.1"
         }
       },
       {
