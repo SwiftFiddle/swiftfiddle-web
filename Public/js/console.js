@@ -128,7 +128,7 @@ export class Console {
     this.terminal.write("\x9B?47h");
   }
 
-  showSpinner(message, progress) {
+  showSpinner(message) {
     const self = this;
     const startTime = performance.now();
     const interval = 200;
@@ -149,17 +149,9 @@ export class Console {
       spins++;
     }
 
-    let numberOfLines = 0;
     updateSpinner(message);
     return setInterval(() => {
       this.eraseLine();
-      const lines = progress();
-      this.eraseLines(numberOfLines);
-      numberOfLines = 0;
-      lines.forEach((buffer) => {
-        numberOfLines += buffer.numberOfLines;
-        this.terminal.writeln(buffer.text);
-      });
       updateSpinner(message);
     }, interval);
   }

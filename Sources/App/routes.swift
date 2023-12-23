@@ -112,19 +112,24 @@ func routes(_ app: Application) throws {
     return try await req.client.send(clientRequest)
   }
 
-  app.on(.POST, "runner", "*", "run", body: .collect(maxSize: "10mb")) { (req) -> ClientResponse in
+  app.on(.POST, "runner", "stable", "run", body: .collect(maxSize: "10mb")) { (req) -> ClientResponse in
+    guard let data = req.body.data else { throw Abort(.badRequest) }
+
+    let path = "/runner/\(stableVersion())/run"
+    let clientRequest = ClientRequest(
+      method: .POST,
+      url: URI(scheme: .https, host: "swiftfiddle.com", path: path),
+      headers: HTTPHeaders([("Content-type", "application/json")]),
+      body: data
+    )
+    return try await req.client.send(clientRequest)
+  }
+
+  app.on(.POST, "runner", "latest", "run", body: .collect(maxSize: "10mb")) { (req) -> ClientResponse in
     guard let data = req.body.data else { throw Abort(.badRequest) }
     let latestVersion = (try? latestVersion()) ?? stableVersion()
 
-    let path: String
-    if req.url.path.contains("/stable/") {
-      path = "/runner/\(stableVersion())/run"
-    } else if req.url.path.contains("/latest/") {
-      path = "/runner/\(latestVersion)/run"
-    } else {
-      path = req.url.path
-    }
-
+    let path = "/runner/\(latestVersion)/run"
     let clientRequest = ClientRequest(
       method: .POST,
       url: URI(scheme: .https, host: "swiftfiddle.com", path: path),
