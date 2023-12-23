@@ -298,7 +298,7 @@ export class App {
     reader.readAsText(files[0], "UTF-8");
   }
 
-  run() {
+  async run() {
     if (runButton.classList.contains("disabled")) {
       return;
     }
@@ -312,16 +312,6 @@ export class App {
     document.getElementById("run-button-spinner").classList.remove("d-none");
 
     this.editor.clearMarkers();
-
-    this.terminal.saveCursorPosition();
-    this.terminal.switchAlternateBuffer();
-    this.terminal.moveCursorTo(0, 0);
-    this.terminal.hideCursor();
-
-    const altBuffer = [];
-    const cancelToken = this.terminal.showSpinner("Running", () => {
-      return altBuffer.filter(Boolean);
-    });
 
     const params = {
       toolchain_version: this.versionPicker.selected,
@@ -340,10 +330,6 @@ export class App {
     }
 
     const runner = new Runner(this.terminal);
-    runner.onmessage = (message) => {
-      altBuffer.length = 0;
-      altBuffer.push(...this.parseMessage(message));
-    };
 
     let stopRunner;
     if (stopButton) {
@@ -354,154 +340,22 @@ export class App {
       stopButton.addEventListener("click", stopRunner);
     }
 
-    runner.run(params, (buffer, stderr, error, isCancel) => {
-      runButton.classList.remove("disabled");
-      if (stopButton) {
-        stopButton.classList.add("disabled");
-      }
+    const markers = await runner.run(params);
 
-      document.getElementById("run-button-icon").classList.remove("d-none");
-      document.getElementById("run-button-spinner").classList.add("d-none");
-
-      this.terminal.hideSpinner(cancelToken);
-      this.terminal.switchNormalBuffer();
-      this.terminal.showCursor();
-      this.terminal.restoreCursorPosition();
-      this.terminal.reset();
-
-      if (isCancel) {
-        buffer = altBuffer.map((b) => `${b.text}\n`);
-      }
-
-      this.history.forEach((line) => {
-        const regex =
-          /[\u001b\u009b][[()#;?]*(?:[0-9]{1,4}(?:;[0-9]{0,4})*)?[0-9A-ORZcf-nqry=><]/g;
-        const plainText = line.replace(regex, "");
-        this.terminal.write(`\x1b[38;2;120;124;130m${plainText}\x1b[0m`); // #787C82
-      });
-      this.history.push(...buffer);
-
-      buffer.forEach((line) => {
-        this.terminal.write(line);
-      });
-
-      const markers = this.parseErrorMessage(stderr);
-      this.editor.updateMarkers(markers);
-      this.editor.focus();
-
-      if (stopButton) {
-        stopButton.removeEventListener("click", stopRunner);
-      }
-    });
-  }
-
-  parseMessage(message) {
-    const lines = [];
-
-    const data = JSON.parse(message);
-    const version = data.version;
-    const stderr = data.errors;
-    const stdout = data.output;
-
-    if (version) {
-      lines.push(
-        ...version
-          .split("\n")
-          .filter(Boolean)
-          .map((line) => {
-            return {
-              text: `\x1b[38;2;127;168;183m${line}\x1b[0m`, // #7FA8B7
-              numberOfLines: Math.ceil(line.length / this.terminal.cols),
-            };
-          })
-      );
-    }
-    if (stderr) {
-      lines.push(
-        ...stderr
-          .split("\n")
-          .filter(Boolean)
-          .map((line) => {
-            return {
-              text: `\x1b[2m\x1b[37m${line}\x1b[0m`,
-              numberOfLines: Math.ceil(line.length / this.terminal.cols),
-            };
-          })
-      );
-    }
-    if (stdout) {
-      lines.push(
-        ...stdout
-          .split("\n")
-          .filter(Boolean)
-          .map((line) => {
-            return {
-              text: `\x1b[37m${line}\x1b[0m`,
-              numberOfLines: Math.ceil(line.length / this.terminal.cols),
-            };
-          })
-      );
+    runButton.classList.remove("disabled");
+    if (stopButton) {
+      stopButton.classList.add("disabled");
     }
 
-    return lines;
-  }
+    document.getElementById("run-button-icon").classList.remove("d-none");
+    document.getElementById("run-button-spinner").classList.add("d-none");
 
-  parseErrorMessage(message) {
-    const matches = message
-      .replace(
-        // Remove all ANSI colors/styles from strings
-        // https://stackoverflow.com/a/29497680/1733883
-        // https://github.com/chalk/ansi-regex/blob/main/index.js#L3
-        /[\u001b\u009b][[()#;?]*(?:[0-9]{1,4}(?:;[0-9]{0,4})*)?[0-9A-ORZcf-nqry=><]/g,
-        ""
-      )
-      .matchAll(
-        /(?:\/main\.swift|<stdin>):(\d+):(\d+): (error|warning|note): ([\s\S]*?)\n*(?=(?:\/|$))/gi
-      );
-    return [...matches].map((match) => {
-      const row = +match[1];
-      let column = +match[2];
-      const text = match[4];
-      const type = match[3];
-      let severity;
-      switch (type) {
-        case "warning":
-          severity = 4; // monaco.MarkerSeverity.Warning;
-          break;
-        case "error":
-          severity = 8; // monaco.MarkerSeverity.Error;
-          break;
-        default: // monaco.MarkerSeverity.Info;
-          severity = 2;
-          break;
-      }
+    this.editor.updateMarkers(markers);
+    this.editor.focus();
 
-      let length;
-      if (text.match(/~+\^~+/)) {
-        // ~~~^~~~
-        length = text.match(/~+\^~+/)[0].length;
-        column -= text.match(/~+\^/)[0].length - 1;
-      } else if (text.match(/\^~+/)) {
-        // ^~~~
-        length = text.match(/\^~+/)[0].length;
-      } else if (text.match(/~+\^/)) {
-        // ~~~^
-        length = text.match(/~+\^/)[0].length;
-        column -= length - 1;
-      } else if (text.match(/\^/)) {
-        // ^
-        length = 1;
-      }
-
-      return {
-        startLineNumber: row,
-        startColumn: column,
-        endLineNumber: row,
-        endColumn: column + length,
-        message: text,
-        severity: severity,
-      };
-    });
+    if (stopButton) {
+      stopButton.removeEventListener("click", stopRunner);
+    }
   }
 
   saveEditState() {

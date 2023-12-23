@@ -1,11 +1,6 @@
 "use strict";
 
-import Plausible from "plausible-tracker";
-const { trackEvent } = Plausible({
-  domain: "swiftfiddle.com",
-});
-
-import ReconnectingWebSocket from "reconnecting-websocket";
+import { TextLineStream } from "./textlinesteam.js";
 
 export class Runner {
   constructor(terminal) {
@@ -14,155 +9,161 @@ export class Runner {
     this.onmessage = () => {};
   }
 
-  run(params, completion) {
-    if (!window.appConfig.isEmbedded) {
-      this.connection = this.createConnection(
-        `wss://swiftfiddle.com/runner/${params.toolchain_version}/logs/${params._nonce}`
-      );
-    }
+  async run(params) {
+    const cancelToken = this.terminal.showSpinner("Running");
 
-    const startTime = performance.now();
+    this.terminal.hideCursor();
 
-    const path = `/runner/${params.toolchain_version}/run`;
-    if (params.toolchain_version !== "5.8.1") {
-      trackEvent("run", { props: { path } });
-    }
-
-    fetch(path, {
-      method: "POST",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(params),
-      signal: this.abortController.signal,
-    })
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error(response.statusText);
-        }
-        return response.json();
-      })
-      .then((response) => {
-        const endTime = performance.now();
-        const execTime = ` ${((endTime - startTime) / 1000).toFixed(0)}s`;
-
-        const now = new Date();
-        const timestamp = now.toLocaleString("en-US", {
-          hour: "numeric",
-          minute: "2-digit",
-          second: "2-digit",
-          hour12: false,
-        });
-
-        const buffer = [];
-        buffer.push(
-          `\x1b[38;2;127;168;183m${response.version // #7FA8B7
-            .split("\n")
-            .map((line, i) => {
-              // prettier-ignore
-              const padding = this.terminal.cols - line.length - timestamp.length - execTime.length;
-              let _1 = "";
-              if (padding < 0) {
-                _1 = `\x1b[0m${timestamp}${execTime}\n`;
-              } else {
-                _1 = "";
-              }
-              let _2 = "";
-              if (padding >= 0) {
-                _2 = `${" ".repeat(padding)}\x1b[0m${timestamp}${execTime}`;
-              } else {
-                _2 = "";
-              }
-              if (i == 0) {
-                return `${_1}\x1b[38;2;127;168;183m${line}\x1b[0m${_2}`; // #7FA8B7
-              } else {
-                return `\x1b[38;2;127;168;183m${line}\x1b[0m`; // #7FA8B7
-              }
-            })
-            .join("\n")}\x1b[0m`
-        );
-
-        const matchTimeout = response.errors.match(
-          /Maximum execution time of \d+ seconds exceeded\./
-        );
-        if (matchTimeout) {
-          buffer.push(`${response.errors.replace(matchTimeout[0], "")}\x1b[0m`);
-        } else {
-          buffer.push(`${response.errors}\x1b[0m`);
-        }
-
-        if (response.output) {
-          buffer.push(`\x1b[37m${response.output}\x1b[0m`);
-        } else {
-          buffer.push(`\x1b[0m\x1b[1m*** No output. ***\x1b[0m\n`);
-        }
-
-        if (matchTimeout) {
-          buffer.push(`\x1b[31;1m${matchTimeout[0]}\n`); // Timeout error message
-        }
-
-        completion(buffer, response.errors, null);
-      })
-      .catch((error) => {
-        const isCancel = error.name == "AbortError";
-        completion([], "", error, isCancel);
-        if (!isCancel) {
-          this.terminal.writeln(`\x1b[37m❌  ${error}\x1b[0m`);
-        }
-      })
-      .finally(() => {
-        if (this.connection) {
-          this.connection.close();
-          this.connection = null;
-        }
+    try {
+      const path = `/runner/${params.toolchain_version}/run`;
+      params._streaming = true;
+      const response = await fetch(path, {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(params),
+        signal: this.abortController.signal,
       });
+
+      const reader = response.body
+        .pipeThrough(new TextDecoderStream())
+        .pipeThrough(new TextLineStream())
+        .getReader();
+      let result = await reader.read();
+
+      this.terminal.hideSpinner(cancelToken);
+      this.printTimestamp();
+
+      if (!response.ok) {
+        this.terminal.writeln(
+          `\x1b[37m❌  ${response.status} ${response.statusText}\x1b[0m`
+        );
+        this.terminal.hideSpinner(cancelToken);
+      }
+
+      const markers = [];
+      while (!result.done) {
+        const text = result.value;
+        if (text) {
+          console.log(text);
+          const response = JSON.parse(text);
+          switch (response.kind) {
+            case "stdout":
+              response.text
+                .split("\n")
+                .filter(Boolean)
+                .forEach((line) => {
+                  this.terminal.writeln(`\x1b[37m${line}\x1b[0m`);
+                });
+              break;
+            case "stderr":
+              response.text
+                .split("\n")
+                .filter(Boolean)
+                .forEach((line) => {
+                  this.terminal.writeln(`\x1b[2m\x1b[37m${line}\x1b[0m`);
+                });
+              markers.push(...parseErrorMessage(text));
+              break;
+            case "version":
+              response.text
+                .split("\n")
+                .filter(Boolean)
+                .forEach((line) => {
+                  this.terminal.writeln(`\x1b[38;2;127;168;183m${line}\x1b[0m`); // #7FA8B7
+                });
+              break;
+            default:
+              break;
+          }
+        }
+        result = await reader.read();
+      }
+
+      return markers;
+    } catch (error) {
+      this.terminal.hideSpinner(cancelToken);
+      this.terminal.writeln(`\x1b[37m❌  ${error}\x1b[0m`);
+    } finally {
+      this.terminal.showCursor();
+    }
   }
 
   stop() {
     this.abortController.abort();
   }
 
-  createConnection(endpoint) {
-    if (
-      this.connection &&
-      (this.connection.readyState === WebSocket.CONNECTING ||
-        this.connection.readyState === WebSocket.OPEN)
-    ) {
-      return this.connection;
+  printTimestamp() {
+    const now = new Date();
+    const timestamp = now.toLocaleString("en-US", {
+      hour: "numeric",
+      minute: "2-digit",
+      second: "2-digit",
+      hour12: false,
+    });
+    const padding = this.terminal.cols - timestamp.length;
+    this.terminal.writeln(
+      `\x1b[2m\x1b[38;5;15;48;5;238m${" ".repeat(padding)}${timestamp}\x1b[0m`
+    );
+  }
+}
+
+function parseErrorMessage(message) {
+  const matches = message
+    .replace(
+      // Remove all ANSI colors/styles from strings
+      // https://stackoverflow.com/a/29497680/1733883
+      // https://github.com/chalk/ansi-regex/blob/main/index.js#L3
+      /[\u001b\u009b][[()#;?]*(?:[0-9]{1,4}(?:;[0-9]{0,4})*)?[0-9A-ORZcf-nqry=><]/g,
+      ""
+    )
+    .matchAll(
+      /<stdin>:(\d+): (error|warning|note): ([\s\S]*?)\n*(?=(?:\/|$))/gi
+    );
+  return [...matches].map((match) => {
+    const row = +match[1];
+    let column = +match[2];
+    const text = match[4];
+    const type = match[3];
+    let severity;
+    switch (type) {
+      case "warning":
+        severity = 4; // monaco.MarkerSeverity.Warning;
+        break;
+      case "error":
+        severity = 8; // monaco.MarkerSeverity.Error;
+        break;
+      default: // monaco.MarkerSeverity.Info;
+        severity = 2;
+        break;
     }
 
-    const connection = new ReconnectingWebSocket(endpoint, [], {
-      maxReconnectionDelay: 10000,
-      minReconnectionDelay: 1000,
-      reconnectionDelayGrowFactor: 1.3,
-      connectionTimeout: 10000,
-      maxRetries: Infinity,
-      debug: false,
-    });
+    let length;
+    if (text.match(/~+\^~+/)) {
+      // ~~~^~~~
+      length = text.match(/~+\^~+/)[0].length;
+      column -= text.match(/~+\^/)[0].length - 1;
+    } else if (text.match(/\^~+/)) {
+      // ^~~~
+      length = text.match(/\^~+/)[0].length;
+    } else if (text.match(/~+\^/)) {
+      // ~~~^
+      length = text.match(/~+\^/)[0].length;
+      column -= length - 1;
+    } else if (text.match(/\^/)) {
+      // ^
+      length = 1;
+    }
 
-    connection.onopen = () => {
-      document.addEventListener("visibilitychange", () => {
-        switch (document.visibilityState) {
-          case "hidden":
-            break;
-          case "visible":
-            if (this.connection) {
-              this.connection = this.createConnection(connection.url);
-            }
-            break;
-        }
-      });
+    return {
+      startLineNumber: row,
+      startColumn: column,
+      endLineNumber: row,
+      endColumn: column + length,
+      message: text,
+      severity: severity,
     };
-
-    connection.onerror = (event) => {
-      connection.close();
-    };
-
-    connection.onmessage = (event) => {
-      this.onmessage(event.data);
-    };
-
-    return connection;
-  }
+  });
 }
