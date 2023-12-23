@@ -45,17 +45,16 @@ export class Runner {
 
       const markers = [];
       while (!result.done) {
-        const text = result.value;
-        if (text) {
-          console.log(text);
-          const response = JSON.parse(text);
+        const value = result.value;
+        if (value) {
+          const response = JSON.parse(value);
           switch (response.kind) {
             case "stdout":
               response.text
                 .split("\n")
                 .filter(Boolean)
                 .forEach((line) => {
-                  this.terminal.writeln(`\x1b[37m${line}\x1b[0m`);
+                  this.terminal.write(`\x1b[37m${line}\x1b[0m`);
                 });
               break;
             case "stderr":
@@ -63,16 +62,16 @@ export class Runner {
                 .split("\n")
                 .filter(Boolean)
                 .forEach((line) => {
-                  this.terminal.writeln(`\x1b[2m\x1b[37m${line}\x1b[0m`);
+                  this.terminal.write(`\x1b[2m\x1b[37m${line}\x1b[0m`);
                 });
-              markers.push(...parseErrorMessage(text));
+              markers.push(...parseErrorMessage(value));
               break;
             case "version":
               response.text
                 .split("\n")
                 .filter(Boolean)
                 .forEach((line) => {
-                  this.terminal.writeln(`\x1b[38;2;127;168;183m${line}\x1b[0m`); // #7FA8B7
+                  this.terminal.write(`\x1b[38;2;127;168;183m${line}\x1b[0m`); // #7FA8B7
                 });
               break;
             default:
