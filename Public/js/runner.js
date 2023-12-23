@@ -54,7 +54,7 @@ export class Runner {
                 .split("\n")
                 .filter(Boolean)
                 .forEach((line) => {
-                  this.terminal.write(`\x1b[37m${line}\x1b[0m`);
+                  this.terminal.writeln(`\x1b[37m${line}\x1b[0m`);
                 });
               break;
             case "stderr":
@@ -62,16 +62,16 @@ export class Runner {
                 .split("\n")
                 .filter(Boolean)
                 .forEach((line) => {
-                  this.terminal.write(`\x1b[2m\x1b[37m${line}\x1b[0m`);
+                  this.terminal.writeln(`\x1b[2m\x1b[37m${line}\x1b[0m`);
                 });
-              markers.push(...parseErrorMessage(value));
+              markers.push(...parseErrorMessage(response.text));
               break;
             case "version":
               response.text
                 .split("\n")
                 .filter(Boolean)
                 .forEach((line) => {
-                  this.terminal.write(`\x1b[38;2;127;168;183m${line}\x1b[0m`); // #7FA8B7
+                  this.terminal.writeln(`\x1b[38;2;127;168;183m${line}\x1b[0m`); // #7FA8B7
                 });
               break;
             default:
