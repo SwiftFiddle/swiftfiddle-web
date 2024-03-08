@@ -72,7 +72,7 @@ jobs:
       - uses: azure/login@v2
         with:
           creds: ${{ env.AZURE_CREDENTIALS }}
-      - uses: azure/aks-set-context@v3
+      - uses: azure/aks-set-context@v4
         with:
           resource-group: ${{ env.RESOURCE_GROUP }}
           cluster-name: ${{ env.CLUSTER_NAME }}
