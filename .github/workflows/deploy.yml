@@ -68,7 +68,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - uses: azure/setup-kubectl@v3
+      - uses: azure/setup-kubectl@v4
       - uses: azure/login@v2
         with:
           creds: ${{ env.AZURE_CREDENTIALS }}
