@@ -19,9 +19,6 @@ env:
   CLOUDFLARE_API_KEY: ${{ secrets.CLOUDFLARE_API_KEY }}
   CLOUDFLARE_ZONE_ID: ${{ secrets.CLOUDFLARE_ZONE_ID }}
 
-permissions:
-  id-token: write
-  contents: write
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -49,9 +46,7 @@ jobs:
 
       - uses: azure/login@v2
         with:
-          client-id: ${{ secrets.AZURE_CLIENT_ID }}
-          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
-          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+          creds: ${{ env.AZURE_CREDENTIALS }}
       - uses: azure/docker-login@v1
         with:
           login-server: ${{ env.REGISTRY_NAME }}
