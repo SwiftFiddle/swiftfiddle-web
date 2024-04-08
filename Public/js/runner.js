@@ -26,7 +26,7 @@ export class Runner {
           case "nightly-5.8":
           case "nightly-5.9":
           case "nightly-5.10":
-          case "nightly-.main": {
+          case "nightly-main": {
             const suffix = version.split(".").join("").split("-").join("");
             return `https://runner-functions-${suffix}.blackwater-cac8eec1.westus2.azurecontainerapps.io/runner/${version}/run`;
           }
