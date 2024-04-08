@@ -15,7 +15,53 @@ export class Runner {
     this.terminal.hideCursor();
 
     try {
-      const path = `/runner/${params.toolchain_version}/run`;
+      const version = params.toolchain_version;
+      const path = (() => {
+        switch (version) {
+          case "nightly-5.3":
+          case "nightly-5.4":
+          case "nightly-5.5":
+          case "nightly-5.6": {
+            const suffix = version.split(".").join("").split("-").join("");
+            return `https://runner-functions-${suffix}.blackwater-cac8eec1.westus2.azurecontainerapps.io/runner/${version}/run`;
+          }
+          case "2.2":
+          case "2.2.1":
+          case "3.0":
+          case "3.0.1":
+          case "3.0.2":
+          case "3.1":
+          case "3.1.1":
+          case "4.0":
+          case "4.0.2":
+          case "4.0.3":
+          case "4.1":
+          case "4.1.1":
+          case "4.1.2":
+          case "4.1.3":
+          case "4.2":
+          case "4.2.1":
+          case "4.2.2":
+          case "4.2.3":
+          case "4.2.4":
+          case "5.0":
+          case "5.0.1":
+          case "5.0.2":
+          case "5.0.3":
+          case "5.1":
+          case "5.1.1":
+          case "5.1.2":
+          case "5.1.3":
+          case "5.1.4":
+          case "5.1.5": {
+            const suffix = version.split(".").join("");
+            return `https://swiftfiddle-runner-functions-${suffix}.blackwater-cac8eec1.westus2.azurecontainerapps.io/runner/${version}/run`;
+          }
+          default:
+            return `/runner/${version}/run`;
+        }
+      })();
+
       params._streaming = true;
       const response = await fetch(path, {
         method: "POST",
