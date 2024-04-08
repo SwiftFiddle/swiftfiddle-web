@@ -12,7 +12,24 @@ jobs:
       - name: Install Swift
         uses: slashmo/install-swift@v0.4.0
         with:
-          version: 5.9
+          version: 5.10
+      - name: Update Package.swift.json
+        run: |
+          set -ex
+
+          git config --global user.name "${GITHUB_ACTOR}"
+          git config --global user.email "${GITHUB_ACTOR}@users.noreply.github.com"
+
+          git pull --rebase origin master
+
+          tempdir=$(mktemp -d)
+          filename="Package.swift"
+          curl -sfL -o "$tempdir/$filename" https://raw.github.com/swiftfiddle/swiftfiddle-lsp/main/Resources/ProjectTemplate/$filename
+          swift package --package-path "$tempdir" dump-package > Resources/$filename.json
+
+          git add Resources/$filename.json
+          git diff-index --quiet HEAD || git commit -m "Update $filename.json"
+          git push origin master
       - name: Build
         run: |
           set -ex
