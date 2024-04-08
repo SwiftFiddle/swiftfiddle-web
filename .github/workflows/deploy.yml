@@ -88,7 +88,7 @@ jobs:
         run: |
           set -ex
 
-          sed "s/%COMMIT_SHA%/${{ github.sha }}/g;" "k8s/pod_template.yaml" | kubectl apply -f -
+          sed "s/%COMMIT_SHA%/${{ github.sha }}/g;" "k8s/pod_template.yaml" | kubectl apply --validate=false -f -
 
           kubectl rollout status deployment/${{ env.SERVICE_NAME }}
           kubectl get services -o wide
