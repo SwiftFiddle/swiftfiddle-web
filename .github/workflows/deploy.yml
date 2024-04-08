@@ -74,6 +74,11 @@ jobs:
       - uses: actions/checkout@v4
 
       - uses: azure/setup-kubectl@v4
+      - uses: azure/use-kubelogin@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          kubelogin-version: 'latest'
       - uses: azure/login@v2
         with:
           client-id: ${{ secrets.AZURE_CLIENT_ID }}
