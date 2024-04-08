@@ -95,7 +95,7 @@ export class Runner {
           }
 
           default:
-            return `/runner/${version}/run`;
+            return `https://swiftfiddle-runner.onrender.com/runner/${version}/run`;
         }
       })();
 
