@@ -59,10 +59,12 @@ export class Runner {
           case "5.2.2":
           case "5.2.3":
           case "5.2.4":
-          case "5.2.5": {
+          case "5.2.5":
+          case "5.9.2": {
             const suffix = version.split(".").join("");
             return `https://swiftfiddle-runner-functions-${suffix}.blackwater-cac8eec1.westus2.azurecontainerapps.io/runner/${version}/run`;
           }
+
           default:
             return `/runner/${version}/run`;
         }
