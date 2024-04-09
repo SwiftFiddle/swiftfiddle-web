@@ -6,8 +6,8 @@
         "repositoryURL": "https://github.com/swift-server/async-http-client.git",
         "state": {
           "branch": null,
-          "revision": "291438696abdd48d2a83b52465c176efbd94512b",
-          "version": "1.20.1"
+          "revision": "fb308ee72f3d4c082a507033f94afa7395963ef3",
+          "version": "1.21.0"
         }
       },
       {
@@ -96,8 +96,8 @@
         "repositoryURL": "https://github.com/apple/swift-crypto.git",
         "state": {
           "branch": null,
-          "revision": "cc76b894169a3c86b71bac10c78a4db6beb7a9ad",
-          "version": "3.2.0"
+          "revision": "f0525da24dc3c6cbb2b6b338b65042bc91cbc4bb",
+          "version": "3.3.0"
         }
       },
       {
