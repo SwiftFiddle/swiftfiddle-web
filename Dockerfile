@@ -16,7 +16,12 @@ RUN npx webpack --config webpack.prod.js
 FROM swift:5.10-jammy as swift
 RUN export DEBIAN_FRONTEND=noninteractive DEBCONF_NONINTERACTIVE_SEEN=true \
     && apt-get -q update \
-    && apt-get -q dist-upgrade -y\
+    && apt-get -q dist-upgrade -y \
+    && apt-get install -y --no-install-recommends \
+    build-essential \
+    curl \
+    file \
+    git \
     && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /build
@@ -35,6 +40,11 @@ RUN find -L "$(swift build --package-path /build -c release --show-bin-path)/" -
 RUN [ -d /build/Public ] && { mv /build/Public ./Public && chmod -R a-w ./Public; } || true
 RUN [ -d /build/Resources ] && { mv /build/Resources ./Resources && chmod -R a-w ./Resources; } || true
 
+RUN useradd -m -s /bin/bash linuxbrew && \
+    echo 'linuxbrew ALL=(ALL) NOPASSWD:ALL' >>/etc/sudoers
+USER linuxbrew
+RUN /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+RUN /home/linuxbrew/.linuxbrew/bin/brew install charmbracelet/tap/freeze
 
 FROM swift:5.10-jammy-slim
 RUN export DEBIAN_FRONTEND=noninteractive DEBCONF_NONINTERACTIVE_SEEN=true \
@@ -48,6 +58,7 @@ RUN useradd --user-group --create-home --system --skel /dev/null --home-dir /app
 
 WORKDIR /app
 COPY --from=swift --chown=vapor:vapor /staging /app
+COPY --from=swift /home/linuxbrew/.linuxbrew/bin/freeze /home/linuxbrew/.linuxbrew/bin/freeze
 
 USER vapor:vapor
 EXPOSE 8080
