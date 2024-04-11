@@ -9,7 +9,7 @@ struct ShareImage {
     #else
     process.executableURL = URL(fileURLWithPath: "/home/linuxbrew/.linuxbrew/bin/freeze")
     #endif
-    process.arguments = ["--language", "swift"]
+    process.arguments = ["--language", "swift", "--width", "600", "--height", "315"]
 
     let standardInput = Pipe()
     process.standardInput = standardInput
