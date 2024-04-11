@@ -82,7 +82,7 @@ func routes(_ app: Application) throws {
       code: parameter.code,
       swiftVersion: swiftVersion
     )
-    if let data = try? await ShareImage.generate(client: req.client, from: code) {
+    if let data = try? await ShareImage.generate(code: code) {
       try? await req.cache.set("/\(id).png", to: data, expiresIn: .days(14))
     }
     return [
@@ -150,7 +150,7 @@ private func makeImportResponse(_ req: Request, _ id: String, _ code: String, _ 
         body: Response.Body(buffer: ByteBuffer(data: data))
       )
     } else {
-      guard let data = try await ShareImage.generate(client: req.client, from: code) else { throw Abort(.notFound) }
+      guard let data = try await ShareImage.generate(code: code) else { throw Abort(.notFound) }
       try? await req.cache.set(path, to: data, expiresIn: .days(14))
       return Response(
         status: .ok,

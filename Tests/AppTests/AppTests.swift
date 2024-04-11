@@ -69,7 +69,7 @@ final class AppTests: XCTestCase {
     defer { app.shutdown() }
     try configure(app)
 
-    let data = try await ShareImage.generate(client: app.client, from: "import Foundation")
+    let data = try await ShareImage.generate(code: "import Foundation")
     _ = try XCTUnwrap(data)
   }
 }
