@@ -18,10 +18,19 @@ RUN export DEBIAN_FRONTEND=noninteractive DEBCONF_NONINTERACTIVE_SEEN=true \
     && apt-get -q update \
     && apt-get -q dist-upgrade -y \
     && apt-get install -y --no-install-recommends \
-    build-essential \
     curl \
-    file \
-    git \
+    expat \
+    libxml2-dev \
+    pkg-config \
+    libasound2-dev \
+    libssl-dev \
+    cmake \
+    libfreetype6-dev \
+    libexpat1-dev \
+    libxcb-composite0-dev \
+    libharfbuzz-dev \
+    libfontconfig1-dev \
+    g++ \
     && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /build
@@ -44,7 +53,7 @@ RUN useradd -m -s /bin/bash linuxbrew && \
     echo 'linuxbrew ALL=(ALL) NOPASSWD:ALL' >>/etc/sudoers
 USER linuxbrew
 RUN /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-RUN /home/linuxbrew/.linuxbrew/bin/brew install charmbracelet/tap/freeze
+RUN /home/linuxbrew/.linuxbrew/bin/brew install silicon
 
 FROM swift:5.10-jammy-slim
 RUN export DEBIAN_FRONTEND=noninteractive DEBCONF_NONINTERACTIVE_SEEN=true \
@@ -58,7 +67,7 @@ RUN useradd --user-group --create-home --system --skel /dev/null --home-dir /app
 
 WORKDIR /app
 COPY --from=swift --chown=vapor:vapor /staging /app
-COPY --from=swift /home/linuxbrew/.linuxbrew/bin/freeze /home/linuxbrew/.linuxbrew/bin/freeze
+COPY --from=swift /home/linuxbrew/.linuxbrew/ /home/linuxbrew/.linuxbrew/
 
 USER vapor:vapor
 EXPOSE 8080

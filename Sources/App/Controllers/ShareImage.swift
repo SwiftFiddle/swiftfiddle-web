@@ -5,21 +5,22 @@ struct ShareImage {
   static func generate(code: String) async throws -> Data? {
     let process = Process()
     #if os(macOS)
-    process.executableURL = URL(fileURLWithPath: "/opt/homebrew/bin/freeze")
+    process.executableURL = URL(fileURLWithPath: "/opt/homebrew/bin/silicon")
     #else
-    process.executableURL = URL(fileURLWithPath: "/home/linuxbrew/.linuxbrew/bin/freeze")
+    process.executableURL = URL(fileURLWithPath: "/home/linuxbrew/.linuxbrew/bin/silicon")
     #endif
     let output = "\(UUID().uuidString).png"
     process.arguments = [
       "--language", "swift",
-      "--width", "600",
-      "--height", "315",
+      "--pad-horiz", "0",
+      "--pad-vert", "0",
       "--output", output,
     ]
 
     let standardInput = Pipe()
     process.standardInput = standardInput
     process.standardOutput = Pipe()
+    process.standardError = Pipe()
 
     try standardInput.fileHandleForWriting.write(contentsOf: Data(code.utf8))
     try standardInput.fileHandleForWriting.close()
