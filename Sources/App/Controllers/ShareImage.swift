@@ -14,6 +14,9 @@ struct ShareImage {
       "--language", "swift",
       "--pad-horiz", "0",
       "--pad-vert", "0",
+      "--font", "Source Han Code JP",
+      "--no-window-controls",
+      "--theme", "GitHub",
       "--output", output,
     ]
 

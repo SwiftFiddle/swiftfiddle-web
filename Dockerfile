@@ -68,6 +68,7 @@ RUN useradd --user-group --create-home --system --skel /dev/null --home-dir /app
 WORKDIR /app
 COPY --from=swift --chown=vapor:vapor /staging /app
 COPY --from=swift /home/linuxbrew/.linuxbrew/ /home/linuxbrew/.linuxbrew/
+COPY ./SourceHanCodeJP-Regular.otf /usr/share/fonts/truetype/SourceHanCodeJP-Regular.otf
 
 USER vapor:vapor
 EXPOSE 8080
