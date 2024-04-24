@@ -14,31 +14,29 @@ jobs:
         run: |
           set -ex
 
-          git config --global user.name "${GITHUB_ACTOR}"
-          git config --global user.email "${GITHUB_ACTOR}@users.noreply.github.com"
-
-          git pull --rebase origin master
-
           tempdir=$(mktemp -d)
           filename="Package.swift"
           curl -sfL -o "$tempdir/$filename" https://raw.github.com/swiftfiddle/swiftfiddle-lsp/main/Resources/ProjectTemplate/$filename
           swift package --package-path "$tempdir" dump-package > Resources/$filename.json
-
-          git add Resources/$filename.json
-          git diff-index --quiet HEAD || git commit -m "Update $filename.json"
-          git push origin master
       - name: Build
         run: |
           set -ex
 
-          git config --global user.name "${GITHUB_ACTOR}"
-          git config --global user.email "${GITHUB_ACTOR}@users.noreply.github.com"
-
-          git pull --rebase origin master
-
           swift package update
           swift build
-
-          git add Package.resolved
-          git diff-index --quiet HEAD || git commit -m "Update Package.resolved"
-          git push origin master
+      - name: Create Pull Request
+        id: cpr
+        uses: peter-evans/create-pull-request@v6
+        with:
+          token: ${{ secrets.GH_PAT }}
+          base: "master"
+          commit-message: "Update Swift Packages"
+          title: "Update Swift Packages"
+          add-paths: |
+            Resources/Package.swift.json
+            Package.resolved
+      - name: Enable Pull Request Automerge
+        if: ${{ steps.cpr.outputs.pull-request-url }}
+        run: gh pr merge --merge --auto ${{ steps.cpr.outputs.pull-request-url }}
+        env:
+          GH_TOKEN: ${{ secrets.GH_PAT }}
