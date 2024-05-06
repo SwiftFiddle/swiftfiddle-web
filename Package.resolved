@@ -6,8 +6,8 @@
         "repositoryURL": "https://github.com/swift-server/async-http-client.git",
         "state": {
           "branch": null,
-          "revision": "fb308ee72f3d4c082a507033f94afa7395963ef3",
-          "version": "1.21.0"
+          "revision": "a22083713ee90808d527d0baa290c2fb13ca3096",
+          "version": "1.21.1"
         }
       },
       {
@@ -60,8 +60,8 @@
         "repositoryURL": "https://github.com/vapor/routing-kit.git",
         "state": {
           "branch": null,
-          "revision": "2a92a7eac411a82fb3a03731be5e76773ebe1b3e",
-          "version": "4.9.0"
+          "revision": "8c9a227476555c55837e569be71944e02a056b72",
+          "version": "4.9.1"
         }
       },
       {
@@ -195,8 +195,8 @@
         "repositoryURL": "https://github.com/vapor/vapor.git",
         "state": {
           "branch": null,
-          "revision": "e5cb0abdadff95ef996fafd6268f2f5f8cba6325",
-          "version": "4.94.1"
+          "revision": "af86ea4402c65dfbe70ac1bb9fd1d3fd9501a3f6",
+          "version": "4.96.0"
         }
       },
       {
