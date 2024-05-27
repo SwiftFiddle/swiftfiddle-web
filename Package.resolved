@@ -51,8 +51,8 @@
         "repositoryURL": "https://github.com/vapor/multipart-kit.git",
         "state": {
           "branch": null,
-          "revision": "3c9558f8339c95782ab89db1aa43acb4bf32b448",
-          "version": "4.6.1"
+          "revision": "a31236f24bfd2ea2f520a74575881f6731d7ae68",
+          "version": "4.7.0"
         }
       },
       {
@@ -195,8 +195,8 @@
         "repositoryURL": "https://github.com/vapor/vapor.git",
         "state": {
           "branch": null,
-          "revision": "90da64ad52ee595d199212338b89995bcab99d0e",
-          "version": "4.100.0"
+          "revision": "cc98361cbec22757a89a9717836293f215a0f67d",
+          "version": "4.101.0"
         }
       },
       {
