@@ -6,8 +6,8 @@
         "repositoryURL": "https://github.com/swift-server/async-http-client.git",
         "state": {
           "branch": null,
-          "revision": "a22083713ee90808d527d0baa290c2fb13ca3096",
-          "version": "1.21.1"
+          "revision": "0ae99db85b2b9d1e79b362bd31fd1ffe492f7c47",
+          "version": "1.21.2"
         }
       },
       {
@@ -105,8 +105,8 @@
         "repositoryURL": "https://github.com/apple/swift-http-types",
         "state": {
           "branch": null,
-          "revision": "9bee2fdb79cc740081abd8ebd80738063d632286",
-          "version": "1.1.0"
+          "revision": "1ddbea1ee34354a6a2532c60f98501c35ae8edfa",
+          "version": "1.2.0"
         }
       },
       {
@@ -132,8 +132,8 @@
         "repositoryURL": "https://github.com/apple/swift-nio.git",
         "state": {
           "branch": null,
-          "revision": "9428f62793696d9a0cc1f26a63f63bb31da0516d",
-          "version": "2.66.0"
+          "revision": "e5a216ba89deba84356bad9d4c2eab99071c745b",
+          "version": "2.67.0"
         }
       },
       {
@@ -195,8 +195,8 @@
         "repositoryURL": "https://github.com/vapor/vapor.git",
         "state": {
           "branch": null,
-          "revision": "f1c3495b5c35ab67881412acf20144112729b560",
-          "version": "4.101.3"
+          "revision": "ebbe71c89aa1b76a0920277760b12be7a2ec7c70",
+          "version": "4.102.0"
         }
       },
       {
