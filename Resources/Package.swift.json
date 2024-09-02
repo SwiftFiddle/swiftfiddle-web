@@ -63,7 +63,7 @@
           "requirement" : {
             "range" : [
               {
-                "lowerBound" : "1.1.2",
+                "lowerBound" : "1.1.3",
                 "upperBound" : "2.0.0"
               }
             ]
@@ -144,7 +144,7 @@
   "name" : "App",
   "packageKind" : {
     "root" : [
-      "/private/var/folders/4d/0gnh84wj53j7wyk695q0tc_80000gn/T/tmp.jic0tB9AnO"
+      "/private/var/folders/m4/5dz5h26x329cqq4fx333f8gm0000gn/T/tmp.WJGabguhMi"
     ]
   },
   "pkgConfig" : null,
