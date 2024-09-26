@@ -89,9 +89,17 @@ export class Runner {
           case "5.8.1":
           case "5.9":
           case "5.9.1":
-          case "5.9.2": {
+          case "5.9.2":
+          case "5.10": {
             const suffix = version.split(".").join("");
             return `https://swiftfiddle-runner-functions-${suffix}.blackwater-cac8eec1.westus2.azurecontainerapps.io/runner/${version}/run`;
+          }
+          case "5.10.1": {
+            const suffix = version.split(".").join("");
+            return `https://swiftfiddle-runner-functions${suffix}.blackwater-cac8eec1.westus2.azurecontainerapps.io/runner/${version}/run`;
+          }
+          case "6.0": {
+            return `https://swiftfiddle-runner.onrender.com/runner/${version}/run`;
           }
 
           default:
