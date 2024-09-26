@@ -6,6 +6,7 @@ func stableVersion() -> String { "6.0" }
 func availableVersions() throws -> [String] {
   [
     "nightly-main",
+    "nightly-6.0",
     "nightly-5.10",
     "nightly-5.9",
     "nightly-5.8",
