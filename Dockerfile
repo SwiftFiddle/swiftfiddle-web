@@ -13,7 +13,7 @@ COPY Public ./Public/
 RUN npx webpack --config webpack.prod.js
 
 
-FROM swift:5.10-jammy as swift
+FROM swift:6.0-jammy as swift
 RUN export DEBIAN_FRONTEND=noninteractive DEBCONF_NONINTERACTIVE_SEEN=true \
     && apt-get -q update \
     && apt-get -q dist-upgrade -y \
@@ -55,7 +55,7 @@ USER linuxbrew
 RUN /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 RUN /home/linuxbrew/.linuxbrew/bin/brew install silicon
 
-FROM swift:5.10-jammy-slim
+FROM swift:6.0-jammy-slim
 RUN export DEBIAN_FRONTEND=noninteractive DEBCONF_NONINTERACTIVE_SEEN=true \
     && apt-get -q update \
     && apt-get -q dist-upgrade -y \
