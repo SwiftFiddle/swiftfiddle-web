@@ -100,11 +100,11 @@ export class Runner {
             return `https://swiftfiddle-runner-functions${suffix}.blackwater-cac8eec1.westus2.azurecontainerapps.io/runner/${version}/run`;
           }
           case "6.0": {
-            return `https://swiftfiddle-runner.onrender.com/runner/${version}/run`;
+            return `http://116.80.37.69:8080/runner/${version}/run`;
           }
 
           default:
-            return `https://swiftfiddle-runner.onrender.com/runner/${version}/run`;
+            return `http://116.80.37.69:8080/runner/${version}/run`;
         }
       })();
 
