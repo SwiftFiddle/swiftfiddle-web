@@ -52,7 +52,7 @@ export class App {
     let sequence = 0;
 
     const languageServer = new LanguageServer(
-      "wss://swiftfiddle-lsp.onrender.com/lang-server/api"
+      "wss://lsp.swift-playground.com/lang-server/api"
     );
 
     languageServer.onconnect = () => {
