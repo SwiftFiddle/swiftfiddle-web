@@ -15,6 +15,8 @@ func availableVersions() throws -> [String] {
     "nightly-5.5",
     "nightly-5.4",
     "nightly-5.3",
+    "6.0.2",
+    "6.0.1",
     "6.0",
     "5.10.1",
     "5.10",
