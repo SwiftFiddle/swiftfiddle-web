@@ -129,7 +129,7 @@
       },
       {
         "package": "swift-http-types",
-        "repositoryURL": "https://github.com/apple/swift-http-types",
+        "repositoryURL": "https://github.com/apple/swift-http-types.git",
         "state": {
           "branch": null,
           "revision": "ef18d829e8b92d731ad27bb81583edd2094d1ce3",
@@ -204,8 +204,8 @@
         "repositoryURL": "https://github.com/apple/swift-numerics.git",
         "state": {
           "branch": null,
-          "revision": "0a5bc04095a675662cf24757cc0640aa2204253b",
-          "version": "1.0.2"
+          "revision": "e0ec0f5f3af6f3e4d5e7a19d2af26b481acb6ba8",
+          "version": "1.0.3"
         }
       },
       {
