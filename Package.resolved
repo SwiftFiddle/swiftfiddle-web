@@ -105,8 +105,8 @@
         "repositoryURL": "https://github.com/apple/swift-crypto.git",
         "state": {
           "branch": null,
-          "revision": "45305d32cfb830faebcaa9a7aea66ad342637518",
-          "version": "3.11.1"
+          "revision": "a6ce32a18b81b04ce7e897d1d98df6eb2da04786",
+          "version": "3.12.2"
         }
       },
       {
@@ -141,8 +141,8 @@
         "repositoryURL": "https://github.com/apple/swift-log.git",
         "state": {
           "branch": null,
-          "revision": "96a2f8a0fa41e9e09af4585e2724c4e825410b91",
-          "version": "1.6.2"
+          "revision": "3d8596ed08bd13520157f0355e35caed215ffbfa",
+          "version": "1.6.3"
         }
       },
       {
@@ -150,8 +150,8 @@
         "repositoryURL": "https://github.com/apple/swift-metrics.git",
         "state": {
           "branch": null,
-          "revision": "5e63558d12e0267782019f5dadfcae83a7d06e09",
-          "version": "2.5.1"
+          "revision": "3c0f419970ae1c9f942d3abfd4f562e243e9f9e8",
+          "version": "2.6.0"
         }
       },
       {
