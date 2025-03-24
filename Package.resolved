@@ -150,8 +150,8 @@
         "repositoryURL": "https://github.com/apple/swift-metrics.git",
         "state": {
           "branch": null,
-          "revision": "3c0f419970ae1c9f942d3abfd4f562e243e9f9e8",
-          "version": "2.6.0"
+          "revision": "44491db7cc66774ab930cf15f36324e16b06f425",
+          "version": "2.6.1"
         }
       },
       {
@@ -231,8 +231,8 @@
         "repositoryURL": "https://github.com/vapor/vapor.git",
         "state": {
           "branch": null,
-          "revision": "a425e32f9b9d19c0ecab952cb4484c1c15e2536f",
-          "version": "4.113.2"
+          "revision": "f6459d6417d4968f91979224dd8fd38fa99b042c",
+          "version": "4.114.0"
         }
       },
       {
