@@ -1,12 +1,5 @@
 "use strict";
 
-import Plausible from "plausible-tracker";
-
-const { enableAutoPageviews } = Plausible({
-  domain: "swiftfiddle.com",
-});
-enableAutoPageviews();
-
 import "./scss/default.scss";
 import "./css/common.css";
 
