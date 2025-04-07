@@ -21,7 +21,12 @@
                 "upperBound" : "2.0.0"
               }
             ]
-          }
+          },
+          "traits" : [
+            {
+              "name" : "default"
+            }
+          ]
         }
       ]
     },
@@ -44,7 +49,12 @@
                 "upperBound" : "2.0.0"
               }
             ]
-          }
+          },
+          "traits" : [
+            {
+              "name" : "default"
+            }
+          ]
         }
       ]
     },
@@ -67,7 +77,12 @@
                 "upperBound" : "2.0.0"
               }
             ]
-          }
+          },
+          "traits" : [
+            {
+              "name" : "default"
+            }
+          ]
         }
       ]
     },
@@ -90,7 +105,12 @@
                 "upperBound" : "4.0.0"
               }
             ]
-          }
+          },
+          "traits" : [
+            {
+              "name" : "default"
+            }
+          ]
         }
       ]
     },
@@ -113,7 +133,12 @@
                 "upperBound" : "2.0.0"
               }
             ]
-          }
+          },
+          "traits" : [
+            {
+              "name" : "default"
+            }
+          ]
         }
       ]
     },
@@ -136,7 +161,12 @@
                 "upperBound" : "2.0.0"
               }
             ]
-          }
+          },
+          "traits" : [
+            {
+              "name" : "default"
+            }
+          ]
         }
       ]
     }
@@ -144,7 +174,7 @@
   "name" : "App",
   "packageKind" : {
     "root" : [
-      "/private/var/folders/r1/4882c7yd7wx9hcpc__xp04_m0000gn/T/tmp.ZBaxNaBjCO"
+      "/private/var/folders/qn/7t0vq3ts721cmgt0tgrtgzl80000gn/T/tmp.NRa2Hdfmou"
     ]
   },
   "pkgConfig" : null,
@@ -230,5 +260,8 @@
   ],
   "toolsVersion" : {
     "_version" : "5.5.0"
-  }
+  },
+  "traits" : [
+
+  ]
 }
