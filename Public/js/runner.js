@@ -94,7 +94,9 @@ export class Runner {
           case "5.10":
           case "6.0":
           case "6.0.1":
-          case "6.0.2": {
+          case "6.0.2":
+          case "6.0.3":
+          case "6.1": {
             const suffix = version.split(".").join("");
             return `https://swiftfiddle-runner-functions-${suffix}.blackwater-cac8eec1.westus2.azurecontainerapps.io/runner/${version}/run`;
           }
@@ -102,7 +104,7 @@ export class Runner {
             const suffix = version.split(".").join("");
             return `https://swiftfiddle-runner-functions${suffix}.blackwater-cac8eec1.westus2.azurecontainerapps.io/runner/${version}/run`;
           }
-          case "6.0.3": {
+          case "6.1.1": {
             return `https://runner.swift-playground.com/runner/${version}/run`;
           }
 
