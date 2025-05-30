@@ -27,6 +27,8 @@ export class Runner {
           case "nightly-5.9":
           case "nightly-5.10":
           case "nightly-6.0":
+          case "nightly-6.1":
+          case "nightly-6.2":
           case "nightly-main": {
             const suffix = version.split(".").join("").split("-").join("");
             return `https://runner-functions-${suffix}.blackwater-cac8eec1.westus2.azurecontainerapps.io/runner/${version}/run`;
@@ -96,7 +98,8 @@ export class Runner {
           case "6.0.1":
           case "6.0.2":
           case "6.0.3":
-          case "6.1": {
+          case "6.1":
+          case "6.1.1": {
             const suffix = version.split(".").join("");
             return `https://swiftfiddle-runner-functions-${suffix}.blackwater-cac8eec1.westus2.azurecontainerapps.io/runner/${version}/run`;
           }
@@ -104,7 +107,7 @@ export class Runner {
             const suffix = version.split(".").join("");
             return `https://swiftfiddle-runner-functions${suffix}.blackwater-cac8eec1.westus2.azurecontainerapps.io/runner/${version}/run`;
           }
-          case "6.1.1": {
+          case "6.1.2": {
             return `https://runner.swift-playground.com/runner/${version}/run`;
           }
 
