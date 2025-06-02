@@ -249,8 +249,8 @@
         "repositoryURL": "https://github.com/apple/swift-system.git",
         "state": {
           "branch": null,
-          "revision": "a34201439c74b53f0fd71ef11741af7e7caf01e1",
-          "version": "1.4.2"
+          "revision": "61e4ca4b81b9e09e2ec863b00c340eb13497dac6",
+          "version": "1.5.0"
         }
       },
       {
