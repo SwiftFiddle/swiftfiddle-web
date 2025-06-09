@@ -96,8 +96,8 @@
         "repositoryURL": "https://github.com/apple/swift-atomics.git",
         "state": {
           "branch": null,
-          "revision": "cd142fd2f64be2100422d658e7411e39489da985",
-          "version": "1.2.0"
+          "revision": "b601256eab081c0f92f059e12818ac1d4f178ff7",
+          "version": "1.3.0"
         }
       },
       {
@@ -186,8 +186,8 @@
         "repositoryURL": "https://github.com/apple/swift-nio-extras.git",
         "state": {
           "branch": null,
-          "revision": "24cb15c9bc05e3e9eb5ebaf3d28517d42537bfb1",
-          "version": "1.27.1"
+          "revision": "145db1962f4f33a4ea07a32e751d5217602eea29",
+          "version": "1.28.0"
         }
       },
       {
@@ -231,8 +231,8 @@
         "repositoryURL": "https://github.com/apple/swift-service-context.git",
         "state": {
           "branch": null,
-          "revision": "8946c930cae601452149e45d31d8ddfac973c3c7",
-          "version": "1.2.0"
+          "revision": "1983448fefc717a2bc2ebde5490fe99873c5b8a6",
+          "version": "1.2.1"
         }
       },
       {
