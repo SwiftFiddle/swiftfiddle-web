@@ -132,8 +132,8 @@
         "repositoryURL": "https://github.com/apple/swift-distributed-tracing.git",
         "state": {
           "branch": null,
-          "revision": "a64a0abc2530f767af15dd88dda7f64d5f1ff9de",
-          "version": "1.2.0"
+          "revision": "b78796709d243d5438b36e74ce3c5ec2d2ece4d8",
+          "version": "1.2.1"
         }
       },
       {
@@ -204,8 +204,8 @@
         "repositoryURL": "https://github.com/apple/swift-nio-ssl.git",
         "state": {
           "branch": null,
-          "revision": "4b38f35946d00d8f6176fe58f96d83aba64b36c7",
-          "version": "2.31.0"
+          "revision": "36b48956eb6c0569215dc15a587b491d2bb36122",
+          "version": "2.32.0"
         }
       },
       {
