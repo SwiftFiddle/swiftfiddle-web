@@ -105,8 +105,8 @@
         "repositoryURL": "https://github.com/apple/swift-certificates.git",
         "state": {
           "branch": null,
-          "revision": "999fd70c7803da89f3904d635a6815a2a7cd7585",
-          "version": "1.10.0"
+          "revision": "870f4d5fe5fcfedc13f25d70e103150511746404",
+          "version": "1.11.0"
         }
       },
       {
