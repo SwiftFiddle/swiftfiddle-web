@@ -105,8 +105,8 @@
         "repositoryURL": "https://github.com/apple/swift-certificates.git",
         "state": {
           "branch": null,
-          "revision": "20c451f1ad8e344e61ddbb34ef196653d4b73ea6",
-          "version": "1.13.0"
+          "revision": "4b092f15164144c24554e0a75e080a960c5190a6",
+          "version": "1.14.0"
         }
       },
       {
@@ -168,8 +168,8 @@
         "repositoryURL": "https://github.com/apple/swift-metrics.git",
         "state": {
           "branch": null,
-          "revision": "4c83e1cdf4ba538ef6e43a9bbd0bcc33a0ca46e3",
-          "version": "2.7.0"
+          "revision": "0743a9364382629da3bf5677b46a2c4b1ce5d2a6",
+          "version": "2.7.1"
         }
       },
       {
@@ -249,8 +249,8 @@
         "repositoryURL": "https://github.com/apple/swift-system.git",
         "state": {
           "branch": null,
-          "revision": "890830fff1a577dc83134890c7984020c5f6b43b",
-          "version": "1.6.2"
+          "revision": "395a77f0aa927f0ff73941d7ac35f2b46d47c9db",
+          "version": "1.6.3"
         }
       },
       {
