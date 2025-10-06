@@ -73,7 +73,7 @@
           "requirement" : {
             "range" : [
               {
-                "lowerBound" : "1.2.1",
+                "lowerBound" : "1.3.0",
                 "upperBound" : "2.0.0"
               }
             ]
@@ -174,7 +174,7 @@
   "name" : "App",
   "packageKind" : {
     "root" : [
-      "/private/var/folders/q0/wmf37v850txck86cpnvwm_zw0000gn/T/tmp.p163rMGJbT"
+      "/private/var/folders/q0/wmf37v850txck86cpnvwm_zw0000gn/T/tmp.x2YUv5ZqHa"
     ]
   },
   "pkgConfig" : null,
