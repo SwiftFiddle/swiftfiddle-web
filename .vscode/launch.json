@@ -5,20 +5,22 @@
       "request": "launch",
       "sourceLanguages": ["swift"],
       "name": "Debug App",
-      "program": "${workspaceFolder:swiftfiddle-web}/.build/debug/App",
       "args": [],
       "cwd": "${workspaceFolder:swiftfiddle-web}",
-      "preLaunchTask": "swift: Build Debug App"
+      "preLaunchTask": "swift: Build Debug App",
+      "target": "App",
+      "configuration": "debug"
     },
     {
       "type": "swift",
       "request": "launch",
       "sourceLanguages": ["swift"],
       "name": "Release App",
-      "program": "${workspaceFolder:swiftfiddle-web}/.build/release/App",
       "args": [],
       "cwd": "${workspaceFolder:swiftfiddle-web}",
-      "preLaunchTask": "swift: Build Release App"
+      "preLaunchTask": "swift: Build Release App",
+      "target": "App",
+      "configuration": "release"
     },
     {
       "type": "lldb",
