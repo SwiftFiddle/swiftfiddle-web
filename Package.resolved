@@ -6,8 +6,8 @@
         "repositoryURL": "https://github.com/swift-server/async-http-client.git",
         "state": {
           "branch": null,
-          "revision": "efb14fec9f79f3f8d4f2a6c0530303efb6fe6533",
-          "version": "1.29.1"
+          "revision": "b2faff932b956df50668241d14f1b42f7bae12b4",
+          "version": "1.30.0"
         }
       },
       {
@@ -141,8 +141,8 @@
         "repositoryURL": "https://github.com/apple/swift-http-structured-headers.git",
         "state": {
           "branch": null,
-          "revision": "a9f3c352f4d46afd155e00b3c6e85decae6bcbeb",
-          "version": "1.5.0"
+          "revision": "76d7627bd88b47bf5a0f8497dd244885960dde0b",
+          "version": "1.6.0"
         }
       },
       {
@@ -177,8 +177,8 @@
         "repositoryURL": "https://github.com/apple/swift-nio.git",
         "state": {
           "branch": null,
-          "revision": "a24771a4c228ff116df343c85fcf3dcfae31a06c",
-          "version": "2.88.0"
+          "revision": "56724a2b6d8e2aed1b2c5f23865b9ea5c43f9977",
+          "version": "2.89.0"
         }
       },
       {
@@ -195,8 +195,8 @@
         "repositoryURL": "https://github.com/apple/swift-nio-http2.git",
         "state": {
           "branch": null,
-          "revision": "5e9e99ec96c53bc2c18ddd10c1e25a3cd97c55e5",
-          "version": "1.38.0"
+          "revision": "c2ba4cfbb83f307c66f5a6df6bb43e3c88dfbf80",
+          "version": "1.39.0"
         }
       },
       {
@@ -258,8 +258,8 @@
         "repositoryURL": "https://github.com/vapor/vapor.git",
         "state": {
           "branch": null,
-          "revision": "c84ffd383814bf510240f269596a271221fc8964",
-          "version": "4.119.0"
+          "revision": "6b7a70a607e61f81214f09130009af4ed76d9d62",
+          "version": "4.119.2"
         }
       },
       {
