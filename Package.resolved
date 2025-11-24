@@ -87,8 +87,8 @@
         "repositoryURL": "https://github.com/apple/swift-async-algorithms.git",
         "state": {
           "branch": null,
-          "revision": "042e1c4d9d19748c9c228f8d4ebc97bb1e339b0b",
-          "version": "1.0.4"
+          "revision": "2773d4125311133a2f705ec374c363a935069d45",
+          "version": "1.1.0"
         }
       },
       {
@@ -177,8 +177,8 @@
         "repositoryURL": "https://github.com/apple/swift-nio.git",
         "state": {
           "branch": null,
-          "revision": "56724a2b6d8e2aed1b2c5f23865b9ea5c43f9977",
-          "version": "2.89.0"
+          "revision": "6e02c7a2467cf22526ac54521d4230d8c5890e62",
+          "version": "2.90.0"
         }
       },
       {
