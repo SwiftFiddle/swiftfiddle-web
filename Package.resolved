@@ -159,8 +159,8 @@
         "repositoryURL": "https://github.com/apple/swift-log.git",
         "state": {
           "branch": null,
-          "revision": "7ee16e465622412764b0ff0c1301801dc71b8f61",
-          "version": "1.9.0"
+          "revision": "2778fd4e5a12a8aaa30a3ee8285f4ce54c5f3181",
+          "version": "1.9.1"
         }
       },
       {
@@ -177,8 +177,8 @@
         "repositoryURL": "https://github.com/apple/swift-nio.git",
         "state": {
           "branch": null,
-          "revision": "4a9a97111099376854a7f8f0f9f88b9d61f52eff",
-          "version": "2.92.2"
+          "revision": "233f61bc2cfbb22d0edeb2594da27a20d2ce514e",
+          "version": "2.93.0"
         }
       },
       {
@@ -186,8 +186,8 @@
         "repositoryURL": "https://github.com/apple/swift-nio-extras.git",
         "state": {
           "branch": null,
-          "revision": "f4ea23b6c1c545a6656dbcac8c82a2864075766e",
-          "version": "1.31.3"
+          "revision": "cc599775aa85d04340f09b47e5432564f9889ae7",
+          "version": "1.32.0"
         }
       },
       {
