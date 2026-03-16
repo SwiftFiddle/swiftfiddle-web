@@ -42,8 +42,8 @@
         "repositoryURL": "https://github.com/vapor/leaf-kit.git",
         "state": {
           "branch": null,
-          "revision": "e84a3d17afa7f9dd2168af51a81fabf62196989e",
-          "version": "1.14.1"
+          "revision": "6044b844caa858a0c5f2505ac166f5a057c990dc",
+          "version": "1.14.2"
         }
       },
       {
@@ -141,8 +141,8 @@
         "repositoryURL": "https://github.com/apple/swift-distributed-tracing.git",
         "state": {
           "branch": null,
-          "revision": "e109d8b5308d0e05201d9a1dd1c475446a946a11",
-          "version": "1.4.0"
+          "revision": "dc4030184203ffafbb2ec614352487235d747fe0",
+          "version": "1.4.1"
         }
       },
       {
@@ -186,8 +186,8 @@
         "repositoryURL": "https://github.com/apple/swift-nio.git",
         "state": {
           "branch": null,
-          "revision": "e932d3c4d8f77433c8f7093b5ebcbf91463948a0",
-          "version": "2.95.0"
+          "revision": "b31565862a8f39866af50bc6676160d8dda7de35",
+          "version": "2.96.0"
         }
       },
       {
