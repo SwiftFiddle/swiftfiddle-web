@@ -29,6 +29,7 @@ export class Runner {
           case "nightly-6.0":
           case "nightly-6.1":
           case "nightly-6.2":
+          case "nightly-6.3":
           case "nightly-main": {
             const suffix = version.split(".").join("").split("-").join("");
             return `https://runner-functions-${suffix}.blackwater-cac8eec1.westus2.azurecontainerapps.io/runner/${version}/run`;
@@ -102,7 +103,11 @@ export class Runner {
           case "6.1.1":
           case "6.1.2":
           case "6.1.3":
-          case "6.2": {
+          case "6.2":
+          case "6.2.1":
+          case "6.2.2":
+          case "6.2.3":
+          case "6.3": {
             const suffix = version.split(".").join("");
             return `https://swiftfiddle-runner-functions-${suffix}.blackwater-cac8eec1.westus2.azurecontainerapps.io/runner/${version}/run`;
           }
@@ -110,7 +115,7 @@ export class Runner {
             const suffix = version.split(".").join("");
             return `https://swiftfiddle-runner-functions${suffix}.blackwater-cac8eec1.westus2.azurecontainerapps.io/runner/${version}/run`;
           }
-          case "6.2.1": {
+          case "6.3.1": {
             return `https://runner.swift-playground.com/runner/${version}/run`;
           }
 
@@ -141,7 +146,7 @@ export class Runner {
 
       if (!response.ok) {
         this.terminal.writeln(
-          `\x1b[37m❌  ${response.status} ${response.statusText}\x1b[0m`
+          `\x1b[37m❌  ${response.status} ${response.statusText}\x1b[0m`,
         );
         this.terminal.hideSpinner(cancelToken);
       }
@@ -207,7 +212,7 @@ export class Runner {
     });
     const padding = this.terminal.cols - timestamp.length;
     this.terminal.writeln(
-      `\x1b[2m\x1b[38;5;15;48;5;238m${" ".repeat(padding)}${timestamp}\x1b[0m`
+      `\x1b[2m\x1b[38;5;15;48;5;238m${" ".repeat(padding)}${timestamp}\x1b[0m`,
     );
   }
 }
@@ -219,10 +224,10 @@ function parseErrorMessage(message) {
       // https://stackoverflow.com/a/29497680/1733883
       // https://github.com/chalk/ansi-regex/blob/main/index.js#L3
       /[\u001b\u009b][[()#;?]*(?:[0-9]{1,4}(?:;[0-9]{0,4})*)?[0-9A-ORZcf-nqry=><]/g,
-      ""
+      "",
     )
     .matchAll(
-      /<stdin>:(\d+): (error|warning|note): ([\s\S]*?)\n*(?=(?:\/|$))/gi
+      /<stdin>:(\d+): (error|warning|note): ([\s\S]*?)\n*(?=(?:\/|$))/gi,
     );
   return [...matches].map((match) => {
     const row = +match[1];
