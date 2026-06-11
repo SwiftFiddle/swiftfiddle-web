@@ -107,10 +107,19 @@ export class App {
                   endLineNumber: end.line + 1,
                   endColumn: end.character + 1,
                 };
+                // sourcekit-lsp already ships documentation inline as a
+                // MarkupContent ({ kind, value }); pass it as a Markdown string
+                // so Monaco shows it in the suggestion details panel.
+                const documentation = item.documentation
+                  ? item.documentation.value !== undefined
+                    ? { value: item.documentation.value }
+                    : item.documentation
+                  : undefined;
                 return {
                   label: item.label,
                   kind: kind,
                   detail: item.detail,
+                  documentation: documentation,
                   filterText: item.filterText,
                   insertText: textEdit.newText,
                   insertTextRules: languageServer.insertTextRule(),
