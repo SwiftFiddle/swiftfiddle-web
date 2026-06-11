@@ -64,6 +64,10 @@ export class App {
 
     languageServer.onresponse = (response) => {
       const promise = promises[response.id];
+      // Each request gets exactly one response, so drop the entry now. Without
+      // this, `promises` grows unbounded as hover/completion/signatureHelp fire
+      // while typing. No-op for diagnostics/format, which carry no id.
+      delete promises[response.id];
       switch (response.method) {
         case "hover":
           if (!promise) {
