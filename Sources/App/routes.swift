@@ -82,9 +82,9 @@ func routes(_ app: Application) throws {
       code: parameter.code,
       swiftVersion: swiftVersion
     )
-    if let data = try? await ShareImage.generate(code: code) {
-      try? await req.cache.set("/\(id).png", to: data, expiresIn: .days(14))
-    }
+    // The share image is generated lazily on first request (and cached on
+    // disk) rather than eagerly here, so links that are never opened don't
+    // cost a silicon render or sit in memory.
     return [
       "swift_version": swiftVersion,
       "content": code,
@@ -140,24 +140,31 @@ func routes(_ app: Application) throws {
   }
 }
 
+private func shareImageCacheURL(_ app: Application, id: String) -> URL {
+  let directory = URL(fileURLWithPath: app.directory.workingDirectory)
+    .appendingPathComponent("Cache", isDirectory: true)
+    .appendingPathComponent("ShareImages", isDirectory: true)
+  try? FileManager.default.createDirectory(at: directory, withIntermediateDirectories: true)
+  return directory.appendingPathComponent("\(id).png")
+}
+
 private func makeImportResponse(_ req: Request, _ id: String, _ code: String, _ swiftVersion: String?) async throws -> Response {
   let path = req.url.path
   if path.hasSuffix(".png") {
-    if let data = try await req.cache.get(path, as: Data.self) {
-      return Response(
-        status: .ok,
-        headers: ["Content-Type": "image/png"],
-        body: Response.Body(buffer: ByteBuffer(data: data))
-      )
-    } else {
-      guard let data = try await ShareImage.generate(code: code) else { throw Abort(.notFound) }
-      try? await req.cache.set(path, to: data, expiresIn: .days(14))
-      return Response(
-        status: .ok,
-        headers: ["Content-Type": "image/png"],
-        body: Response.Body(buffer:  ByteBuffer(data: data))
-      )
+    // Cache the rendered share image on disk and stream it from there. The
+    // previous in-memory cache held every generated PNG for 14 days and, since
+    // Vapor's MemoryCache only evicts lazily on access, links whose image was
+    // never re-fetched leaked forever — the main driver of the OOM kills.
+    let cacheURL = shareImageCacheURL(req.application, id: id)
+    if !FileManager.default.fileExists(atPath: cacheURL.path) {
+      do {
+        try await ShareImage.generate(code: code, to: cacheURL)
+      } catch {
+        req.logger.error("Failed to generate share image: \(error)")
+        throw Abort(.notFound)
+      }
     }
+    return req.fileio.streamFile(at: cacheURL.path)
   } else {
     let version: String
     if let swiftVersion = swiftVersion {
