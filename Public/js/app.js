@@ -166,6 +166,9 @@ export class App {
         case "diagnostics":
           this.updateLanguageServerStatus(true);
           this.editor.clearMarkers();
+          // Reset the fix-its surfaced as Quick Fix code actions; repopulated
+          // below from the new diagnostics (sourcekit-lsp ships them inline).
+          this.codeActionEntries = [];
 
           if (!response.value) {
             return;
@@ -181,7 +184,7 @@ export class App {
             const startLineNumber = start.line + 1;
             const startColumn = start.character + 1;
             const endLineNumber = end.line + 1;
-            const endColumn = start.character + 1;
+            const endColumn = end.character + 1;
 
             let severity = languageServer.convertDiagnosticSeverity(
               diagnostic.severity
@@ -194,9 +197,22 @@ export class App {
               endColumn: endColumn,
               message: diagnostic.message,
               severity: severity,
-              source: diagnostic.source,
+              // Fall back to a stable source so LSP markers are always
+              // distinguishable from runner markers (which set no source) when
+              // matching fix-its below.
+              source: diagnostic.source ?? "sourcekit-lsp",
             };
           });
+
+          this.codeActionEntries = diagnostics
+            .filter((diagnostic) => diagnostic.codeActions?.length)
+            .map((diagnostic) => ({
+              startLineNumber: diagnostic.range.start.line + 1,
+              startColumn: diagnostic.range.start.character + 1,
+              message: diagnostic.message,
+              source: diagnostic.source ?? "sourcekit-lsp",
+              actions: diagnostic.codeActions,
+            }));
 
           this.editor.updateMarkers(markers);
           break;
@@ -287,6 +303,70 @@ export class App {
       return new Promise((fulfill, reject) => {
         promises[sequence] = { fulfill: fulfill, reject: reject };
       });
+    };
+
+    // Quick Fix: turn the fix-its sourcekit-lsp ships on each diagnostic into
+    // Monaco code actions for the markers under the cursor. No round-trip —
+    // the data already arrived with the diagnostics notification.
+    this.editor.oncodeaction = (model, _range, context) => {
+      const entries = this.codeActionEntries || [];
+      const markers = (context && context.markers) || [];
+
+      const toEdits = (lspAction) => {
+        const changes = lspAction.edit && lspAction.edit.changes;
+        if (!changes) {
+          return null;
+        }
+        const edits = [];
+        // The document URI is the server's temp path; apply every edit to the
+        // single local model regardless of the key.
+        for (const uri of Object.keys(changes)) {
+          for (const textEdit of changes[uri]) {
+            edits.push({
+              resource: model.uri,
+              versionId: undefined,
+              textEdit: {
+                range: {
+                  startLineNumber: textEdit.range.start.line + 1,
+                  startColumn: textEdit.range.start.character + 1,
+                  endLineNumber: textEdit.range.end.line + 1,
+                  endColumn: textEdit.range.end.character + 1,
+                },
+                text: textEdit.newText,
+              },
+            });
+          }
+        }
+        return edits.length ? edits : null;
+      };
+
+      const actions = [];
+      for (const marker of markers) {
+        const entry = entries.find(
+          (e) =>
+            e.source === marker.source &&
+            e.startLineNumber === marker.startLineNumber &&
+            e.startColumn === marker.startColumn &&
+            e.message === marker.message
+        );
+        if (!entry) {
+          continue;
+        }
+        for (const lspAction of entry.actions) {
+          const edits = toEdits(lspAction);
+          if (!edits) {
+            continue;
+          }
+          actions.push({
+            title: lspAction.title,
+            kind: lspAction.kind || "quickfix",
+            diagnostics: [marker],
+            edit: { edits: edits },
+            isPreferred: lspAction.isPreferred,
+          });
+        }
+      }
+      return { actions: actions, dispose: () => {} };
     };
 
     this.editor.focus();

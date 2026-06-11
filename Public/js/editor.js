@@ -55,6 +55,14 @@ export class Editor {
       },
     });
 
+    // Quick Fix (lightbulb) for diagnostics. sourcekit-lsp ships the fix-its
+    // inline on each diagnostic, so this just surfaces them as code actions.
+    monaco.languages.registerCodeActionProvider("swift", {
+      provideCodeActions: (model, range, context) => {
+        return this.oncodeaction(model, range, context);
+      },
+    });
+
     // Explicit Ctrl+Space to trigger completion, like Xcode. (Cmd+Space is
     // taken by Spotlight on macOS, so bind WinCtrl = the Control key.)
     this.editor.addAction({
@@ -70,6 +78,7 @@ export class Editor {
     this.onhover = () => {};
     this.oncompletion = () => {};
     this.onsignaturehelp = () => {};
+    this.oncodeaction = () => ({ actions: [], dispose() {} });
     this.onaction = () => {};
   }
 
