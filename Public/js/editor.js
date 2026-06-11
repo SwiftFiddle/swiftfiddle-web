@@ -34,9 +34,12 @@ export class Editor {
     });
 
     // Trigger completion after "." as well as after these characters, which
-    // commonly start a new identifier/argument in Swift.
+    // commonly start a new identifier/argument in Swift. Whitespace is
+    // intentionally excluded: it's typed constantly and quickSuggestions
+    // already pops the list once the next identifier is started, so a space
+    // trigger would only generate heavy, unfiltered requests.
     monaco.languages.registerCompletionItemProvider("swift", {
-      triggerCharacters: [".", "(", ":", "<", " ", ","],
+      triggerCharacters: [".", "(", ":", "<", ","],
       provideCompletionItems: (model, position) => {
         return this.oncompletion(position);
       },
