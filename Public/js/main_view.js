@@ -28,6 +28,12 @@ export class MainView {
       wordWrap: "on",
       wrappingIndent: "indent",
       tabSize: 2,
+      // Make completion pop up while typing (not only after "."), with no
+      // delay, and allow Tab to accept. Ctrl+Space still triggers it manually.
+      quickSuggestions: { other: true, comments: false, strings: false },
+      quickSuggestionsDelay: 0,
+      suggestOnTriggerCharacters: true,
+      tabCompletion: "on",
       lightbulb: {
         enabled: true,
       },
