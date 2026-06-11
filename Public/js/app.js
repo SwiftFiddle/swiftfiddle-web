@@ -197,7 +197,10 @@ export class App {
               endColumn: endColumn,
               message: diagnostic.message,
               severity: severity,
-              source: diagnostic.source,
+              // Fall back to a stable source so LSP markers are always
+              // distinguishable from runner markers (which set no source) when
+              // matching fix-its below.
+              source: diagnostic.source ?? "sourcekit-lsp",
             };
           });
 
@@ -207,6 +210,7 @@ export class App {
               startLineNumber: diagnostic.range.start.line + 1,
               startColumn: diagnostic.range.start.character + 1,
               message: diagnostic.message,
+              source: diagnostic.source ?? "sourcekit-lsp",
               actions: diagnostic.codeActions,
             }));
 
@@ -340,6 +344,7 @@ export class App {
       for (const marker of markers) {
         const entry = entries.find(
           (e) =>
+            e.source === marker.source &&
             e.startLineNumber === marker.startLineNumber &&
             e.startColumn === marker.startColumn &&
             e.message === marker.message
