@@ -58,6 +58,17 @@ export class LanguageServer {
     this.connection.send(JSON.stringify(params));
   }
 
+  requestSignatureHelp(sequence, row, column) {
+    const params = {
+      method: "signatureHelp",
+      id: sequence,
+      row: row,
+      column: column,
+      sessionId: this.sessionId,
+    };
+    this.connection.send(JSON.stringify(params));
+  }
+
   requestFormat(code) {
     const params = {
       method: "format",

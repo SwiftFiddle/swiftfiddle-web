@@ -33,16 +33,43 @@ export class Editor {
       },
     });
 
+    // Trigger completion after "." as well as after these characters, which
+    // commonly start a new identifier/argument in Swift. Whitespace is
+    // intentionally excluded: it's typed constantly and quickSuggestions
+    // already pops the list once the next identifier is started, so a space
+    // trigger would only generate heavy, unfiltered requests.
     monaco.languages.registerCompletionItemProvider("swift", {
-      triggerCharacters: ["."],
+      triggerCharacters: [".", "(", ":", "<", ","],
       provideCompletionItems: (model, position) => {
         return this.oncompletion(position);
+      },
+    });
+
+    // Parameter hints (Xcode-style): pops up the function signature with the
+    // active argument highlighted when typing "(" or ",".
+    monaco.languages.registerSignatureHelpProvider("swift", {
+      signatureHelpTriggerCharacters: ["(", ","],
+      signatureHelpRetriggerCharacters: [",", ")"],
+      provideSignatureHelp: (model, position) => {
+        return this.onsignaturehelp(position);
+      },
+    });
+
+    // Explicit Ctrl+Space to trigger completion, like Xcode. (Cmd+Space is
+    // taken by Spotlight on macOS, so bind WinCtrl = the Control key.)
+    this.editor.addAction({
+      id: "trigger-suggest",
+      label: "Trigger Suggest",
+      keybindings: [monaco.KeyMod.WinCtrl | monaco.KeyCode.Space],
+      run: (ed) => {
+        ed.trigger("keyboard", "editor.action.triggerSuggest", {});
       },
     });
 
     this.onchange = () => {};
     this.onhover = () => {};
     this.oncompletion = () => {};
+    this.onsignaturehelp = () => {};
     this.onaction = () => {};
   }
 

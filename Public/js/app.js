@@ -64,6 +64,10 @@ export class App {
 
     languageServer.onresponse = (response) => {
       const promise = promises[response.id];
+      // Each request gets exactly one response, so drop the entry now. Without
+      // this, `promises` grows unbounded as hover/completion/signatureHelp fire
+      // while typing. No-op for diagnostics/format, which carry no id.
+      delete promises[response.id];
       switch (response.method) {
         case "hover":
           if (!promise) {
@@ -118,6 +122,38 @@ export class App {
           } else {
             promise.fulfill();
           }
+          break;
+        case "signatureHelp": {
+          if (!promise) {
+            return;
+          }
+          if (response.value && response.value.signatures) {
+            const signatures = response.value.signatures.map((sig) => ({
+              label: sig.label,
+              documentation: sig.documentation
+                ? sig.documentation.value ?? sig.documentation
+                : undefined,
+              parameters: (sig.parameters || []).map((parameter) => ({
+                label: parameter.label,
+                documentation: parameter.documentation
+                  ? parameter.documentation.value ?? parameter.documentation
+                  : undefined,
+              })),
+              activeParameter: sig.activeParameter,
+            }));
+            promise.fulfill({
+              value: {
+                signatures: signatures,
+                activeSignature: response.value.activeSignature ?? 0,
+                activeParameter: response.value.activeParameter ?? 0,
+              },
+              dispose: () => {},
+            });
+          } else {
+            promise.fulfill();
+          }
+          break;
+        }
         case "diagnostics":
           this.updateLanguageServerStatus(true);
           this.editor.clearMarkers();
@@ -227,6 +263,21 @@ export class App {
         promises[sequence] = { fulfill: fulfill, reject: reject };
       });
       return promise;
+    };
+
+    this.editor.onsignaturehelp = (position) => {
+      if (!languageServer.isReady) {
+        return;
+      }
+
+      sequence++;
+      const row = position.lineNumber - 1;
+      const column = position.column - 1;
+      languageServer.requestSignatureHelp(sequence, row, column);
+
+      return new Promise((fulfill, reject) => {
+        promises[sequence] = { fulfill: fulfill, reject: reject };
+      });
     };
 
     this.editor.focus();
