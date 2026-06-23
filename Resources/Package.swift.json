@@ -1,6 +1,7 @@
 {
   "cLanguageStandard" : null,
   "cxxLanguageStandard" : null,
+  "defaultLocalization" : null,
   "dependencies" : [
     {
       "sourceControl" : [
@@ -73,7 +74,7 @@
           "requirement" : {
             "range" : [
               {
-                "lowerBound" : "1.4.1",
+                "lowerBound" : "1.6.0",
                 "upperBound" : "2.0.0"
               }
             ]
@@ -101,7 +102,7 @@
           "requirement" : {
             "range" : [
               {
-                "lowerBound" : "4.3.0",
+                "lowerBound" : "4.5.0",
                 "upperBound" : "5.0.0"
               }
             ]
@@ -157,7 +158,7 @@
           "requirement" : {
             "range" : [
               {
-                "lowerBound" : "1.6.4",
+                "lowerBound" : "1.7.2",
                 "upperBound" : "2.0.0"
               }
             ]
@@ -174,7 +175,7 @@
   "name" : "App",
   "packageKind" : {
     "root" : [
-      "/private/var/folders/t5/f77_gwnj6p95qxy9py3fckx00000gn/T/tmp.Sxy0CCBcaM"
+      "/workspace/.template"
     ]
   },
   "pkgConfig" : null,
