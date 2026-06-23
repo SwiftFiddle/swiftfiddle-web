@@ -6,24 +6,35 @@ on:
 
 jobs:
   run:
-    runs-on: macos-latest
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7
-      - uses: SwiftyLab/setup-swift@latest
-      - name: Update Package.swift.json
+      # Resolve and build inside the same toolchain the app ships on
+      # (swift:6.3-jammy, see Dockerfile) so the generated Package.resolved is
+      # validated against production. The previous macOS Swift.org toolchain
+      # bundled a Foundation that lacks APIs used by transitive dependencies,
+      # causing spurious build failures.
+      - name: Update Package.swift.json and resolve packages
         run: |
           set -ex
 
-          tempdir=$(mktemp -d)
-          filename="Package.swift"
-          curl -sfL -o "$tempdir/$filename" https://raw.github.com/swiftfiddle/swiftfiddle-lsp/main/Resources/ProjectTemplate/$filename
-          swift package --package-path "$tempdir" dump-package > Resources/$filename.json
-      - name: Build
-        run: |
-          set -ex
+          docker run --rm \
+            --user "$(id -u):$(id -g)" \
+            -e HOME=/tmp \
+            -v "${{ github.workspace }}:/workspace" \
+            -w /workspace \
+            swift:6.3-jammy \
+            bash -c '
+              set -ex
 
-          swift package update
-          swift build
+              tempdir=$(mktemp -d)
+              filename="Package.swift"
+              curl -sfL -o "$tempdir/$filename" https://raw.github.com/swiftfiddle/swiftfiddle-lsp/main/Resources/ProjectTemplate/$filename
+              swift package --package-path "$tempdir" dump-package > Resources/$filename.json
+
+              swift package update
+              swift build
+            '
       - name: Create Pull Request
         id: cpr
         uses: peter-evans/create-pull-request@v8
