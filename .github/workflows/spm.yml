@@ -9,6 +9,14 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7
+      # Fetch the project template on the host runner; the swift:6.3-jammy
+      # image has no curl.
+      - name: Fetch Package.swift template
+        run: |
+          set -ex
+
+          mkdir -p .template
+          curl -sfL -o .template/Package.swift https://raw.github.com/swiftfiddle/swiftfiddle-lsp/main/Resources/ProjectTemplate/Package.swift
       # Resolve and build inside the same toolchain the app ships on
       # (swift:6.3-jammy, see Dockerfile) so the generated Package.resolved is
       # validated against production. The previous macOS Swift.org toolchain
@@ -27,14 +35,14 @@ jobs:
             bash -c '
               set -ex
 
-              tempdir=$(mktemp -d)
-              filename="Package.swift"
-              curl -sfL -o "$tempdir/$filename" https://raw.github.com/swiftfiddle/swiftfiddle-lsp/main/Resources/ProjectTemplate/$filename
-              swift package --package-path "$tempdir" dump-package > Resources/$filename.json
+              swift package --package-path .template dump-package > Resources/Package.swift.json
 
               swift package update
               swift build
             '
+      - name: Clean up template
+        if: always()
+        run: rm -rf .template
       - name: Create Pull Request
         id: cpr
         uses: peter-evans/create-pull-request@v8
