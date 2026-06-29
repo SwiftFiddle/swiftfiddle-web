@@ -1,0 +1,48 @@
+/* Helpers for Bootstrap Icons (fixed width, sizing, spin animation). */
+.icon-fw {
+  display: inline-block;
+  width: 1.25em;
+  text-align: center;
+}
+
+.icon-sm {
+  font-size: 0.875em;
+}
+
+.icon-lg {
+  font-size: 1.25em;
+}
+
+.icon-spin {
+  display: inline-block;
+  animation: icon-spin 1s linear infinite;
+}
+
+/* Fixed-width slot so the Run button keeps the same width whether the play
+   icon or the loading spinner is shown. */
+.run-button-status {
+  display: inline-flex;
+  width: 1.25em;
+  height: 1.25em;
+  align-items: center;
+  justify-content: center;
+  /* Fixed box + middle alignment so swapping the icon (which carries a text
+     baseline) for the spinner (which does not) never changes the line box. */
+  vertical-align: middle;
+  /* `middle` sits on the x-height midline; nudge up to the optical center of
+     the capitalised "Run" label. Visual-only, so button size stays fixed. */
+  position: relative;
+  top: -0.05em;
+}
+
+.run-spinner {
+  --bs-spinner-width: 1em;
+  --bs-spinner-height: 1em;
+  --bs-spinner-border-width: 0.15em;
+}
+
+@keyframes icon-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}

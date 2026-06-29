@@ -540,7 +540,7 @@ export class App {
         if (statusContainer) {
           statusContainer.setAttribute(
             "data-bs-original-title",
-            "<p class='p-0 m-0'><b>Language Server Status:</b></p><p class='p-0 m-0 text-end'>Ready&nbsp;<span class='fas fa-check-circle fa-fw'></span></p>"
+            "<p class='p-0 m-0'><b>Language Server Status:</b></p><p class='p-0 m-0 text-end'>Ready&nbsp;<i class='bi bi-check-circle-fill icon-fw'></i></p>"
           );
           const tooltip = Tooltip.getInstance(statusContainer);
           tooltip.hide();
@@ -550,7 +550,7 @@ export class App {
         if (statusContainer) {
           statusContainer.setAttribute(
             "data-bs-original-title",
-            "<p class='p-0 m-0'><b>Language Server Status:</b></p><p class='p-0 m-0 text-end'>Initializing...&nbsp;<span class='fad fa-spinner-third fa-spin fa-fw'></span></p>"
+            "<p class='p-0 m-0'><b>Language Server Status:</b></p><p class='p-0 m-0 text-end'>Initializing...&nbsp;<i class='bi bi-arrow-repeat icon-spin icon-fw'></i></p>"
           );
           const tooltip = Tooltip.getInstance(statusContainer);
           tooltip.hide();

@@ -5,14 +5,8 @@
 }
 
 .version-picker-item.active-tick a::after {
-  font-family: "Font Awesome 6 Pro";
-  content: "\f00c";
-  color: #0d6efd;
-  float: right;
-  display: none;
-}
-
-.version-picker-item.active-tick svg {
+  font-family: "bootstrap-icons";
+  content: "\f272";
   color: #0d6efd;
   float: right;
 }
