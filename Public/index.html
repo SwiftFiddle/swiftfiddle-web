@@ -37,6 +37,10 @@
     .button-circle {
       width: 2rem;
       height: 2rem;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0;
     }
   </style>
 
@@ -49,7 +53,7 @@
       <div class="col">
         <div class="d-inline-block mx-1">
           <a class="text-decoration-none" href="/">
-            <span class="fa-brands fa-swift fa-2x text-primary d-inline-block align-middle px-1 swift-logo"></span><span
+            <svg class="text-primary d-inline-block align-middle px-1 swift-logo" role="img" aria-label="Swift" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" fill="currentColor"><path d="M448 156.1c0-4.5-.1-9-.2-13.5-.1-9.9-1-19.7-2.6-29.4-1.7-9.7-4.8-19.2-9.2-28-9-17.7-23.4-32.1-41.2-41.1-8.8-4.5-18.3-7.6-28-9.2-9.7-1.6-19.6-2.5-29.4-2.6-4.5-.1-9-.2-13.5-.2L124.1 32c-4.5 0-9 .1-13.5 .2-2.4 .1-4.9 .2-7.4 .3-7.4 .3-14.8 1.1-22.1 2.3-7.3 1.3-14.4 3.3-21.2 6.1-2.3 1-4.6 2-6.8 3.1-6.6 3.4-12.8 7.5-18.4 12.3-1.9 1.6-3.7 3.3-5.4 5-7 7-12.9 15-17.4 23.8-4.4 8.8-7.6 18.3-9.2 28-1.6 9.7-2.4 19.6-2.5 29.4-.1 4.5-.2 9-.2 13.5L0 355.9c0 4.5 .1 9 .2 13.5 .1 9.9 1 19.7 2.6 29.4 1.7 9.7 4.8 19.2 9.2 28 9 17.7 23.4 32.1 41.1 41.1 8.8 4.4 18.3 7.5 28 9.2 9.7 1.6 19.6 2.5 29.4 2.6 4.5 .1 9 .2 13.5 .2l199.8 0c4.5 0 9-.1 13.5-.2 9.9-.1 19.7-1 29.4-2.6 9.7-1.7 19.2-4.8 28-9.2 17.7-9 32.1-23.4 41.1-41.2 4.4-8.8 7.6-18.3 9.2-28 1.6-9.7 2.5-19.6 2.6-29.4 .1-4.5 .2-9 .2-13.5l0-183.8c0-5.4 0-10.7 0-16zm-69.9 241c-20-38.9-57.2-29.3-76.3-19.5-1.7 1-3.5 2-5.2 3l-.4 .2c-39.5 21-92.5 22.5-145.8-.4-43.4-18.8-80.1-50.3-105.3-90.4 12.3 9.1 25.4 16.9 39.2 23.4 56.4 26.4 113 24.5 153 0-57-43.8-104.6-101-141.1-147.2-7-8.1-13.2-16.8-18.8-25.9 43.7 40 112.7 90.2 137.5 104.1-52.6-55.5-98.9-123.9-96.7-121.7 82.8 83.4 159.2 130.6 159.2 130.6 2.9 1.6 5 2.8 6.7 4 1.6-4.1 3-8.2 4.2-12.5 13.2-48.3-1.7-103.6-35.3-149.2 76.8 46.1 122.2 133.7 103.6 207.8-.4 1.7-1 3.4-1.4 5.1 38.5 47.4 28 98.2 23.1 88.6l0 0z"></path></svg><span
               class="h4 text-dark d-inline-block align-middle m-0">Swift Playground</span>
           </a>
         </div>
@@ -57,8 +61,8 @@
           <span class="dropdown" style="min-width: 175px">
             <button type="button" class="btn btn-outline-primary btn-sm rounded-pill dropdown-toggle m-1"
               data-bs-toggle="dropdown" aria-expanded="false" aria-label="Version Picker" style="width: 160px;">
-              <span class="fa-solid fa-code-branch fa-fw d-inline-block mx-2"
-                style="min-width: 1em; min-height: 1em;"></span>
+              <i class="bi bi-git icon-fw d-inline-block mx-2"
+                style="min-width: 1em; min-height: 1em;"></i>
               <span id="version-value" class="fw-bolder">#(stableVersion)</span>
             </button>
             <!-- beautify ignore:start -->
@@ -78,49 +82,51 @@
           </span>
           <button id="run-button" type="button" class="btn btn-primary btn-sm rounded-pill px-3 m-1 disabled"
             aria-label="Run">
-            <span id="run-button-icon" class="fa-solid fa-play fa-fw"></span>
-            <span id="run-button-spinner" class="fa-duotone fa-spinner-third fa-spin fa-fw d-none"></span>
+            <span class="run-button-status">
+              <i id="run-button-icon" class="bi bi-play-fill"></i>
+              <span id="run-button-spinner" class="spinner-border run-spinner d-none" role="status" aria-hidden="true"></span>
+            </span>
             <span class="px-1">Run</span>
           </button>
           <button id="stop-button" type="button" class="btn btn-primary btn-sm rounded-pill m-1 disabled">
-            <span class="fa-solid fa-stop fa-fw ms-2"
-              style="display: inline-block; min-width: 1em; min-height: 1em;"></span><span class="mx-2">Stop</span>
+            <i class="bi bi-stop-fill icon-fw ms-2"
+              style="display: inline-block; min-width: 1em; min-height: 1em;"></i><span class="mx-2">Stop</span>
           </button>
           <button id="clear-console-button" type="button"
             class="btn btn-outline-primary btn-sm rounded-circle button-circle m-1 disabled" data-bs-toggle="tooltip"
             data-bs-placement="bottom" data-bs-container="#clear-console-button" title="Clear Console"
             aria-label="Clear Console">
-            <span class="fa-solid fa-eraser fa-fw"></span>
+            <i class="bi bi-eraser-fill"></i>
           </button>
           <button id="format-button" type="button"
             class="btn btn-outline-primary btn-sm rounded-circle button-circle m-1 disabled" data-bs-toggle="tooltip"
             data-bs-placement="bottom" data-bs-container="#format-button" title="Format" aria-label="Format">
-            <span class="fa-solid fa-align-left fa-fw"></span>
+            <i class="bi bi-text-left"></i>
           </button>
           <a id="lang-server-status" class="m-1" href="#" onClick="return false;" data-bs-toggle="tooltip"
             data-bs-placement="bottom" data-bs-trigger="hover" data-bs-html="true"
             data-bs-container="#lang-server-status"
-            title="<p class='p-0 m-0'><b>Language Server Status:</b></p><p class='p-0 m-0 text-end'>Initializing...&nbsp;<span class='fa-duotone fa-spinner-third fa-spin fa-fw'></span></p>"
+            title="<p class='p-0 m-0'><b>Language Server Status:</b></p><p class='p-0 m-0 text-end'>Initializing...&nbsp;<i class='bi bi-arrow-repeat icon-spin icon-fw'></i></p>"
             aria-label="Language Server Status" style="min-width: 2rem; min-height: 2rem; display: inline-block;">
             <img id="lang-server-status-icon" src="/images/lsp.svg" style="width: 41px; height: 24px"
               aria-label="Language Server Status">
           </a>
           <button type="button" id="share-button" class="btn btn-outline-primary btn-sm rounded-pill px-2 m-1 disabled">
-            <span class="fa-solid fa-share-nodes fa-fw mx-1"
-              style="display: inline-block; min-width: 1em; min-height: 1em;"></span><span class="mx-2">Share</span>
+            <i class="bi bi-share-fill icon-fw mx-1"
+              style="display: inline-block; min-width: 1em; min-height: 1em;"></i><span class="mx-2">Share</span>
           </button>
           <span data-bs-toggle="modal" data-bs-target="#settings-modal">
             <button type="button" id="settings-button"
               class="btn btn-outline-primary btn-sm rounded-circle button-circle m-1" aria-label="Settings"
               data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-container="#settings-button" title="Settings">
-              <span class="fa-solid fa-cog fa-fw"></span>
+              <i class="bi bi-gear-fill"></i>
             </button>
           </span>
           <span data-bs-toggle="modal" data-bs-target="#help-modal">
             <button id="help-button" type="button"
               class="btn btn-outline-primary btn-sm rounded-circle button-circle m-1" aria-label="Help"
               data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-container="#help-button" title="Help">
-              <span class="fa-solid fa-question fa-fw"></span>
+              <i class="bi bi-question-lg"></i>
             </button>
         </div>
       </div>
@@ -139,31 +145,31 @@
       <div class="col p-1 text-center">
         <div class="d-inline-block mx-2">
           <a class="text-reset text-decoration-none small" href="https://status.swiftfiddle.com/" target="_blank"
-            rel="nofollow noopener noreferrer"><span class="fa-light fa-monitor-heart-rate"></span><span
+            rel="nofollow noopener noreferrer"><i class="bi bi-activity"></i><span
               class="mx-2">System
               Status</span></a>
         </div>
         <div class="d-inline-block mx-2">
           <a class="text-reset text-decoration-none small"
             href="https://github.com/swiftfiddle/swiftfiddle-web/issues/new" target="_blank"
-            rel="nofollow noopener noreferrer"><span class="fa-regular fa-message-smile"></span><span
+            rel="nofollow noopener noreferrer"><i class="bi bi-chat-dots"></i><span
               class="mx-2">Feedback</span></a>
         </div>
         <div class="d-inline-block mx-2">
           <a class="text-reset text-decoration-none small" href="https://github.com/swiftfiddle/swiftfiddle-web"
-            target="_blank" rel="nofollow noopener noreferrer"><span class="fa-brands fa-github"></span><span
+            target="_blank" rel="nofollow noopener noreferrer"><i class="bi bi-github"></i><span
               class="mx-2">Source
               Code</span></a>
         </div>
         <div class="d-inline-block mx-2">
           <a class="text-reset text-decoration-none small" href="https://hachyderm.io/@kishikawakatsumi" target="_blank"
-            rel="nofollow noopener noreferrer"><span class="fa-regular fa-at"></span><span
+            rel="nofollow noopener noreferrer"><i class="bi bi-at"></i><span
               class="mx-2">Creator</span></a>
         </div>
         <div class="d-inline-block mx-2">
           <a class="text-reset text-decoration-none small" href="https://github.com/sponsors/kishikawakatsumi"
             target="_blank" rel="nofollow noopener noreferrer">
-            <span class="fa-solid fa-heart" style="color: #bf3989;"></span></span><span class="mx-2">Donate</span></a>
+            <i class="bi bi-heart-fill" style="color: #bf3989;"></i></span><span class="mx-2">Donate</span></a>
         </div>
       </div>
     </footer>
@@ -183,10 +189,10 @@
             data-bs-toggle="tooltip" data-bs-container="#share-sheet-link-copy-button" title="Copy to Clipboard"
             aria-label="Copy to Clipboard">
             <span id="share-sheet-link-copy-button-icon">
-              <span class="fa-regular fa-clipboard fa-fw"></span>
+              <i class="bi bi-clipboard icon-fw"></i>
             </span>
             <span id="share-sheet-link-copy-button-spinner" class="d-none">
-              <span class="fad fa-spinner-third fa-spin fa-fw"></span>
+              <i class="bi bi-arrow-repeat icon-spin icon-fw"></i>
             </span>
           </button>
         </div>
@@ -207,10 +213,10 @@
             data-bs-toggle="tooltip" data-bs-container="#share-sheet-embed-copy-button" title="Copy to Clipboard"
             aria-label="Copy to Clipboard">
             <span id="share-sheet-embed-copy-button-icon">
-              <span class="fa-regular fa-clipboard fa-fw"></span>
+              <i class="bi bi-clipboard icon-fw"></i>
             </span>
             <span id="share-sheet-embed-copy-button-spinner" class="d-none">
-              <span class="fad fa-spinner-third fa-spin fa-fw"></span>
+              <i class="bi bi-arrow-repeat icon-spin icon-fw"></i>
             </span>
           </button>
         </div>
@@ -221,12 +227,12 @@
         <a id="share-twitter-button" class="btn btn-outline-primary btn-sm rounded-circle p-0 me-2" href="#"
           target="_blank" rel="nofollow noopener noreferrer" data-bs-toggle="tooltip" data-bs-placement="bottom"
           data-bs-container="#share-twitter-button" title="Twitter" aria-label="Share Twitter">
-          <span class="fab fa-twitter fa-fw" style="width: 1rem; height: 100%;"></span>
+          <i class="bi bi-twitter icon-fw" style="width: 1rem; height: 100%;"></i>
         </a>
         <a id="share-facebook-button" class="btn btn-outline-primary btn-sm rounded-circle p-0 me-2" href="#"
           target="_blank" rel="nofollow noopener noreferrer" data-bs-toggle="tooltip" data-bs-placement="bottom"
           data-bs-container="#share-facebook-button" title="Facebook" aria-label="Share Facebook">
-          <span class="fab fa-facebook-square fa-fw" style="width: 1rem; height: 100%;"></span>
+          <i class="bi bi-facebook icon-fw" style="width: 1rem; height: 100%;"></i>
         </a>
       </div>
     </div>
@@ -275,7 +281,7 @@
         </div>
         <div class="modal-body">
           <dl>
-            <dt class="bg-light rounded"><span class="fa-regular fa-file-import fa-fw mx-1"></span>Import</dt>
+            <dt class="bg-light rounded"><i class="bi bi-file-earmark-arrow-down icon-fw mx-1"></i>Import</dt>
             <dd>There are a few different ways to import code into Playground:</dd>
           </dl>
           <ul>
@@ -286,7 +292,7 @@
           </ul>
 
           <dl>
-            <dt class="bg-light rounded mt-2"><span class="fa-regular fa-keyboard fa-fw mx-1"></span>Keyboard
+            <dt class="bg-light rounded mt-2"><i class="bi bi-keyboard icon-fw mx-1"></i>Keyboard
               Shortcuts
             </dt>
             <dd>
@@ -315,7 +321,7 @@
           </dl>
 
           <dl>
-            <dt class="bg-light rounded mt-2"><span class="fa-regular fa-toolbox fa-fw mx-1"></span>Installed
+            <dt class="bg-light rounded mt-2"><i class="bi bi-tools icon-fw mx-1"></i>Installed
               Libraries
             </dt>
             <dd>
@@ -345,7 +351,7 @@
           </dl>
 
           <dl>
-            <dt class="bg-light rounded mt-2"><span class="fa-regular fa-message-smile fa-fw mx-1"></span>Feedback
+            <dt class="bg-light rounded mt-2"><i class="bi bi-chat-dots icon-fw mx-1"></i>Feedback
               /
               Bug
               Report
@@ -368,8 +374,7 @@
       aria-atomic="true">
       <div class="d-flex">
         <div class="toast-body fw-bolder">
-          <span class="fa-regular fa-check-circle fa-lg text-success me-2">
-          </span><span id="snackbar-info-message" class="text-dark"></span>
+          <i class="bi bi-check-circle icon-lg text-success me-2"></i><span id="snackbar-info-message" class="text-dark"></span>
         </div>
         <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
       </div>
@@ -381,7 +386,7 @@
       aria-atomic="true">
       <div class="d-flex">
         <div class="toast-body fw-bolder">
-          <span class="fa-solid fa-exclamation-triangle text-danger me-2"></span>
+          <i class="bi bi-exclamation-triangle-fill text-danger me-2"></i>
           <span id="snackbar-alert-message" class="text-danger"></span>
         </div>
         <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>

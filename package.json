@@ -4,14 +4,9 @@
     "dev": "webpack --progress --config webpack.dev.js"
   },
   "dependencies": {
-    "@fortawesome/fontawesome-svg-core": "7.3.0",
-    "@fortawesome/free-brands-svg-icons": "7.3.0",
-    "@fortawesome/pro-duotone-svg-icons": "6.4.0",
-    "@fortawesome/pro-light-svg-icons": "6.4.0",
-    "@fortawesome/pro-regular-svg-icons": "6.4.0",
-    "@fortawesome/pro-solid-svg-icons": "6.4.0",
     "@popperjs/core": "2.11.8",
     "bootstrap": "5.3.8",
+    "bootstrap-icons": "1.13.1",
     "monaco-editor": "0.55.1",
     "pako": "3.0.0",
     "reconnecting-websocket": "4.4.0",
