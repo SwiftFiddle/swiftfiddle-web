@@ -32,6 +32,11 @@
     .swift-logo {
       width: 2rem;
       height: 2rem;
+      /* `align-middle` sits on the text x-height midline, leaving the logo a
+         touch low against the cap-height of "Swift Playground"; nudge up to the
+         optical centre. Visual-only, so layout is unaffected. */
+      position: relative;
+      top: -0.2rem;
     }
 
     .button-circle {
