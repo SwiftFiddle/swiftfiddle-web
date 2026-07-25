@@ -23,7 +23,7 @@
     "monaco-editor-webpack-plugin": "7.1.1",
     "postcss": "8.5.23",
     "postcss-loader": "8.2.1",
-    "sass": "1.101.7",
+    "sass": "1.102.0",
     "sass-loader": "17.0.0",
     "style-loader": "4.0.0",
     "webpack": "5.109.0",
