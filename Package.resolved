@@ -6,8 +6,8 @@
         "repositoryURL": "https://github.com/swift-server/async-http-client.git",
         "state": {
           "branch": null,
-          "revision": "4603a8036d921ea999fadb742931546c341f4bd7",
-          "version": "1.35.0"
+          "revision": "9544287b9416c0bc71e58b9f3aead8dd14b16103",
+          "version": "1.36.0"
         }
       },
       {
@@ -42,8 +42,8 @@
         "repositoryURL": "https://github.com/vapor/leaf-kit.git",
         "state": {
           "branch": null,
-          "revision": "6044b844caa858a0c5f2505ac166f5a057c990dc",
-          "version": "1.14.2"
+          "revision": "64cc0a5c8dcf4fbd03be73b944f6850c0b82e439",
+          "version": "1.14.3"
         }
       },
       {
@@ -204,8 +204,8 @@
         "repositoryURL": "https://github.com/apple/swift-nio-http2.git",
         "state": {
           "branch": null,
-          "revision": "61d1b44f6e4e118792be1cff88ee2bc0267c6f9a",
-          "version": "1.44.0"
+          "revision": "45bdf670248be5f16ec0340e125dca285536f0fb",
+          "version": "1.45.0"
         }
       },
       {
@@ -258,8 +258,8 @@
         "repositoryURL": "https://github.com/apple/swift-system.git",
         "state": {
           "branch": null,
-          "revision": "b5544ba79a70a0cb3563e75bf26dc198d6b40ed3",
-          "version": "1.7.4"
+          "revision": "50688cacbd41d547e9eb9f7a213542340b7c442b",
+          "version": "1.7.5"
         }
       },
       {
