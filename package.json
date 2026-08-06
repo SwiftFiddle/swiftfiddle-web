@@ -7,7 +7,7 @@
     "@popperjs/core": "2.11.8",
     "bootstrap": "5.3.8",
     "bootstrap-icons": "1.13.1",
-    "monaco-editor": "0.55.1",
+    "monaco-editor": "0.56.0",
     "pako": "3.0.1",
     "reconnecting-websocket": "4.4.0",
     "xterm": "5.3.0",
