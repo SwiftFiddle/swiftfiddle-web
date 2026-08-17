@@ -24,8 +24,8 @@
         "repositoryURL": "https://github.com/vapor/console-kit.git",
         "state": {
           "branch": null,
-          "revision": "32ad16dfc7677b927b225595ed18f3debb32f577",
-          "version": "4.16.0"
+          "revision": "15121e1ec44a0a2064e43545d1390f02cc19b07d",
+          "version": "4.16.1"
         }
       },
       {
@@ -258,8 +258,8 @@
         "repositoryURL": "https://github.com/apple/swift-system.git",
         "state": {
           "branch": null,
-          "revision": "704705c5c51156ede21172a38654d522ce487074",
-          "version": "1.8.0"
+          "revision": "869129b7bf4ecc57b97d0193ad29690ca2134750",
+          "version": "1.8.1"
         }
       },
       {
