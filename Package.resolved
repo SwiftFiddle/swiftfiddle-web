@@ -159,8 +159,8 @@
         "repositoryURL": "https://github.com/apple/swift-http-types.git",
         "state": {
           "branch": null,
-          "revision": "6c8ca8297332ea2780c45e1bce9d7fd2a8b51e1d",
-          "version": "1.7.0"
+          "revision": "bff4b6903cdc99dda49649dd52f46c11cfd3ed50",
+          "version": "1.8.0"
         }
       },
       {
@@ -168,8 +168,8 @@
         "repositoryURL": "https://github.com/apple/swift-log.git",
         "state": {
           "branch": null,
-          "revision": "3ffafb9722d5d918c614feb496c8789a3b59d222",
-          "version": "1.15.0"
+          "revision": "9c6fb14227f55d8f711ce3847dc2f419fb0ecacb",
+          "version": "1.15.1"
         }
       },
       {
