@@ -5,7 +5,7 @@
   },
   "dependencies": {
     "@popperjs/core": "2.11.8",
-    "bootstrap": "5.3.8",
+    "bootstrap": "5.3.9",
     "bootstrap-icons": "1.13.2",
     "monaco-editor": "0.55.1",
     "pako": "3.0.3",
